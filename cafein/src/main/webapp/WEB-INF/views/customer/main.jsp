@@ -46,8 +46,8 @@ table {
 <br><br>
 
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='cuslikestorelist.jsp'">
-	<tr >
+  <table border = "1" onclick = "location.href='likestorelist.do'">
+	<tr>
 		<th><label>자주 이용한 매장</label></th>
 	</tr>
 	<tr>
