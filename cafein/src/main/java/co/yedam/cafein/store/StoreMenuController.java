@@ -8,8 +8,8 @@ public class StoreMenuController {
 
 	
 
-	@RequestMapping("menulist.do")
-	public String menulist() {
+	@RequestMapping("storemenulist.do")
+	public String storemenulist() {
 		return "store/menulist";
 	}
 	
