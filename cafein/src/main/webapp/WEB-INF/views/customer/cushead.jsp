@@ -196,7 +196,7 @@ table.center {margin-left:auto; margin-right:auto;}
 
 
 			<ul>
-                <li><a href="<%= request.getContextPath() %>/jsp/customermain.jsp">Home</a>
+                <li><a href="customerMainForm.do">Home</a>
     			<li><a href="<%= request.getContextPath() %>/jsp/mapStoreList.jsp">주문</a></li>
                 </li>
                 <li><a href="<%= request.getContextPath() %>/jsp/customerinfoedit.jsp">User Name</a>

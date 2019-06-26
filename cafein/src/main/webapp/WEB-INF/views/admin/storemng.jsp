@@ -59,7 +59,7 @@
     </table>
     <div style="text-align:right">
     <button type="submit" onclick="#">승인</button>
-	<button onclick="location.href='adminMain.jsp'">돌아가기</button>
+	<button onclick = "location.href='adminMainForm.do'">돌아가기</button>
 	</div>
 	</div>
 </body>
