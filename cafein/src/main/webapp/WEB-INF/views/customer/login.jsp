@@ -31,8 +31,8 @@
       <label>ID </label><input type = "text" name = "id"><br>
       <label>PW </label><input type = "password" name = "pw"><br><br>
       <input type = "button" class="btn btn-default " onclick = "checkForm()" value = "로그인">
-      <input type = "button" class="btn btn-default " onclick = "location.href='customerjoin.jsp'" value = "회원가입">
-      <input type = "button" class="btn btn-default " onclick = "location.href='findIdPw.jsp'" value = "ID/PW 찾기">
+      <input type = "button" class="btn btn-default " onclick = "location.href='joinForm.do'" value = "회원가입">
+      <input type = "button" class="btn btn-default " onclick = "location.href='findidpwForm.do'" value = "ID/PW 찾기">
   </form>
   </div>
 </body>

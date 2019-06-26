@@ -10,6 +10,7 @@ public class StoreController {
 	@RequestMapping("storejoin.do")
 	public String storejoin() {
 		return "store/join";
+
 	}
 	//매장 로그인
 	@RequestMapping("storelogin.do")
@@ -22,5 +23,4 @@ public class StoreController {
 		return "store/infoedit";
 	}
 
-	
 }
