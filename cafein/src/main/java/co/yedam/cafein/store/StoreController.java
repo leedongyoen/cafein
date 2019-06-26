@@ -10,4 +10,7 @@ public class StoreController {
 	public String join() {
 		return "store/join";
 	}
+	
+
+	
 }
