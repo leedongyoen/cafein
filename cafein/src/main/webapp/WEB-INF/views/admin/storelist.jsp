@@ -38,7 +38,7 @@
 	</tr>
     </table>
     <div style="text-align:right">
-	<button onclick="location.href='adminMain.jsp'">돌아가기</button>
+	<button onclick = "location.href='adminMainForm.do'">돌아가기</button>
 	</div>
 	</div>
 </body>

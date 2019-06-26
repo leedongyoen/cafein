@@ -195,11 +195,11 @@ table.center {margin-left:auto; margin-right:auto;}
 
 
 			<ul>
-                <li><a href="<%= request.getContextPath() %>/jsp/adminMain.jsp">Home</a>
+                <li><a href="adminMainForm.do">Home</a>
     			<li><a href="#">매장</a>
                     <ul>
-                        <li><a href="<%= request.getContextPath() %>/jsp/adminstoreApply.jsp">매장등록신청내역</a></li>
-                        <li><a href="<%= request.getContextPath() %>/jsp/adminstoreList.jsp">매장 목록</a></li> 
+                        <li><a href="storemng.do">매장등록신청내역</a></li>
+                        <li><a href="storelist.do">매장 목록</a></li> 
                     </ul>
                 </li>
    

@@ -37,7 +37,7 @@
 	</tr>
 </table>
 <div style="text-align:right" >
-<input type = "button"  onclick = "location.href='customermain.jsp'" value = "HOME">
+<button onclick = "location.href='customerMainForm.do'">돌아가기</button>
 </div>
 </div>
 </body>
