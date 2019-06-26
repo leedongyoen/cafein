@@ -1,2 +1,6 @@
 cafein/target/
+cafein/target/*
+cafein/.classpath
+cafein/.project
+cafein/.springBeans
 
