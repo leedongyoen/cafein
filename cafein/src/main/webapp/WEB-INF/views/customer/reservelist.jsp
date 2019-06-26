@@ -74,5 +74,6 @@
 			</tr>
 		</table>
 	</div>
+	<button onclick = "location.href='customerMainForm.do'">돌아가기</button>
 </body>
 </html>

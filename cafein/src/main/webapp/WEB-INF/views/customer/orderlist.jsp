@@ -43,7 +43,7 @@
 			<hr>
 			<br>
 			<p align = "right"><button type ="button" onclick="location='cusMenu.jsp'">메뉴</button> &nbsp;
-			<a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
+			<button onclick = "location.href='customerMainForm.do'">돌아가기</button>
 		</div>
 	
 </body>

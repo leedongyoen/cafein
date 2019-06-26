@@ -56,7 +56,7 @@ table {
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='cuslikemenulist.jsp'">
+  <table border = "1" onclick = "location.href='likemenulist.do'">
 	<tr>
 		<th><label>많이 주문한 메뉴</label></th>
 	</tr>
@@ -66,7 +66,7 @@ table {
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='reserve.jsp'">
+  <table border = "1" onclick = "location.href='reservelist.do'">
 	<tr>
 		<th><label>총 적립금</label></th>
 	</tr>
@@ -76,7 +76,7 @@ table {
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='orderlist.jsp'">
+  <table border = "1" onclick = "location.href='orderlist.do'">
 	<tr >
 		<th><label>총 사용 금액</label></th>
 	</tr>
