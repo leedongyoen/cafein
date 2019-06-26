@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CustomerMenuController {
 		
 		//고객메뉴조회
-		@RequestMapping("menulist.do")
-		public String menulist() {
+		@RequestMapping("customermenulist.do")
+		public String customermenulist() {
 			return "customer/menulist";
 		}
 		//고객 나만의 메뉴의 메뉴선택
