@@ -36,7 +36,7 @@
 					</tr>
 				</thead>
 
-				<tr onclick="location.href='orderdetails.jsp'">
+				<tr onclick="location.href='orderdetailsForm.do'">
 					<td>OR0012019617</td>
 					<td>아메리카노(ICE)<br>바닐라라떼(HOT)
 					</td>
