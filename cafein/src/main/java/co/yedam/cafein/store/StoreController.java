@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class StoreController {
 	
-	@RequestMapping("joinForm.do")
+	@RequestMapping("storejoinForm.do")
 	public String join() {
 		return "store/join";
 	}
