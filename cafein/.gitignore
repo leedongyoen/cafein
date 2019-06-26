@@ -5,3 +5,5 @@ cafein/.project
 cafein/.springBeans
 pom.properties
 /target/
+/target/*
+*/target/*
