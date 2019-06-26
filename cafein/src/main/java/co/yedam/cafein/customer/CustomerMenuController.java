@@ -32,8 +32,8 @@ public class CustomerMenuController {
 			return "customer/mymenudetail";
 		}
 		//고객주변매장조회
-		@RequestMapping("storelist.do")
-		public String storelist() {
+		@RequestMapping("customerstorelist.do")
+		public String customerstorelist() {
 			return "customer/storelist";
 		}
 }

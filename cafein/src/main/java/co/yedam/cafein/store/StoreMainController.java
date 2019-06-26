@@ -18,8 +18,8 @@ public class StoreMainController {
 	}
 	
 	//매장 주문내역 조회
-	@RequestMapping("orderlist.do")
-	public String orderlist() {
+	@RequestMapping("storeorderlist.do")
+	public String storeorderlist() {
 		return "store/orderlist";
 	}
 	
