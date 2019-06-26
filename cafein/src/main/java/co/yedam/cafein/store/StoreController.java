@@ -9,8 +9,5 @@ public class StoreController {
 	@RequestMapping("storejoinForm.do")
 	public String join() {
 		return "store/join";
-	}
-	
-
-	
+	}	
 }
