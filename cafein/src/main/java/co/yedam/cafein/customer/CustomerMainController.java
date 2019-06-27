@@ -28,6 +28,6 @@ public class CustomerMainController {
 	@RequestMapping("reservelist.do")
 	public String reservelist() {
 		return "customer/reservelist";
-	}
+	}  
 	
 }
