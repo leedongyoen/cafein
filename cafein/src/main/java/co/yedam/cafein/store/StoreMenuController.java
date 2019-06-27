@@ -13,7 +13,7 @@ public class StoreMenuController {
 		return "store/menulist";
 	}
 	
-	@RequestMapping("menuregi")
+	@RequestMapping("menuregi.do")
 	public String menuregi() {
 		return "store/menuregi";
 	}
