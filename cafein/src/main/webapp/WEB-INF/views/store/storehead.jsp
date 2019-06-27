@@ -216,39 +216,39 @@ body, ul, li{
 
 
 			<ul>
-                <li><a href="<%= request.getContextPath() %>/jsp/storemain.jsp">Home</a>
+                <li><a href="storemainform.do">Home</a>
 
-                <li><a href="<%= request.getContextPath() %>/jsp/storeinfoedit.jsp">Store Id</a>
+                <li><a href="storeinfoedit.do">Store Id</a>
                     <ul>
-                        <li><a href="<%= request.getContextPath() %>/jsp/viewOurCustomer.jsp">고객 조회</a></li>
+                        <li><a href="customerlist.do">고객 조회</a></li>
                         
-                        <li><a href="<%= request.getContextPath() %>/jsp/salestime.jsp">매출</a></li>
-                        <li><a href="<%= request.getContextPath() %>/jsp/menuInquiry.jsp">메뉴 관리</a></li>
-                        <li><a href="<%= request.getContextPath() %>/jsp/recipeInquiry.jsp">레시피 관리</a></li>
-                        <li><a href="<%= request.getContextPath() %>/jsp/realtimeOrder.jsp">주문 내역</a></li>
+                        <li><a href="salestime.do">매출</a></li>
+                        <li><a href="storemenulist.do">메뉴 관리</a></li>
+                        <li><a href="recipelist.do">레시피 관리</a></li>
+                        <li><a href="storeorderlist.do">주문 내역</a></li>
                        
                     </ul>
                 </li>
-               <li><a href="<%= request.getContextPath() %>/jsp/storePos.jsp">주문</a>
+               <li><a href="pos.do">주문</a>
                 <li><a>재고</a>
                  	<ul>
-                        <li><a href="<%= request.getContextPath() %>/jsp/stock.jsp">재고 목록</a></li>
-                        <li><a href="<%= request.getContextPath() %>/jsp/stockWarehousing.jsp">재고 입고</a></li>
-                        <li><a href="<%= request.getContextPath() %>/jsp/stockStatistics.jsp">재고 통계</a></li>
+                        <li><a href="stocklist.do">재고 목록</a></li>
+                        <li><a href="warehousingregi.do">재고 입고</a></li>
+                        <li><a href="stockstatisticslist.do">재고 통계</a></li>
                         
                     </ul>
                 
                 </li>
-                <li><a href="<%= request.getContextPath() %>/jsp/stockWarehousing.jsp">오픈</a></li>
-                <li><a href="<%= request.getContextPath() %>/jsp/storeTodayCalculate.jsp">마감</a></li>        
+                <li><a href="warehousingregi.do">오픈</a></li>
+                <li><a href="daycal.do">마감</a></li>        
             </ul>
             
             
     <div class="top-right">
         <ul>
         		<li id="clock" style="color:orange; font-size:16px;"><a></a></li>
-                <li><a href="<%= request.getContextPath() %>/jsp/storelogin.jsp">Login</a></li>
-                <li><a href="<%= request.getContextPath() %>/jsp/storelogin.jsp">Logout</a></li>
+                <li><a href="storelogin.do">Login</a></li>
+                <li><a href="storelogin.do">Logout</a></li>
             <li><a href="#"><img style="position:relative; top:4px;" src="http://hongsi.x-y.net/2017_ui8/yjh/img/snb_hbr.gif" alt=""></a></li>
         </ul>
 

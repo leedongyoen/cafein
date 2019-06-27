@@ -3,9 +3,14 @@
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-<!-- <typeAliases> -->
-<!-- 	<typeAlias type="com.yedam.app.users.UserVO" alias="user"/> -->
-<!-- </typeAliases> -->
+	<!-- <typeAliases> -->
+	<!-- <typeAlias type="com.yedam.app.users.UserVO" alias="user"/> -->
+	<!-- </typeAliases> -->
+	
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	
 </configuration>
 
 

@@ -6,27 +6,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class StoreSalesController {
 	
 	
-	@RequestMapping("salesDayForm.do")
+	@RequestMapping("salesday.do")
 	public String salesDayForm() {
 		return "store/salesday";
 	}
 	
-	@RequestMapping("salesMenuForm.do")
+	@RequestMapping("salesmenu.do")
 	public String salesMenuForm() {
 		return "store/salesmenu";
 	}
 	
-	@RequestMapping("salesTimeForm.do")
+	@RequestMapping("salestime.do")
 	public String salesTimeForm() {
 		return "store/salestime";
 	}
 	
-	@RequestMapping("salesYearForm.do")
+	@RequestMapping("salesyear.do")
 	public String salesYearForm() {
 		return "store/salesyear";
 	}
 	
-	@RequestMapping("salesMonthForm.do")
+	@RequestMapping("salesmonth.do")
 	public String salesMonthForm() {
 		return "store/salesmonth";
 	}
