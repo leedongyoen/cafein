@@ -10,4 +10,11 @@ public class AdminController {
 		public String adminMainForm() {
 			return "admin/main";
 		}
+		
+		
+			
+			@RequestMapping("adminlogin.do")
+		public String adminlogin() {
+			return "admin/login";
+		}
 }
