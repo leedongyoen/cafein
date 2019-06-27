@@ -55,5 +55,10 @@ public class OrdersVO {
 		this.payMethod = payMethod;
 	}
 	
+	@Override
+	public String toString() {
+		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
+				+ receipt + ", sId=" + sId + ", payMethod=" + payMethod + "]";
+	}
 
 }
