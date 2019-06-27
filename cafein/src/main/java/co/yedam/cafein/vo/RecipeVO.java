@@ -39,4 +39,10 @@ public class RecipeVO {
 		this.mNum = mNum;
 	}
 	
+	@Override
+	public String toString() {
+		return "RecipeVO [recipeno=" + recipeno + ", sId=" + sId + ", consum=" + consum + ", stNum=" + stNum + ", mNum="
+				+ mNum + "]";
+	}
+	
 }
