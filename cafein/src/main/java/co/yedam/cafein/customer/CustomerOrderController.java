@@ -6,29 +6,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class CustomerOrderController {
 	
-	@RequestMapping("orderregiForm.do")
-	public String orderregiForm() {
+	@RequestMapping("orderregi.do")
+	public String orderregi() {
 		return "customer/orderregi";
 	}
 	
-	
-	@RequestMapping("orderlistForm.do")
-	public String orderlistForm() {
+	//고객 주문 조회
+	@RequestMapping("orderlist.do")
+	public String orderlist() {
 		return "customer/orderlist";
 	}
-	
-	@RequestMapping("deliveryForm.do")
-	public String deliveryForm() {
+	//고객 주문배달 조회
+	@RequestMapping("delivery.do")
+	public String delivery() {
 		return "customer/delivery";
 	}
-	
-	@RequestMapping("orderdetailsForm.do")
-	public String orderdetailsForm() {
+	//고객 주문상세 조회
+	@RequestMapping("orderdetails.do")
+	public String orderdetails() {
 		return "customer/orderdetails";
 	}
-	
-	@RequestMapping("cartmngForm.do")
-	public String cartmngForm() {
+	//고객장바구니 관리
+	@RequestMapping("cartmng.do")
+	public String cartmng() {
 		return "customer/cartmng";
 	}
 	
