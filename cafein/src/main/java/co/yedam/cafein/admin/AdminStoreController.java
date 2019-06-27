@@ -6,11 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class AdminStoreController {
 
-	// 관리자 메인 화면
-	@RequestMapping("adminMainForm.do")
-	public String adminMainForm() {
-		return "admin/main";
-	}
 	
 	// 관리자 매장 목록 조회
 	@RequestMapping("storelist.do")
