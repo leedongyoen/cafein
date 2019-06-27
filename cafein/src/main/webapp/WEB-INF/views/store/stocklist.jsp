@@ -65,7 +65,7 @@
 <div align="center">
 <button type="button">수정</button>&nbsp;
 <button type="button">삭제</button>&nbsp;
-<button onclick="location='stockAdd.jsp'">추가</button>
+<button onclick="location='stockadd.do'">추가</button>
 </div>
 </div>
 </body>
