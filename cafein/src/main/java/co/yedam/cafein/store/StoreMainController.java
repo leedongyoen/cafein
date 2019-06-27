@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class StoreMainController {
 	
 	//매장 메인화면
-	@RequestMapping("storemain.do")
-	public String storemain() {
+	@RequestMapping("storemainform.do")
+	public String storemainform() {
 		return "store/main";
 	}
 	//매장 우리매장 고객 조회
