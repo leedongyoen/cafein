@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
 	
 		// 관리자 메인 화면
-		@RequestMapping("adminmainForm.do")
+		@RequestMapping("adminmainform.do")
 		public String adminMainForm() {
 			return "admin/main";
 		}
