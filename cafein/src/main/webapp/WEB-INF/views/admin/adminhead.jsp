@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <title>Insert title here</title>
 
-<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
 <style>
 
 body, ul, li{
@@ -208,7 +208,7 @@ table.center {margin-left:auto; margin-right:auto;}
             
     <div class="top-right">
         <ul>
-                <li><a href="<%= request.getContextPath() %>/jsp/adminlogin.jsp">Login</a></li>
+                <li><a href="adminlogin.do">Login</a></li>
                 <li><a href="<%= request.getContextPath() %>/jsp/adminlogin.jsp">Logout</a></li>
 
         </ul>
