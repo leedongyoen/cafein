@@ -195,11 +195,11 @@ table.center {margin-left:auto; margin-right:auto;}
 
 
 			<ul>
-                <li><a href="adminMainForm.do">Home</a>
+                <li><a href="${pageContext.request.contextPath}/adminmainForm.do">Home</a>
     			<li><a href="#">매장</a>
                     <ul>
-                        <li><a href="storemng.do">매장등록신청내역</a></li>
-                        <li><a href="storelist.do">매장 목록</a></li> 
+                        <li><a href="${pageContext.request.contextPath}/storemng.do">매장등록신청내역</a></li>
+                        <li><a href="${pageContext.request.contextPath}/storelist.do">매장 목록</a></li> 
                     </ul>
                 </li>
    
@@ -208,8 +208,8 @@ table.center {margin-left:auto; margin-right:auto;}
             
     <div class="top-right">
         <ul>
-                <li><a href="adminlogin.do">Login</a></li>
-                <li><a href="<%= request.getContextPath() %>/jsp/adminlogin.jsp">Logout</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminlogin.do">Login</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminlogin.do">Logout</a></li>
 
         </ul>
 

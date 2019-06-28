@@ -196,13 +196,13 @@ table.center {margin-left:auto; margin-right:auto;}
 
 
 			<ul>
-                <li><a href="customermainform.do">Home</a>
-    			<li><a href="customerstorelist.do">주문</a></li>
+                <li><a href="${pageContext.request.contextPath}/customermainform.do">Home</a>
+    			<li><a href="${pageContext.request.contextPath}/customerstorelist.do">주문</a></li>
                 </li>
-                <li><a href="customerinfoedit.do">User Name</a>
+                <li><a href="${pageContext.request.contextPath}/customerinfoedit.do">User Name</a>
                     <ul>
-                        <li><a href="mymenu.do">나만의 메뉴</a></li>
-                        <li><a href="orderlist.do">주문 내역</a></li> 
+                        <li><a href="${pageContext.request.contextPath}/mymenu.do">나만의 메뉴</a></li>
+                        <li><a href="${pageContext.request.contextPath}/orderlist.do">주문 내역</a></li> 
                     </ul>
                 </li>
    
@@ -211,10 +211,10 @@ table.center {margin-left:auto; margin-right:auto;}
             
     <div class="top-right">
         <ul>
-            <li><a href="customerstorelist.do">주변 매장</a></li>
-                <li><a href="customerlogin.do">Login</a></li>
-                <li><a href="customerlogin.do">Logout</a></li>
-                <li><a href="cartmng.do">장바구니</a></li>
+            <li><a href="${pageContext.request.contextPath}/customerstorelist.do">주변 매장</a></li>
+                <li><a href="${pageContext.request.contextPath}/customerlogin.do">Login</a></li>
+                <li><a href="${pageContext.request.contextPath}/customerlogin.do">Logout</a></li>
+                <li><a href="${pageContext.request.contextPath}/cartmng.do">장바구니</a></li>
             <li><a href="#"><img style="position:relative; top:4px;" src="http://hongsi.x-y.net/2017_ui8/yjh/img/snb_hbr.gif" alt=""></a></li>
         </ul>
 
