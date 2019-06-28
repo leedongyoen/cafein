@@ -29,13 +29,13 @@ table {
 	<div class="carousel-inner">
 		<!--슬라이드1-->
 		<div class="item active"> 
-			<img src="../image/ad01.JPG" style="width:100%" alt="First slide">
+			<img src="${pageContext.request.contextPath}/image/ad01.JPG" style="width:100%" alt="First slide">
 		</div>
 		<!--슬라이드1-->
 
 		<!--슬라이드2-->
 		<div class="item"> 
-			<img src="../image/ad02.JPG" style="width:100%" data-src="" alt="Second slide">
+			<img src="${pageContext.request.contextPath}/image/ad02.JPG" style="width:100%" data-src="" alt="Second slide">
 		</div>
 		<!--슬라이드2-->
 	</div>

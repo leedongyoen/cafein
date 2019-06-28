@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no">
 <title>Insert title here</title>
-<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
 <style>
 
 
@@ -197,12 +197,12 @@ table.center {margin-left:auto; margin-right:auto;}
 
 			<ul>
                 <li><a href="customermainform.do">Home</a>
-    			<li><a href="<%= request.getContextPath() %>/jsp/mapStoreList.jsp">주문</a></li>
+    			<li><a href="customerstorelist.do">주문</a></li>
                 </li>
-                <li><a href="<%= request.getContextPath() %>/jsp/customerinfoedit.jsp">User Name</a>
+                <li><a href="customerinfoedit.do">User Name</a>
                     <ul>
-                        <li><a href="<%= request.getContextPath() %>/jsp/myMenu.jsp">나만의 메뉴</a></li>
-                        <li><a href="<%= request.getContextPath() %>/jsp/orderlist.jsp">주문 내역</a></li> 
+                        <li><a href="mymenu.do">나만의 메뉴</a></li>
+                        <li><a href="orderlist.do">주문 내역</a></li> 
                     </ul>
                 </li>
    
@@ -211,10 +211,10 @@ table.center {margin-left:auto; margin-right:auto;}
             
     <div class="top-right">
         <ul>
-            <li><a href="<%= request.getContextPath() %>/jsp/mapStoreList.jsp">주변 매장</a></li>
-                <li><a href="<%= request.getContextPath() %>/jsp/cuslogin.jsp">Login</a></li>
-                <li><a href="<%= request.getContextPath() %>/jsp/cuslogin.jsp">Logout</a></li>
-                <li><a href="<%= request.getContextPath() %>/jsp/cusCart.jsp">장바구니</a></li>
+            <li><a href="customerstorelist.do">주변 매장</a></li>
+                <li><a href="customerlogin.do">Login</a></li>
+                <li><a href="customerlogin.do">Logout</a></li>
+                <li><a href="cartmng.do">장바구니</a></li>
             <li><a href="#"><img style="position:relative; top:4px;" src="http://hongsi.x-y.net/2017_ui8/yjh/img/snb_hbr.gif" alt=""></a></li>
         </ul>
 

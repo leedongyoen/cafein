@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <title>Insert title here</title>
-<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
 <script>
 function startTime() {
 	var dayko = ['일','월','화','수','목','금','토'];
