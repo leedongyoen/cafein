@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp" %>
 <title>Customer Information Edit Page</title>
-<script src="../js/jquery-1.11.0.min.js"></script>
 <script>
 	function edit() {
 

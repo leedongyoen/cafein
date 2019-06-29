@@ -45,7 +45,7 @@
 	</table>
 	<br>
 	<div align ="right">
-	<button onclick="location='myMenu.jsp'">등록</button>&nbsp;&nbsp;
+	<button onclick="location='${pageContext.request.contextPath}/mymenu.do'">등록</button>&nbsp;&nbsp;
 	<a href="javascript:history.go(-1)">돌아가기</a>
 	</div>
 	</div>

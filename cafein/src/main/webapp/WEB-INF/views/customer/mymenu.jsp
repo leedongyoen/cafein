@@ -13,10 +13,10 @@
 
 <div class = "container">
 <div align="right">
-<button onclick="location.href='myMenuRegi.jsp'">추가</button>
+<button onclick="location.href='${pageContext.request.contextPath}/mymenuregi.do'">추가</button>
 <button>삭제</button>
 </div>
-<img src="../image/coffee1.jpg" width="200" heigh="200" onclick = "location.href='MymenuOrder.jsp'"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="${pageContext.request.contextPath}/image/coffee1.jpg" width="200" heigh="200" onclick = "location.href='${pageContext.request.contextPath}/mymenudetail.do'"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input type="checkbox" name="myMenu1" value="myMenu1"  >아메리카노 ,알렉산더
 
 </div>

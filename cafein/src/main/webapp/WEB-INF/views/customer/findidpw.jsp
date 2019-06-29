@@ -4,12 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
+<%@ include file="cushead.jsp" %>
 <title>Find ID/PASSWORD Page</title>
 </head>
 <body>
 <div class = "container" align="center">
-<h3 algin="center">ID/PW 찾기</h3></p><br><br>
+<h3 align="center">ID/PW 찾기</h3><hr>
 <form name = "findidpwForm" method = "post">
   <table  >
     <tr>

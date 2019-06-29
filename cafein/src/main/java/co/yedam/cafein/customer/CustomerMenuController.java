@@ -19,7 +19,7 @@ public class CustomerMenuController {
 		//고객 나만의 메뉴
 		@RequestMapping("mymenu.do")
 		public String mymenu() {
-			return "customer/menulist";
+			return "customer/mymenu";
 		}
 		//고객 나만의 메뉴 등록화면
 		@RequestMapping("mymenuregi.do")
