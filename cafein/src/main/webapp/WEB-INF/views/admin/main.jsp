@@ -11,7 +11,10 @@
 <body>
 <h1>관리자MAIN</h1>
 <br><br><br>
-<div align="center"><img src="${pageContext.request.contextPath}/image/alarm.JPG" width="50" height="50" title="매장등록신청이 (2)건 있습니다." onclick="location.href='adminstoreApply.jsp'">
+<div align="center">
+	<img src="${pageContext.request.contextPath}/image/alarm.JPG" 
+		width="50" height="50" title="매장등록신청이 (2)건 있습니다." 
+		onclick="location.href='${pageContext.request.contextPath}/storemng.do'">
 
 
 </div>
