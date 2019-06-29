@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp" %>
-<title>Insert title here</title><link rel="stylesheet" href="css/bootstrap.css">
+<title>Insert title here</title>
 </head>
 <body>
 <div class = "container">
