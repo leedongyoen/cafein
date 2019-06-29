@@ -6,12 +6,18 @@
 <meta charset="utf-8">
 <%@ include file="cushead.jsp" %>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+ 
 <title>Customer Main Page</title>
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
 <style>
+ /* Make the image fully responsive */
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
+}
 table {
+
 	width : 200px;
 	height : 100px;
 }
@@ -19,34 +25,35 @@ table {
 </head>
 <body>
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel"> 
+<div id="demo" class="carousel slide" data-ride="carousel">
 	<!--페이지-->
-	<ol class="carousel-indicators">
-		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-		<li data-target="#myCarousel" data-slide-to="1"></li>
-	</ol>
+	<ul class="carousel-indicators">
+    <li data-target="#demo" data-slide-to="0" class="active"></li>
+    <li data-target="#demo" data-slide-to="1"></li>
+  </ul>
 	<!--페이지-->
 	<div class="carousel-inner">
-		<!--슬라이드1-->
-		<div class="item active"> 
-			<img src="${pageContext.request.contextPath}/image/ad01.JPG" style="width:100%" alt="First slide">
-		</div>
-		<!--슬라이드1-->
+    <div class="carousel-item active">
+      <img src="${pageContext.request.contextPath}/image/ad01.JPG"  width="100%" >
+    </div>
+    <div class="carousel-item">
+      <img src="${pageContext.request.contextPath}/image/ad02.JPG" width="100%" >
+    </div>
 
-		<!--슬라이드2-->
-		<div class="item"> 
-			<img src="${pageContext.request.contextPath}/image/ad02.JPG" style="width:100%" data-src="" alt="Second slide">
-		</div>
-		<!--슬라이드2-->
-	</div>
+  </div>
+  
 	<!--이전, 다음 버튼-->
-	<a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> 
-	<a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a> 
+	<a class="carousel-control-prev" href="#demo" data-slide="prev">
+    	<span class="carousel-control-prev-icon"></span>
+  	</a>
+  	<a class="carousel-control-next" href="#demo" data-slide="next">
+    	<span class="carousel-control-next-icon"></span>
+  	</a>
 </div>
 <br><br>
 
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='likestorelist.do'">
+  <table border = "1" onclick = "location.href='${pageContext.request.contextPath}/likestorelist.do'">
 	<tr>
 		<th><label>자주 이용한 매장</label></th>
 	</tr>
@@ -56,7 +63,7 @@ table {
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='likemenulist.do'">
+  <table border = "1" onclick = "location.href='${pageContext.request.contextPath}/likemenulist.do'">
 	<tr>
 		<th><label>많이 주문한 메뉴</label></th>
 	</tr>
@@ -66,7 +73,7 @@ table {
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='reservelist.do'">
+  <table border = "1" onclick = "location.href='${pageContext.request.contextPath}/reservelist.do'">
 	<tr>
 		<th><label>총 적립금</label></th>
 	</tr>
@@ -76,7 +83,7 @@ table {
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='orderlist.do'">
+  <table border = "1" onclick = "location.href='${pageContext.request.contextPath}/orderlist.do'">
 	<tr >
 		<th><label>총 사용 금액</label></th>
 	</tr>
@@ -88,7 +95,7 @@ table {
 
 
 <br><br><br><br><br><br><br><br>
-<div id="map" style="width:500px;height:400px;margin:auto;"></div>
+<div id="map" style="width:100%;height:400px;margin:auto;"></div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ae2e6275133a2bf25fe30fba002ced8d&libraries=services"></script>
 	<script>
 		var container = document.getElementById('map');

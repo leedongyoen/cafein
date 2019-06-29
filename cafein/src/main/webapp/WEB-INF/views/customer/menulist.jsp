@@ -10,17 +10,7 @@
 	<title>메뉴화면(고객용)</title>
 	
 	<style>
-	* {
-		padding: 0;
-		margin: 0;
-		font-family: arial;
-	}
-	body {
-		padding: 0 40px;
-	}
-	h2 {
-		margin: 20px 0;
-	}
+
 	[data-tabs] {
 		display: flex;
 		background: #eee;
@@ -49,11 +39,13 @@
 </head>
 <body>
 	<h1 align="center">메뉴</h1>
+	<div class="container">
 		<div style="text-align:right">
 			<input type='text' name='word' value=''>
 			<button class="btn btn-default ">검색</button>
 		</div>
 		<br>
+	
 	<div data-tabs>
 		<div>음료</div>
 		<div>푸드</div>
@@ -114,7 +106,7 @@
 		
 		</div>
 	</div>
-
+	</div>
 	<script src="../js/tabbis.js"></script>
 	<script>
 		var tabs = tabbis.init({
