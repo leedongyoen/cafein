@@ -33,6 +33,7 @@
         ]);
 
         var options = {
+         
           title: ''
         };
 
@@ -40,10 +41,14 @@
 
         chart.draw(data, options);
       }
+      //차트 반응형으로 사이즈 크기 조절
+      $(window).resize(function() {
+    	  drawChart();
+		});
     </script>
   </head>
   <body>
-    <div id="piechart" style="width: 900px; height: 500px; margin:auto;"></div>
+    <div id="piechart" style=" height:500px; margin:auto;"></div>
     <p align = "center"><input type="date"></p>
     	<div>
    		<table align = "center">

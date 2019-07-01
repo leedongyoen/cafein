@@ -27,17 +27,24 @@
         var options = {
           title: '',
           curveType: 'function',
+          width: '100%',
           legend: { position: 'bottom' }
         };
-
+        
+      
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 
         chart.draw(data, options);
       }
+     
+      $(window).resize(function(){
+      	drawChart();	  
+      	});
+
     </script>
   </head>
   <body>
-    <div id="curve_chart" style="width: 900px; height: 500px; margin:auto;"></div>
+    <div id="curve_chart" style="width: 100%;  margin:auto;"></div>
     	<div>
    		<table align = "center">
    			<tr>
