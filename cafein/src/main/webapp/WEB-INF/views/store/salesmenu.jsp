@@ -48,12 +48,11 @@
     	<div>
    		<table align = "center">
    			<tr>
-   				<th><button onclick="location.href='salestime.jsp'">시간별매출</button></th>
-   				<th><button onclick="location.href='salesday.jsp'">일별매출</button></th>
-   				<th><button onclick="location.href='salesmonth.jsp'">월별매출</button></th>
-   				<th><button onclick="location.href='salesyear.jsp'">연별매출</button></th>
-   				<th><button onclick="location.href='salesmenu.jsp'">메뉴별매출</button></th>
-   				<th><button onclick="location.href='storemain.jsp'">HOME</button></th>
+   				<th><button onclick="location.href='salestime.do'">시간별매출</button></th>
+   				<th><button onclick="location.href='salesday.do'">일별매출</button></th>
+   				<th><button onclick="location.href='salesmonth.do'">월별매출</button></th>
+   				<th><button onclick="location.href='salesyear.do'">연별매출</button></th>
+   				<th><button onclick="location.href='salesmenu.do'">메뉴별매출</button></th>
    			</tr>
    		</table>
    	</div>
