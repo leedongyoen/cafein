@@ -6,14 +6,38 @@
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp" %>
 <title>Insert title here</title>
+<script type="text/javascript">
+$(document).ready(function () {
+    $(".test").click(function (e) {
+    	e.preventDefault();
+        $("#thedialog").load($(this).attr("href"));
+        $("#somediv").dialog({
+            width: 400,
+            height: 450,
+            modal: true,
+            close: function () {
+                $("#thedialog").attr('src', "about:blank");
+            }
+        });
+        
+        return false;
+
+    });
+});
+</script>
 </head>
 <body>
 <h1 align="center">나만의 메뉴</h1><hr>
 <br>
-
 <div class = "container">
 <div align="right">
-<button onclick="location.href='${pageContext.request.contextPath}/mymenuregi.do'">추가</button>
+
+
+<a href="${pageContext.request.contextPath}/mymenuregi.do" class="test btn">추가</a><br>
+<div id="somediv" title="this is a dialog" style="display:none;">
+    <div id="thedialog" width="350" height="350"></div>
+</div>
+
 <button>삭제</button>
 </div>
 <img src="${pageContext.request.contextPath}/image/coffee1.jpg" width="200" heigh="200" onclick = "location.href='${pageContext.request.contextPath}/mymenudetail.do'"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
