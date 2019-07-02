@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SumSalesDAO">
+	<select id="getDaySales" resultType="salessum">
+		SELECT OQTY,MPRICE,MNAME,ODATE
+		FROM ORDER_DETAILS D JOIN MENU M 
+		ON D.MNUM = M.MNUM
+		JOIN ORDERS R 
+		ON R.ONUM = D.ONUM;
+	</select> 
+	<!-- 	<select id="getTimeSales" resultType="salessum">
+		SELECT 
+	</select>	
+		<select id="getMonthSales" resultType="salessum">
+		SELECT 
+	</select>	
+		<select id="getYearSales" resultType="salessum">
+		SELECT 
+	</select>	
+		<select id="getMenuSales" resultType="salessum">
+		SELECT 
+	</select>		 -->
+</mapper>
