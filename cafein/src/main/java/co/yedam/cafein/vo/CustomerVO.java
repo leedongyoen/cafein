@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class CustomerVO {
 	
-	private String cId;
-	private String cNick;
-	private String cTel;
+	private String cId;				//아이디
+	private String cNick;			//닉네임
+	private String cTel;			//번호
 	private String cName;
 	private String cPw;
 	private int pPoint;
