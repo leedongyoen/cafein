@@ -10,6 +10,8 @@
 	<!-- 세션에서 token을 가져와서 출력한다. -->
     session token : ${sessionScope.token}
     <br>
+   
+    <br>
     <a href = "./logout">로그아웃</a><br>
 
 </body>

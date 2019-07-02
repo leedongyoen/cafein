@@ -4,12 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="cushead.jsp" %>
 <title>Insert title here</title>
 </head>
 <body>
 	<div class = "container">
-		<h1 align="center">나만의메뉴</h1>
+		<h1 align="center">나만의메뉴상세</h1>
 		<table class = "table table-hover">
 		<tr>
 			<th>매 장 명</th>
