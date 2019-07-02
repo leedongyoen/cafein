@@ -121,8 +121,9 @@
 	</div>
 </div>
 </div>
-
 	<hr>
+
+<hr>
 <div class ="container">
 
 
@@ -136,7 +137,7 @@
 		</div>
 
 </div>
-	<script src="../js/tabbis.js"></script>
+	<script src="js/tabbis.js"></script>
 	
 	<script>
 		var tabs = tabbis.init({
