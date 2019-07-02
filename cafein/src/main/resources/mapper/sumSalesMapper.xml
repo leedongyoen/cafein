@@ -2,11 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="SumSalesDAO">
 	<select id="getDaySales" resultType="salessum">
-		SELECT OQTY,MPRICE,MNAME,ODATE
+		SELECT ODNUM,OQTY,MPRICE,MNAME,ODATE
 		FROM ORDER_DETAILS D JOIN MENU M 
 		ON D.MNUM = M.MNUM
 		JOIN ORDERS R 
 		ON R.ONUM = D.ONUM;
+		WHERE ODNUM ={#odnum}
 	</select> 
 	<!-- 	<select id="getTimeSales" resultType="salessum">
 		SELECT 
