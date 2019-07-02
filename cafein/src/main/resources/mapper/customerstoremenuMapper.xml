@@ -31,5 +31,24 @@
 		from store
 	</select>
 
+	<resultMap type="menu" id="menuMap">
+		<id column="M_NUM" property="mNum"></id>
+		<result column="m_name" property="mName"/>
+		<result column="ca_num" property="caNum"/>
+		<result column="m_price" property="mPrice"/>
+		<result column="m_stat" property="mStat"/>
+		<result column="s_id" property="sid"/>
+	</resultMap>
+	
+	<select id="getMenuList" parameterType="menu" resultType="menu" resultMap="menu">
+		SELECT CA_NUM
+				, M_NAME
+				, M_NUM
+				, M_PRICE
+				, M_STAT
+				, S_ID
+		FROM MENU
+		WHERE S_ID ={sid}
+	</select>
 
 </mapper>

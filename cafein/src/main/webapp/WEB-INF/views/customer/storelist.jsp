@@ -13,20 +13,8 @@
 <br>
 
 <div class="container">
-	<!-- 매장 선택 -->
-	<div class="dropdown" style="width:100%">
-		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">매장 선택
-  			<span class="caret"></span>
-  		</button>
-  		<ul class="dropdown-menu">
-  			<c:forEach	items="${storelist} " var="store">
-  				<li><a id="${store.sid}" href="#">${store.sname}</a></li>
-  			
-  			</c:forEach>
-  		</ul>
-	
-	
-	</div>
+
+	<button id="selectStore">매장 선택</button>
 	<hr>
 	
 	<input class="form-control" id="myInput" type="text" placeholder="Search..">
@@ -50,6 +38,7 @@
   <!-- Tab panes -->
 	<div class="tab-content">
 		<div id="coffee" class="container tab-pane active"><br>
+			<div class="table-responsive">
 			<table class="table">
 			<thead>
 				<tr><th>사진</th><th>메뉴명</th><th>가격</th></tr>
@@ -73,6 +62,7 @@
 				</tr>
 			</tbody>
 			</table>
+			</div>
   		</div>
    		<div id="beverage" class="container tab-pane fade"><br>
     		<table class="table">
@@ -120,7 +110,7 @@
  	</div>
 	
 	
-	<!-- Modal -->
+	<!-- 메뉴 선택하면 나오는 Modal -->
 	<div class="modal fade" id="menudetailModal" role="dialog">
 		<div class="modal-dialog">
 		
@@ -176,8 +166,59 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	<!-- 매장 선택  Modal -->
+	<div class="modal fade" id="storelistmodal" role="dialog">
+		<div class="modal-dialog">		
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">매장</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					
+					<form class="form-borizontal" action="#" method="POST">
+						<input class="form-control" id="storeserch" type="text" placeholder="Search..">
+						<div class="table-responsive">
+						<table class="table">
+							<tr>
+								<th></th>
+								<th>STORE NAME</th>
+								<th>STORE ADDRESS</th>
+								<th>STORE DISTANCE</th>
+							</tr>
+							
+							<tbody id="storetable">
+							<c:forEach	items="${storelist}" var="store">									
+							<tr onclick="menulist('${store.sid}')">
+								<td><input type="hidden" name="sid" value="${store.sid}"></td>
+								<td>${store.sname}</td>
+								<td>${store.sadd}</td>
+								<td>구해야됨</td>
+							</tr>
+							</c:forEach>
+							</tbody>
+						</table>
+						</div>
+					</form>
+				
+				</div>
+				<div class="modal-footer">		
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <script>
+function menulist(sid){
+		var sid = sid;
+		ajax({
+			
+		});
+}
+
 $(document).ready(function(){
 	
 	// 한 행 클릭시
@@ -186,6 +227,12 @@ $(document).ready(function(){
 		$('#price').val($(this).children().eq(2).text());
 		console.log("in");
 		$('#menudetailModal').modal('show');
+	});
+	
+	// 매장 선택시
+	$("#selectStore").on("click",function(){
+		$("#storeserch").val("");
+		$("#storelistmodal").modal('show');
 	});
 	
 	function add(num) {
@@ -208,7 +255,7 @@ $(document).ready(function(){
 	}
 	
 	
-	// 검색
+	// 메뉴 검색
   	$("#myInput").on("keyup", function() {
 		var value = $(this).val().toLowerCase();
 		$("#searchTable tr").filter(function() {
@@ -216,6 +263,17 @@ $(document).ready(function(){
 		});
 	});
   
+	
+ // 매장 검색
+  	$("#storeserch").on("keyup", function() {
+		var value = $(this).val().toLowerCase();
+		$("#storetable tr").filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	});
+ 
+ 	
+  	
   
 });
 </script>
