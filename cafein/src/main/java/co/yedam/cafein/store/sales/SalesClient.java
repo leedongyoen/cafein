@@ -20,7 +20,7 @@ public class SalesClient {
 	@Test
 	public void getDaySales() {
 		SalesSumVO vo = new SalesSumVO();
-		vo.setmNum("mNum");
+		vo.setoDnum("1");
 		List<SalesSumVO> list = dao.getDaySales(vo);
 		for (SalesSumVO sales : list) {
 			System.out.println(sales);

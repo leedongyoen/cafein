@@ -6,6 +6,7 @@ public class OrderDetailsVO {
 	private String oNum;
 	private String mNum;
 	private String oQty;
+	
 	public String getoDnum() {
 		return oDnum;
 	}

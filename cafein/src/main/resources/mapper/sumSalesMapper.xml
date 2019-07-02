@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="SumSalesDAO">
+	
+<!-- 	<resultMap type="menu" id="menu">
+		<result column="M_NUM" property="mNum"/>
+		<result column="M_NAME" property="mName"/>
+		<result column="M_PRICE" property="mPrice"/>
+	</resultMap>
+	<resultMap type="order" id="order">
+		<result column="O_NUM" property="oNum"/>
+		<result column="O_DATE" property="oDate"/>
+		<result column="TOTAL" property="total"/>
+	</resultMap>
+	<resultMap type="orderdt" id="orderdt">
+		<result column="O_DNUM" property="oDnum"/>
+		<result column="O_QTY" property="oQty"/>
+		<collection property="mNum" resultMap="menu.mNum"/>
+		<collection property="oNum" resultMap="order.oNum"/>
+	</resultMap> -->
 	<select id="getDaySales" resultType="salessum">
-		SELECT ODNUM,OQTY,MPRICE,MNAME,ODATE
+		SELECT R.O_NUM 
+		,D.O_DNUM
+		,D.O_QTY
+		,R.TOTAL
+		,M.M_NAME
+		,R.O_DATE
 		FROM ORDER_DETAILS D JOIN MENU M 
-		ON D.MNUM = M.MNUM
+		ON D.M_NUM = M.M_NUM
 		JOIN ORDERS R 
-		ON R.ONUM = D.ONUM;
-		WHERE ODNUM ={#odnum}
+		ON R.O_NUM = D.O_NUM
+		WHERE D.O_DNUM = #{oDnum}
 	</select> 
 	<!-- 	<select id="getTimeSales" resultType="salessum">
 		SELECT 

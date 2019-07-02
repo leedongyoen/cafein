@@ -7,7 +7,10 @@
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
 	<typeAliases>
-		<typeAlias type="co.yedam.cafein.vo.SalesSumVO" alias="salessum" />
+		<typeAlias type="co.yedam.cafein.vo.MenuVO" alias="menu" />
+		<typeAlias type="co.yedam.cafein.vo.SalesSumVO" alias="salessum"/>
+		<typeAlias type="co.yedam.cafein.vo.OrdersVO" alias="order"/>
+		<typeAlias type="co.yedam.cafein.vo.OrderDetailsVO" alias="orderdt"/>
 		<typeAlias type="co.yedam.cafein.vo.MyMenuVO" alias="mymenu"/>
 	</typeAliases>
 	
