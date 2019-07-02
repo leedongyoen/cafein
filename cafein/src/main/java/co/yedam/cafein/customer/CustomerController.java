@@ -56,9 +56,29 @@ public class CustomerController {
 		// 노드 안에 있는 access_token 값을 꺼내 문자열로 변환
 		String token = node.get("access_token").toString();
 		session.setAttribute("token", token);
-		System.out.println("token : " + token);
+		
 		// 리턴 수정하기
 		return "customer/logininfo";
 		
 	}
+	
+	// 카카오 로그아웃
+	@RequestMapping(value = "/logout", produces = "application/json")
+    public String Logout(HttpSession session) {
+        //kakao restapi 객체 선언
+		KakaoRestAPI kakao = new KakaoRestAPI();
+        //노드에 로그아웃한 결과값음 담아줌 매개변수는 세션에 잇는 token을 가져와 문자열로 변환
+        JsonNode node = kakao.Logout(session.getAttribute("token").toString());
+        //결과 값 출력
+        System.out.println("로그인 후 반환되는 아이디 : " + node.get("id"));
+        return "redirect:/";
+    } 
+	
+	// 로그인 인포로 가는 컨트롤러
+	@RequestMapping("logininfo")
+	public String logininfo() {
+		return "customer/logininfo";
+		
+	}
+
 }
