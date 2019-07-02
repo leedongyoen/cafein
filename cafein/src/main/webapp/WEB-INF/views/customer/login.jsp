@@ -47,12 +47,29 @@
   Kakao.Auth.createLoginButton({
     container: '#kakao-login-btn',
     success: function(authObj) {
-      alert(JSON.stringify(authObj));
+    	alert(JSON.stringify(authObj)); 
+    	Kakao.API.request({
+    		url : '/v1/user/me',
+    		success : function(res) {
+    			alert(res.properties.nickname + ' 님 환영합니다.');
+    			location.href="./logininfo?name="+res.properties.nickname;
+    		},
+    		fail: function(err) {
+    			alert(JSON.stringify(error));
+    		}
+    	});
+    
     },
     fail: function(err) {
        alert(JSON.stringify(err));
     }
   });
+  
+  function ktout(){
+	  Kakao.Auth.logout(function(){
+		 location.href="http://localhost/cafein/customermainform.do"},1000); 
+	  };
+
   
 //]]>
 </script>
