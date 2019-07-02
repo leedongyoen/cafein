@@ -3,13 +3,15 @@
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-	<!-- <typeAliases> -->
-	<!-- <typeAlias type="com.yedam.app.users.UserVO" alias="user"/> -->
-	<!-- </typeAliases> -->
-	
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
+	
+	<typeAliases> 
+	<typeAlias type="co.yedam.cafein.vo.MyMenuVO" alias="mymenu"/>
+	</typeAliases>
+	
+
 	
 </configuration>
 

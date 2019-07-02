@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MymenuDAO">
+<!-- 고객 나만의 메뉴 조회 -->
+<select id="getMymenu" resultType="mymenu">
+		SELECT MY_NUM
+		, CU_NUM
+		, M_NUM
+		, C_ID
+		FROM my_menu
+		WHERE C_ID = #{cId}
+	</select>
+
+</mapper>

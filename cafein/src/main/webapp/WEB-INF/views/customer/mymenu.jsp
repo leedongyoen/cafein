@@ -12,8 +12,8 @@ $(document).ready(function () {
     	e.preventDefault();
         $("#thedialog").load($(this).attr("href"));
         $("#somediv").dialog({
-            width: 400,
-            height: 450,
+            width: 800,
+            height: 800,
             modal: true,
             close: function () {
                 $("#thedialog").attr('src', "about:blank");
@@ -24,18 +24,21 @@ $(document).ready(function () {
 
     });
 });
+$(window).resize(function() {
+	//메소드명 입력.
+	somediv();
+});
 </script>
 </head>
 <body>
 <h1 align="center">나만의 메뉴</h1><hr>
 <br>
 <div class = "container">
-<div align="right">
-
+<div align = "right">
 
 <a href="${pageContext.request.contextPath}/mymenuregi.do" class="test btn">추가</a><br>
-<div id="somediv" title="this is a dialog" style="display:none;">
-    <div id="thedialog" width="350" height="350"></div>
+<div id="somediv" title="" style="display:none;">
+    <div id="thedialog"></div>
 </div>
 
 <button>삭제</button>
