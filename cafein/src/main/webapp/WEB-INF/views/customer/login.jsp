@@ -33,14 +33,14 @@
       <label>ID </label><input type = "text" name = "id"><br>
       <label>PW </label><input type = "password" name = "pw"><br><br>
       <input type = "button" class="btn btn-default " onclick = "checkForm()" value = "로그인">
-      <a id="kakao-login-btn" href="#"></a>
-	 <!--  https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/customerlogin&response_type=code -->
+      <a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/logininfo&response_type=code">카카오 로그인</a>
+	  <!--  https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/customerlogin&response_type=code -->
 	  <a href="http://developers.kakao.com/logout"></a>
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerjoin.do'" value = "회원가입">
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerfindidpw.do'" value = "ID/PW 찾기">
   </form>
   </div>
-<script type='text/javascript'>
+<!-- <script type='text/javascript'>
 //<![CDATA[
   // 사용할 앱의 JavaScript 키를 설정해 주세요.
   Kakao.init('5fe7fabf65bb23ce907670dba5752a92');
@@ -48,12 +48,16 @@
   Kakao.Auth.createLoginButton({
     container: '#kakao-login-btn',
     success: function(authObj) {
-    	console.log(JSON.stringify(authObj))
+
     	Kakao.API.request({
     		url : '/v1/user/me',
     		success : function(res) {
+    			console.log(JSON.stringify(authObj))
+    			console.log(JSON.stringify(res))
+    			console.log("id : "+res.id)
+    			console.log("access_token : " + authObj.access_token)
     			alert(res.properties.nickname + ' 님 환영합니다.');
-    			location.href="./logininfo";
+    			
     		},
     		fail: function(err) {
     			alert(JSON.stringify(error));
@@ -72,6 +76,6 @@
 
   
 //]]>
-</script>
+</script> -->
 </body>
 </html>
