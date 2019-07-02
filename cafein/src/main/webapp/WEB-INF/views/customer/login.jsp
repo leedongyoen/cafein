@@ -33,7 +33,8 @@
       <label>ID </label><input type = "text" name = "id"><br>
       <label>PW </label><input type = "password" name = "pw"><br><br>
       <input type = "button" class="btn btn-default " onclick = "checkForm()" value = "로그인">
-      <a id="kakao-login-btn" href=https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/customerlogin&response_type=code></a>
+      <a id="kakao-login-btn" href="#"></a>
+	 <!--  https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/customerlogin&response_type=code -->
 	  <a href="http://developers.kakao.com/logout"></a>
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerjoin.do'" value = "회원가입">
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerfindidpw.do'" value = "ID/PW 찾기">
@@ -47,12 +48,28 @@
   Kakao.Auth.createLoginButton({
     container: '#kakao-login-btn',
     success: function(authObj) {
-      alert(JSON.stringify(authObj));
+    	console.log(JSON.stringify(authObj))
+    	Kakao.API.request({
+    		url : '/v1/user/me',
+    		success : function(res) {
+    			alert(res.properties.nickname + ' 님 환영합니다.');
+    			location.href="./logininfo";
+    		},
+    		fail: function(err) {
+    			alert(JSON.stringify(error));
+    		}
+    	});
     },
     fail: function(err) {
        alert(JSON.stringify(err));
     }
   });
+  
+  function ktout(){
+	  Kakao.Auth.logout(function(){
+		 location.href="http://localhost/cafein/customermainform.do"},1000); 
+	  };
+
   
 //]]>
 </script>

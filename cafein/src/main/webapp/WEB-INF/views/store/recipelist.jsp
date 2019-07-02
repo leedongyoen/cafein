@@ -28,7 +28,7 @@
 </thead>
 <tbody>
 <form action="#">
-<tr onclick= "location.href='recipeInquiryDetail.jsp'">
+<tr onclick= "location.href='recipedetail.do'">
 	<td>1</td>
 	<td>ME001</td>
 	<td>아메리카노</td>
@@ -37,7 +37,7 @@
 </tbody>
 </table>
 <hr>
-<a class="btn btn-default pull-right"  href="recipeRegi.jsp">등록</a>
+<a class="btn btn-default pull-right"  href="reciperegi.do">등록</a>
 <a class="btn btn-default pull-right"  href="javascript:history.go(-1)">돌아가기</a>
 </div>
 <div class = "text-center">
