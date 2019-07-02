@@ -182,6 +182,7 @@ $(document).ready(function(){
 	$("#openmodal").on("click",function(){
 		$('#mName').val($(this).children().eq(1).text());
 		$('#price').val($(this).children().eq(2).text());
+		console.log("in");
 		$('#menudetailModal').modal('show');
 	});
 	
