@@ -1,4 +1,4 @@
-package co.yedam.cafein.customer;
+package co.yedam.cafein.customer.login;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -52,7 +52,6 @@ public class KakaoRestAPI {
 		}
 
 		return returnNode;
-
 	}
 
 	public JsonNode Logout(String autorize_code) {
@@ -70,19 +69,15 @@ public class KakaoRestAPI {
 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
-
 		} catch (IOException e) {
 			e.printStackTrace();
-
 		} finally {
 
 		}
 
 		return returnNode;
-
 	}
 
 }

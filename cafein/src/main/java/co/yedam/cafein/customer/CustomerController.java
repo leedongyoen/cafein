@@ -6,15 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import co.yedam.cafein.customer.login.KakaoRestAPI;
 import co.yedam.cafein.vo.CustomerVO;
 
 
@@ -66,13 +65,12 @@ public class CustomerController {
 		System.out.println("카카오 로그인 할 때 임시 코드값 : " + code);
 		System.out.println("카카오 로그인 후 결과값");
 		
-
 		// kakao rest api 객체 선언
 		KakaoRestAPI kakao = new KakaoRestAPI();
 		// 결과값을 node에 담아줌
 		JsonNode node = kakao.getAccessToken(code);
 		// 결과값 출력
-		System.out.println("node : ==================="+node);
+		System.out.println("=======================================\n node : "+node);
 		// 노드 안에 있는 access_token 값을 꺼내 문자열로 변환
 		String token = node.get("access_token").toString();
 		session.setAttribute("token", token);
