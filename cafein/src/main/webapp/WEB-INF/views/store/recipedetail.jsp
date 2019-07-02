@@ -33,8 +33,8 @@
 </tbody>
 </table>
 <hr>
-<a class="btn btn-default pull-right"  href="recipeUpdate.jsp">수정</a>
-<a class="btn btn-default pull-right"  href="recipeInquiry.jsp">돌아가기</a>
+<a class="btn btn-default pull-right"  href="recipeedit.do">수정</a>
+<a class="btn btn-default pull-right"  href="recipelist.do">레시피 화면으로 돌아가기</a>
 </div>
 <div class = "text-center">
 	<ul class="pagination"><!-- 페이지 처리하는 부분 -->

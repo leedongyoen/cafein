@@ -47,7 +47,7 @@
 <form action="#">
 <tr>
 	<td>1</td>
-	<td><a href="menuInquiryDetail.jsp">아메리카노</a></td>
+	<td><a href="menudetail.do">아메리카노</a></td>
 	<td>Y</td>
 	<td>5000</td>
 	<td>커피</td>
@@ -58,7 +58,7 @@
 </tbody>
 </table>
 <hr>
-<a class="btn btn-default pull-right"  href="menuRegi.jsp">추가</a>
+<a class="btn btn-default pull-right"  href="menuregi.do">추가</a>
 <a class="btn btn-default pull-right"  href="#">삭제</a>
 </div>
 <div class = "text-center">

@@ -32,8 +32,8 @@
 </form>
 
 <a class="btn btn-default pull-right"  href="javascript:history.go(-1)">돌아가기</a>
-<a class="btn btn-default pull-right"  href="menuUpdate.jsp">수정</a>
-<a class="btn btn-default pull-right"  href="recipeInquiry.jsp">레시피 조회</a>
+<a class="btn btn-default pull-right"  href="menuedit.do">수정</a>
+<a class="btn btn-default pull-right"  href="recipedetail.do">레시피 상세 조회</a>
 
 </div>
 </body>
