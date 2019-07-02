@@ -1,10 +1,19 @@
 package co.yedam.cafein.customer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import co.yedam.cafein.customer.mymenu.CusMyService;
+import co.yedam.cafein.vo.MyMenuVO;
 
 @Controller
 public class CustomerMenuController {
+	@Autowired
+	CusMyService cusmyService;
 		
 		//고객메뉴조회
 		@RequestMapping("customermenulist.do")
@@ -35,5 +44,12 @@ public class CustomerMenuController {
 		@RequestMapping("customerstorelist.do")
 		public String customerstorelist() {
 			return "customer/storelist";
+		}
+		
+		//고객 나만의 메뉴 조회
+		@RequestMapping(value="/customer/{cId}",  method=RequestMethod.GET)
+		public MyMenuVO getMymenu(@PathVariable String cId, MyMenuVO vo, Model model) {
+			vo.setcId(cId);
+			return cusmyService.getMymenu(vo);
 		}
 }

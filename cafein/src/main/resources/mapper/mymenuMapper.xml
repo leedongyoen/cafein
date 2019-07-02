@@ -3,10 +3,10 @@
 <mapper namespace="MymenuDAO">
 <!-- 고객 나만의 메뉴 조회 -->
 <select id="getMymenu" resultType="mymenu">
-		SELECT MY_NUM
-		, CU_NUM
-		, M_NUM
-		, C_ID
+		SELECT MY_NUM "myNum"
+		, CU_NUM "cuNum"
+		, M_NUM "mNum"
+		, C_ID "cId"
 		FROM my_menu
 		WHERE C_ID = #{cId}
 	</select>
