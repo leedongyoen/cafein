@@ -26,7 +26,7 @@ public class KakaoRestAPI {
 
 		postParams.add(new BasicNameValuePair("grant_type", "authorization_code"));
 		postParams.add(new BasicNameValuePair("client_id", "ae2e6275133a2bf25fe30fba002ced8d"));
-		postParams.add(new BasicNameValuePair("redirect_uri", "http://172.30.1.51/cafein/customerlogin"));
+		postParams.add(new BasicNameValuePair("redirect_uri", "http://localhost/cafein/customerlogin"));
 		postParams.add(new BasicNameValuePair("code", autorize_code));
 
 		final HttpClient client = HttpClientBuilder.create().build();

@@ -54,9 +54,9 @@ public class CustomerController {
 		// 결과값 출력
 		System.out.println(node);
 		// 노드 안에 있는 access_token 값을 꺼내 문자열로 변환
-//		String token = node.get("access_token").toString();
-//		session.setAttribute("token", token);
-//		System.out.println("token : " + token);
+		String token = node.get("access_token").toString();
+		session.setAttribute("token", token);
+		System.out.println("token : " + token);
 		// 리턴 수정하기
 		return "customer/logininfo";
 		
