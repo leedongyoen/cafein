@@ -16,6 +16,7 @@ public class MenuDAO {
 	private SqlSessionTemplate mybatis;
 	
 	public List<MenuVO> getMenuList(MenuVO vo) {
+		System.out.println("-> mybatis insertBoard procedure 을 이용함");
 		return mybatis.selectList("MenuDAO.getMenuList", vo);
 	}
 	
