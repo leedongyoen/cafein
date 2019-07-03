@@ -22,7 +22,14 @@ public class CustomerController {
 	@Autowired
 	CustomerLoginService customerLoginService;
 	CustomerInfoService customService;
-	   
+	  
+	//고객 로그인
+	@RequestMapping("customerinfoedit.do")
+	public String customerinfoedit(@ModelAttribute("customer") CustomerVO vo) {
+		return "customer/infoedit";
+		
+	}
+	
 	//고객 로그인
 	@RequestMapping("customerlogin.do")
 	public String login(@ModelAttribute("customer") CustomerVO vo) {
