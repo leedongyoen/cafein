@@ -31,10 +31,10 @@ public class StoreListMenuController {
 	  }
 	 
 	  // 수정 필요
-	  @RequestMapping(value="/storelistmenu/{sid}", method=RequestMethod.POST) 
-	  public List<MenuVO> getmenulist(@PathVariable String id){ 
+	  @RequestMapping(value="/storelistmenu/{sid}", method=RequestMethod.GET) 
+	  public List<MenuVO> getmenulist(@PathVariable("sid") String sid){ 
 		  MenuVO vo = new MenuVO();
-		  vo.setsId(id);
+		  vo.setsId(sid);
 		  return service.getMenuList(vo);
 	  }
 	
