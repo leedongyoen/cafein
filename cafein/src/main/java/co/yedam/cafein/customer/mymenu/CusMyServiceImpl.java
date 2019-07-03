@@ -18,15 +18,15 @@ public class CusMyServiceImpl implements CusMyService{
 	}
 	
 	public void updateMymenu(MyMenuVO vo) {
-		DAO.updateMymenu(vo);
+		//DAO.updateMymenu(vo);
 	}
 	
 	public void insertMymenu(MyMenuVO vo) {
-		DAO.inserMymenu(vo);
+		//DAO.inserMymenu(vo);
 	}
 	
 	public void deleteMymenu(MyMenuVO vo) {
-		DAO.deleteMymenu(vo);
+		//DAO.deleteMymenu(vo);
 	}
 	
 	

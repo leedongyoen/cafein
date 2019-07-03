@@ -13,28 +13,27 @@ public class CusMyDAO {
 	
 //	private static final String mymenu = "mapper.mymenuMapper";
 	
-	//ÇÑ °í°´ÀÇ ³ª¸¸ÀÇ ¸Þ´º Á¶È¸
+	//
 	public MyMenuVO getMymenu(MyMenuVO vo) {
 		System.out.println("===> Mybatis getMymenu()");
 		return mybatis.selectOne("CusMyDAO.getMymenu", vo);
 	}
 	
-	//³ª¸¸ÀÇ ¸Þ´º ÀÔ·Â
-	
-	public void inserMymenu(MyMenuVO vo) {
-		System.out.println("===> Mybatis inserMymenu()");
-		mybatis.insert("CusMyDAO.insertBoard", vo);
-	}
-	
-	public void deleteMymenu(MyMenuVO vo) {
-		System.out.println("===> Mybatis deleteMymenu()");
-		mybatis.update("CusMyDAO.deleteMymenu", vo);
-	}
-	
-	public void updateMymenu(MyMenuVO vo) {
-		System.out.println("===> Mybatis updateMymenu()");
-		mybatis.update("CusMyDAO.updateMymenu", vo);
-	}
+	/*
+	 * //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½Ô·ï¿½
+	 * 
+	 * public void inserMymenu(MyMenuVO vo) {
+	 * System.out.println("===> Mybatis inserMymenu()");
+	 * mybatis.insert("MymenuDAO.insertBoard", vo); }
+	 * 
+	 * public void deleteMymenu(MyMenuVO vo) {
+	 * System.out.println("===> Mybatis deleteMymenu()");
+	 * mybatis.update("MymenuDAO.deleteMymenu", vo); }
+	 * 
+	 * public void updateMymenu(MyMenuVO vo) {
+	 * System.out.println("===> Mybatis updateMymenu()");
+	 * mybatis.update("MymenuDAO.updateMymenu", vo); }
+	 */
 
 
 	
