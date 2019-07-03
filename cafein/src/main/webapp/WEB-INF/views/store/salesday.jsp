@@ -17,17 +17,16 @@
 		$.ajax({
 			url : "./getsalesday.do",
 			data : {oDnum : 1},
-			type : "POST",
+			type : "post",
 			datatype : "json",
 			success : function() {
 
 				var datas = google.visualization.arrayToDataTable([
-						[ '-', '6월','' ], [ '일', 561,2712300, ], [ '월', 401,450000 ],
+						[ '일별', '총 수량','총 금액'], [ '일', 12,2712300, ], [ '월', 401,450000 ],
 						[ '화', 123,502000 ], [ '수', 321,720000 ], [ '목', 122,870000 ],
 						[ '금', 492,2400000 ], [ '토', 122,3400000 ] ]);
 
 				var options = {
-					title : '',
 					chartArea : {
 						width : '40%'
 					}
@@ -36,7 +35,7 @@
 				var table = new google.visualization.Table(document
 						.getElementById('test_dataview'))
 				table.draw(datas, {
-					sortColumn : 1 ,showRowNumber: true, width: '30%', height: '30%'
+					showRowNumber: true, width: '30%', height: '30%'
 				});
 
 				var chart = new google.visualization.BarChart(document
