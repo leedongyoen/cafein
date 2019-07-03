@@ -1,4 +1,4 @@
-package co.yedam.cafein.customer;
+package co.yedam.cafein.customer.login;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -26,7 +26,7 @@ public class KakaoRestAPI {
 
 		postParams.add(new BasicNameValuePair("grant_type", "authorization_code"));
 		postParams.add(new BasicNameValuePair("client_id", "ae2e6275133a2bf25fe30fba002ced8d"));
-		postParams.add(new BasicNameValuePair("redirect_uri", "http://172.30.1.51/cafein/customerlogin"));
+		postParams.add(new BasicNameValuePair("redirect_uri", "http://localhost/cafein/logininfo"));
 		postParams.add(new BasicNameValuePair("code", autorize_code));
 
 		final HttpClient client = HttpClientBuilder.create().build();
@@ -52,7 +52,32 @@ public class KakaoRestAPI {
 		}
 
 		return returnNode;
+	}
 
+	public JsonNode Logout(String autorize_code) {
+		
+		final String RequestUrl = "https://kapi.kakao.com/v1/user/logout";
+		final HttpClient client = HttpClientBuilder.create().build();
+		final HttpPost post = new HttpPost(RequestUrl);
+		post.addHeader("Authorization", "Bearer " + autorize_code);
+		JsonNode returnNode = null;
+
+		try {
+			final HttpResponse response = client.execute(post);
+			ObjectMapper mapper = new ObjectMapper();
+			returnNode = mapper.readTree(response.getEntity().getContent());
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+
+		}
+
+		return returnNode;
 	}
 
 }

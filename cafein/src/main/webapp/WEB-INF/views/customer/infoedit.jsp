@@ -19,6 +19,7 @@
         $("#c_tel").removeAttr("readonly");
         $("#c_add").removeAttr("readonly");
         $("#dob").removeAttr("readonly");
+        
 	}
 	
 	function editok() {
@@ -38,7 +39,7 @@
 <body>
 <div class = "container" align="center">
 <!-- 수정완료 버튼에 .do 보내기 -->
-  <form name = "customerinfoForm" method = "post">
+  <form name = "customerinfoForm" action="${pageContext.request.contextPath}/infoedit.do" method = "post">
     <h3 id = "c_info">회원 정보</h3>
     <h3 id = "c_infoedit" style=" display:none "> 회원 정보 수정</h3>
       <table class ="table">

@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="cushead.jsp" %>
 <title>Insert title here</title>
 </head>
 <body>

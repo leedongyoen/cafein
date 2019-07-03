@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StoremenuDAO">
+
+ 
+	<resultMap type="store" id="storeMap">
+		<id column="S_ID" property="sid"></id>
+		<result column="s_pw" property="spw"/>
+		<result column="s_name" property="sname"/>
+		<result column="s_add" property="sadd"/>
+		<result column="s_tel" property="stel"/>
+		<result column="st_deli_service" property="stdeliservice"/>
+		<result column="st_open_time" property="stopentime"/>
+		<result column="st_close_time" property="stclosetime"/>
+		<result column="st_app_stat" property="stappstat"/>
+		<result column="st_mile_service" property="stmileservice"/>
+	</resultMap> 
+
+	<select id="getStoreList" resultType="store" resultMap="storeMap">
+		select S_ID
+				, S_PW
+				, S_NAME
+				, S_ADD
+				, S_TEL
+				, ST_DELI_SERVICE
+				, ST_OPEN_TIME
+				, ST_CLOSE_TIME
+				, ST_APP_STAT
+				, ST_MILE_SERVICE
+		from store
+	</select>
+
+	<resultMap type="menu" id="menuMap">
+		<id column="M_NUM" property="mNum"></id>
+		<result column="m_name" property="mName"/>
+		<result column="ca_num" property="caNum"/>
+		<result column="m_price" property="mPrice"/>
+		<result column="m_stat" property="mStat"/>
+		<result column="s_id" property="sId"/>
+		<result column="menusale" property="menuSale"/>
+	</resultMap>
+	
+	<select id="getMenuList" parameterType="menu" resultType="menu" resultMap="menuMap">
+		SELECT M_NUM
+				, M_NAME
+				, M_PRICE
+				, CA_NUM
+				, M_STAT
+				, MENUSALE
+		FROM MENU
+		WHERE S_ID = #{sId}
+		ORDER BY CA_NUM
+	</select>
+
+</mapper>

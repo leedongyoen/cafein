@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MenuDAO">
+<resultMap type="menu" id="menuMap">
+      <id column="M_NUM" property="mNum"></id>
+      <result column="m_name" property="mName"/>
+      <result column="ca_num" property="caNum"/>
+      <result column="m_price" property="mPrice"/>
+      <result column="m_stat" property="mStat"/>
+      <result column="s_id" property="sId"/>
+      <result column="menusale" property="menuSale"/>
+   </resultMap>
+	<select id="getMenuList" resultMap="menuMap" parameterType="menu">
+		select
+		M_NUM
+		,M_NAME
+		,M_PRICE
+		,S_ID
+		,CA_NUM
+		,M_STAT
+		,MENUSALE
+		from menu
+
+	</select>
+</mapper>
