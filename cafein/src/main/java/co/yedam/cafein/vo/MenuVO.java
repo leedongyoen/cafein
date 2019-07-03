@@ -8,6 +8,7 @@ public class MenuVO {
 	private String	sId;
 	private String	caNum;
 	private String	mStat;
+	private String menuSale;
 	public String getmNum() {
 		return mNum;
 	}
@@ -44,11 +45,21 @@ public class MenuVO {
 	public void setmStat(String mStat) {
 		this.mStat = mStat;
 	}
+	
+	
+	public String getMenuSale() {
+		return menuSale;
+	}
+	public void setMenuSale(String menuSale) {
+		this.menuSale = menuSale;
+	}
 	@Override
 	public String toString() {
 		return "MenuVO [mNum=" + mNum + ", mName=" + mName + ", mPrice=" + mPrice + ", sId=" + sId + ", caNum=" + caNum
-				+ ", mStat=" + mStat + "]";
+				+ ", mStat=" + mStat + ", menuSale=" + menuSale + "]";
 	}
+
+
 
 	
 	

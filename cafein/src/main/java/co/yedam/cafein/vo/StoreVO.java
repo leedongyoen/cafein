@@ -7,10 +7,13 @@ public class StoreVO {
 	private String sname;
 	private String sadd;
 	private String stel;
-	private String deliveryability;
 	private String stdeliservice;
 	private int stopentime;
 	private int stclosetime;
+	private String stappstat;
+	private String stmileservice;
+	
+	
 	public String getSid() {
 		return sid;
 	}
@@ -41,12 +44,7 @@ public class StoreVO {
 	public void setStel(String stel) {
 		this.stel = stel;
 	}
-	public String getDeliveryablity() {
-		return deliveryability;
-	}
-	public void setDeliveryablity(String deliveryability) {
-		this.deliveryability = deliveryability;
-	}
+
 	public String getStdeliservice() {
 		return stdeliservice;
 	}
@@ -65,12 +63,25 @@ public class StoreVO {
 	public void setStclosetime(int stclosetime) {
 		this.stclosetime = stclosetime;
 	}
+	public String getStappstat() {
+		return stappstat;
+	}
+	public void setStappstat(String stappstat) {
+		this.stappstat = stappstat;
+	}
+	public String getStmileservice() {
+		return stmileservice;
+	}
+	public void setStmileservice(String stmileservice) {
+		this.stmileservice = stmileservice;
+	}
 	@Override
 	public String toString() {
 		return "StoreVO [sid=" + sid + ", spw=" + spw + ", sname=" + sname + ", sadd=" + sadd + ", stel=" + stel
-				+ ", deliveryability=" + deliveryability + ", stdeliservice=" + stdeliservice + ", stopentime="
-				+ stopentime + ", stclosetime=" + stclosetime + "]";
+				+ ", stdeliservice=" + stdeliservice + ", stopentime=" + stopentime + ", stclosetime=" + stclosetime
+				+ ", stappstat=" + stappstat + ", stmileservice=" + stmileservice + "]";
 	}
+
 	
 	
 }

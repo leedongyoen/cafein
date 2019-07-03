@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="StoremenuDAO">
 
  
@@ -9,24 +10,44 @@
 		<result column="s_name" property="sname"/>
 		<result column="s_add" property="sadd"/>
 		<result column="s_tel" property="stel"/>
-		<result column="delivery_ability" property="deliveryability"/>
 		<result column="st_deli_service" property="stdeliservice"/>
 		<result column="st_open_time" property="stopentime"/>
 		<result column="st_close_time" property="stclosetime"/>
-	</resultMap>
+		<result column="st_app_stat" property="stappstat"/>
+		<result column="st_mile_service" property="stmileservice"/>
+	</resultMap> 
 
 	<select id="getStoreList" resultType="store" resultMap="storeMap">
-		select s_id
-				, s_pw
-				, s_name
-				, s_add
-				, s_tel
-				, delivery_ability
-				, st_deli_service
-				, st_open_time
-				, st_close_time
-		from store;
+		select S_ID
+				, S_PW
+				, S_NAME
+				, S_ADD
+				, S_TEL
+				, ST_DELI_SERVICE
+				, ST_OPEN_TIME
+				, ST_CLOSE_TIME
+				, ST_APP_STAT
+				, ST_MILE_SERVICE
+		from store
 	</select>
 
+	<resultMap type="menu" id="menuMap">
+		<id column="M_NUM" property="mNum"></id>
+		<result column="m_name" property="mName"/>
+		<result column="ca_num" property="caNum"/>
+		<result column="m_price" property="mPrice"/>
+		<result column="m_stat" property="mStat"/>
+		<result column="s_id" property="sId"/>
+	</resultMap>
+	
+	<select id="getMenuList" parameterType="menu" resultType="menu" resultMap="menuMap">
+		SELECT CA_NUM
+				, M_NAME
+				, M_NUM
+				, M_PRICE
+				, M_STAT
+		FROM MENU
+		WHERE S_ID ={sId}
+	</select>
 
 </mapper>

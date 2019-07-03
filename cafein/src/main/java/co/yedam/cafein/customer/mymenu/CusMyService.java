@@ -4,6 +4,13 @@ import co.yedam.cafein.vo.MyMenuVO;
 
 public interface CusMyService {
 	
-	public MyMenuVO getMymenu(MyMenuVO vo);
+	 MyMenuVO getMymenu(MyMenuVO vo);
+	 
+	 void insertMymenu(MyMenuVO vo);
+	 
+	 void updateMymenu(MyMenuVO vo);
+	 
+	 void deleteMymenu(MyMenuVO vo);
+	 
 
 }
