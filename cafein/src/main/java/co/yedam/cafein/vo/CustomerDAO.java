@@ -12,9 +12,16 @@ public class CustomerDAO {
 	
 
 	//회원정보 수정
-	public int infoedit(CustomerVO dto) {
+	public int infoedit(CustomerVO vo) {
 		System.out.println("mybatis 회원정보 수정");
-		return mybatis.update("CustomerDAO.infoedit", dto);
+		return mybatis.update("CustomerDAO.infoedit", vo);
+	}
+
+
+
+	public CustomerVO getCustomer(CustomerVO vo) {
+		
+		return mybatis.selectOne("CustomerDAO.getCumster", vo);
 	}
 
 }

@@ -17,6 +17,11 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return customerDAO.infoedit(vo);
 	}
+
+	@Override
+	public CustomerVO getCustomer(CustomerVO vo) {
+		return customerDAO.getCustomer(vo);
+	}
 	
 	
 

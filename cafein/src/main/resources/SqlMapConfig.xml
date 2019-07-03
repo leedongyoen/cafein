@@ -10,6 +10,8 @@
 		<typeAlias type="co.yedam.cafein.vo.SalesSumVO" alias="salessum" />
 		<typeAlias type="co.yedam.cafein.vo.MyMenuVO" alias="mymenu"/>
 		<typeAlias type="co.yedam.cafein.vo.StoreVO" alias="store"/>
+				<typeAlias type="co.yedam.cafein.vo.MenuVO" alias="menu"/>
+		<typeAlias type="co.yedam.cafein.vo.CustomerVO" alias="customer"/>
 	</typeAliases>
 	
 
