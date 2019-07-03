@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +11,7 @@
 
 </head>
 <body>
-
+${storemenu.mNum }
 	<div>
 
 		<!-- 메뉴 CRUD -->
@@ -34,6 +36,7 @@
 							</tr>
 						</thead>
 						<tbody>
+						
 							<tr onclick="">
 								<!-- ****tr 1번 클릭 시, 레시피 상세조회 페이지가 등장 -->
 								<!-- ****tr 2번 더블 클릭 시, 메뉴 상세조회 페이지가 등장 -->

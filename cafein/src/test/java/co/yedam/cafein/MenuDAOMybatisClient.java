@@ -12,7 +12,7 @@ import co.yedam.cafein.store.menu.MenuDAO;
 import co.yedam.cafein.vo.MenuVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:config/applicationContext.xml")
+@ContextConfiguration(locations = "classpath:/config/applicationContext.xml")
 
 public class MenuDAOMybatisClient {
 
@@ -20,12 +20,12 @@ public class MenuDAOMybatisClient {
 	MenuDAO dao;
 	
 	@Test
-	private void menuList() {
-
+	public void getMenu() {
 		MenuVO vo = new MenuVO();
 		List<MenuVO> list = dao.getMenuList(vo);
-		for(MenuVO menu : list) {
+		
 		System.out.println(menu.toString());
-		}
+		
+	
 	}
 }
