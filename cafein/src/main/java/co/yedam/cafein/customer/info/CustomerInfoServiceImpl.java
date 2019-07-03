@@ -10,17 +10,26 @@ public class CustomerInfoServiceImpl implements CustomerInfoService{
 	@Autowired
 	CustomerInfoDAO customerDAO;
 	
+	//회원 단건조회
+	@Override
+	public CustomerVO getCustomer(CustomerVO vo) {
+		return customerDAO.getCustomer(vo);
+	}
+	
 	// 회원 정보 수정
 	@Override
 	public int infoedit(CustomerVO vo){
 		
 		return customerDAO.infoedit(vo);
 	}
+	
+	//회원 삭제(탈퇴)
 
-	@Override
-	public CustomerVO getCustomer(CustomerVO vo) {
-		return customerDAO.getCustomer(vo);
+	public int deleteCustomer(CustomerVO vo) {
+		// TODO Auto-generated method stub
+		return customerDAO.deleteCustomer(vo);
 	}
+
 	
 	
 

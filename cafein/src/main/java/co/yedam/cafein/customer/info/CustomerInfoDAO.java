@@ -11,10 +11,10 @@ public class CustomerInfoDAO {
 
 	@Autowired
 	private SqlSessionTemplate mybatis;
+	
 
 	// 단건 회원 조회
 	public CustomerVO getCustomer(CustomerVO vo) {
-
 		return mybatis.selectOne("CustomerDAO.getCustomer", vo);
 	}
 
@@ -22,6 +22,11 @@ public class CustomerInfoDAO {
 	public int infoedit(CustomerVO vo) {
 		System.out.println("mybatis 회원정보 수정");
 		return mybatis.update("CustomerDAO.infoedit", vo);
+	}
+	
+	public int deleteCustomer(CustomerVO vo) {
+		System.out.println("mybatis 회원정보 삭제");
+		return mybatis.delete("CustomerDAO.deleteCustomer", vo);
 	}
 
 }
