@@ -1,7 +1,13 @@
 package co.yedam.cafein.customer;
 
-import javax.servlet.http.HttpSession;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,11 +37,19 @@ public class CustomerController {
 	}
 	// 고객 로그인 처리
 	@RequestMapping("customerloginresult.do")
-	public String loginResult(CustomerVO vo, HttpSession session, Model model) {
+	public String loginResult(CustomerVO vo, HttpSession session, Model model, HttpServletResponse response) throws IOException {
 		
-		CustomerVO customer = customerLoginService.getCustomer(vo);
+		CustomerVO customer = customerLoginService.getCustomer(null);
+		
+		PrintWriter out = response.getWriter();
+		
 		if(customer == null) {
+			
+			out.println("<script>alert('등록되지 않은 아이디입니다.');</script>");
+			out.flush();
+
 			return "customer/login";
+			
 		} else {
 			session.setAttribute("cId", customer.getcId());
 			

@@ -23,7 +23,12 @@
 		}
 		
 		form.submit();
-	}		
+	}	
+	
+	$.ajax({
+		
+	});
+	
 </script>
 </head>
 <body>
