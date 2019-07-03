@@ -29,7 +29,7 @@ public class CustomerController {
 		return "customer/login";
 		
 	}
-	// 고객 로그인 결과
+	// 고객 로그인 처리
 	@RequestMapping("customerloginresult.do")
 	public String loginResult(CustomerVO vo, HttpSession session, Model model) {
 		
@@ -37,7 +37,6 @@ public class CustomerController {
 		if(customer == null) {
 			return "customer/login";
 		} else {
-			session.setAttribute("customer", customer);
 			session.setAttribute("cId", customer.getcId());
 			
 			return "customer/main";
