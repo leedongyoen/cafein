@@ -1,5 +1,7 @@
 package co.yedam.cafein.customer.mymenu;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -13,7 +15,7 @@ public class CusMyServiceImpl implements CusMyService{
 	private CusMyDAO DAO;
 	
 	
-	public MyMenuVO getMymenu(MyMenuVO vo) {
+	public List<MyMenuVO> getMymenu(MyMenuVO vo) {
 		return DAO.getMymenu(vo);
 	}
 	

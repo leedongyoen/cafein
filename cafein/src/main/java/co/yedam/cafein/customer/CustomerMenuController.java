@@ -12,8 +12,7 @@ import co.yedam.cafein.vo.MyMenuVO;
 
 @Controller
 public class CustomerMenuController {
-	@Autowired
-	CusMyService cusmyService;
+	
 		
 		//고객메뉴조회
 		@RequestMapping("customermenulist.do")
@@ -46,10 +45,4 @@ public class CustomerMenuController {
 			return "customer/storelist";
 		}
 		
-		//고객 나만의 메뉴 조회
-		@RequestMapping(value="/customer/{cId}",  method=RequestMethod.GET)
-		public MyMenuVO getMymenu(@PathVariable String cId, MyMenuVO vo, Model model) {
-			vo.setcId(cId);
-			return cusmyService.getMymenu(vo);
-		}
 }
