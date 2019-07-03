@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import co.yedam.cafein.customer.info.CustomerInfoService;
 import co.yedam.cafein.customer.login.KakaoRestAPI;
 import co.yedam.cafein.vo.CustomerVO;
 
@@ -20,7 +21,7 @@ import co.yedam.cafein.vo.CustomerVO;
 @Controller
 public class CustomerController {
 	@Autowired
-	CustomerService customService;
+	CustomerInfoService customService;
 	   
 	//고객 로그인
 	@RequestMapping("customerlogin.do")
@@ -40,23 +41,7 @@ public class CustomerController {
 		return "customer/findidpw";
 		
 	}
-	//고객 회원정보 수정
-//	@RequestMapping("customerinfoedit.do")
-//	public String infoedit() {
-//		return "customer/infoedit";
-//		
-//	}
 	
-	//고객 회원정보 수정처리 --AN
-	//		@RequestMapping("customerinfoedit.do")
-		
-		@ResponseBody
-		@RequestMapping(value="/customer{id}", method=RequestMethod.GET)
-		public CustomerVO infoedit(@PathVariable String id, CustomerVO vo, Model model) {
-			vo.setcId(id);
-			return null;
-			
-		}
 	
 	// 카카오 로그인
 	@RequestMapping(value = "/logininfo", produces = "application/json")
