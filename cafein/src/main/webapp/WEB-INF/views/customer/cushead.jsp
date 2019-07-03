@@ -11,18 +11,32 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
-
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+<script>
+	$(function(){
+		var id = "<%= (String)session.getAttribute("cId") %>";
+		var customer = "<%= (String)session.getAttribute("customer") %>";
+		console.log("customer id = " + id);
+		console.log("customer = ")
+		
+		if(id == "null") {
+			$("#loginbtn").css('display', 'inline');
+			$("#logoutbtn").css('display', 'none');
+			$("#dropdown01").css('display', 'none');
+		}
+		if(id != "null") {
+			$("#loginbtn").css('display', 'none');
+			$("#logoutbtn").css('display', 'inline');
+			$("#dropdown01").css('display', 'inline');
+		}
+	});
+</script>
 <style>
 body {
 
 	padding-top: 0px;
-
 	padding-bottom: 30px;
-
 }
-
 </style>
 </head>
 <body>
@@ -53,10 +67,10 @@ body {
         		 <li class="nav-item">
                 	<a class="nav-link" href="${pageContext.request.contextPath}/customerstorelist.do">주변 매장</a>
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogin.do">Login</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogin.do" id="loginbtn">Login</a>
                 </li>                
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogin.do">Logout</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogout.do" id="logoutbtn">Logout</a>
                 </li>                
                 <li class="nav-item">
                 	<a class="nav-link" href="${pageContext.request.contextPath}/cartmng.do">장바구니</a>

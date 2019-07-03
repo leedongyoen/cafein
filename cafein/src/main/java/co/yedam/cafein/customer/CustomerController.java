@@ -5,14 +5,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import co.yedam.cafein.customer.login.CustomerLoginService;
 import co.yedam.cafein.customer.login.KakaoRestAPI;
 import co.yedam.cafein.vo.CustomerVO;
 
@@ -20,14 +19,46 @@ import co.yedam.cafein.vo.CustomerVO;
 @Controller
 public class CustomerController {
 	@Autowired
-	CustomerService customService;
-	   
-	//고객 로그인
+	CustomerLoginService customerLoginService;
+	
+	// 고객 로그인
 	@RequestMapping("customerlogin.do")
-	public String login() {
+	public String login(@ModelAttribute("customer") CustomerVO vo) {
 		return "customer/login";
 		
 	}
+	// 고객 로그인 결과
+	@RequestMapping("customerloginresult.do")
+	public String loginResult(CustomerVO vo, HttpSession session, Model model) {
+		
+		CustomerVO customer = customerLoginService.getCustomer(vo);
+		if(customer == null) {
+			return "customer/login";
+		} else {
+			session.setAttribute("customer", customer);
+			session.setAttribute("cId", customer.getcId());
+			
+			return "customer/main";
+		}
+
+	}
+	
+	// 고객 로그아웃 
+	@RequestMapping("customerlogout.do")
+	public String logout(HttpSession session) {
+		
+		Object ob = session.getAttribute("cId");
+		
+		if(ob != null) {
+			
+			session.removeAttribute("cId");
+			session.removeAttribute("customer");
+			session.invalidate();
+		}
+	
+		return "customer/logout";
+	}
+	
 	//고객 회원가입
 	@RequestMapping("customerjoin.do")
 	public String join() {
@@ -40,23 +71,7 @@ public class CustomerController {
 		return "customer/findidpw";
 		
 	}
-	//고객 회원정보 수정
-//	@RequestMapping("customerinfoedit.do")
-//	public String infoedit() {
-//		return "customer/infoedit";
-//		
-//	}
 	
-	//고객 회원정보 수정처리 --AN
-	//		@RequestMapping("customerinfoedit.do")
-		
-		@ResponseBody
-		@RequestMapping(value="/customer{id}", method=RequestMethod.GET)
-		public CustomerVO infoedit(@PathVariable String id, CustomerVO vo, Model model) {
-			vo.setcId(id);
-			return null;
-			
-		}
 	
 	// 카카오 로그인
 	@RequestMapping(value = "/logininfo", produces = "application/json")
