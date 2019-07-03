@@ -18,11 +18,11 @@ public class MenuDAOMybatisClient {
 
 	@Autowired
 	MenuDAO dao;
-	MenuVO vo;
+	
 	@Test
 	private void menuList() {
 
-		vo = new MenuVO();
+		MenuVO vo = new MenuVO();
 		List<MenuVO> list = dao.getMenuList(vo);
 		for(MenuVO menu : list) {
 		System.out.println(menu.toString());

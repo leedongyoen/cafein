@@ -7,5 +7,5 @@ import co.yedam.cafein.vo.MenuVO;
 
 public interface MenuService {
 
-	public List<MenuVO> getMenuList();
+	public List<MenuVO> getMenuList(MenuVO vo);
 }
