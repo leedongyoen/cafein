@@ -24,7 +24,7 @@ public class MenuDAOMybatisClient {
 		MenuVO vo = new MenuVO();
 		List<MenuVO> list = dao.getMenuList(vo);
 		
-		System.out.println(menu.toString());
+	
 		
 	
 	}
