@@ -19,6 +19,7 @@
         $("#c_tel").removeAttr("readonly");
         $("#c_add").removeAttr("readonly");
         $("#dob").removeAttr("readonly");
+        
 	}
 	
 	function editok() {

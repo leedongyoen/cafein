@@ -12,11 +12,10 @@ public class CusMyDAO {
 	private SqlSessionTemplate mybatis;
 	
 //	private static final String mymenu = "mapper.mymenuMapper";
-	
-	//
+
 	public MyMenuVO getMymenu(MyMenuVO vo) {
 		System.out.println("===> Mybatis getMymenu()");
-		return mybatis.selectOne("CusMyDAO.getMymenu", vo);
+		return mybatis.selectOne("MymenuDAO.getMymenu", vo);
 	}
 	
 	/*

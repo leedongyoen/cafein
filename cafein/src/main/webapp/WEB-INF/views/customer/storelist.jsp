@@ -39,71 +39,33 @@
 	<div class="tab-content">
 		<div id="coffee" class="container tab-pane active"><br>
 			<div class="table-responsive">
-			<table class="table">
+			<table id="coffeetable" class="table">
 			<thead>
 				<tr><th>사진</th><th>메뉴명</th><th>가격</th></tr>
 				</thead>
 				<tbody id="searchTable">
-				<tr data-toggle="modal" id="openmodal">
-					<td>사진넣기</td>
-					<td>아메리카노</td>
-					<td>4100원</td>
-				</tr>
-			
-				<tr>
-					<td>사진넣기</td>
-					<td>카페라떼</td>
-					<td>5000원</td>
-				</tr>
-				<tr>
-					<td>사진넣기</td>
-					<td>카페모까</td>
-					<td>5000원</td>
-				</tr>
+				
 			</tbody>
 			</table>
 			</div>
   		</div>
    		<div id="beverage" class="container tab-pane fade"><br>
-    		<table class="table">
+    		<table id="beveragetable" class="table">
     			<thead>
 				<tr><th>사진</th><th>메뉴명</th><th>가격</th></tr>
 				</thead>
 				<tbody id="searchTable">
-				<tr>
-					<td>사진넣기</td>
-					<td>딸기에이드</td>
-					<td>5100원</td>
-				</tr>
-				<tr>
-					<td>사진넣기</td>
-					<td>딸기스무디</td>
-					<td>5500원</td>
-				</tr>
-				<tr>
-					<td>사진넣기</td>
-					<td>녹차</td>
-					<td>5000원</td>
-				</tr>
+				
 				</tbody>
 			</table>
    		</div>
    		<div id="bakery" class="container tab-pane fade"><br>
-     		<table class="table">
+     		<table id="bakerytable" class="table">
      			<thead>
 				<tr><th>사진</th><th>메뉴명</th><th>가격</th></tr>
 				</thead>
 				<tbody id="searchTable">
-				<tr>
-					<td>사진넣기</td>
-					<td>베이글</td>
-					<td>3500원</td>
-				</tr>
-				<tr>
-					<td>사진넣기</td>
-					<td>딸기케이크</td>
-					<td>5500원</td>
-				</tr>
+				
 				</tbody>
 			</table>
    		</div>
@@ -191,7 +153,7 @@
 							
 							<tbody id="storetable">
 							<c:forEach	items="${storelist}" var="store">									
-							<tr onclick="menulist('${store.sid}')">
+							<tr onclick="menuList('${store.sid}','${store.sname}')">
 								<td><input type="hidden" name="sid" value="${store.sid}"></td>
 								<td>${store.sname}</td>
 								<td>${store.sadd}</td>
@@ -212,29 +174,57 @@
 	</div>
 </div>
 <script>
-function menulist(sid){
-		var sid = sid;
-		ajax({
-			
-		});
-}
+	
+	var storename;
 
-$(document).ready(function(){
+	function menuList(sid,sname){
+		var sid = sid;
+		storename=sname;
+		$.ajax({
+			url:'storelistmenu/'+sid,
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:menuListResult
+		});
+	}	
 	
-	// 한 행 클릭시
-	$("#openmodal").on("click",function(){
-		$('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		console.log("in");
-		$('#menudetailModal').modal('show');
-	});
-	
-	// 매장 선택시
-	$("#selectStore").on("click",function(){
-		$("#storeserch").val("");
-		$("#storelistmodal").modal('show');
-	});
-	
+	function menuListResult(data) {
+		$('#storelistmodal').modal('hide');
+		$("#coffeetable tbody").empty();
+		$("#beveragetable tbody").empty();
+		$("#bakerytable tbody").empty();
+		$.each(data,function(idx,item){
+			// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
+			if(item.caNum == "CACO" && item.menuSale == "Y"){
+				$('<tr>').attr("data-toggle","modal")//.addClass("openmodal")
+				.append($('<td>').html(""))
+				.append($('<td>').html(item.mName))
+				.append($('<td>').html(item.mPrice))
+				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
+				.appendTo('#coffeetable tbody');
+			}
+			else if(item.caNum == "CADR" && item.menuSale == "Y"){
+				$('<tr>').attr("data-toggle","modal")
+				.append($('<td>').html(""))
+				.append($('<td>').html(item.mName))
+				.append($('<td>').html(item.mPrice))
+				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
+				.appendTo('#beveragetable tbody');
+			}else if(item.caNum == "CADE" && item.menuSale == "Y"){
+				$('<tr>').attr("data-toggle","modal")
+				.append($('<td>').html(""))
+				.append($('<td>').html(item.mName))
+				.append($('<td>').html(item.mPrice))
+				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
+				.appendTo('#bakerytable tbody');
+			}
+		});
+	}
+		
 	function add(num) {
 		var price = $('#price').val();
 		var v_totalprice =price;
@@ -253,7 +243,57 @@ $(document).ready(function(){
 		$('#no').val(no+"개");
 
 	}
+
+$(function(){
+/* 	//openmodal123
+	$("#openmodal123").on("click",function(){
+		$('#mName').val($(this).children().eq(1).text());
+		$('#price').val($(this).children().eq(2).text());
+		console.log("in");
+		$('#menudetailModal').modal('show');
+	}); */
 	
+	
+	// 커피 메뉴 선택시 모달창
+	 $(document).on("click","#coffeetable tbody tr",function(event){
+		 $('#mName').val($(this).children().eq(1).text());
+		$('#price').val($(this).children().eq(2).text());
+		$('#sName').val(storename);
+		console.log(storename);
+		 $('#menudetailModal').modal('show');
+     });
+	
+	// 음료 메뉴 선택시 모달창
+	$(document).on("click","#beveragetable tbody tr",function(event){
+		 $('#mName').val($(this).children().eq(1).text());
+		$('#price').val($(this).children().eq(2).text());
+		 $('#menudetailModal').modal('show');
+    });
+	
+	// 빵 메뉴 선택시 모달창
+	$(document).on("click","#bakerytable tbody tr",function(event){
+		 $('#mName').val($(this).children().eq(1).text());
+		$('#price').val($(this).children().eq(2).text());
+		 $('#menudetailModal').modal('show');
+    });
+
+/* 	
+	
+	// 한 행 클릭시
+	$("#coffeetable tbody tr").on("click",function(){
+		$('#mName').val($(this).children().eq(1).text());
+		$('#price').val($(this).children().eq(2).text());
+		console.log("in");
+		$('#menudetailModal').modal('show');
+	}); */
+	
+	// 매장 선택시
+	$("#selectStore").on("click",function(){
+		$("#storeserch").val("");
+		$("#storelistmodal").modal('show');
+	});
+	
+		
 	
 	// 메뉴 검색
   	$("#myInput").on("keyup", function() {
