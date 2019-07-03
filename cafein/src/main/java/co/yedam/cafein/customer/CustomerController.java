@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import co.yedam.cafein.customer.login.CustomerLoginService;
+import co.yedam.cafein.customer.info.CustomerInfoService;
 import co.yedam.cafein.customer.login.KakaoRestAPI;
 import co.yedam.cafein.vo.CustomerVO;
 
@@ -20,8 +21,9 @@ import co.yedam.cafein.vo.CustomerVO;
 public class CustomerController {
 	@Autowired
 	CustomerLoginService customerLoginService;
-	
-	// 고객 로그인
+	CustomerInfoService customService;
+	   
+	//고객 로그인
 	@RequestMapping("customerlogin.do")
 	public String login(@ModelAttribute("customer") CustomerVO vo) {
 		return "customer/login";

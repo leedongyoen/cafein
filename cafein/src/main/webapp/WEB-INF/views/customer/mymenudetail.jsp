@@ -5,6 +5,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+function userSelectResult(user) {
+	$('input:text[name="id"]').val(user.id);
+	$('input:text[name="name"]').val(user.name);
+	$('input:text[name="password"]').val(user.password);
+//	$('input:radio[name="gender"][value="'+user.gender+'"]').prop('checked', true);
+	$('select[name="role"]').val(user.role).attr("selected", "selected");
+}//userSelectResult
+
+
+</script>
+
 </head>
 <body>
 	<div class = "container">
