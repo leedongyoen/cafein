@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,24 +22,38 @@ body {font-family: Arial, Helvetica, sans-serif;}
 #myImg:hover {opacity: 0.7;}
 
 /* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: absolute; /* Stay in place */
-   z-index: 10000; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+
+@media screen and (min-width: 768px) { 
+        .modal{
+        		top: 30%;
+                display: none;
+                height: 80%;
+                left:425px;
+                width: 50%;
+                overflow: auto;
+                vertical-align: middle;
+        }
+/* .modal {
+  display:  /* Hidden by default */
+  position: fixed; /* Stay in place */
+  left:50%;
+  margin-left: -20%; /* half of width */
+  height: 300px;
+  top: 50%;
+  margin-top: -150px; /* half of height */
+/*  padding-top: auto; /* Location of the box */*/
   width: 50%; /* Full width */
   height: 50%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: #ffffff; /* Black w/ opacity */
-}
+  background-color: #ffffff; /* Fallback color */
+} */
 
 /* Modal Content (image) */
 .modal-content {
   margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 50%;
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
 }
 
 
@@ -79,6 +94,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 
+}
 </style>
 
 </head>
@@ -108,6 +124,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 <!--모달 나만의 메뉴-->
 <div id="myModal" class = "modal">
+<div class="modal-content">
 		<h1 align="center">나만의메뉴상세</h1>
 		<table class = "table table-hover">
 		<tr>
@@ -151,11 +168,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
 	</div>
 	<span class="close">&times;</span>
 	</div>
+	</div>
 <script type="text/javascript">
-
-function myMenuList(){
+myMenuList('ju123');
+function myMenuList(cId){
+	var cId = cId;
 	$.ajax({
-		url:'../mymenu.do',
+		url:'customer/'+cId,
 		type:'GET',
 		dataType:'json',
 		error:function(xhr,status,msg){
@@ -168,9 +187,9 @@ function myMenuListResult(data) {
 	$("tbody").empty();
 	$.each(data,function(data,item){
 		$('<tr>')
-		.append($('<td>').html(item.image))
+		.append($('<td>').html())
 		$('<tr>')
-		.append($('<td>').html(item.mMum))
+		.append($('<td>').html(item.mNum))
 		.append($('<input type=\'hidden\' id=\'hidden_userId\'>').val(item.id))
 		.appendTo('tbody');
 	});//each
@@ -192,6 +211,12 @@ var span = document.getElementsByClassName("close")[0];
 span.onclick = function() { 
 modal.style.display = "none";
 }
+
+
+
+$(window).resize(function() {
+	modal;
+});
 </script>
 </body>
 </html>
