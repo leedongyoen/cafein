@@ -1,5 +1,7 @@
 package co.yedam.cafein.customer.mymenu;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,9 +15,9 @@ public class CusMyDAO {
 	
 //	private static final String mymenu = "mapper.mymenuMapper";
 
-	public MyMenuVO getMymenu(MyMenuVO vo) {
+	public List<MyMenuVO> getMymenu(MyMenuVO vo) {
 		System.out.println("===> Mybatis getMymenu()");
-		return mybatis.selectOne("MymenuDAO.getMymenu", vo);
+		return mybatis.selectList("MymenuDAO.getMymenu", vo);
 	}
 	
 	/*

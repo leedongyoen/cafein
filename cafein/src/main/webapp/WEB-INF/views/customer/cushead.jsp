@@ -15,9 +15,7 @@
 <script>
 	$(function(){
 		var id = "<%= (String)session.getAttribute("cId") %>";
-		var customer = "<%= (String)session.getAttribute("customer") %>";
 		console.log("customer id = " + id);
-		console.log("customer = ")
 		
 		if(id == "null") {
 			$("#loginbtn").css('display', 'inline');
