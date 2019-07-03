@@ -1,6 +1,8 @@
 package co.yedam.cafein.vo;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
+
+
 
 public class SalesSumVO {
 
@@ -11,7 +13,15 @@ public class SalesSumVO {
 	private Timestamp oDate;
 	private int total;
 	private String oQty;
+	private int mPrice;
 	
+	
+	public int getmPrice() {
+		return mPrice;
+	}
+	public void setmPrice(int mPrice) {
+		this.mPrice = mPrice;
+	}
 	public String getoNum() {
 		return oNum;
 	}

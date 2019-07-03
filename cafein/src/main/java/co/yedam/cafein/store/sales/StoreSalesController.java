@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class StoreSalesController {
 	
-	
 	@RequestMapping("salesday.do")
 	public String salesDayForm() {
 		return "store/salesday";
