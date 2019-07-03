@@ -129,8 +129,7 @@
 			</div>
 		</div>
 	</div>
-	
-	 
+
 	<!-- 매장 선택  Modal -->
 	<div class="modal fade" id="storelistmodal" role="dialog">
 		<div class="modal-dialog">		
