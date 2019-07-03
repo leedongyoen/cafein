@@ -12,5 +12,5 @@ public class MenuController {
 	@Autowired
 	MenuService service;
 	
-	
+	  
 }
