@@ -1,27 +1,27 @@
-package co.yedam.cafein.vo;
+package co.yedam.cafein.customer.info;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import co.yedam.cafein.vo.CustomerVO;
+
 @Repository
-public class CustomerDAO {
-	
+public class CustomerInfoDAO {
+
 	@Autowired
 	private SqlSessionTemplate mybatis;
-	
-	
 
-	//회원정보 수정
+	// 단건 회원 조회
+	public CustomerVO getCustomer(CustomerVO vo) {
+
+		return mybatis.selectOne("CustomerDAO.getCustomer", vo);
+	}
+
+	//회원 정보 수정
 	public int infoedit(CustomerVO vo) {
 		System.out.println("mybatis 회원정보 수정");
 		return mybatis.update("CustomerDAO.infoedit", vo);
-	}
-
-
-
-	public CustomerVO getCustomer(CustomerVO vo) {
-		
-		return mybatis.selectOne("CustomerDAO.getCumster", vo);
 	}
 
 }

@@ -1,15 +1,14 @@
-package co.yedam.cafein.customer;
+package co.yedam.cafein.customer.info;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.yedam.cafein.vo.CustomerDAO;
 import co.yedam.cafein.vo.CustomerVO;
 
 @Service
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerInfoServiceImpl implements CustomerInfoService{
 	@Autowired
-	CustomerDAO customerDAO;
+	CustomerInfoDAO customerDAO;
 	
 	// 회원 정보 수정
 	@Override
