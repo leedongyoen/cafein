@@ -46,7 +46,7 @@ public class CustomerController {
 	@RequestMapping("customerloginresult.do")
 	public String loginResult(CustomerVO vo, HttpSession session, Model model, HttpServletResponse response) throws IOException {
 		
-		CustomerVO customer = customerLoginService.getCustomer(null);
+		CustomerVO customer = customerLoginService.getCustomer(vo);
 		
 		PrintWriter out = response.getWriter();
 		
