@@ -60,6 +60,9 @@ $(function(){
 				contentType: 'application/json',
 				success: function(data) { 
 					alert("ty");
+				
+				
+				
 				}
 				
 			});
