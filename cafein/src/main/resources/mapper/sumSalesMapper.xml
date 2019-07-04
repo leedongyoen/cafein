@@ -32,16 +32,16 @@
 		ON R.O_NUM = D.O_NUM
 		WHERE D.O_DNUM = #{oDnum}
 	</select> 
-		<select id="getTimeSales" resultType="salessum">
-		SELECT 
+	 <!-- 	<select id="getTimeSales" resultType="salessum">
+		 
 	</select>	
 		<select id="getMonthSales" resultType="salessum">
-		SELECT 
+		 
 	</select>	
 		<select id="getYearSales" resultType="salessum">
-		SELECT 
+		 
 	</select>	
 		<select id="getMenuSales" resultType="salessum">
 		
-	</select>		 
+	</select>		  -->
 </mapper>
