@@ -5,7 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp"%>
+
 <title>Customer Information Edit Page</title>
+<script src="./js/json.min.js"></script>
+
 <script>
 	function edit() {
 		$("#edit_after").css('display', 'inline');
@@ -27,8 +30,9 @@
 		$.ajax({
 			url:'customerinfo',
 			type:'PUT',
+			contentType:'application/json;charrset=utf-8',
 			dataType:'json',
-			data :$("#customerinfoForm").serialize(),
+			data :JSON.stringify($("#customerinfoForm").serializeObject()),
 			success: function(data){
 				alter("수정완료되었습니다. ㅎㅎㅎㅎ")
 				
