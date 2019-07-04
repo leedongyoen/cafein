@@ -2,6 +2,8 @@ package co.yedam.cafein.vo;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class CustomerVO {
 	
 	private String cId;				//아이디
@@ -13,7 +15,11 @@ public class CustomerVO {
 	private String grade;
 	private String cAdd;
 	private int stmp;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd")			//날짜형식 포맷
 	private Date dob;
+	
+	
 	public String getcId() {
 		return cId;
 	}
