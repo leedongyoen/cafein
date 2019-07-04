@@ -44,19 +44,14 @@ public class CustomerController {
 	public String loginResult(CustomerVO vo, HttpSession session, Model model, HttpServletResponse response) throws IOException {
 		
 		CustomerVO customer = customerLoginService.getCustomer(vo);
-		
 		PrintWriter out = response.getWriter();
 		
 		if(customer == null) {
-			
 			out.println("<script>alert('입력하신 아이디와 비밀번호를 다시 확인해주세요.');</script>");
 			out.flush();
-
 			return "customer/login";
-			
 		} else {
 			session.setAttribute("cId", customer.getcId());
-			
 			return "customer/main";
 		}
 
@@ -71,8 +66,7 @@ public class CustomerController {
 		if(ob != null) {
 			
 			session.removeAttribute("cId");
-			session.removeAttribute("customer");
-			session.invalidate();
+			//session.invalidate();
 		}
 	
 		return "customer/logout";
