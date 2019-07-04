@@ -17,14 +17,35 @@
 		$.ajax({
 			url : "./getsalesday.do",
 			data : {oDnum : 1},
+<<<<<<< HEAD
 			type : "post",
+=======
+			type : "get",
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 			datatype : "json",
 			success : function() {
 
 				var datas = google.visualization.arrayToDataTable([
+<<<<<<< HEAD
 						[ '일별', '총 수량','총 금액'], [ '일', 12,2712300, ], [ '월', 401,450000 ],
+=======
+						[ '요일', '총 수량','총 금액' ], [ '일', 561,2712300, ], [ '월', 401,450000 ],
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 						[ '화', 123,502000 ], [ '수', 321,720000 ], [ '목', 122,870000 ],
-						[ '금', 492,2400000 ], [ '토', 122,3400000 ] ]);
+						[ '금', 492,2400000 ], [ '토', 122,3400000 ] ]
+		/*  		
+				"cols": [
+			        {"id":"","label":"Topping","pattern":"","type":"string"},
+			        {"id":"","label":"Slices","pattern":"","type":"number"}
+			      ],
+			  "rows": [
+			        {"c":[{"v":"Mushrooms","f":null},{"v":3,"f":null}]},
+			        {"c":[{"v":"Onions","f":null},{"v":1,"f":null}]},
+			        {"c":[{"v":"Olives","f":null},{"v":1,"f":null}]},
+			        {"c":[{"v":"Zucchini","f":null},{"v":1,"f":null}]},
+			        {"c":[{"v":"Pepperoni","f":null},{"v":2,"f":null}]}
+			      ]  
+						); */
 
 				var options = {
 					chartArea : {
@@ -35,7 +56,11 @@
 				var table = new google.visualization.Table(document
 						.getElementById('test_dataview'))
 				table.draw(datas, {
+<<<<<<< HEAD
 					showRowNumber: true, width: '30%', height: '30%'
+=======
+					 width: '30%', height: '30%'
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 				});
 
 				var chart = new google.visualization.BarChart(document

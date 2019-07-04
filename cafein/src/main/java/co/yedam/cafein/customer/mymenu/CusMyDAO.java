@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import co.yedam.cafein.viewvo.ViewMymenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
 
 @Repository
@@ -15,7 +16,13 @@ public class CusMyDAO {
 	
 //	private static final String mymenu = "mapper.mymenuMapper";
 
-	public List<MyMenuVO> getMymenu(MyMenuVO vo) {
+	/*
+	 * public List<MyMenuVO> getMymenu(MyMenuVO vo) {
+	 * System.out.println("===> Mybatis getMymenu()"); return
+	 * mybatis.selectList("MymenuDAO.getMymenu", vo); }
+	 */
+	
+	public List<ViewMymenuVO> getMymenu(ViewMymenuVO vo) {
 		System.out.println("===> Mybatis getMymenu()");
 		return mybatis.selectList("MymenuDAO.getMymenu", vo);
 	}

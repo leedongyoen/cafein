@@ -3,6 +3,8 @@ package co.yedam.cafein.customer.info;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +19,9 @@ import co.yedam.cafein.vo.CustomerVO;
 
 @Controller
 public class CustomerInfoController {
+	
 	@Autowired
 	CustomerInfoService customService;
-
 	
 	// 회원 단건 조회
 	@ResponseBody
@@ -31,8 +33,9 @@ public class CustomerInfoController {
 	
 	//수정
 	@ResponseBody
-	@RequestMapping(value="/customerinfo", method=RequestMethod.PUT)
-	public CustomerVO infoedit(CustomerVO vo, Model model) {
+	@RequestMapping(value="/customerinfo", method=RequestMethod.PUT, consumes="application/json")
+	public CustomerVO infoedit(@RequestBody CustomerVO vo, Model model,HttpServletRequest req) {
+		System.out.println(vo+"==============================");
 		customService.infoedit(vo);
 		return vo;
 	}

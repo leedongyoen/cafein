@@ -1,6 +1,123 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="StockDAO">
-<!-- <insert id="insertStock" parameterType="stock"></insert> -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StockDAO"> 
+
+
+	<resultMap type="stock" id="stockMap">
+	     <id column="ST_NUM" property="stNum"></id>
+	     <result column="S_ID" property="sId" />
+	     <result column="ST_NAME" property="stName" />
+	     <result column="ST_QTY" property="stQty" />
+	     <result column="ST_AQTY" property="stAqty" />
+	     <result column="ST_PRICE" property="stPrice" />
+	     <result column="CA_NUM" property="caNum" />
+	     <result column="STAN_UNIT" property="stanUnit" />
+	     <result column="ST_STATUS" property="stStatus" />
+	     <result column="TRUTH_QTY" property="truthQty" />
+	</resultMap>
+   
+   
+  <select id="getStockList" resultMap="stockMap">
+  	SELECT 
+		st_num,
+		s_id,
+		st_name,
+		st_qty,
+		st_aqty,
+		st_price,
+		ca_num,
+		stan_unit,
+		st_status,
+		truth_qty
+	FROM STOCK
+  
+  </select>
+  
+   <select id="getStock" resultMap="stockMap">
+  	SELECT 
+		st_num,
+		s_id,
+		st_name,
+		st_qty,
+		st_aqty,
+		st_price,
+		ca_num,
+		stan_unit,
+		st_status,
+		truth_qty
+	FROM STOCK
+	WHERE st_num = #{stNum}
+  
+  </select>
+  
+  <insert id="insertStock" parameterType="stock">
+  
+  	INSERT INTO STOCK (st_num,
+					s_id,
+					st_name,
+					st_qty,
+					st_aqty,
+					st_price,
+					ca_num,
+					stan_unit,
+					st_status,
+					truth_qty
+					)
+					
+				VALUES (
+					'ST'||LPAD(stock_seq.nextval,3,0),
+					#{sId},
+					#{stName},
+					#{stQty},
+					#{stAqty},
+					#{stPrice},
+					#{ca_num},
+					#{stanUnit},
+					#{stStatus},
+					#{truthQrt}
+				)
+  	</insert>
+   
+   <update id="updateStock" parameterType="stock">
+      UPDATE stock
+      <set>
+         <if test="s_id != null and s_id != ''">TITLE = #{sId},</if>
+         <if test="st_name != null and st_name != ''">TITLE = #{stName},</if>
+         <if test="st_qty != null and st_qty != ''">TITLE = #{stQty},</if>
+         <if test="st_aqty != null and st_aqty != ''">TITLE = #{stAqty},</if>
+         <if test="st_price != null and st_price != ''">TITLE = #{stPrice},</if>
+         <if test="ca_num != null and ca_num != ''">TITLE = #{ca_num},</if>
+         <if test="stan_unit != null and stan_unit != ''">TITLE = #{stanUnit},</if>
+         <if test="st_status != null and st_status != ''">TITLE = #{stStatus},</if>
+         <if test="truth_qty != null and truth_qty != ''">TITLE = #{truthQrt},</if>
+      
+       
+
+      </set>
+      WHERE st_num = #{stNum}
+   </update>
+   
+   <delete id="deleteStock" parameterType="stock">
+      DELETE FROM Stock
+      <where>
+         <choose>
+            <when test="stNumList != null and stNumList.length>0">
+               st_num in
+               <foreach collection="stNumList" open="(" close=")"
+                  separator="," item="item">
+                  #{item}
+               </foreach>
+            </when>
+            <otherwise>
+               st_num = #{stNum}
+            </otherwise>
+         </choose>
+      </where>
+
+   </delete>
+
 
 </mapper>
+ 
+ 

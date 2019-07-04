@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CustomerDAO">
+
+
+
+<!-- 	단건 회원조회 -->
+	<select id="getCustomer" parameterType="customer" resultType="customer">
+		SELECT C_ID, C_NICK, C_PW, C_NAME, C_TEL, C_ADD, DOB
+		FROM CUSTOMER
+		WHERE C_ID = #{cId}
+	</select>
+
+<!-- 	수정 -->
+	<update id="infoedit" parameterType="customer">
+		update customer set
+		c_nick = #{cNick},
+		c_pw = #{cPw},
+		c_name = #{cName},
+		c_tel = #{cTel},
+		c_add = #{cAdd},
+		dob = #{dob}
+		where c_id
+		= #{cId}
+	</update>
+	
+<!-- 	삭제 -->
+	
+	<delete id="deleteCustomer" parameterType="customer">
+		delete from customer
+		where c_id = #{cId}
+	
+	
+	</delete>
+	
+	
+
+
+
+
+
+
+</mapper>

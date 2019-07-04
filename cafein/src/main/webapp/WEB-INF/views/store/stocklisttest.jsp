@@ -13,21 +13,12 @@
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-<<<<<<< HEAD
-    		$.ajax({
-    			url : "./getsalesmenu.do",
-    			data : {oDnum : 1},
-    			type : "post",
-    			datatype : "json",
-    			success : function() {	
-=======
           $.ajax({
-             url : "./getsalesmenu.do",
-           //  data : {oDnum : 1},
-             type : "get",
+             url : "./stocklist.do",
+             data : {oDnum : 1},
+             type : "post",
              datatype : "json",
              success : function() {   
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
     
         var datas = google.visualization.arrayToDataTable([
           ['메뉴명', '총 수량' , '총 금액'],
@@ -46,37 +37,19 @@
         var options = {
          
           title: ''
-<<<<<<< HEAD
         };
-		
-        var table = new google.visualization.Table(document
-				.getElementById('test_dataview1'))
-		table.draw(datas, {
-			showRowNumber: true, width: '30%', height: '30%'
-		});
-=======
-        }; 
       
         var table = new google.visualization.Table(document
             .getElementById('test_dataview1'))
       table.draw(datas, {
          showRowNumber: true, width: '30%', height: '30%'
       });
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
         
         
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-<<<<<<< HEAD
-        	chart.draw(datas, options);
-=======
            chart.draw(datas, options);
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
       }
-<<<<<<< HEAD
-    		});
-=======
           });
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
       };
       //차트 반응형으로 사이즈 크기 조절
       $(window).resize(function() {
@@ -85,28 +58,11 @@
     </script>
 </head>
 <body>
-<<<<<<< HEAD
-	<h2 align = "center">매출</h2>
-	<h3 align="center">메뉴별 통계</h3>
-=======
    <h2 align = "center">매출</h2>
    <h3 align="center">메뉴별 통계</h3>
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
     <div id="piechart" style=" height:500px; margin:auto;"></div>
     <p align = "center"><input type="date"></p>
     
-<<<<<<< HEAD
-   		<table align = "center">
-   			<tr>
-   				<th><button onclick="location.href='salestime.do'">시간별매출</button></th>
-   				<th><button onclick="location.href='salesday.do'">일별매출</button></th>
-   				<th><button onclick="location.href='salesmonth.do'">월별매출</button></th>
-   				<th><button onclick="location.href='salesyear.do'">연별매출</button></th>
-   				<th><button onclick="location.href='salesmenu.do'">메뉴별매출</button></th>
-   			</tr>
-   		</table>
-  	<div align="center" id="test_dataview1"></div>
-=======
          <table align = "center">
             <tr>
                <th><button onclick="location.href='salestime.do'">시간별매출</button></th>
@@ -117,6 +73,5 @@
             </tr>
          </table>
      <div align="center" id="test_dataview1"></div>
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
   </body>
 </html>
