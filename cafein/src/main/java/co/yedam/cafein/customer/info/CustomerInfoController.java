@@ -33,10 +33,9 @@ public class CustomerInfoController {
 	
 	//수정
 	@ResponseBody
-	@RequestMapping(value="/customerinfo", method=RequestMethod.PUT)
-	public CustomerVO infoedit(CustomerVO vo, Model model,HttpServletRequest req) {
+	@RequestMapping(value="/customerinfo", method=RequestMethod.PUT, consumes="application/json")
+	public CustomerVO infoedit(@RequestBody CustomerVO vo, Model model,HttpServletRequest req) {
 		System.out.println(vo+"==============================");
-		System.out.println("==>"+req.getParameter("cNick"));
 		customService.infoedit(vo);
 		return vo;
 	}
