@@ -72,7 +72,7 @@ body {
         	<a class="dropdown-item" href="${pageContext.request.contextPath}/storeinfoedit.do">Store Id</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/customerlist.do">고객 조회</a>
           	<a class="dropdown-item" href="${pageContext.request.contextPath}/salestime.do">매출</a>
-          	<a class="dropdown-item" href="${pageContext.request.contextPath}/storemenulist.do">메뉴 관리</a>
+          	<a class="dropdown-item" href="${pageContext.request.contextPath}/storerecipemenu">메뉴 관리</a>
           	<a class="dropdown-item" href="${pageContext.request.contextPath}/recipelist.do">레시피 관리</a>
 		  	<a class="dropdown-item" href="${pageContext.request.contextPath}/storeorderlist.do">주문 내역</a>
         </div>
