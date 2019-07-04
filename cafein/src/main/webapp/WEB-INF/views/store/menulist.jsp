@@ -11,7 +11,7 @@
 
 </head>
 <body>
-${storemenu.mNum }
+
 	<div>
 
 		<!-- 메뉴 CRUD -->

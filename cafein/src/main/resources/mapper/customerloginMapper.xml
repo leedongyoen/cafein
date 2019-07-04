@@ -7,7 +7,7 @@
 			   ,C_PW
 			   ,C_JOIN
 		FROM CUSTOMER
-		WHERE C_ID = #{cId}
+		WHERE C_ID = #{cId} AND C_PW = #{cPw}
 	</select>
 
 	<select id = "getCustomerList" resultType="customer">

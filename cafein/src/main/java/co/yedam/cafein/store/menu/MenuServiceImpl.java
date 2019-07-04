@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.vo.MenuVO;
 @Service
-public class MenuServiceImpl implements MenuService {
+public class MenuServiceImpl{
 
 	@Resource
 	MenuDAO menuDao;
 
-	@Override
 	public List<MenuVO> getMenuList(MenuVO vo) {
 		return menuDao.getMenuList(vo);
 	}

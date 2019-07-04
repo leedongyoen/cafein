@@ -10,8 +10,6 @@
 		FROM my_menu
 		WHERE C_ID = #{cId}
 	</select>
-<delete id="deleteMymenu" parameterType="mymenu">
 
-</delete>
 
 </mapper>

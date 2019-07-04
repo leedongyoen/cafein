@@ -86,7 +86,7 @@
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
-								<td><input type="text" id="sName" name="sName" value="매장명" readonly="readonly"></td>
+								<td><input type="text" id="sName" name="sName" readonly="readonly"></td>
 							</tr>
 							
 							<tr>
@@ -96,7 +96,7 @@
 							<tr>
 								<th>PRICE</th>
 								<td><input type="text" id="price" name="price" readonly="readonly">&nbsp;&nbsp;
-									<button type="button" onclick="add(1)">+</button> <span id="no">1개 </span>
+									<button type="button" onclick="add(1)">+</button> <span id="ordernum">1</span>
 									<button type="button" onclick="add(-1)">-</button>
 								</td>
 								
@@ -114,13 +114,14 @@
 							</tr>
 							<tr>
 								<th>TOTAL PRICE</th>
-								<td><input type="text" name="totalPrice" readonly="readonly"></td>
+								<td><input type="text" id="totalPrice" name="totalPrice" readonly="readonly"></td>
 							</tr>
 						</table>
 					</form>
 				
 				</div>
 				<div class="modal-footer">	
+					<button type="button" class="btn btn-default" >나만의 메뉴 등록</button>	
 					<button type="button" class="btn btn-default" >주문</button>	
 					<button type="button" class="btn btn-default" >담기</button>			
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -128,8 +129,7 @@
 			</div>
 		</div>
 	</div>
-	
-	
+
 	<!-- 매장 선택  Modal -->
 	<div class="modal fade" id="storelistmodal" role="dialog">
 		<div class="modal-dialog">		
@@ -224,24 +224,32 @@
 			}
 		});
 	}
+	
+/* 	<th>PRICE</th>
+	<td><input type="text" id="price" name="price" readonly="readonly">&nbsp;&nbsp;
+		<button type="button" onclick="add(1)">+</button> <span id="ordernum">1개 </span>
+		<button type="button" onclick="add(-1)">-</button>
+	</td> */
 		
 	function add(num) {
 		var price = $('#price').val();
-		var v_totalprice =price;
+		var v_totalprice = $('#totalPrice').val();
+
+		var no = $("#ordernum").html();
 		if (num == -1) {
-			if (no == 1) {
+			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
 				return;
 			}
-			no--;
-			v_totalprice = v_totalprice - price;
+			no = Number(no) - 1;
+			v_totalprice = Number(v_totalprice) - Number(price);
 		} else if (num == 1) {
-			no++;
-			v_totalprice = priv_totalpricece + price;
+			no = Number(no) + 1;
+			v_totalprice = Number(v_totalprice) + Number(price);
 		}
-		$('#price').val(v_totalprice);
-		$('#no').val(no+"개");
-
+		
+		$('#totalPrice').val(v_totalprice);
+		$("#ordernum").html(no);
 	}
 
 $(function(){
@@ -258,6 +266,7 @@ $(function(){
 	 $(document).on("click","#coffeetable tbody tr",function(event){
 		 $('#mName').val($(this).children().eq(1).text());
 		$('#price').val($(this).children().eq(2).text());
+		$('#totalPrice').val($(this).children().eq(2).text());
 		$('#sName').val(storename);
 		console.log(storename);
 		 $('#menudetailModal').modal('show');
@@ -267,6 +276,8 @@ $(function(){
 	$(document).on("click","#beveragetable tbody tr",function(event){
 		 $('#mName').val($(this).children().eq(1).text());
 		$('#price').val($(this).children().eq(2).text());
+		$('#totalPrice').val($(this).children().eq(2).text());
+		$('#sName').val(storename);
 		 $('#menudetailModal').modal('show');
     });
 	
@@ -274,6 +285,8 @@ $(function(){
 	$(document).on("click","#bakerytable tbody tr",function(event){
 		 $('#mName').val($(this).children().eq(1).text());
 		$('#price').val($(this).children().eq(2).text());
+		$('#totalPrice').val($(this).children().eq(2).text());
+		$('#sName').val(storename);
 		 $('#menudetailModal').modal('show');
     });
 

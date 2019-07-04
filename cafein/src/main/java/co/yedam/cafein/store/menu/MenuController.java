@@ -19,9 +19,9 @@ import co.yedam.cafein.vo.MenuVO;
 public class MenuController {
 
 	@Autowired
-	MenuService service;
+	MenuServiceImpl service;
 
-	@RequestMapping(value="/menu", method=RequestMethod.GET)
+	@RequestMapping(value="/storerecipemenu", method=RequestMethod.GET)
 	public ModelAndView getMenuList(ModelAndView mv) {
 		MenuVO vo = new MenuVO();
 		mv.addObject("storemenu",service.getMenuList(vo));
