@@ -1,4 +1,4 @@
-package co.yedam.cafein.store;
+package co.yedam.cafein.store.stock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

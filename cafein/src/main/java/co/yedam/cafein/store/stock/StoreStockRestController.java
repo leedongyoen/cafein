@@ -1,4 +1,4 @@
-package co.yedam.cafein.store;
+package co.yedam.cafein.store.stock;
 
 import java.util.HashMap;
 import java.util.List;
