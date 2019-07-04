@@ -8,7 +8,72 @@
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp" %>
 <title>Insert title here</title>
+<script type="./js/json.min.js"></script>
+<script>
+$(function(){
+	
+	$('#toggleTable').hide();
+	
+	$("#menuTable tbody tr").click(function(){
+		$('#list').empty();
+		$('#toggleTable').show();
+		var str="";
+		var tdArr = new Array();
+		
+		var tr = $(this);
+		var td = tr.children();
+		
+		console.log("row: "+tr.text());
+		
+		var mNum = td.eq(0).text();
+		var mName = td.eq(1).text();
+		var mPrice = td.eq(2).text();
+		var mCate = td.eq(3).text();
+		var saleState = td.eq(4).text();
+		var menuState = td.eq(5).text();
+		
+		if(mCate=='CACO'){mCate="coffee";}
+		else if(mCate=='CADR'){mCate="drink";}
+		else if(mCate=='CADE'){mCate="desert";}
+		else if(mCate=='CAOP'){mCate="option";}
+		console.log("sale : "+saleState);
+		console.log("menu : "+menuState);
+		$("#mNum").val(mNum);
+		$("#mName").val(mName);
+		$("#mPrice").val(mPrice);
+		$("#mCategory").val(mCate);
+		$('input[name="salestate"]').removeAttr('checked');
+		$("input:radio[name=salestate]:input[value='"+saleState+"']").attr("checked", true);
+		$('input[name="menustate"]').removeAttr('checked');
+		$("input:radio[name=menustate]:input[value='"+menuState+"']").attr("checked", true);
+		
+	})
+	
 
+	function menuUpdate(){
+		$("#btnUpdate").on('click',function(){
+			$.ajax({
+				url: "menues",
+				type: 'PUT',
+				dataType: 'json',
+				data: JSON.stringify($("#menudetail").serializeObject()),
+				contentType: 'application/json',
+				success: function(data) { 
+					alert("ty");
+				}
+				
+			});
+		
+		});
+		
+	}//menuUpdate
+	
+});
+
+
+
+
+</script>
 </head>
 <body>
 
@@ -21,7 +86,7 @@
 			<div>
 				<h3>[메뉴 목록]</h3>
 				<form action="#">
-					<table border="1">
+					<table border="1" id="menuTable">
 						<thead>
 							<tr>
 								<th>메뉴 번호</th>
@@ -36,133 +101,85 @@
 							</tr>
 						</thead>
 						<tbody>
-						
-							<tr onclick="">
+						<c:forEach items="${storemenu}" var="menu">
+							<tr>
 								<!-- ****tr 1번 클릭 시, 레시피 상세조회 페이지가 등장 -->
 								<!-- ****tr 2번 더블 클릭 시, 메뉴 상세조회 페이지가 등장 -->
-								<td>ME006</td>
-								<td>카페 모카</td>
-								<td>5000</td>
-								<td>커피</td>
-								<td>Y</td>
-								<td>사용 가능</td>
+								<td>${menu.mNum}</td>
+								<td>${menu.mName}</td>
+								<td>${menu.mPrice}</td>
+								<td>${menu.caNum}</td>
+								<td>${menu.mStat}</td>
+								<td>${menu.menuSale}</td>
 								<td><input type="checkbox"></td>
 							</tr>
-							<tr onclick="">
-								<!-- tr 누를경우 상세조회 페이지가 등장 -->
-								<td>ME008</td>
-								<td>카라멜 마끼야또</td>
-								<td>5600</td>
-								<td>커피</td>
-								<td>Y</td>
-								<td>사용 가능</td>
-								<td><input type="checkbox"></td>
-							</tr>
-							<tr onclick="">
-								<!-- tr 누를경우 상세조회 페이지가 등장 -->
-								<td>ME010</td>
-								<td>녹차 라떼</td>
-								<td>4200</td>
-								<td>음료</td>
-								<td>Y</td>
-								<td>사용 가능</td>
-								<td><input type="checkbox"></td>
-							</tr>
-							<tr onclick="">
-								<!-- tr 누를경우 상세조회 페이지가 등장 -->
-								<td>ME013</td>
-								<td>자몽 에이드</td>
-								<td>5000</td>
-								<td>음료</td>
-								<td>Y</td>
-								<td>사용 가능</td>
-								<td><input type="checkbox"></td>
-							</tr>
-							<tr onclick="">
-								<!-- tr 누를경우 상세조회 페이지가 등장 -->
-								<td>ME015</td>
-								<td>망고 스무디</td>
-								<td>3800</td>
-								<td>음료</td>
-								<td>Y</td>
-								<td>사용 가능</td>
-								<td><input type="checkbox"></td>
-							</tr>
-							<tr onclick="">
-								<!-- tr 누를경우 상세조회 페이지가 등장 -->
-								<td>ME016</td>
-								<td>프레즐</td>
-								<td>2500</td>
-								<td>디저트</td>
-								<td>Y</td>
-								<td>사용 가능</td>
-								<td><input type="checkbox"></td>
-							</tr>
-							<tr onclick="">
-								<!-- tr 누를경우 상세조회 페이지가 등장 -->
-								<td>ME019</td>
-								<td>초코케이크</td>
-								<td>5500</td>
-								<td>디저트</td>
-								<td>Y</td>
-								<td>사용 가능</td>
-								<td><input type="checkbox"></td>
-							</tr>
+							
+						</c:forEach>
+							
 						</tbody>
 					</table>
-					<input type="button" value="추가"> <input type="submit"
-						value="삭제">
+					
+					<input type="button" value="추가">
+					<input type="submit"value="삭제">
+					
 					<!-- 체크된 항목 삭제 -->
 				</form>
+				<button id="menuSelect">수정</button>
 			</div>
 
-
+			
+			
 			<!-- 상세조회&수정 -->
-			<div style="border: 1px solid orange; margin: 3px">
+			<div style="border: 1px solid orange; margin: 3px" id="toggleTable">
 				<h3>[메뉴 상세 추가/조회/수정]</h3>
 
-				<form action="">
+				<form id="menudetail">
 					<table border="1">
 
 
 						<tr>
 							<th>메뉴 번호</th>
-							<td><input type="text" value="ME006" readonly></td>
+							<td><input type="text" id="mNum" name="" readonly></td>
 						</tr>
 						<tr>
 							<th>메뉴 이름</th>
-							<td><input type="text" value="카페 모카"></td>
+							<td><input type="text" id="mName" name="" ></td>
 						</tr>
 						<tr>
 							<th>메뉴 가격(원)</th>
-							<td><input type="text" value="5000"></td>
+							<td><input type="text" id="mPrice" name="" ></td>
 						</tr>
 						<tr>
 							<th>카테고리</th>
-							<td><select name="VALUES">
+							<td><select id="mCategory" name="values">
 									<option value="">선택</option>
 									<option value="coffee">커피</option>
-									<option value="veberage">음료</option>
+									<option value="drink">음료</option>
 									<option value="desert">디저트</option>
+									<option value="option">옵션</option>
 							</select></td>
 						</tr>
+
 						<tr>
 							<th>판매 상태</th>
-							<td><input type="radio" name="salestate" value="Y" checked>Y
-								<input type="radio" name="salestate" value="N">N</td>
+							<td>
+							<input type="radio" id="salestate" name="salestate" value="A1">판매 가능
+							<input type="radio" id="salestate" name="salestate" value="A2">sold out</td>
 						</tr>
 						<tr>
 							<th>메뉴 상태</th>
-							<td><input type="radio" name="menustate" value="Y" checked>Y
-								<input type="radio" name="menustate" value="N">N</td>
+							<td>
+							<input type="radio" id="menustate" name="menustate" value="Y">Y
+							<input type="radio" id="menustate" name="menustate" value="N">N</td>
+							
 						</tr>
 							<tr>
 								<th>메뉴 사진</th>
 								<td><input type="file" value="파일 선택" name="file" /></td>
 							</tr>
 					</table>
-					<input type="submit" value="확정">
-					<input type="button" value="취소">
+					<input type="button" value="확정" id="btnUpdate">
+					<input type="button" value="취소" id="btnCancle">
 				</form>
 			</div>
 
@@ -193,6 +210,7 @@
 										<option value="milk">우유</option>
 										<option value="soymilk">두유</option>
 								</select> <input type="text" value="1">
+									
 									<button onclick="#">+</button>
 									<button onclick="#">-</button>
 				<table border="1">
