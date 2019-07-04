@@ -1,11 +1,8 @@
 package co.yedam.cafein.customer;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +49,7 @@ public class CustomerController {
 		
 		if(customer == null) {
 			
-			out.println("<script>alert('등록되지 않은 아이디입니다.');</script>");
+			out.println("<script>alert('입력하신 아이디와 비밀번호를 다시 확인해주세요.');</script>");
 			out.flush();
 
 			return "customer/login";
