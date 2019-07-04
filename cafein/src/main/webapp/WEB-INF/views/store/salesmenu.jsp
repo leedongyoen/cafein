@@ -37,7 +37,7 @@
         var options = {
          
           title: ''
-        };
+        }; 
       
         var table = new google.visualization.Table(document
             .getElementById('test_dataview1'))

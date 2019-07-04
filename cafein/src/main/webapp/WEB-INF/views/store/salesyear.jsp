@@ -55,7 +55,7 @@
 };
       $(window).resize(function(){
       	drawChart();	  
-      	});
+      	}); 
 
     </script>
 </head>

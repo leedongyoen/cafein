@@ -17,7 +17,7 @@
 	function drawBasic() {
 		$.ajax({
 			url : "./getsalesmonth.do",
-			//data : {oDnum : 1},
+		//	data : {oDnum : 1},
 			type : "get",
 			datatype : "json",
 			success : function() {

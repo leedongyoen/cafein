@@ -46,15 +46,15 @@
 			
 			var chart = new google.visualization.LineChart(document
 					.getElementById('chart_div'));
-
+ 
 			chart.draw(data, options);
 			}
 		});
 	};
 		$(window).resize(function() {
 			drawBasic();
-		});
-	</script>
+		}); 
+	</script> 
 </head>
 <body>
 	<h2 align="center">매출</h2>
