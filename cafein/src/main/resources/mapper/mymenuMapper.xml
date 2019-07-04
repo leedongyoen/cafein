@@ -2,14 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MymenuDAO">
 <!-- 고객 나만의 메뉴 조회 -->
-<select id="getMymenu" resultType="mymenu">
-		SELECT MY_NUM "myNum"
-		, CU_NUM "cuNum"
-		, M_NUM "mNum"
-		, C_ID "cId"
-		FROM my_menu
-		WHERE C_ID = #{cId}
-	</select>
 
-
+<select id="getMymenu" resultType="viewmymenu">
+SELECT
+	  C_ID "cId"
+	, S_NAME "sName"
+	, M_NAME "mName"
+	, M_PRICE "mPrice"
+	, CA_NUM "caNum"
+	, CU_NUM "cuNum"
+	, OP_NUM "opNum"
+FROM MYMENU_VIEW
+WHERE C_ID=#{cId}
+</select>
 </mapper>

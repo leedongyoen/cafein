@@ -16,19 +16,26 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
 	public CustomerVO getCustomer(CustomerVO vo) {
 		return dao.getCustomer(vo);
 	}
+	
+	@Override
+	public CustomerVO getKakaoCustomer(CustomerVO vo) {
+		return dao.getKakaoCustomer(vo);
+	}
+	
 	@Override
 	public List<CustomerVO> getCustomerList(CustomerVO vo) {
 		return dao.getCustomerList(vo);
 	}
-/*
+
 	@Override
 	public int insertCustomerKakao(CustomerVO vo) {
 		return dao.insertCustomerKakao(vo);
 	}
-
+/*
 	@Override
 	public int insertCustomerNaver(CustomerVO vo) {
 		return dao.insertCustomerNaver(vo);
 	}
 */
+	
 }

@@ -8,7 +8,7 @@
 </head>
 <body>
 	<!-- 세션에서 token을 가져와서 출력한다. -->
-    session token : ${sessionScope.token}
+    session id : <%= (String)session.getAttribute("cId") %>
     <br>
    
     <br>

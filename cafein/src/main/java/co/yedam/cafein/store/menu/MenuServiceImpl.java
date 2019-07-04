@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.vo.MenuVO;
@@ -18,6 +17,14 @@ public class MenuServiceImpl{
 		return menuDao.getMenuList(vo);
 	}
 	
-
+	public int insertUser(MenuVO vo) {		
+		return menuDao.insertMenu(vo);
+	}
+	public int updateUser(MenuVO vo) {
+		return menuDao.updateMenu(vo);
+	}
+	public int deleteUser(MenuVO vo) {
+		return menuDao.deleteMenu(vo);
+	}
 
 }

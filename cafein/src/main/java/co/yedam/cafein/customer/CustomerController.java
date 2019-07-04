@@ -2,6 +2,7 @@ package co.yedam.cafein.customer;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -52,23 +53,33 @@ public class CustomerController {
 			return "customer/login";
 		} else {
 			session.setAttribute("cId", customer.getcId());
+			// 가입경로를 알기위해 세션에 담음(로그아웃시 필요!)
+			session.setAttribute("cJoin", customer.getcJoin());
 			return "customer/main";
 		}
 
 	}
 	
-	// 고객 로그아웃 
+	// 고객 로그아웃 & 카카오 로그아웃
 	@RequestMapping("customerlogout.do")
 	public String logout(HttpSession session) {
 		
-		Object ob = session.getAttribute("cId");
+		String cJoin = (String) session.getAttribute("cJoin");
+		System.out.println("가입 경로 : "+cJoin);
 		
-		if(ob != null) {
-			
+		if(cJoin.equals("web")) {
+			System.out.println("일반 로그아웃");
 			session.removeAttribute("cId");
-			//session.invalidate();
+			session.removeAttribute("cJoin");
+		} else if(cJoin.equals("kakao")) {
+			System.out.println("카카오 로그아웃");
+			KakaoRestAPI kakao = new KakaoRestAPI();
+			kakao.kakaoLogout((String)session.getAttribute("cId"));
+			session.removeAttribute("cId");
+			session.removeAttribute("cJoin");
+			
 		}
-	
+		
 		return "customer/logout";
 	}
 	
@@ -85,40 +96,34 @@ public class CustomerController {
 		
 	}
 	
-	
 	// 카카오 로그인
-	@RequestMapping(value = "/logininfo", produces = "application/json")
-	public String kakaoLogin(@RequestParam("code") String code, Model model, HttpSession session)
+	@RequestMapping(value = "/kakaologin", produces = "application/json")
+	public String kakaoLogin(@RequestParam("code") String code, Model model, HttpSession session, CustomerVO vo)
 	{
-		System.out.println("카카오 로그인 할 때 임시 코드값 : " + code);
-		System.out.println("카카오 로그인 후 결과값");
-		
-		// kakao rest api 객체 선언
 		KakaoRestAPI kakao = new KakaoRestAPI();
-		// 결과값을 node에 담아줌
-		JsonNode node = kakao.getAccessToken(code);
-		// 결과값 출력
-		System.out.println("=======================================\n node : "+node);
-		// 노드 안에 있는 access_token 값을 꺼내 문자열로 변환
-		String token = node.get("access_token").toString();
-		session.setAttribute("token", token);
+		String access_token = kakao.getAccessToken(code);
+		HashMap<String, Object> userInfo = kakao.getUserInfo(access_token);
+		String kakaoId = (String) userInfo.get("kakaoId");
+		String kakaoName = (String) userInfo.get("nickname");
 		
-		// 리턴 수정하기
-		return "customer/logininfo";
+		vo.setcId(kakaoId);
+		
+		System.out.println("-----------------------------------------\n kakao id : " + kakaoId);
+		CustomerVO customer = customerLoginService.getKakaoCustomer(vo);
+		System.out.println("customer : "+customer);
+		
+		if(customer == null) {
+			vo.setcId(kakaoId);
+			vo.setcName(kakaoName);
+			customerLoginService.insertCustomerKakao(vo);
+			
+		}
+		// 닉네임 존재 시 세션에 해당 아이디 등록
+		session.setAttribute("cId", userInfo.get("kakaoId"));
+		session.setAttribute("cJoin", customer.getcJoin());
+
+		return "customer/main";
 		
 	}
-	
-	// 카카오 로그아웃
-	@RequestMapping(value = "/logout", produces = "application/json")
-    public String Logout(HttpSession session) {
-        //kakao restapi 객체 선언
-		KakaoRestAPI kakao = new KakaoRestAPI();
-        //노드에 로그아웃한 결과값음 담아줌 매개변수는 세션에 잇는 token을 가져와 문자열로 변환
-        JsonNode node = kakao.Logout(session.getAttribute("token").toString());
-        //결과 값 출력
-        System.out.println("로그아웃 후 반환되는 아이디 : " + node.get("id"));
-        return "customer/main";
-    } 
-	
 
 }
