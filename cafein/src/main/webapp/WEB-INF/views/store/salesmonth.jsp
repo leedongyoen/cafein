@@ -5,7 +5,65 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
 <title>월별 통계</title>
+	<script type="text/javascript">
+	google.charts.load('current', {
+		packages :  [ 'table', 'corechart', 'bar' ]
+	});
+	google.charts.setOnLoadCallback(drawBasic);
+
+	function drawBasic() {
+		$.ajax({
+			url : "./getsalesmonth.do",
+			//data : {oDnum : 1},
+			type : "get",
+			datatype : "json",
+			success : function() {
+
+				var datas = google.visualization.arrayToDataTable([
+						[ '월', '총 수량','총 금액' ],
+						[ '1월', 561,2712300, ],
+						[ '2월', 401,450000 ],
+						[ '3월', 123,502000 ],
+						[ '4월', 321,720000 ],
+						[ '5월', 122,870000 ],
+						[ '6월', 492,2400000 ],
+						[ '7월', 122,3400000 ],
+						[ '8월', 122,3400000 ],
+						[ '9월', 122,3400000 ],
+						[ '10월', 122,3400000 ],
+						[ '11월', 122,3400000 ],
+						[ '12월', 122,3400000 ]
+						]);
+
+				var options = {
+					title : '',
+					chartArea : {
+						width : '40%'
+					}
+				};
+
+				var table = new google.visualization.Table(document
+						.getElementById('test_dataview2'))
+				table.draw(datas, {
+					 width: '30%', height: '30%'
+				});
+
+				var chart = new google.visualization.BarChart(document
+						.getElementById('chart_div'));
+
+				chart.draw(datas, options);
+			}
+		});
+
+	};
+	$(window).resize(function() {
+		drawBasic();
+
+	});
+	</script>
 </head>
 <body>
 	<h2 align="center">매출</h2>
@@ -13,45 +71,7 @@
 	<script type="text/javascript"
 		src="https://www.gstatic.com/charts/loader.js"></script>
 	<div id="chart_div"></div>
-	<script type="text/javascript">
-		google.charts.load('current', {
-			packages : [ 'corechart', 'bar' ]
-		});
-		google.charts.setOnLoadCallback(drawBasic);
-
-		function drawBasic() {
-
-			var data = google.visualization.arrayToDataTable([
-					[ '-', '2019', ], [ '1월', 10232000 ], [ '2월', 9570000 ],
-					[ '3월', 12053004 ], [ '4월', 8657400 ], [ '5월', 13032050 ],
-					[ '6월', 7545661 ],
-
-			]);
-
-			var options = {
-				title : '',
-				chartArea : {
-					width : '40%'
-				},
-				hAxis : {
-					title : '',
-					minValue : 0
-				},
-				vAxis : {
-					title : ''
-				}
-			};
-
-			var chart = new google.visualization.BarChart(document
-					.getElementById('chart_div'));
-
-			chart.draw(data, options);
-		}
-
-		$(window).resize(function() {
-			drawBasic();
-		});
-	</script>
+	<div align="center" id="test_dataview2"></div>
 	<div>
 		<table align="center">
 			<tr>
@@ -63,52 +83,6 @@
 			</tr>
 		</table>
 	</div>
-	<p align="center">
-		<input type="date">
-	</p>
-	<div>
-		<table border="1" align="center">
-			<tr>
-				<th width=250>월</th>
-				<th width=250>총 수량</th>
-				<th width=250>총 금액</th>
-			</tr>
-			<tr>
-				<td>1월</td>
-				<td>1419</td>
-				<td>20,232,000원</td>
-			</tr>
-			<tr>
-				<td>2월</td>
-				<td>1263</td>
-				<td>29,570,000원</td>
-			</tr>
-			<tr>
-				<td>3월</td>
-				<td>1557</td>
-				<td>22,053,004원</td>
-			</tr>
-			<tr>
-				<td>4월</td>
-				<td>1182</td>
-				<td>18,657,400원</td>
-			</tr>
-			<tr>
-				<td>5월</td>
-				<td>1734</td>
-				<td>33,032,050원</td>
-			</tr>
-			<tr>
-				<td>6월</td>
-				<td>1341</td>
-				<td>19,832,648원</td>
-			</tr>
-			<tr>
-				<td>합계</td>
-				<td>8496</td>
-				<td>143,377,102원</td>
-			</tr>
-		</table>
-	</div>
+	<p align="center"><input type="date"></p>
 </body>
 </html>
