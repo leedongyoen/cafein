@@ -19,18 +19,14 @@
 		<collection property="oNum" resultMap="order.oNum"/>
 	</resultMap> -->
 	<select id="getDaySales" resultType="salessum">
-		SELECT R.O_NUM 
-		,D.O_DNUM
-		,D.O_QTY
-		,R.TOTAL
-		,M.M_NAME
-		,R.O_DATE
-		,M.M_NUM
-		FROM ORDER_DETAILS D JOIN MENU M 
-		ON D.M_NUM = M.M_NUM
-		JOIN ORDERS R 
-		ON R.O_NUM = D.O_NUM
-		WHERE D.O_DNUM = #{oDnum}
+	SELECT WEEK , SUM(O_QTY) , SUM(TOTAL)
+	FROM 
+	(SELECT O_DATE, O_QTY, TO_CHAR(O_DATE, 'DY') WEEK, 
+	TOTAL
+	FROM ORDERS O JOIN ORDER_DETAILS OD
+	ON O.O_NUM = OD.O_NUM
+	)
+	GROUP BY WEEK;
 	</select> 
 	<!-- 	<select id="getTimeSales" resultType="salessum">
 		SELECT 
