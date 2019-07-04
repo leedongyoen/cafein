@@ -34,8 +34,8 @@
       <label>ID </label><input type = "text" name = "cId"><br>
       <label>PW </label><input type = "password" name = "cPw"><br><br>
       <input type = "button" class="btn btn-default " onclick = "checkForm()" value = "로그인">
-      <a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/logininfo&response_type=code">카카오 로그인</a>
-	  <!--  https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/customerlogin&response_type=code -->
+      <a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/kakaologin&response_type=code">카카오 로그인</a>
+	  <!-- 카카오로 로그인 시 이 로그아웃 버큰 사용하기 -->
 	  <a href="http://developers.kakao.com/logout"></a>
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerjoin.do'" value = "회원가입">
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerfindidpw.do'" value = "ID/PW 찾기">

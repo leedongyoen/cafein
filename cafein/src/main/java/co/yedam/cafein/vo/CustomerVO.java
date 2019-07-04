@@ -14,6 +14,7 @@ public class CustomerVO {
 	private String cAdd;
 	private int stmp;
 	private Date dob;
+	private String cJoin;
 	public String getcId() {
 		return cId;
 	}
@@ -74,11 +75,17 @@ public class CustomerVO {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
+	public String getcJoin() {
+		return cJoin;
+	}
+	public void setcJoin(String cJoin) {
+		this.cJoin = cJoin;
+	}
 	@Override
 	public String toString() {
 		return "CustomerVO [cId=" + cId + ", cNick=" + cNick + ", cTel=" + cTel + ", cName=" + cName + ", cPw=" + cPw
 				+ ", pPoint=" + pPoint + ", grade=" + grade + ", cAdd=" + cAdd + ", stmp=" + stmp + ", dob=" + dob
-				+ "]";
+				+ ", cJoin=" + cJoin + "]";
 	}
-	
+
 }
