@@ -9,6 +9,15 @@
 		FROM CUSTOMER
 		WHERE C_ID = #{cId} AND C_PW = #{cPw}
 	</select>
+	
+	<!-- 카카오 로그인 시 db에 정보가 있는지 확인 -->
+	<select id = "getKakaoCustomer" resultType="customer">
+		SELECT  C_ID
+				, C_NAME
+				, C_JOIN
+		FROM CUSTOMER
+		WHERE C_ID = #{cId}
+	</select>
 
 	<select id = "getCustomerList" resultType="customer">
 		SELECT  C_ID
@@ -16,20 +25,18 @@
 			   ,C_JOIN
 		FROM CUSTOMER
 	</select>
-	<!-- 
-	KAKAO로 로그인 시 DB에 정보가 없으면 insert
+	
+	<!-- KAKAO로 로그인 시 DB에 정보가 없으면 insert -->
 	<insert id = "insertCustomerKakao">
 		INSERT INTO CUSTOMER ( C_ID
 							  ,C_NAME
-							  ,DOB
 							  ,C_JOIN )
 		VALUES ( #{cId}
 				,#{cName}
-				,#{dob}
-				'kakao'
+				,'kakao'
 		)
 	</insert>
-	
+	<!-- 
 	NAVER로 로그인 시 DB에 정보가 없으면 insert
 	<insert id = "insertCustomerNaver">
 		INSERT INTO CUSTOMER ( C_ID

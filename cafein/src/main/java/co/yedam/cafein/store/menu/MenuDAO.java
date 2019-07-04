@@ -15,6 +15,20 @@ public class MenuDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 	
+	public int insertMenu(MenuVO vo) {
+		System.out.println("-> mybatis insertMenu()");
+		return mybatis.insert("MenuDAO.",vo);
+	}
+	
+	public int updateMenu(MenuVO vo) {
+		System.out.println("-> mybatis updateMenu()");
+		return mybatis.update("MenuDAO.updateMenu",vo);
+	}
+	public int deleteMenu(MenuVO vo) {
+		System.out.println("-> mybatis deleteMenu()");
+		return mybatis.delete("MenuDAO.",vo);
+	}
+	
 	public List<MenuVO> getMenuList(MenuVO vo) {
 		System.out.println("-> mybatis insertBoard procedure 을 이용함");
 		return mybatis.selectList("MenuDAO.getMenuList", vo);

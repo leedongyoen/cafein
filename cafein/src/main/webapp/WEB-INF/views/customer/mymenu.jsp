@@ -104,7 +104,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <div class = "container">
 <div align = "right">
 
-<a href="${pageContext.request.contextPath}/mymenuregi.do" class="test btn">추가</a><br>
+<a href="${pageContext.request.contextPath}/storelistmenu" class="test btn">추가</a><br>
 <div id="somediv" title="" style="display:none;">
     <div id="thedialog"></div>
 </div>
@@ -113,11 +113,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
 </div>
 <table class="table text-center">
 <thead>
-		<tbody></tbody>
+		
 </table>
 
-<img id="myImg" src="image/coffee1.jpg" width="200" heigh="200"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="checkbox" name="myMenu1" value="myMenu1"  >아메리카노 ,알렉산더
+<img id="myImg" src="image/coffee1.jpg" width="200" heigh="200"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="checkbox" name="myMenu1" value="myMenu1"  >
 </div>
 
 
@@ -126,18 +126,18 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <div id="myModal" class = "modal">
 <div class="modal-content">
 		<h1 align="center">나만의메뉴상세</h1>
-		<table class = "table table-hover">
+		<table id="detailtable" class = "table table-hover">
 		<tr>
 			<th>매 장 명</th>
-			<td>(매장명)</td>
+			<td><input type="text" id="sName" name="sName" readonly="readonly"></td>
 		</tr>
 		<tr>
 			<th>메 뉴 명</th>
-			<td>(상품명)</td>
+			<td><input type="text"  id="mName" name="mName" readonly="readonly"></td>
 		</tr>
 		<tr>
 			<th>가 격</th>
-			<td>(가격)</td>
+			<td><input type="text" id="mPrice" name="mPrice" readonly="readonly"></td>
 		</tr>
 		<tr>
 			<th>HOT/ICE</th>
@@ -149,22 +149,21 @@ body {font-family: Arial, Helvetica, sans-serif;}
 		<tr>
 			<th>옵  션</th>
 			<td>
-			<input type="checkbox" name="option" value="whipping" /> <label for="whipping">휘핑크림 추가(+500원)</label><br>
-			<input type="checkbox" name="option" value="shot" />	 <label for="shot">1샷 추가(+500원)</label><br>
-			<input type="checkbox" name="option" value="syrup" /> <label for="syrup">시럽 추가(+0원)</label>
+			<input type="checkbox" name="mNum" value="" /> <label for="whipping">휘핑크림 추가(+500원)</label><br>
+			<input type="checkbox" name="mNum" value="shot" />	 <label for="shot">1샷 추가(+500원)</label><br>
+			<input type="checkbox" name="mNum" value="syrup" /> <label for="syrup">시럽 추가(+0원)</label>
 			</td>
 		</tr>
 		<tr>
 			<th>총 금 액</th>
-			<td>(총금액값)</td>
+			<td><input type="text" id="totalPrice" name="totalPrice" readonly="readonly"></td>
 		</tr>
 	</table>
 	<br>
 	<div align ="right">
 	<button class="btn btn-default " onclick="location='Order.jsp'">주문</button>&nbsp;&nbsp;
 	<button class="btn btn-default " onclick="location='cusCart.jsp'">담기</button>&nbsp;&nbsp;
-	<button class="btn btn-default " onclick="location='???????'">수정</button>&nbsp;&nbsp;
-	<a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
+	<button class="btn btn-default " onclick="location='update.do'">수정</button>&nbsp;&nbsp;
 	</div>
 	<span class="close">&times;</span>
 	</div>
@@ -184,16 +183,19 @@ function myMenuList(cId){
 	})
 }
 function myMenuListResult(data) {
-	$("tbody").empty();
+	console.log(data);
+	 $("#detailtable table").empty();
 	$.each(data,function(data,item){
-		$('<tr>')
-		.append($('<td>').html())
-		$('<tr>')
-		.append($('<td>').html(item.mNum))
-		.append($('<input type=\'hidden\' id=\'hidden_userId\'>').val(item.id))
-		.appendTo('tbody');
-	});//each
-	}
+		if(item.caNum == "CACO"){
+		$("#sName").val(item.sName);
+		$("#mName").val(item.mName);
+		$("#mPrice").val(item.mPrice);
+		$("#mNum").val(item.opNum.split());
+		}
+} 
+)};
+
+
 
 //Get the modal
 var modal = document.getElementById("myModal");
@@ -211,8 +213,6 @@ var span = document.getElementsByClassName("close")[0];
 span.onclick = function() { 
 modal.style.display = "none";
 }
-
-
 
 $(window).resize(function() {
 	modal;

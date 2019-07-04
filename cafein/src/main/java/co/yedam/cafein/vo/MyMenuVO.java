@@ -6,6 +6,7 @@ public class MyMenuVO {
 	private String cId;
 	private String mNum;
 	private String cuNum;
+
 	public String getMyNum() {
 		return myNum;
 	}
