@@ -137,7 +137,6 @@
 			    url: "stocks",  
 			    type: 'POST',  
 			    dataType: 'json', 
-// 			    data: JSON.stringify({ id: id, name:name,password: password, role: role }),
 				data: JSON.stringify($("#form1").serializeObject()),
 // 				data: $("#form1").serialize();
 			    contentType: 'application/json', 
@@ -174,6 +173,7 @@
 		$("tbody").empty();
 		$.each(data,function(idx,item){
 			$('<tr>')
+			.append($('<td>').html('<input type=\'checkbox\' id=\'ckDelete\' />').attr("value","item.stNum"))
 			.append($('<td>').html(item.stNum))
 			.append($('<td>').html(item.sId))
 			.append($('<td>').html(item.stName))
@@ -185,8 +185,8 @@
 			.append($('<td>').html(item.stStatus))
 			.append($('<td>').html(item.truthQty))
 			
-			.append($('<td>').html('<button id=\'btnSelect\'>조회</button>'))
-			.append($('<td>').html('<button id=\'btnDelete\'>삭제</button>'))
+			.append($('<td>').html('<button id=\'btnSelect\' class=\'btn btn-primary\'>조회</button>'))
+			.append($('<td>').html('<button id=\'btnDelete\' class=\'btn btn-primary\'>삭제</button>'))
 			.append($('<input type=\'hidden\' id=\'hidden_stNum\'>').val(item.stNum))
 			.appendTo('tbody');
 		});//each
@@ -196,9 +196,11 @@
 <body>
 <div class="container">	
 	<h2>재고 목록</h2>
+<!-- 	<form action="deleteStock.do"> -->
 	<table class="table text-center">
 		<thead>
 		<tr>
+			<th class="text-center">선택</th>
 			<th class="text-center">재고 번호</th>
 			<th class="text-center">매장 아이디</th>
 			<th class="text-center">재고 명</th>
@@ -214,6 +216,9 @@
 		<tbody></tbody>
 		
 	</table>
+	<br>
+<!-- 	<button type="submit" class="btn btn-primary">선택 삭제</button> -->
+<!-- </form> -->
 </div>	
 <hr/>
 <div class="container">
