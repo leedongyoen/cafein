@@ -26,9 +26,9 @@
 	FROM ORDERS O JOIN ORDER_DETAILS OD
 	ON O.O_NUM = OD.O_NUM
 	)
-	GROUP BY WEEK;
+	GROUP BY WEEK
 	</select> 
-	 <!-- 	<select id="getTimeSales" resultType="salessum">
+	 	<select id="getTimeSales" resultType="salessum">
 		 
 	</select>	
 		<select id="getMonthSales" resultType="salessum">
@@ -39,5 +39,5 @@
 	</select>	
 		<select id="getMenuSales" resultType="salessum">
 		
-	</select>		  -->
+	</select>		  
 </mapper>

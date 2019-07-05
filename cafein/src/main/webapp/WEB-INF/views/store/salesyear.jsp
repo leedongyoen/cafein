@@ -8,21 +8,15 @@
 <title>연별 통계</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
-</head>
-<body>
-	<h2 align="center">매출</h2>
-	<h3 align="center">연별 통계</h3>
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
-	<script type="text/javascript">
+<script type="text/javascript">
       google.charts.load('current', {'packages':['table','corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
     	  $.ajax({
     		  url : "./getsalesyear.do",
-    		  data : "",
-    		  type : "get",
+    	//	  data : "",
+    		  type : "POST",
     		  datatype: "json",
     		  success : function() {
 
@@ -60,6 +54,8 @@
     </script>
 </head>
 <body>
+	<h2 align="center">매출</h2>
+	<h3 align="center">연별 통계</h3>
 	<div id="curve_chart" style="width: 100%; margin: auto;"></div>
 	<div align="center" id="test_dataview4"></div>
 	<p align="center"><input type="date"></p>
@@ -73,10 +69,6 @@
 				<th><button onclick="location.href='salesmenu.do'">메뉴별매출</button></th>
 			</tr>
 		</table>
-	</div>
-	
-	
-</body>
-</html>
+	</div>	
 </body>
 </html>

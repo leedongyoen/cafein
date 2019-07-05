@@ -18,7 +18,7 @@
 			$.ajax({
 				url : "./getsalestime.do",
 			//	data : "",
-				type : "get",
+				type : "POST",
 				datatype : "json",
 				success : function() {
 
@@ -59,11 +59,10 @@
 <body>
 	<h2 align="center">매출</h2>
 	<h3 align="center">시간별 통계</h3>
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 	<!-- 일일매출 그래프 -->
+	<div align="center" id="test_dataview3"></div>
 	<div id="chart_div"></div>
 	<div>
 		<table align="center">
@@ -76,9 +75,6 @@
 			</tr>
 		</table>
 	</div>
-	<p align="center">
-		<input type="date">
-	</p>
-	<div align="center" id="test_dataview3"></div>
+	<p align="center"><input type="date"></p>
 </body>
 </html>

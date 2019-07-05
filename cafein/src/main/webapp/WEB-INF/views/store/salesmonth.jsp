@@ -18,11 +18,11 @@
 		$.ajax({
 			url : "./getsalesmonth.do",
 		//	data : {oDnum : 1},
-			type : "get",
+			type : "POST",
 			datatype : "json",
 			success : function() {
 
-				var datas = google.visualization.arrayToDataTable([
+				var data = google.visualization.arrayToDataTable([
 						[ '월', '총 수량','총 금액' ],
 						[ '1월', 561,2712300, ],
 						[ '2월', 401,450000 ],
@@ -47,14 +47,14 @@
 
 				var table = new google.visualization.Table(document
 						.getElementById('test_dataview2'))
-				table.draw(datas, {
+				table.draw(data, {
 					 width: '30%', height: '30%'
 				});
 
 				var chart = new google.visualization.BarChart(document
 						.getElementById('chart_div'));
 
-				chart.draw(datas, options);
+				chart.draw(data, options);
 			}
 		});
 
@@ -68,8 +68,6 @@
 <body>
 	<h2 align="center">매출</h2>
 	<h3 align="center">월별 통계</h3>
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
 	<div id="chart_div"></div>
 	<div align="center" id="test_dataview2"></div>
 	<div>
