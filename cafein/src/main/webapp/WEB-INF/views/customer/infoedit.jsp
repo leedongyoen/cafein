@@ -9,7 +9,131 @@
 <title>Customer Information Edit Page</title>
 <script src="./js/json.min.js"></script>
 
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+
 <script>
+//최소길이 & 최대길이 제한
+var minimum = 8;
+var maximun = 12;
+
+function chkPw(obj, viewObj) {
+	var paramVal = obj.value;	
+
+	var msg = chkPwLength(obj);
+
+	if(msg == "") msg = "안전한 비밀번호 입니다.";
+
+	document.getElementById(viewObj).innerHTML=msg;
+}
+
+// 글자 갯수 제한
+function chkPwLength(paramObj) {
+	var msg = "";
+	var paramCnt = paramObj.value.length;
+
+	if(paramCnt < minimum) {
+		msg = "최소 암호 글자수는 <b>" + minimum + "</b> 입니다.";
+	} else if(paramCnt > maximun) {
+		msg = "최대 암호 글자수는 <b>" + maximun + "</b> 입니다.";
+	} else {
+		msg = chkPwNumber(paramObj);
+	}
+
+	return msg;
+}
+
+// 암호 유용성 검사
+function chkPwNumber(paramObj) {
+	var  msg = "";
+
+	// 특수 문자 포함 이라면 주석을 바꿔 주시기 바랍니다.
+	// if(!paramObj.value.match(/([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])/))
+	if(!paramObj.value.match(/([a-zA-Z0-9])|([a-zA-Z0-9])/)) {
+		// msg = "비밀번호는 영어, 숫자, 특수문자의 조합으로 6~16자리로 입력해주세요.";
+		msg = "비밀번호는 영어, 숫자의 조합으로 6~16자리로 입력해주세요.";
+	} else {
+		msg = chkPwContinuity(paramObj);
+	}
+
+	return msg;
+}
+
+// 암호 연속성 검사 및 동일 문자
+function chkPwContinuity(paramObj) {
+	var msg = "";
+	var SamePass_0 = 0; //동일문자 카운트
+	var SamePass_1_str = 0; //연속성(+) 카운드(문자)
+	var SamePass_2_str = 0; //연속성(-) 카운드(문자)
+	var SamePass_1_num = 0; //연속성(+) 카운드(숫자)
+	var SamePass_2_num = 0; //연속성(-) 카운드(숫자)
+
+	var chr_pass_0;
+	var chr_pass_1;
+	var chr_pass_2;
+	
+	for(var i=0; i < paramObj.value.length; i++) {
+		chr_pass_0 = paramObj.value.charAt(i);
+		chr_pass_1 = paramObj.value.charAt(i+1);
+
+		//동일문자 카운트
+		if(chr_pass_0 == chr_pass_1)
+		{
+			SamePass_0 = SamePass_0 + 1
+		}
+
+
+		chr_pass_2 = paramObj.value.charAt(i+2);
+		
+		if(chr_pass_0.charCodeAt(0) >= 48 && chr_pass_0.charCodeAt(0) <= 57) {
+			//숫자
+			//연속성(+) 카운드
+			if(chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == 1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == 1)
+			{
+				SamePass_1_num = SamePass_1_num + 1
+			}
+			
+			//연속성(-) 카운드
+			if(chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == -1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == -1)
+			{
+				SamePass_2_num = SamePass_2_num + 1
+			}
+		} else {
+			//문자
+			//연속성(+) 카운드
+			if(chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == 1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == 1)
+			{
+				SamePass_1_str = SamePass_1_str + 1
+			}
+			
+			//연속성(-) 카운드
+			if(chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == -1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == -1)
+			{
+				SamePass_2_str = SamePass_2_str + 1
+			}
+		}
+	}
+	
+	if(SamePass_0 > 1) {
+		msg = "동일숫자 및 문자를 3번 이상 사용하면 비밀번호가 안전하지 못합니다.(ex : aaa, bbb, 111)";
+	}
+
+	if(SamePass_1_str > 1 || SamePass_2_str > 1 || SamePass_1_num > 1 || SamePass_2_num > 1)
+	{
+		msg = "연속된 문자열(123 또는 321, abc, cba 등)을\n 3자 이상 사용 할 수 없습니다.";
+	}
+
+	return msg;
+}	
+
+
+
+
+
+////////////////////////////////////////////////////////
+
  	var current_pw;
 	function openModeal(){
 		$("#checkpw").modal('show');
@@ -61,7 +185,7 @@
 	}
 
 	$.ajax({
-		url : 'customerinfo/' + '<%=(String)session.getAttribute("cId")%>',
+		url : 'customerinfo/' + '<%=(String) session.getAttribute("cId")%>',
 		type : 'GET',
 		dataType : 'json',
 		error : function(xhr, status, msg) {
@@ -97,7 +221,7 @@
 // 			console.log("==");
 			if($("#new_pw").val() == $("#newck_pw").val()){
 				$.ajax({
-					url : 'customerpw/'+'<%=(String)session.getAttribute("cId")%>',
+					url : 'customerpw/'+'<%=(String) session.getAttribute("cId")%>',
 					type : 'PUT',
 					contentType : 'application/json;charrset=utf-8',
 					dataType : 'json',
@@ -108,21 +232,19 @@
 						$("#new_pw").val('');
 						$("#newck_pw").val('');
 						$("#checkpw").modal('hide');
-						
 
 					}
 				});
-				 
+
 			}
-			
-		}else{
+
+		} else {
 			alert("비밀번호가 다릅니다. 다시입력해주세요.")
 			$("#c_pw").val('');
 			$("#new_pw").val('');
 			$("#newck_pw").val('');
 		}
-		
-		
+
 	}
 </script>
 </head>
@@ -138,27 +260,30 @@
 				</div>
 				<div class="modal-body">
 					<form class="form-borizontal" id="ckckpw" action="#" method="post">
-						
+
 						<table class="table">
-							
+
 							<tr>
 								<th>현재 비밀번호</th>
 								<th><input type="password" id="c_pw">
 							</tr>
 							<tr>
 								<th>새 비밀번호</th>
-								<th><input type="password" id="new_pw" name="cPw">
+								<th><input type="password" id="new_pw" name="cPw" onKeyUp="javascript:chkPw(this, 'chkPwView');">
+								<br><span id="chkPwView"></span>
+								</th>
 							</tr>
 							<tr>
 								<th>새 비밀번호 확인</th>
-								<th><input type="password" id="newck_pw">
+								<th><input type="password" id="newck_pw" ></th>
 							</tr>
-								
+
 						</table>
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" onclick="checkpwbtn()" class="btn btn-default">변경하기</button>
+					<button type="button" onclick="checkpwbtn()"
+						class="btn btn-default">변경하기</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -208,10 +333,12 @@
 					<td><input type="date" id="dob" name="dob" readonly></td>
 				</tr>
 			</table>
-			<a class="btn btn-default  pull-right" href="javascript:history.go(-1)">돌아가기</a> 
-			<input type="button" class="btn btn-default" id="edit_before" value="수정하기" onclick="edit()"> <input style="display: none" type="button"
-			class="btn btn-default" id="edit_after" value="수정완료"
-			onclick="editok()">
+			<a class="btn btn-default  pull-right"
+				href="javascript:history.go(-1)">돌아가기</a> <input type="button"
+				class="btn btn-default" id="edit_before" value="수정하기"
+				onclick="edit()"> <input style="display: none" type="button"
+				class="btn btn-default" id="edit_after" value="수정완료"
+				onclick="editok()">
 		</form>
 	</div>
 
