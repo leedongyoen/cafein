@@ -15,11 +15,14 @@ $(function(){
 	//조회, 등록, 수정 폼 처음에 숨기기
 	$('#toggleTable').hide();
 	$('#insertMenuFormTable').hide();
+	$('#recipeTable').hide();
 	
 	$("#menuTable tbody tr").click(function(){
 		
 		$('#insertMenuFormTable').hide();
 		$('#toggleTable').show();
+		$('#recipeTable').show();
+		
 		var str="";
 		var tdArr = new Array();
 		
@@ -49,6 +52,21 @@ $(function(){
 		$("input:radio[id=salestate]:input[value='"+saleState+"']").attr("checked", true);
 		$('input[id="menustate"]').removeAttr('checked');
 		$("input:radio[id=menustate]:input[value='"+menuState+"']").attr("checked", true);
+		
+		
+		
+		$.ajax({
+			url:'recipes/SH001/ME004',
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:userListResult
+		});
+		
+		
 		
 	})
 	
@@ -292,7 +310,8 @@ function menuUpdate() {
 			<!-- 레시피 등록, 메뉴 하나 Select된 상태에서 레시피 레시피 조회가능, 등록 버튼 활성화 -->
 
 			<!-- Recipe Detail List로 표현-->
-			<div style="border: 1px solid gray;">
+			<div id="recipeTable" style="border: 1px solid gray;">
+			
 				<h3>상세 레시피</h3>
 				<table border="1">
 					<tr>
