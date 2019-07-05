@@ -14,7 +14,7 @@
       <result column="ST_AQTY" property="stAqty"/>
       <result column="STAN_UNIT" property="stanUnit"/>
    </resultMap>
-
+      
 
 <select id="getRecipeList" resultMap="reciMap" parameterType="co.yedam.cafein.viewvo.ViewStockCheckVO">
 		select
