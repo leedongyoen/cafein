@@ -35,10 +35,10 @@ $(function(){
 		var saleState = td.eq(4).text();
 		var menuState = td.eq(5).text();
 		
-		if(mCate=='CACO'){mCate="coffee";}
-		else if(mCate=='CADR'){mCate="drink";}
-		else if(mCate=='CADE'){mCate="desert";}
-		else if(mCate=='CAOP'){mCate="option";}
+		if(mCate=='CACO'){mCate="CACO";}
+		else if(mCate=='CADR'){mCate="CADR";}
+		else if(mCate=='CADE'){mCate="CADE";}
+		else if(mCate=='CAOP'){mCate="CAOP";}
 		console.log("sale : "+saleState);
 		console.log("menu : "+menuState);
 		$("#mNum").val(mNum);
@@ -74,7 +74,8 @@ function insertMenuForm(){
 	$('#insertMenuFormTable').show();
 	
 }
-//------------------------------
+
+
 function menuInsert(){
 	$.ajax({
 		url: "menues",
@@ -94,7 +95,6 @@ function menuInsert(){
 	
 }
 
-//------------------------------
 
 function menuDelete(){
 	var menuId = $("#mNum").val();
@@ -203,26 +203,13 @@ function menuUpdate() {
 							<th>카테고리</th>
 							<td><select id="mmCategory" name="caNum">
 									<option value="">선택</option>
-									<option value="coffee">커피</option>
-									<option value="drink">음료</option>
-									<option value="desert">디저트</option>
-									<option value="option">옵션</option>
+									<option value="CACO">커피</option>
+									<option value="CADR">음료</option>
+									<option value="CADE">디저트</option>
+									<option value="CAOP">옵션</option>
 							</select></td>
 						</tr>
 
-						<tr>
-							<th>판매 상태</th>
-							<td>
-							<input type="radio" id="msalestate" name="mStat" value="A1">판매 가능
-							<input type="radio" id="msalestate" name="mStat" value="A2">sold out</td>
-						</tr>
-						<tr>
-							<th>메뉴 상태</th>
-							<td>
-							<input type="radio" id="mmenustate" name="menuSale" value="Y">Y
-							<input type="radio" id="mmenustate" name="menuSale" value="N">N</td>
-							
-						</tr>
 							<tr>
 								<th>메뉴 사진</th>
 								<td><input type="file" value="파일 선택" name="file" /></td>
@@ -261,10 +248,10 @@ function menuUpdate() {
 							<th>카테고리</th>
 							<td><select id="mCategory" name="caNum">
 									<option value="">선택</option>
-									<option value="coffee">커피</option>
-									<option value="drink">음료</option>
-									<option value="desert">디저트</option>
-									<option value="option">옵션</option>
+									<option value="CACO">커피</option>
+									<option value="CADR">음료</option>
+									<option value="CADE">디저트</option>
+									<option value="CAOP">옵션</option>
 							</select></td>
 						</tr>
 
