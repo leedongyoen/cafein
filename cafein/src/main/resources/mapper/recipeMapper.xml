@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="RecipeDAO">
+
+<resultMap type="co.yedam.cafein.viewvo.ViewStockCheckVO" id="reciMap">
+      <id column="RECIPENO" property="recipeNo"></id>
+      <result column="S_ID" property="sId"/>
+      <result column="CONSUM" property="consum"/>
+      <result column="M_NUM" property="mNum"/>
+      <result column="ST_NUM" property="stNum"/>
+      <result column="ST_NAME" property="stName"/>
+      <result column="ST_AQTY" property="stAqty"/>
+      <result column="STAN_UNIT" property="stanUnit"/>
+   </resultMap>
+
+
+<select id="getRecipeList" resultMap="reciMap" parameterType="co.yedam.cafein.viewvo.ViewStockCheckVO">
+		select
+			RECIPENO,
+			S_ID,
+			CONSUM,
+			M_NUM,
+			ST_NUM,
+			ST_NAME,
+			ST_AQTY,
+			STAN_UNIT
+		from stock_check_view
+		where s_id=#{sId} and m_num=#{mNum}
+	</select>
+
+</mapper>
