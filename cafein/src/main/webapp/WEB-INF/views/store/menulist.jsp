@@ -8,14 +8,17 @@
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp" %>
 <title>Insert title here</title>
-<script type="./js/json.min.js"></script>
+<script src="./js/json.min.js"></script>
 <script>
 $(function(){
 	
+	//조회, 등록, 수정 폼 처음에 숨기기
 	$('#toggleTable').hide();
+	$('#insertMenuFormTable').hide();
 	
 	$("#menuTable tbody tr").click(function(){
-		$('#list').empty();
+		
+		$('#insertMenuFormTable').hide();
 		$('#toggleTable').show();
 		var str="";
 		var tdArr = new Array();
@@ -32,49 +35,97 @@ $(function(){
 		var saleState = td.eq(4).text();
 		var menuState = td.eq(5).text();
 		
-		if(mCate=='CACO'){mCate="coffee";}
-		else if(mCate=='CADR'){mCate="drink";}
-		else if(mCate=='CADE'){mCate="desert";}
-		else if(mCate=='CAOP'){mCate="option";}
+		if(mCate=='CACO'){mCate="CACO";}
+		else if(mCate=='CADR'){mCate="CADR";}
+		else if(mCate=='CADE'){mCate="CADE";}
+		else if(mCate=='CAOP'){mCate="CAOP";}
 		console.log("sale : "+saleState);
 		console.log("menu : "+menuState);
 		$("#mNum").val(mNum);
 		$("#mName").val(mName);
 		$("#mPrice").val(mPrice);
 		$("#mCategory").val(mCate);
-		$('input[name="salestate"]').removeAttr('checked');
-		$("input:radio[name=salestate]:input[value='"+saleState+"']").attr("checked", true);
-		$('input[name="menustate"]').removeAttr('checked');
-		$("input:radio[name=menustate]:input[value='"+menuState+"']").attr("checked", true);
+		$('input[id="salestate"]').removeAttr('checked');
+		$("input:radio[id=salestate]:input[value='"+saleState+"']").attr("checked", true);
+		$('input[id="menustate"]').removeAttr('checked');
+		$("input:radio[id=menustate]:input[value='"+menuState+"']").attr("checked", true);
 		
 	})
 	
 
-	function menuUpdate(){
 		$("#btnUpdate").on('click',function(){
-			$.ajax({
-				url: "menues",
-				type: 'PUT',
-				dataType: 'json',
-				data: JSON.stringify($("#menudetail").serializeObject()),
-				contentType: 'application/json',
-				success: function(data) { 
-					alert("ty");
-				
-				
-				
-				}
-				
-			});
+			
+			alert(JSON.stringify($("#menudetail").serializeObject()));
+			menuUpdate();
 		
 		});
 		
-	}//menuUpdate
-	
+	$("#btnInsert").on('click',function(){
+		
+		alert(JSON.stringify($("#insertmenudetail").serializeObject()));
+		menuInsert();
+	});
+
+	 
 });
 
+function insertMenuForm(){
+	$('#toggleTable').hide();
+	$('#insertMenuFormTable').show();
+	
+}
 
 
+function menuInsert(){
+	$.ajax({
+		url: "menues",
+		type: 'POST',
+		dataType: 'json',
+		data: JSON.stringify($("#insertmenudetail").serializeObject()),
+		contentType: 'application/json',
+		success: function(data) {
+			if(response.result == true) {
+				window.location.reload();
+	    	}
+			
+		}
+		
+	}); 
+	
+	
+}
+
+
+function menuDelete(){
+	var menuId = $("#mNum").val();
+	console.log(menuId);
+	$.ajax({
+		url:'menues/'+menuId,  
+		type:'DELETE',
+		contentType:'application/json',
+		dataType:'json',
+		error:function(xhr,status,msg){
+			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
+		}, success:function(xhr) {
+			console.log(xhr.result);
+			window.location.reload();
+		}
+	});
+}
+
+function menuUpdate() {
+	$.ajax({
+		url: "menues",
+		type: 'PUT',
+		dataType: 'json',
+		data: JSON.stringify($("#menudetail").serializeObject()),
+		contentType: 'application/json',
+		success: function(data) { 
+			window.location.reload();
+		}
+		
+	});  
+	}
 
 </script>
 </head>
@@ -122,19 +173,60 @@ $(function(){
 						</tbody>
 					</table>
 					
-					<input type="button" value="추가">
-					<input type="submit"value="삭제">
+					<input type="button" value="추가" onclick="insertMenuForm()">
 					
-					<!-- 체크된 항목 삭제 -->
+					
+					
 				</form>
-				<button id="menuSelect">수정</button>
 			</div>
 
+
+
+
+						<!-- 등록폼-->
+			<div style="border: 1px solid orange; margin: 3px" id="insertMenuFormTable">
+				<h3>[메뉴 추가]</h3>
+
+				<form id="insertmenudetail">
+					<table border="1">
+
+
+						<tr>
+							<th>메뉴 이름</th>
+							<td><input type="text" id="mmName" name="mName" ></td>
+						</tr>
+						<tr>
+							<th>메뉴 가격(원)</th>
+							<td><input type="text" id="mmPrice" name="mPrice" ></td>
+						</tr>
+						<tr>
+							<th>카테고리</th>
+							<td><select id="mmCategory" name="caNum">
+									<option value="">선택</option>
+									<option value="CACO">커피</option>
+									<option value="CADR">음료</option>
+									<option value="CADE">디저트</option>
+									<option value="CAOP">옵션</option>
+							</select></td>
+						</tr>
+
+							<tr>
+								<th>메뉴 사진</th>
+								<td><input type="file" value="파일 선택" name="file" /></td>
+							</tr>
+					</table>
+					<!-- hidden 으로 sId 넘기기 -->
+					
+					<input type="hidden" id="sId" name="sId" value="SH001">
+					<input type="button" value="등록" id="btnInsert">
+				</form>
+			</div>
 			
 			
-			<!-- 상세조회&수정 -->
+			
+			<!-- 메뉴 상세조회&수정 -->
 			<div style="border: 1px solid orange; margin: 3px" id="toggleTable">
-				<h3>[메뉴 상세 추가/조회/수정]</h3>
+				<h3>[메뉴 상세 조회/수정]</h3>
 
 				<form id="menudetail">
 					<table border="1">
@@ -142,38 +234,38 @@ $(function(){
 
 						<tr>
 							<th>메뉴 번호</th>
-							<td><input type="text" id="mNum" name="" readonly></td>
+							<td><input type="text" id="mNum" name="mNum" readonly></td>
 						</tr>
 						<tr>
 							<th>메뉴 이름</th>
-							<td><input type="text" id="mName" name="" ></td>
+							<td><input type="text" id="mName" name="mName" ></td>
 						</tr>
 						<tr>
 							<th>메뉴 가격(원)</th>
-							<td><input type="text" id="mPrice" name="" ></td>
+							<td><input type="text" id="mPrice" name="mPrice" ></td>
 						</tr>
 						<tr>
 							<th>카테고리</th>
-							<td><select id="mCategory" name="values">
+							<td><select id="mCategory" name="caNum">
 									<option value="">선택</option>
-									<option value="coffee">커피</option>
-									<option value="drink">음료</option>
-									<option value="desert">디저트</option>
-									<option value="option">옵션</option>
+									<option value="CACO">커피</option>
+									<option value="CADR">음료</option>
+									<option value="CADE">디저트</option>
+									<option value="CAOP">옵션</option>
 							</select></td>
 						</tr>
 
 						<tr>
 							<th>판매 상태</th>
 							<td>
-							<input type="radio" id="salestate" name="salestate" value="A1">판매 가능
-							<input type="radio" id="salestate" name="salestate" value="A2">sold out</td>
+							<input type="radio" id="salestate" name="mStat" value="A1">판매 가능
+							<input type="radio" id="salestate" name="mStat" value="A2">sold out</td>
 						</tr>
 						<tr>
 							<th>메뉴 상태</th>
 							<td>
-							<input type="radio" id="menustate" name="menustate" value="Y">Y
-							<input type="radio" id="menustate" name="menustate" value="N">N</td>
+							<input type="radio" id="menustate" name="menuSale" value="Y">Y
+							<input type="radio" id="menustate" name="menuSale" value="N">N</td>
 							
 						</tr>
 							<tr>
@@ -181,14 +273,18 @@ $(function(){
 								<td><input type="file" value="파일 선택" name="file" /></td>
 							</tr>
 					</table>
+					<!-- hidden 으로 sId 넘기기 -->
+					
+					<input type="hidden" id="sId" name="sId" value="SH001">
 					<input type="button" value="확정" id="btnUpdate">
+					<input type="button" value="삭제" id="btnMenuDelete" onclick="menuDelete()">
 					<input type="button" value="취소" id="btnCancle">
 				</form>
 			</div>
 
 		</div>
 
-
+      
 
 
 		<!-- 레시피 CRUD-->
@@ -214,8 +310,8 @@ $(function(){
 										<option value="soymilk">두유</option>
 								</select> <input type="text" value="1">
 									
-									<button onclick="#">+</button>
-									<button onclick="#">-</button>
+									<button onclick="">+</button>
+									<button onclick="">-</button>
 				<table border="1">
 
 					<tr>
@@ -242,7 +338,7 @@ $(function(){
 				</table>
 			</div>
 			<!-- 수정 버튼 누르면 수정가능하게 action  -->
-			<button onclick="#">수정</button>
+			<button onclick="">수정</button>
 
 		</div>
 	</div>

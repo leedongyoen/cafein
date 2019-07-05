@@ -49,7 +49,7 @@ body {
   <div class="collapse navbar-collapse" id="navbarsExample03">
     <ul class="navbar-nav mr-auto">
 
-	  <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/storelistmenu">주문</a>
+	  <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/customerstorelist.do">주문</a>
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User Name</a>
