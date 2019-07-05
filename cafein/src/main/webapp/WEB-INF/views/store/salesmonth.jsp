@@ -68,10 +68,9 @@
 <body>
 	<h2 align="center">매출</h2>
 	<h3 align="center">월별 통계</h3>
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
 	<div id="chart_div"></div>
 	<div align="center" id="test_dataview2"></div>
+	<p align="center"><input type="date"></p>
 	<div>
 		<table align="center">
 			<tr>
@@ -83,6 +82,5 @@
 			</tr>
 		</table>
 	</div>
-	<p align="center"><input type="date"></p>
 </body>
 </html>

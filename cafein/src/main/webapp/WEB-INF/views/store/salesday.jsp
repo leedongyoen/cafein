@@ -16,7 +16,7 @@
 	function drawBasic() {
 		$.ajax({
 			url : "./getsalesday.do",
-			data : {oDnum : 1},
+		//	data : {oDnum : 1},
 			type : "get",
 			datatype : "json",
 			success : function() {
@@ -24,9 +24,9 @@
 				var datas = google.visualization.arrayToDataTable([
 						[ '요일', '총 수량','총 금액' ], [ '일', 561,2712300, ], [ '월', 401,450000 ],
 						[ '화', 123,502000 ], [ '수', 321,720000 ], [ '목', 122,870000 ],
-						[ '금', 492,2400000 ], [ '토', 122,3400000 ] ]
+						[ '금', 492,2400000 ], [ '토', 122,3400000 ] ]);
 		/*  		
-				"cols": [
+			 "cols": [
 			        {"id":"","label":"Topping","pattern":"","type":"string"},
 			        {"id":"","label":"Slices","pattern":"","type":"number"}
 			      ],

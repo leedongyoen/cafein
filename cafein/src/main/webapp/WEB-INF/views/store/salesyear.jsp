@@ -12,8 +12,6 @@
 <body>
 	<h2 align="center">매출</h2>
 	<h3 align="center">연별 통계</h3>
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
       google.charts.load('current', {'packages':['table','corechart']});
       google.charts.setOnLoadCallback(drawChart);
@@ -74,9 +72,5 @@
 			</tr>
 		</table>
 	</div>
-	
-	
-</body>
-</html>
 </body>
 </html>
