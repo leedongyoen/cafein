@@ -14,8 +14,52 @@ public class SalesSumVO {
 	private int total;
 	private String oQty;
 	private int mPrice;
+	private String week;
+	private String sId; 
+	private String dates;
+	private int cnt;
+	private int atotal;
+	private int yee;
+
 	
 	
+	
+	public int getYee() {
+		return yee;
+	}
+	public void setYee(int yee) {
+		this.yee = yee;
+	}
+	public int getAtotal() {
+		return atotal;
+	}
+	public void setAtotal(int atotal) {
+		this.atotal = atotal;
+	}
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+	public String getDates() {
+		return dates;
+	}
+	public void setDates(String dates) {
+		this.dates = dates;
+	}
+	public String getsId() {
+		return sId;
+	}
+	public void setsId(String sId) {
+		this.sId = sId;
+	}
+	public String getWeek() {
+		return week;
+	}
+	public void setWeek(String week) {
+		this.week = week;
+	}
 	public int getmPrice() {
 		return mPrice;
 	}

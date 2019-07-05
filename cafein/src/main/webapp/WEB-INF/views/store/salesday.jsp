@@ -13,32 +13,25 @@
 	});
 	google.charts.setOnLoadCallback(drawBasic);
 
+	var daydata;
 	function drawBasic() {
 		$.ajax({
 			url : "./getsalesday.do",
-		//	data : {oDnum : 1},
-			type : "get",
+			data : { s_id : 'SH001', dates : 'YYMMW'},
+			type : "POST",
+			async : false,
 			datatype : "json",
-			success : function() {
-
-				var datas = google.visualization.arrayToDataTable([
-						[ '요일', '총 수량','총 금액' ], [ '일', 561,2712300, ], [ '월', 401,450000 ],
-						[ '화', 123,502000 ], [ '수', 321,720000 ], [ '목', 122,870000 ],
-						[ '금', 492,2400000 ], [ '토', 122,3400000 ] ]);
-		/*  		
-			 "cols": [
-			        {"id":"","label":"Topping","pattern":"","type":"string"},
-			        {"id":"","label":"Slices","pattern":"","type":"number"}
-			      ],
-			  "rows": [
-			        {"c":[{"v":"Mushrooms","f":null},{"v":3,"f":null}]},
-			        {"c":[{"v":"Onions","f":null},{"v":1,"f":null}]},
-			        {"c":[{"v":"Olives","f":null},{"v":1,"f":null}]},
-			        {"c":[{"v":"Zucchini","f":null},{"v":1,"f":null}]},
-			        {"c":[{"v":"Pepperoni","f":null},{"v":2,"f":null}]}
-			      ]  
-						); */
-
+			success : function(days) {
+				var chartData = [];
+				chartData.push(['요일','수량','금액'])
+					for(i=0; i<days.length; i++) {
+						var dayss = [days[i].week, parseInt(days[i].cnt), parseInt(days[i].atotal)];
+						chartData.push(dayss);
+					
+					
+				}
+				daydata = google.visualization.arrayToDataTable(chartData);	
+				
 				var options = {
 					title : '',
 					chartArea : {
@@ -48,14 +41,14 @@
 
 				var table = new google.visualization.Table(document
 						.getElementById('test_dataview'))
-				table.draw(datas, {
+				table.draw(daydata, {
 					 width: '30%', height: '30%'
 				});
 
 				var chart = new google.visualization.BarChart(document
 						.getElementById('chart_div'));
 
-				chart.draw(datas, options);
+				chart.draw(daydata, options);
 			}
 		});
 
@@ -64,6 +57,8 @@
 		drawBasic();
 
 	});
+	
+	
 </script>
 <title>일별 통계</title>
 </head>
