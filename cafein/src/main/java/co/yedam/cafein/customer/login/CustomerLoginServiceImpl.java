@@ -23,6 +23,11 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
 	}
 	
 	@Override
+	public CustomerVO getNaverCustomer(CustomerVO vo) {
+		return dao.getNaverCustomer(vo);
+	}
+	
+	@Override
 	public List<CustomerVO> getCustomerList(CustomerVO vo) {
 		return dao.getCustomerList(vo);
 	}
@@ -31,11 +36,10 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
 	public int insertCustomerKakao(CustomerVO vo) {
 		return dao.insertCustomerKakao(vo);
 	}
-/*
+
 	@Override
 	public int insertCustomerNaver(CustomerVO vo) {
 		return dao.insertCustomerNaver(vo);
 	}
-*/
-	
+
 }
