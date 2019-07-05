@@ -22,12 +22,14 @@ public class StoreListMenuController {
 	
 	
 	  @RequestMapping(value="/storelistmenu", method=RequestMethod.GET) 
-	  public ModelAndView getstorelist(ModelAndView mv){
+	  public List<StoreVO> getstorelist(ModelAndView mv){
 		  StoreVO vo = new StoreVO();
-		  mv.addObject("storelist",service.getStoreList(vo));
-		  mv.setViewName("customer/storelist");
+		/*
+		 * mv.addObject("storelist",service.getStoreList(vo));
+		 * mv.setViewName("customer/storelist");
+		 */
 	  
-		  return mv; 
+		  return service.getStoreList(vo); 
 	  }
 	 
 	  // 수정 필요
