@@ -24,9 +24,16 @@ public class CustomerInfoDAO {
 		return mybatis.update("CustomerDAO.infoedit", vo);
 	}
 	
+	public int checkpw(CustomerVO vo) {
+		System.out.println("mybatis 회원정보 비밀번호 변경");
+		return mybatis.update("CustomerDAO.checkpw", vo);
+	}
+	//회원 정보 삭제
 	public int deleteCustomer(CustomerVO vo) {
 		System.out.println("mybatis 회원정보 삭제");
 		return mybatis.delete("CustomerDAO.deleteCustomer", vo);
 	}
+
+	
 
 }

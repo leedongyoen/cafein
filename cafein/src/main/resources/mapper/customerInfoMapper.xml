@@ -7,7 +7,7 @@
 
 <!-- 	단건 회원조회 -->
 	<select id="getCustomer" parameterType="customer" resultType="customer">
-		SELECT C_ID, C_NICK, C_PW, C_NAME, C_TEL, C_ADD, DOB
+		SELECT C_ID, C_NICK, C_NAME, C_TEL, C_PW, C_ADD, DOB
 		FROM CUSTOMER
 		WHERE C_ID = #{cId}
 	</select>
@@ -16,14 +16,22 @@
 	<update id="infoedit" parameterType="customer">
 		update customer set
 		c_nick = #{cNick},
-		c_pw = #{cPw},
 		c_name = #{cName},
+		c_pw = #{cPw},
 		c_tel = #{cTel},
 		c_add = #{cAdd},
 		dob = #{dob}
 		where c_id
 		= #{cId}
 	</update>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="checkpw" parameterType="customer">
+		update customer set
+		c_pw = #{cPw}
+		where c_id = #{cId}
+	</update>
+	
 	
 <!-- 	삭제 -->
 	
