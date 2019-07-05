@@ -1,47 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="SumSalesDAO">
-	
-<!-- 	<resultMap type="menu" id="menu">
-		<result column="M_NUM" property="mNum"/>
-		<result column="M_NAME" property="mName"/>
-		<result column="M_PRICE" property="mPrice"/>
-	</resultMap>
-	<resultMap type="order" id="order">
-		<result column="O_NUM" property="oNum"/>
-		<result column="O_DATE" property="oDate"/>
-		<result column="TOTAL" property="total"/>
-	</resultMap>
-	<resultMap type="orderdt" id="orderdt">
-		<result column="O_DNUM" property="oDnum"/>
-		<result column="O_QTY" property="oQty"/>
-		<collection property="mNum" resultMap="menu.mNum"/>
-		<collection property="oNum" resultMap="order.oNum"/>
-	</resultMap> -->
+
+	<!-- <resultMap type="menu" id="menu"> <result column="M_NUM" property="mNum"/> 
+		<result column="M_NAME" property="mName"/> <result column="M_PRICE" property="mPrice"/> 
+		</resultMap> <resultMap type="order" id="order"> <result column="O_NUM" property="oNum"/> 
+		<result column="O_DATE" property="oDate"/> <result column="TOTAL" property="total"/> 
+		</resultMap> <resultMap type="orderdt" id="orderdt"> <result column="O_DNUM" 
+		property="oDnum"/> <result column="O_QTY" property="oQty"/> <collection property="mNum" 
+		resultMap="menu.mNum"/> <collection property="oNum" resultMap="order.oNum"/> 
+		</resultMap> -->
 	<select id="getDaySales" resultType="salessum">
-		SELECT R.O_NUM 
-		,D.O_DNUM
-		,D.O_QTY
-		,R.TOTAL
-		,M.M_NAME
-		,R.O_DATE
-		,M.M_NUM
-		FROM ORDER_DETAILS D JOIN MENU M 
-		ON D.M_NUM = M.M_NUM
-		JOIN ORDERS R 
-		ON R.O_NUM = D.O_NUM
-		WHERE D.O_DNUM = #{oDnum}
-	</select> 
-	<!-- 	<select id="getTimeSales" resultType="salessum">
-		SELECT 
-	</select>	
-		<select id="getMonthSales" resultType="salessum">
-		SELECT 
-	</select>	
-		<select id="getYearSales" resultType="salessum">
-		SELECT 
-	</select>	
-		<select id="getMenuSales" resultType="salessum">
-		SELECT 
-	</select>		 -->
+	SELECT
+		A.WEEK,
+		NVL(B.TOTALQTY, 0) CNT,
+		NVL(B.TOTALS, 0) ATOTAL
+	FROM
+	(
+		SELECT
+			LEVEL WEEK,
+			0 DAY
+			FROM
+			DUAL
+			CONNECT BY
+			 <![CDATA[
+			LEVEL <= 7
+			]]>
+			) A,
+				(
+				SELECT
+					WEEK,
+					SUM(O_QTY) TOTALQTY,
+					SUM(TOTAL) TOTALS
+				FROM
+				(
+				SELECT
+				O.S_ID,
+				O.O_DATE,
+				OD.O_QTY,
+		 		TO_CHAR(O_DATE, 'd') WEEK,
+				
+		<!-- 		 <choose>
+					<when test="yee == '1' ">		
+						TO_CHAR(O_DATE, 'D') WEEK,
+					</when>
+					<when test="yee == '2' ">		
+						TO_CHAR(O_DATE, 'W') WEEK,
+					</when>
+					<when test="yee == '3' ">		
+						TO_CHAR(O_DATE, 'MM') WEEK,
+					</when>
+					<otherwise>	
+						TO_CHAR(O_DATE, 'd') WEEK,
+					</otherwise>	
+				 </choose>   -->
+				O.TOTAL
+			FROM
+				ORDER_DETAILS OD,
+				MENU M,
+				ORDERS O
+			WHERE
+				OD.O_NUM = O.O_NUM
+				AND OD.M_NUM = M.M_NUM
+				AND O.S_ID = #{sId}
+				AND TO_CHAR(O_DATE, 'YYMMW') = #{dates} 
+		 			
+		 	 	<!-- <choose>
+					<when test="yee == '1'">
+					AND TO_CHAR(O_DATE, 'YYMMW') = #{dates}
+					</when>
+					<when test="yee == '2' ">
+					AND TO_CHAR(O_DATE, 'YYMM') = #{dates}
+					</when>
+					<when test="yee == '3' ">
+					AND TO_CHAR(O_DATE, 'YY') = #{dates}
+					</when>
+				<otherwise>
+					AND TO_CHAR(O_DATE, 'YYMMW') = #{dates}					
+				</otherwise>
+				</choose>	    -->
+				)
+			GROUP BY
+			WEEK
+			) B
+		WHERE
+		A.WEEK = B.WEEK(+)
+		ORDER BY
+		A.WEEK
+	</select>
 </mapper>

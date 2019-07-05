@@ -22,6 +22,39 @@
 		,M_STAT
 		,MENUSALE
 		from menu
-
+ 		order by m_num
 	</select>
+	
+	<update id = "updateMenu" parameterType="menu">
+	UPDATE MENU SET 
+		M_NAME = #{mName}
+		, M_PRICE = #{mPrice}
+		<!-- ,CA_NUM= #{caNum}  -->
+		, M_STAT = #{mStat}
+		, MENUSALE = #{menuSale}
+		WHERE M_NUM = #{mNum}  and S_ID=#{sId}
+	
+	</update>
+	
+	<insert id="insertMenu" parameterType="menu">
+		INSERT INTO MENU (M_NUM
+					, M_NAME
+					, M_PRICE
+				 	, S_ID 
+					, CA_NUM
+					, M_STAT
+					, MENUSALE) 
+			VALUES (	'ME'||lpad(MENU_SEQ.nextval,3,0)
+					, #{mName}
+					, #{mPrice}
+				    , #{sId}  	
+					, #{caNum}
+					, 'A2'
+					, 'N')
+	
+	</insert>
+	<delete id = "deleteMenu" parameterType="menu">
+		DELETE FROM MENU 
+			WHERE M_NUM = #{mNum}
+	</delete>
 </mapper>

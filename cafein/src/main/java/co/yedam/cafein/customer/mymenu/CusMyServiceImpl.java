@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import co.yedam.cafein.viewvo.ViewMymenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
 
 @Service("CusMyService")
@@ -15,7 +16,7 @@ public class CusMyServiceImpl implements CusMyService{
 	private CusMyDAO DAO;
 	
 	
-	public List<MyMenuVO> getMymenu(MyMenuVO vo) {
+	public List<ViewMymenuVO> getMymenu(ViewMymenuVO vo) {
 		return DAO.getMymenu(vo);
 	}
 	

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.cafein.viewvo.ViewMymenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
 
 @Controller
@@ -20,9 +21,8 @@ public class CusMyMenuController {
 	//고객 나만의 메뉴 조회
 			@ResponseBody
 			@RequestMapping(value="/customer/{cId}",  method=RequestMethod.GET)
-			public List<MyMenuVO> getMymenu(@PathVariable("cId") String cId, MyMenuVO vo) {
+			public List<ViewMymenuVO> getMymenu(@PathVariable("cId") String cId, ViewMymenuVO vo) {
 				vo.setcId(cId);
 				return cusmyService.getMymenu(vo);
 			}
-
 }

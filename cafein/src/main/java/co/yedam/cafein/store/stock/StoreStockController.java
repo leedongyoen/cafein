@@ -2,7 +2,6 @@ package co.yedam.cafein.store.stock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import co.yedam.cafein.vo.StockVO;
@@ -16,8 +15,14 @@ public class StoreStockController {
 	StoreStockServiceImpl storeStockService;
 	
 	@RequestMapping(value="/stocklist.do")
-	public String getStockList(StockVO vo, Model model) {
-		model.addAttribute("stock", storeStockService.getStockList(vo));
+	public String getStockList() {
+//		model.addAttribute("stock", storeStockService.getStockList(vo));
+		return "store/stocklist";
+		
+	}
+	@RequestMapping(value="/deleteStock.do")
+	public String deleteStock(StockVO vo) {
+		storeStockService.deleteStock(vo);
 		return "store/stocklist";
 		
 	}

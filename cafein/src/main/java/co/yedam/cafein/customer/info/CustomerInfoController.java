@@ -40,6 +40,16 @@ public class CustomerInfoController {
 		return vo;
 	}
 	
+	//비밀번호 변경
+	@ResponseBody
+	@RequestMapping(value="/customerpw/{cId}", method=RequestMethod.PUT, consumes="application/json")
+	public CustomerVO checkpw(@PathVariable("cId") String id,@RequestBody CustomerVO vo, Model model,HttpServletRequest req) {
+		System.out.println(vo+"==============================");
+		vo.setcId(id);
+		customService.checkpw(vo);
+		return vo;
+	}
+	
 	//삭제
 	@ResponseBody
 	@RequestMapping(value="/customerinfo/{cId}", method=RequestMethod.DELETE)
