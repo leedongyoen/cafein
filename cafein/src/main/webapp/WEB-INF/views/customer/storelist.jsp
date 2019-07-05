@@ -139,27 +139,33 @@
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
-					
+					<div align="center">
+						<button type="button" id="storelistbtn1" class="btn btn-default" >주변매장</button>
+						<button type="button" id="storelistbtn2" class="btn btn-default">기입주소매장조회</button>
+						<button type="button" id="allstorelistbtn" onclick="allstroelist();" class="btn btn-default">모든매장</button>	
+					</div>
+					<hr>
 					<form class="form-borizontal" action="#" method="POST">
 						<input class="form-control" id="storeserch" type="text" placeholder="Search..">
 						<div class="table-responsive">
-						<table class="table">
+						<table id="storetable" class="table">
+							<thead>
 							<tr>
-								<th></th>
-								<th>STORE NAME</th>
-								<th>STORE ADDRESS</th>
-								<th>STORE DISTANCE</th>
+								<th>매장명</th>
+								<th>주소</th>
+								<th>거리</th>
+								<th>배달</th>
 							</tr>
-							
-							<tbody id="storetable">
-							<c:forEach	items="${storelist}" var="store">									
+							</thead>
+							<tbody >
+<%-- 							<c:forEach	items="${storelist}" var="store">									
 							<tr onclick="menuList('${store.sid}','${store.sname}')">
 								<td><input type="hidden" name="sid" value="${store.sid}"></td>
 								<td>${store.sname}</td>
 								<td>${store.sadd}</td>
 								<td>구해야됨</td>
 							</tr>
-							</c:forEach>
+							</c:forEach> --%>
 							</tbody>
 						</table>
 						</div>
@@ -180,6 +186,7 @@
 	function menuList(sid,sname){
 		var sid = sid;
 		storename=sname;
+		console.log(sid,sname)
 		$.ajax({
 			url:'storelistmenu/'+sid,
 			type:'GET',
@@ -221,6 +228,32 @@
 				.append($('<td>').html(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#bakerytable tbody');
+			}
+		});
+	}
+	
+	// 모든 매장 리스트 보여주기
+	function allstroelist(){
+		$.ajax({
+			url:'storelistmenu',
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				$("#storetable tbody").empty();
+				$.each(data,function(idx,item){
+					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"')")
+					.append($('<td>').html(item.sname))
+					.append($('<td>').html(item.sadd))
+					.append($('<td>').html(""))
+					.append($('<td>').html(item.stdeliservice))
+					.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.sid))
+					.appendTo('#storetable tbody');
+					
+				});
 			}
 		});
 	}
@@ -302,10 +335,15 @@ $(function(){
 	
 	// 매장 선택시
 	$("#selectStore").on("click",function(){
+		$("#storetable tbody").empty();
+		allstroelist();
 		$("#storeserch").val("");
 		$("#storelistmodal").modal('show');
 	});
 	
+/* 	$("#allstorelistbtn").on("click",function(){
+		alert("in");
+	}); */
 		
 	
 	// 메뉴 검색
