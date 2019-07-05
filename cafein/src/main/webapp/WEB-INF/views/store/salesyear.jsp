@@ -8,7 +8,15 @@
 <title>연별 통계</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
+<<<<<<< HEAD
 <script type="text/javascript">
+=======
+</head>
+<body>
+	<h2 align="center">매출</h2>
+	<h3 align="center">연별 통계</h3>
+	<script type="text/javascript">
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
       google.charts.load('current', {'packages':['table','corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
@@ -69,6 +77,10 @@
 				<th><button onclick="location.href='salesmenu.do'">메뉴별매출</button></th>
 			</tr>
 		</table>
+<<<<<<< HEAD
 	</div>	
+=======
+	</div>
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 </body>
 </html>

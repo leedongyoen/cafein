@@ -57,12 +57,16 @@
 	</script> 
 </head>
 <body>
+	<!-- 일일매출 그래프 -->
 	<h2 align="center">매출</h2>
 	<h3 align="center">시간별 통계</h3>
+<<<<<<< HEAD
 </head>
 <body>
 	<!-- 일일매출 그래프 -->
 	<div align="center" id="test_dataview3"></div>
+=======
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 	<div id="chart_div"></div>
 	<div>
 		<table align="center">
@@ -76,5 +80,9 @@
 		</table>
 	</div>
 	<p align="center"><input type="date"></p>
+<<<<<<< HEAD
+=======
+	<div align="center" id="test_dataview3"></div>
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 </body>
 </html>

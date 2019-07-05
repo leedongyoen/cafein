@@ -27,6 +27,6 @@
 	
 	<context:component-scan base-package="co.yedam.cafein" />
 	
-	
+	<beans:bean id="naverLoginVO" class="co.yedam.cafein.vo.NaverLoginVO" />
 	
 </beans:beans>

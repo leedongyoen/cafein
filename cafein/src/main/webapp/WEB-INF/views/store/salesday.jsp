@@ -13,12 +13,20 @@
 	});
 	google.charts.setOnLoadCallback(drawBasic);
 
+	var daydata;
 	function drawBasic() {
 		$.ajax({
 			url : "./getsalesday.do",
+<<<<<<< HEAD
 		//	data : {oDnum : 1},
 			type : "get",
+=======
+			data : { s_id : 'SH001', dates : 'YYMMW'},
+			type : "POST",
+			async : false,
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 			datatype : "json",
+<<<<<<< HEAD
 			success : function() {
 
 				var data = google.visualization.arrayToDataTable([
@@ -40,6 +48,19 @@
 			      ]  
 						); */
 
+=======
+			success : function(days) {
+				var chartData = [];
+				chartData.push(['요일','수량','금액'])
+					for(i=0; i<days.length; i++) {
+						var dayss = [days[i].week, parseInt(days[i].cnt), parseInt(days[i].atotal)];
+						chartData.push(dayss);
+					
+					
+				}
+				daydata = google.visualization.arrayToDataTable(chartData);	
+				
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 				var options = {
 					chartArea : {
 						width : '40%'
@@ -48,14 +69,23 @@
 
 				var table = new google.visualization.Table(document
 						.getElementById('test_dataview'))
+<<<<<<< HEAD
 				table.draw(data, {
 					 width: '30%', height: '30%'
+=======
+				table.draw(daydata, {
+					 width: '30%', height: '30%'
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 				});
 
 				var chart = new google.visualization.BarChart(document
 						.getElementById('chart_div'));
 
+<<<<<<< HEAD
 				chart.draw(data, options);
+=======
+				chart.draw(daydata, options);
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 			}
 		});
 
@@ -64,6 +94,8 @@
 		drawBasic();
 
 	});
+	
+	
 </script>
 <title>일별 통계</title>
 </head>

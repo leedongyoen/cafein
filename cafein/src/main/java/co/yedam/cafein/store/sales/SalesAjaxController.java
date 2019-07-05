@@ -1,6 +1,9 @@
 package co.yedam.cafein.store.sales;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +20,8 @@ public class SalesAjaxController {
 	@RequestMapping("/getsalesday.do")
 	@ResponseBody
 	public List<SalesSumVO> salesDayForm(SalesSumVO vo) {
-		return salesService.getDaySales(vo);
+		return salesService.getDaySales(vo) ;
+		
 	}
 	
 	@RequestMapping("/getsalesmenu.do")

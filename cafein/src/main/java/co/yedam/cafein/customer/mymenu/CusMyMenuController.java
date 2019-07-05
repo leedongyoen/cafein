@@ -25,5 +25,4 @@ public class CusMyMenuController {
 				vo.setcId(cId);
 				return cusmyService.getMymenu(vo);
 			}
-
 }

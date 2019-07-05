@@ -17,7 +17,7 @@ public class MenuDAO {
 	
 	public int insertMenu(MenuVO vo) {
 		System.out.println("-> mybatis insertMenu()");
-		return mybatis.insert("MenuDAO.",vo);
+		return mybatis.insert("MenuDAO.insertMenu",vo);
 	}
 	
 	public int updateMenu(MenuVO vo) {
@@ -26,7 +26,7 @@ public class MenuDAO {
 	}
 	public int deleteMenu(MenuVO vo) {
 		System.out.println("-> mybatis deleteMenu()");
-		return mybatis.delete("MenuDAO.",vo);
+		return mybatis.delete("MenuDAO.deleteMenu",vo);
 	}
 	
 	public List<MenuVO> getMenuList(MenuVO vo) {
