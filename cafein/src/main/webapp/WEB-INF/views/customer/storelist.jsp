@@ -231,7 +231,7 @@
 			}
 		});
 	}
-	
+	 
 	// 모든 매장 리스트 보여주기
 	function allstroelist(){
 		$.ajax({
