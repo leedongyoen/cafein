@@ -11,7 +11,7 @@
 <script src="./js/json.min.js"></script>
 <script>
 $(function(){
-	
+	  
 	//조회, 등록, 수정 폼 처음에 숨기기
 	$('#toggleTable').hide();
 	$('#insertMenuFormTable').hide();
