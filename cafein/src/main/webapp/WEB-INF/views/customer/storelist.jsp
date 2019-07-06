@@ -154,7 +154,7 @@
 						<div class="table-responsive">
 						<table id="storetable" class="table">
 							<thead>
-							<tr>
+							<tr> 
 								<th>매장명</th>
 								<th>주소</th>
 								<th>거리</th>
