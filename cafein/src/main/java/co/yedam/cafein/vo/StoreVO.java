@@ -2,83 +2,86 @@ package co.yedam.cafein.vo;
 
 public class StoreVO {
 
-	private String sId;
-	private String sPw;
-	private String sName;
-	private String sAdd;
-	private String sTel;
-	private String stDeliService;
-	private int stOpenTime;
-	private int stCloseTime;
-	private String stAppStat;
-	private String stMileService;
-	public String getsId() {
-		return sId;
+	private String sid;
+	private String spw;
+	private String sname;
+	private String sadd;
+	private String stel;
+	private String stdeliservice;
+	private int stopentime;
+	private int stclosetime;
+	private String stappstat;
+	private String stmileservice;
+	
+	
+	public String getSid() {
+		return sid;
 	}
-	public void setsId(String sId) {
-		this.sId = sId;
+	public void setSid(String sid) {
+		this.sid = sid;
 	}
-	public String getsPw() {
-		return sPw;
+	public String getSpw() {
+		return spw;
 	}
-	public void setsPw(String sPw) {
-		this.sPw = sPw;
+	public void setSpw(String spw) {
+		this.spw = spw;
 	}
-	public String getsName() {
-		return sName;
+	public String getSname() {
+		return sname;
 	}
-	public void setsName(String sName) {
-		this.sName = sName;
+	public void setSname(String sname) {
+		this.sname = sname;
 	}
-	public String getsAdd() {
-		return sAdd;
+	public String getSadd() {
+		return sadd;
 	}
-	public void setsAdd(String sAdd) {
-		this.sAdd = sAdd;
+	public void setSadd(String sadd) {
+		this.sadd = sadd;
 	}
-	public String getsTel() {
-		return sTel;
+	public String getStel() {
+		return stel;
 	}
-	public void setsTel(String sTel) {
-		this.sTel = sTel;
+	public void setStel(String stel) {
+		this.stel = stel;
 	}
-	public String getStDeliService() {
-		return stDeliService;
+
+	public String getStdeliservice() {
+		return stdeliservice;
 	}
-	public void setStDeliService(String stDeliService) {
-		this.stDeliService = stDeliService;
+	public void setStdeliservice(String stdeliservice) {
+		this.stdeliservice = stdeliservice;
 	}
-	public int getStOpenTime() {
-		return stOpenTime;
+	public int getStopentime() {
+		return stopentime;
 	}
-	public void setStOpenTime(int stOpenTime) {
-		this.stOpenTime = stOpenTime;
+	public void setStopentime(int stopentime) {
+		this.stopentime = stopentime;
 	}
-	public int getStCloseTime() {
-		return stCloseTime;
+	public int getStclosetime() {
+		return stclosetime;
 	}
-	public void setStCloseTime(int stCloseTime) {
-		this.stCloseTime = stCloseTime;
+	public void setStclosetime(int stclosetime) {
+		this.stclosetime = stclosetime;
 	}
-	public String getStAppStat() {
-		return stAppStat;
+	public String getStappstat() {
+		return stappstat;
 	}
-	public void setStAppStat(String stAppStat) {
-		this.stAppStat = stAppStat;
+	public void setStappstat(String stappstat) {
+		this.stappstat = stappstat;
 	}
-	public String getStMileService() {
-		return stMileService;
+	public String getStmileservice() {
+		return stmileservice;
 	}
-	public void setStMileService(String stMileService) {
-		this.stMileService = stMileService;
+	public void setStmileservice(String stmileservice) {
+		this.stmileservice = stmileservice;
 	}
 	@Override
 	public String toString() {
-		return "StoreVO [sId=" + sId + ", sPw=" + sPw + ", sName=" + sName + ", sAdd=" + sAdd + ", sTel=" + sTel
-				+ ", stDeliService=" + stDeliService + ", stOpenTime=" + stOpenTime + ", stCloseTime=" + stCloseTime
-				+ ", stAppStat=" + stAppStat + ", stMileService=" + stMileService + "]";
+		return "StoreVO [sid=" + sid + ", spw=" + spw + ", sname=" + sname + ", sadd=" + sadd + ", stel=" + stel
+				+ ", stdeliservice=" + stdeliservice + ", stopentime=" + stopentime + ", stclosetime=" + stclosetime
+				+ ", stappstat=" + stappstat + ", stmileservice=" + stmileservice + "]";
 	}
+
 	
-   
 	
 }

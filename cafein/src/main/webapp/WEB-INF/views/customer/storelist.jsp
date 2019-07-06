@@ -142,6 +142,7 @@
 				<div class="modal-body">
 					<div align="center">
 						<button type="button" id="storelistbtn1" onclick="searchstorelist();" class="btn btn-outline-info" >주변매장</button>
+
 						<button type="button" id="storelistbtn2" onclick="currentaddressStorelist()" class="btn btn-outline-info">기입주소매장조회</button>
 						<button type="button" id="allstorelistbtn" onclick="allstroelist();" class="btn btn-outline-info">모든매장</button>	
 					</div>

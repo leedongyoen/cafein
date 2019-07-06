@@ -42,7 +42,7 @@ public class StoreListMenuController {
 	  @RequestMapping(value="/searchstorelist/{sadd}", method=RequestMethod.GET) 
 	  public List<StoreVO> getsearchstorelist(@PathVariable("sadd") String sadd){ 
 		  StoreVO vo = new StoreVO();
-		  vo.setsAdd(sadd);
+		  vo.setSadd(sadd);
 		  return service.getSearchStoreList(vo);
 	  }
 	
