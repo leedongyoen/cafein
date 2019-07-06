@@ -17,7 +17,6 @@
 		update customer set
 		c_nick = #{cNick},
 		c_name = #{cName},
-		c_pw = #{cPw},
 		c_tel = #{cTel},
 		c_add = #{cAdd},
 		dob = #{dob}

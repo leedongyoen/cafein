@@ -139,9 +139,6 @@ function chkPwContinuity(paramObj) {
 		$("#checkpw").modal('show');
 	}
 
-	
-	
-	
 
 	function edit() {
 		$("#edit_after").css('display', 'inline');
@@ -181,7 +178,7 @@ function chkPwContinuity(paramObj) {
 		$("#c_tel").attr("readonly", true);
 		$("#c_add").attr("readonly", true);
 		$("#dob").attr("readonly", true);
-
+ 
 	}
 
 	$.ajax({

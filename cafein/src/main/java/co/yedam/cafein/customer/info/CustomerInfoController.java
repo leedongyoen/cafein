@@ -36,6 +36,7 @@ public class CustomerInfoController {
 	@RequestMapping(value="/customerinfo", method=RequestMethod.PUT, consumes="application/json")
 	public CustomerVO infoedit(@RequestBody CustomerVO vo, Model model,HttpServletRequest req) {
 		System.out.println(vo+"==============================");
+		vo.setcPw(null);
 		customService.infoedit(vo);
 		return vo;
 	}
