@@ -348,7 +348,18 @@
 	}
 	
 	function currentaddressStorelist(){
-		
+		$.ajax({
+			url:'customerinfo/'+ '<%=(String) session.getAttribute("cId")%>',
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
+			}
+		});
 	}
 	 
 	// 모든 매장 리스트 보여주기
