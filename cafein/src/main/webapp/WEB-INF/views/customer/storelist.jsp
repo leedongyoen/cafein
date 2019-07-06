@@ -147,7 +147,8 @@
 						<button type="button" id="allstorelistbtn" onclick="allstroelist();" class="btn btn-outline-info">모든매장</button>	
 					</div>
 					<hr>
-					<h3 id="storemodalminititle" align="center"></h3>
+					<h3 id="storemodalminititle" align="center"></h3><hr>
+					<h5 id="customerAddress" align="center"></h5>
 					<hr>
 					<form class="form-borizontal" action="#" method="POST">
 						<input class="form-control" id="storeserch" type="text" placeholder="Search..">
@@ -324,6 +325,7 @@
 		new daum.Postcode({
             oncomplete: function(data) {
                 var addr = data.address; // 최종 주소 변수
+                $("#customerAddress").html(addr);
                 standardsearchStore = addr.substr(0,2);
                 console.log(standardsearchStore);
                 // 주소로 상세 정보를 검색
@@ -335,6 +337,9 @@
 
                         // 해당 주소에 대한 좌표를 받아서
                         searchPostion = new daum.maps.LatLng(result.y, result.x);
+                        
+                    
+        	        	
                         
                         // 거리 계산을 위해서 설정.
                         setSearchLine(searchPostion);  
@@ -348,19 +353,47 @@
      	
 	}
 	
+	// 사용자가 입력한 주소 정보를 기준으로 검색하기.
 	function currentaddressStorelist(){
-		$.ajax({
-			url:'customerinfo/'+ '<%=(String) session.getAttribute("cId")%>',
-			type:'GET',
-			//contentType:'application/json;charset=utf-8',
-			dataType:'json',
-			error:function(xhr,status,msg){
-				alert("상태값 :" + status + " Http에러메시지 :"+msg);
-			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				
-			}
-		});
+		var checklogin = "<%=(String) session.getAttribute("cId")%>";
+		console.log(checklogin);
+		if(checklogin == null || checklogin =="null"){
+			alert('로그인이 필요합니다.');
+		}else{
+			$.ajax({
+				url:'customerinfo/'+checklogin,
+				type:'GET',
+				//contentType:'application/json;charset=utf-8',
+				dataType:'json',
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+					$("#storetable tbody").empty();
+					$("#customerAddress").html(data.cAdd);
+					
+					geocoder.addressSearch(data.cAdd, function(results, status) {
+	                    // 정상적으로 검색이 완료됐으면
+	                    if (status === daum.maps.services.Status.OK) {
+
+	                        var result = results[0]; //첫번째 결과의 값을 활용
+
+	                        // 해당 주소에 대한 좌표를 받아서
+	                        searchPostion = new daum.maps.LatLng(result.y, result.x);
+	                        
+	                             	        	
+	                        
+	                        // 거리 계산을 위해서 설정.
+	                        setSearchLine(searchPostion);  
+	                        
+	                        // db에서 기준 매장 도시이름으로 검색
+	                        getstorelist();
+	                    }
+	                });
+				}
+			});
+		}
+		
 	}
 	 
 	// 모든 매장 리스트 보여주기
@@ -376,6 +409,7 @@
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				$("#storetable tbody").empty();
 				$("#storemodalminititle").html("모든매장");
+				$("#customerAddress").html("");
 				$.each(data,function(idx,item){
 					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"')")
 					.append($('<td>').html(item.sname))
