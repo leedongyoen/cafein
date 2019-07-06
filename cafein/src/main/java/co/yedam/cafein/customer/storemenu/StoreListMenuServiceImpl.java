@@ -22,4 +22,8 @@ public class StoreListMenuServiceImpl {
 	public List<MenuVO> getMenuList(MenuVO vo){
 		return dao.getMenuList(vo);
 	}
+	
+	public List<StoreVO> getSearchStoreList(StoreVO vo){
+		return dao.getSearchStoreList(vo);
+	}
 }
