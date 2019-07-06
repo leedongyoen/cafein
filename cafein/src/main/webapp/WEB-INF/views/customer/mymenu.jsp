@@ -163,19 +163,17 @@ to {
 	<hr>
 	<br>
 	<div class="container">
-		<div align="right">
+		<div id="play" align="right">
 
-			<a href="${pageContext.request.contextPath}/storelistmenu"
-				class="test btn">추가</a><br>
+			<a href="${pageContext.request.contextPath}/customerstorelist.do"
+				class="test btn">추가</a>
+				<a class="test btn" href="javascript:deleteMymenu()" id="deletemymenu">삭제</a>
+				<br>
 			<div id="somediv" title="" style="display: none;">
 				<div id="thedialog"></div>
 			</div>
 
-			<button>삭제</button>
-		</div>
-		<div id="menulist">
-		<ul class="gallery">
-		</ul>
+			
 		</div>
 		<table class="table text-center">
 
@@ -220,7 +218,7 @@ to {
 			<td>
 			<input type="checkbox" name="mNum" value="ME021" /> <label for="whipping">휘핑크림 추가(+500원)</label><br>
 			<input type="checkbox" name="mNum" value="ME022" />	 <label for="shot">1샷 추가(+500원)</label><br>
-			<input type="checkbox" name="mNum" value="syrup" /> <label for="syrup">시럽 추가(+0원)</label>
+			<input type="checkbox" name="mNum" value="ME023" /> <label for="syrup">시럽 추가(+0원)</label>
 			</td>
 		</tr>
 		<tr>
@@ -232,7 +230,7 @@ to {
 	<br>
 	<div align="right">
 	<button class="btn btn-default " onclick="location='Order.do'">주문</button>&nbsp;&nbsp;
-	<button class="btn btn-default " onclick="location='cusCart.jsp'">담기</button>&nbsp;&nbsp;
+	<button class="btn btn-default " onclick="location='cusCart.do'">담기</button>&nbsp;&nbsp;
 	<button class="btn btn-default " onclick="location='update.do'">수정</button>&nbsp;&nbsp;
 	</div>
 	<span class="close">&times;</span>
@@ -241,6 +239,7 @@ to {
 <script type="text/javascript">
 	myMenuList('ju123');
 	var datas;
+	var totalcheckboxnum;
 	
 	//화면에 뿌리기.
 	function myMenuList(cId) {
@@ -255,10 +254,15 @@ to {
 			success : function myMenuListResult(data){
 				datas=data;
 				$.each(data, function(idx, item) {
-				$("#GoToDetail").append("<td onclick=detailmyMenuListResult"+"('"+item.cuNum+"'"+")><div>"
+				$("#GoToDetail").append("<td onclick=detailmyMenuListResult"+"('"+item.cuNum+"'"+")><div class='container'>"
 									+"<img class=\"myImg\" id=\""
-									+item.cuNum+"\" src=\"image/coffee1.jpg\" width=\"200\" heigh=\"200\">"+"</div>"
-									+item.mName+","+item.sName+"</td>");
+									+item.cuNum+"\" src=\"image/coffee1.jpg\" width=\"200\" heigh=\"200\">"+"</div><div class='container'>"
+									+item.mName+"</div><div class='container'>"+item.sName
+									+"</div><div id=\"deleteCheck"+idx+"\"><input type='checkbox' id='hidden_cuNum"+idx+"'value='"
+									+item.cuNum+"'></div></td>");
+				$("#deleteCheck"+idx).hide();
+				
+				totalcheckboxnum = idx;
 				}
 			)}
 		});
@@ -273,7 +277,6 @@ to {
 				var opNum = item.opNum;
 				var s = opNum.split(",");
 					console.log(s);
-				
  				$("#cuNum").val(item.cuNum);
 				$("#sName").val(item.sName);
 				$("#mName").val(item.mName);
@@ -283,8 +286,37 @@ to {
 			}
 		})
 	};
-	
-	
+	function deleteMymenu() {
+		//삭제 버튼 클릭
+		for(var i=0;i<totalcheckboxnum;i++){
+			$("#deleteCheck"+i).show();
+		}
+		$("#play div").on('click','#deletemymenu',function(){
+			
+			
+			$("#deleteCheck"+idx).click(function(){
+				$("#deleteCheck"+idx).attr("id", cuNum);
+				});
+				
+			
+			var id = $(this).closest('td').find('#hidden_cuNum').val();
+			var result = confirm(id +" 사용자를 정말로 삭제하시겠습니까?");
+			if(result) {
+				$.ajax({
+					url:'users/'+id,  
+					type:'DELETE',
+					contentType:'application/json;charset=utf-8',
+					dataType:'json',
+					error:function(xhr,status,msg){
+						console.log("상태값 :" + status + " Http에러메시지 :"+msg);
+					}, success:function(xhr) {
+						console.log(xhr.result);
+						userList();
+					}
+				});      }//if
+		}); //삭제 버튼 클릭
+	}//userDelete
+
 
 	//Get the modal
 	var modal = document.getElementById("myModal");
