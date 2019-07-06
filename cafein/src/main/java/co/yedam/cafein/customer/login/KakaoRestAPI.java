@@ -58,7 +58,7 @@ public class KakaoRestAPI {
             //    결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
             System.out.println("responseCode : " + responseCode);
- 
+            System.out.println("authorize_code : " + authorize_code);
             //    요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
@@ -149,7 +149,7 @@ public class KakaoRestAPI {
 	        URL url = new URL(reqURL);
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	        conn.setRequestMethod("POST");
-	        conn.setRequestProperty("Authorization", "Bearer {" + access_token + "}" );
+	        conn.setRequestProperty("Authorization", "Bearer " + access_token);
 	        
 	        System.out.println("--- --- kakao logout access_token : " + access_token);
 	        
