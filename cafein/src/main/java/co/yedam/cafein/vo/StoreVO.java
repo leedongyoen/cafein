@@ -79,6 +79,6 @@ public class StoreVO {
 				+ ", stAppStat=" + stAppStat + ", stMileService=" + stMileService + "]";
 	}
 	
- 
+   
 	
 }
