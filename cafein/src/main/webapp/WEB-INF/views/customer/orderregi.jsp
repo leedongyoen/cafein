@@ -25,23 +25,23 @@
 
 	
 	function add(num) {
+		var price = $("input:text[name='price']").val();
+		var v_totalprice = $("input:text[name='total']").val();
+		
+		var no = $("input:text[name='qty']").val();
 		if (num == -1) {
-			if (no == 1) {
+			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
 				return;
 			}
-			no--;
-			price = price - 4100;
+			no = Number(no) - 1;
+			v_totalprice = Number(v_totalprice) - Number(price);
 		} else if (num == 1) {
-			no++;
-			price = price + 4100;
+			no = Number(no) + 1;
+			v_totalprice = Number(v_totalprice) + Number(price);
 		}
-
-		var tno = document.getElementById("no");
-		var sumCost = document.getElementById("cost");
-
-		tno.innerHTML = no + "개";
-		sumCost.innerHTML = price + "원";
+		$("input:text[name='total']").val(v_totalprice);
+		$("input:text[name='qty']").val(no);
 	}
 	
 	// 고객 주소 가져오기 위한 함수
@@ -91,17 +91,43 @@
 		
 	});
 	
-	// 
-	$("#DBcusadd").on("click",function(){
+
+	
+	$(function(){
+		// 배달선택시 배달주소가 보이게, 미선택시 안보이게
+		$("input:radio[name=receipt]").click(function(){
+		       console.log("in");
+		    if($("input:radio[name=receipt]:checked").val()=='delivery'){
+		    	$("#deliveryaddress").show();
+		        //$("#deliveryaddress").attr("style","display: inline;");
+		    }else if($("input:radio[name=receipt]:checked").val()=='takeout'){
+		    	$("#deliveryaddress").hide();
+		    	//$("#deliveryaddress").attr("style","display: none;");
+		    }
+		});
 		
+		 // 옵션 선택시
+	  	$(".checkoption").change(function(){
+	  		console.log("option in");
+	  		var v_totalprice = $("input:text[name='total']").val();
+	  		if($(this).is(":checked")){
+					v_totalprice = Number(v_totalprice)+500;
+			}else{
+				v_totalprice = Number(v_totalprice)-500;
+			}
+	  		 $("input:text[name='total']").val(v_totalprice);
+
+	  	});
 	});
 	
+	
+
 	
 </script>
 </head>
 	<body>
 		<h1 align="center">주 문</h1>
-		<div class="container">
+		<div class="container" style="width: 100%">
 			<input id="storeid" value="${store.sid}" style="display: none" >
 			<table class="table">
 			
@@ -124,22 +150,33 @@
 				</tr>
 				<tr>
 					<th>옵션</th>
-					<td>
+					<td>				
 						<c:if test="${selectmenu.whipping eq 'Y'}">
-							휘핑 추가 
+							<input type="checkbox" class="checkoption" name="whipping" value="Y" checked="checked">휘핑크림 추가(+500)<br>
 						</c:if>
+						<c:if test="${selectmenu.whipping ne 'Y'}">
+							<input type="checkbox" class="checkoption" name="whipping" value="Y" >휘핑크림 추가(+500)<br>
+						</c:if>
+						
 						<c:if test="${selectmenu.syrup eq 'Y'}">
-							시럽 추가 
+							<input type="checkbox" class="checkoption" name="syrup" value="Y" checked="checked">시럽 추가(+500)<br>
 						</c:if>
+						<c:if test="${selectmenu.syrup ne 'Y'}">
+							<input type="checkbox" class="checkoption" name="syrup" value="Y" >시럽 추가(+500)<br>
+						</c:if>
+						
 						<c:if test="${selectmenu.shot eq 'Y'}">
-							샷 추가 
+							<input type="checkbox" class="checkoption" name="shot" value="Y" checked="checked">샷 추가(+500)
+						</c:if>
+						<c:if test="${selectmenu.shot ne 'Y'}">
+							<input type="checkbox" class="checkoption" name="shot" value="Y" >샷 추가(+500)
 						</c:if>
 					 </td>
 				</tr>
 				<tr>
 					<th>금 액</th>
-					<td><span id="cost">${selectmenu.price}</span>&nbsp;&nbsp;
-						<button onclick="add(1)">+</button> <span id="no">${selectmenu.qty}</span>
+					<td><input name="price" value="${selectmenu.price}" size="2" readonly> &nbsp;&nbsp;
+						<button onclick="add(1)">+</button> <input name="qty" size="1" value="${selectmenu.qty}" readonly>
 						<button onclick="add(-1)">-</button></td>
 				</tr>
 				
@@ -156,13 +193,16 @@
 				<c:if test="${store.stdeliservice eq 'Y'}">
 					<tr>
 						<th>수 령 방 식</th>
-						<td><input type="radio" name="receipt" value="delivery "
-							id="delivery" checked> <label for="delivery ">배달로
-								하기</label> <input type="radio" name="receipt" value="takeout"
-							id="takeout"> <label for="takeout">직접받아가기</label></td>
+						<td>
+							<input type="radio" name="receipt" value="delivery" id="delivery" checked> 
+							<label for="delivery">배달로하기</label> 
+							
+							<input type="radio" name="receipt" value="takeout" id="takeout"> 
+							<label for="takeout">직접받아가기</label>
+						</td>
 					</tr>
 				
-					<tr>
+					<tr id="deliveryaddress">
 						<th>배 달 주 소</th>
 						<td>
 						<c:if test="${selectmenu.cAdd !='' }">
@@ -197,7 +237,7 @@
 				</tr>
 				<tr>
 					<th>총 금 액</th>
-					<td>${selectmenu.totalPrice}</td>
+					<td><input name="total" value="${selectmenu.totalPrice}" readonly></td>
 				</tr>
 			</table>
 
