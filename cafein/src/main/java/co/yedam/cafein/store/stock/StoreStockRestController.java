@@ -52,14 +52,14 @@ public class StoreStockRestController {
 		}
 		
 		//삭제
-		@RequestMapping(value="/stocks/{stNum}", method=RequestMethod.DELETE)
-		public Map  getStockList( @PathVariable String stNum, StockVO vo, Model model) {
-			vo.setStNum(stNum);
+		@RequestMapping(value="/stocks", method=RequestMethod.DELETE ,consumes="application/json")
+		public Map<String, Object>  getStockList( @RequestBody StockVO vo, Model model) {
 			storeStockService.deleteStock(vo);
-			Map result = new HashMap<String, Object>();
+			Map<String, Object> result = new HashMap<String, Object>();
 			result.put("result", Boolean.TRUE);
 			return result;
 		}
+		
 		//등록
 		@RequestMapping(value="/stocks"
 				,method=RequestMethod.POST

@@ -72,29 +72,26 @@
 					#{stQty},
 					#{stAqty},
 					#{stPrice},
-					#{ca_num},
+					#{caNum},
 					#{stanUnit},
 					#{stStatus},
-					#{truthQrt}
+					#{truthQty}
 				)
   	</insert>
    
    <update id="updateStock" parameterType="stock">
       UPDATE stock
       <set>
-         <if test="s_id != null and s_id != ''">TITLE = #{sId},</if>
-         <if test="st_name != null and st_name != ''">TITLE = #{stName},</if>
-         <if test="st_qty != null and st_qty != ''">TITLE = #{stQty},</if>
-         <if test="st_aqty != null and st_aqty != ''">TITLE = #{stAqty},</if>
-         <if test="st_price != null and st_price != ''">TITLE = #{stPrice},</if>
-         <if test="ca_num != null and ca_num != ''">TITLE = #{ca_num},</if>
-         <if test="stan_unit != null and stan_unit != ''">TITLE = #{stanUnit},</if>
-         <if test="st_status != null and st_status != ''">TITLE = #{stStatus},</if>
-         <if test="truth_qty != null and truth_qty != ''">TITLE = #{truthQrt},</if>
-      
-       
-
-      </set>
+         <if test="sId != null and sId != ''">s_id = #{sId},</if>
+         <if test="stName != null and stName != ''">st_name = #{stName},</if>
+         <if test="stQty != null and stQty != ''">st_qty = #{stQty},</if>
+         <if test="stAqty != null and stAqty != ''">st_aqty = #{stAqty},</if>
+         <if test="stPrice != null and stPrice != ''">st_price = #{stPrice},</if>
+         <if test="caNum != null and caNum != ''">ca_num = #{caNum},</if>
+         <if test="stanUnit != null and stanUnit != ''">stan_unit = #{stanUnit},</if>
+         <if test="stStatus != null and stStatus != ''">st_status = #{stStatus},</if>
+         <if test="truthQty != null and truthQty != ''">truth_qty = #{truthQty},</if>
+            </set>
       WHERE st_num = #{stNum}
    </update>
    
