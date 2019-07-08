@@ -15,4 +15,22 @@ SELECT
 FROM MYMENU_VIEW
 WHERE C_ID=#{cId}
 </select>
+<delete id="deleteMymenu" parameterType="mymenu">
+DELETE FROM 
+<where>
+	<choose>
+		<when test="cuNum != null and cuNum.length>0">
+			CU_NUM in
+				<foreach collection="cuNum" open="(" close=")"
+					separator="," item="item">
+					#{item}
+				</foreach>
+		</when>
+		<otherwise>
+			CU_NUM = #{cuNum}
+		</otherwise>
+	</choose>
+</where>  
+</delete>
+
 </mapper>

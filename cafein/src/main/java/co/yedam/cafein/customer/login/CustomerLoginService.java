@@ -10,9 +10,11 @@ public interface CustomerLoginService {
 
 	public CustomerVO getKakaoCustomer(CustomerVO vo);
 	
+	public CustomerVO getNaverCustomer(CustomerVO vo);
+	
 	public List<CustomerVO> getCustomerList(CustomerVO vo);
 	
 	public int insertCustomerKakao(CustomerVO vo);
 	
-	//public int insertCustomerNaver(CustomerVO vo);
+	public int insertCustomerNaver(CustomerVO vo);
 }

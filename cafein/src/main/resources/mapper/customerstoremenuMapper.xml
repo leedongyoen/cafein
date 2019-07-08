@@ -18,17 +18,17 @@
 	</resultMap> 
 
 	<select id="getStoreList" resultType="store" resultMap="storeMap">
-		select S_ID
-				, S_PW
+		SELECT S_ID
 				, S_NAME
-				, S_ADD
+				, S_ADD 
 				, S_TEL
 				, ST_DELI_SERVICE
-				, ST_OPEN_TIME
-				, ST_CLOSE_TIME
-				, ST_APP_STAT
-				, ST_MILE_SERVICE
-		from store
+		FROM STORE
+		WHERE ST_APP_STAT = 'Y'
+		<if test="sadd != null and sadd !='' ">
+			AND S_ADD like #{sadd} || '%'
+		</if>
+		ORDER BY S_NAME DESC
 	</select>
 
 	<resultMap type="menu" id="menuMap">
@@ -50,6 +50,7 @@
 				, MENUSALE
 		FROM MENU
 		WHERE S_ID = #{sId}
+				AND MENUSALE = 'Y'
 		ORDER BY CA_NUM
 	</select>
 

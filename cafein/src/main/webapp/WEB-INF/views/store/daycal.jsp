@@ -4,74 +4,111 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Store Closing Page</title>
 <%@ include file="storehead.jsp" %>
+<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script>
+
+	// 영업 준비금 (재고 입고, 인건비 등)
+	function operatingreserve() {
+		$.ajax({
+			url:"operatingreserve.do",		// request 보낼 서버경로
+			//data:,						// 보낼 데이터 (매장id 보내야함)
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				$('#content').html(data);
+			}
+		});
+	}
+	
+	// 현금 시재 정산
+	function cashadvance() {
+		$.ajax({
+			url:"cashadvance.do",		// request 보낼 서버경로
+			//data:,						// 보낼 데이터 (매장id 보내야함)
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				$('#content').html(data);
+			}
+		});
+	}
+
+	// 재고 실수량 확인
+	function stocktruthlist() {
+		$.ajax({
+			url:"stocktruthlist.do",		// request 보낼 서버경로
+			//data:,						// 보낼 데이터 (매장id 보내야함)
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				$('#content').html(data);
+			}
+		});
+	}
+
+</script>
 </head>
 <body>
-<h2 align = "center">하루 매출 정산</h2>
-
-<h4 align = "center">지출</h4>
-<div class = "container" align = "center">
-<table class = "table table-hover">
-	<tr><th>순번</th><th>항목</th><th>수량</th><th>지출액</th></tr>
-	<tr><td>1</td><td>인건비</td><td>1</td><td>56000</td></tr>
-	<tr><td>2</td><td>입고 재료(1)</td><td>30</td><td>70000</td></tr>
-	<tr><td>3</td><td>입고 재료(2)</td><td>40</td><td>130000</td></tr>
-	<tr><td></td><td></td><td></td><td><font color="red">2560000</font></td></tr>
-</table>
-
-</div>
-<br><hr/><br>
-<div class = "container" align = "center">
-<h4 align = "center">추가 지출 내역</h4>
-	<form action="#">
-		항목	<input type="text"><br>
-		지출액 <input type="text"><br>
-		<input type="button" value=" + ">
-		<br>
-	</form>
-	<span></span>
-	<div>25600원</div>
-</div>
-<br><hr/><br>
-<div class = "container" align = "center">
-<h3 align = "center">결재 방식별 매출</h3>
-<div align = "center">
-<table class = "table table-hover">
-	<tr><th>결제 방식</th><th>결제 금액</th></tr>
-	<tr><td>카드</td><td>345000</td></tr>
-	<tr><td>현금</td><td>279000</td></tr>
-	<tr><td>적립 결제</td><td>35000</td></tr>
-	<tr><td></td><td></td></tr>
-</table>
-</div>
 <br>
-총 매출 <input type="text" value="589000">
+<div class="container">
+	<div class="row border align-items-start" >
+		<div class="row justify-content-around">
+			<div class="col-12" style="text-align:center;">
+				<h3>카페 린 영업 마감</h3><br>
+			</div>
+			<div class="col-4">
+				<table class="table table-hover">
+					<tr>
+						<th>구분</th>
+						<th>이름</th>
+						<th>상태</th>
+					</tr>
+					<tr onclick="operatingreserve()">
+						<td>지출</td>
+						<td>영업 준비금</td>
+						<td>수정 전</td>
+					</tr>
+					<tr onclick="cashadvance()">
+						<td>정산</td>
+						<td>시재 정산</td>
+						<td>수정 전</td>
+					</tr>
+					<tr onclick="stocktruthlist()">
+						<td>재고</td>
+						<td>마감 재고</td>
+						<td>수정 전</td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-7" id="content" style="border:1px dotted;height:700px;overflow:auto;">
+			</div><br><br>
+			<div class="col-4">
+				<button>마감정산</button>
+				<button>엑셀저장</button>
+				<button>종료</button>
+			</div>
+			<div class="col-7">
+				<table>
+					<tr>
+						<th><button>1</button></th><th><button>2</button></th><th><button>3</button></th>
+						<th><button>4</button></th><th><button>5</button></th><th><button>6</button></th>
+						<th><button>←</button></th><th rowspan="2"><button>enter</button></th>
+					</tr>
+					<tr>
+						<th><button>7</button></th><th><button>8</button></th><th><button>9</button></th>
+						<th><button>0</button></th><th><button>00</button></th><th><button>000</button></th>
+						<th><button>C</button></th>
+					</tr>
+				</table>
+			</div><br>
+		</div>
+	</div>
 </div>
-
-<br><br><hr/><br>
-	<div align="center">
-	
-	<table border="1">
-	<tr><th>현금</th><th>권수 </th></tr>
-	<tr><td>5만원</td><td><input type="text"></td></tr>
-	<tr><td>1만원</td><td><input type="text"></td></tr>
-	<tr><td>5천원</td><td><input type="text"></td></tr>
-	<tr><td>1천원</td><td><input type="text"></td></tr>
-	<tr><td>동전</td><td><input type="text"></td></tr>
-	</table>
-
-<input type="button" value="정산">
-</div>
-
-<br><hr/><br>
-<div align = "center">
-	<p>현금 매출 279000</p>
-	<p>보유 현금 277000</p>
-	<p>차액 <font color="purple">2000</font></p>
-	
-	<a class="btn btn-default"  href="stockTruth.jsp">다음</a>
-</div>
-
 </body>
 </html>

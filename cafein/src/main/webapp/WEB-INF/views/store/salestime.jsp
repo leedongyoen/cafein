@@ -57,13 +57,9 @@
 	</script> 
 </head>
 <body>
+	<!-- 일일매출 그래프 -->
 	<h2 align="center">매출</h2>
 	<h3 align="center">시간별 통계</h3>
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
-</head>
-<body>
-	<!-- 일일매출 그래프 -->
 	<div id="chart_div"></div>
 	<div>
 		<table align="center">
@@ -76,9 +72,7 @@
 			</tr>
 		</table>
 	</div>
-	<p align="center">
-		<input type="date">
-	</p>
+	<p align="center"><input type="date"></p>
 	<div align="center" id="test_dataview3"></div>
 </body>
 </html>

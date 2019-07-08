@@ -23,6 +23,13 @@ public class CustomerInfoServiceImpl implements CustomerInfoService{
 		return customerDAO.infoedit(vo);
 	}
 	
+	// 비밀번호 변경
+		@Override
+		public int checkpw(CustomerVO vo){
+			
+			return customerDAO.checkpw(vo);
+		}
+	
 	//회원 삭제(탈퇴)
 
 	public int deleteCustomer(CustomerVO vo) {

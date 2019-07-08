@@ -9,6 +9,8 @@
 <%@ include file="cushead.jsp" %>
 <title>Login Page</title>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script>	
 	function checkForm() {
 		var form = document.loginForm;
@@ -37,49 +39,29 @@
       <a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/kakaologin&response_type=code">
       	<img src="${pageContext.request.contextPath}/image/kakaologin.png">
       </a>
-      <a href="#"><img src="${pageContext.request.contextPath}/image/naverlogin.PNG" style = "width:222px;hieth:50px;"></a>
-	  <!-- 카카오로 로그인 시 이 로그아웃 버큰 사용하기 -->
+      <a id="naver-login-btn" href="http://localhost/cafein/naverlogin.do"><img src="${pageContext.request.contextPath}/image/naverlogin.PNG" style="witdh:222px;height:50px;"></a>
+      
+      <!-- 카카오로 로그인 시 이 로그아웃 버큰 사용하기 <a href="#"><img src="${pageContext.request.contextPath}/image/naverlogin.PNG" style = "width:222px;hieth:50px;"></a>-->
 	  <a href="http://developers.kakao.com/logout"></a><br>
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerjoin.do'" value = "회원가입">
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerfindidpw.do'" value = "ID/PW 찾기">
   </form>
   </div>
-<!-- <script type='text/javascript'>
-//<![CDATA[
-  // 사용할 앱의 JavaScript 키를 설정해 주세요.
-  Kakao.init('5fe7fabf65bb23ce907670dba5752a92');
-  // 카카오 로그인 버튼을 생성합니다.
-  Kakao.Auth.createLoginButton({
-    container: '#kakao-login-btn',
-    success: function(authObj) {
-
-    	Kakao.API.request({
-    		url : '/v1/user/me',
-    		success : function(res) {
-    			console.log(JSON.stringify(authObj))
-    			console.log(JSON.stringify(res))
-    			console.log("id : "+res.id)
-    			console.log("access_token : " + authObj.access_token)
-    			alert(res.properties.nickname + ' 님 환영합니다.');
-    			
-    		},
-    		fail: function(err) {
-    			alert(JSON.stringify(error));
-    		}
-    	});
-    },
-    fail: function(err) {
-       alert(JSON.stringify(err));
-    }
-  });
-  
-  function ktout(){
-	  Kakao.Auth.logout(function(){
-		 location.href="http://localhost/cafein/customermainform.do"},1000); 
-	  };
-
-  
-//]]>
-</script> -->
+<!-- 
+<script type="text/javascript">
+	var naverLogin = new naver.LoginWithNaverId(
+		{
+			clientId: "e0oMK_3hMZCOPonx0Tz1",
+			callbackUrl: "http://localhost/cafein/naverloginresult.do",
+			isPopup: false, /* 팝업을 통한 연동처리 여부 */
+			loginButton: {color: "green", type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */
+		}
+	);
+	
+	/* 설정정보를 초기화하고 연동을 준비 */
+	naverLogin.init();
+	
+</script>
+ -->
 </body>
 </html>

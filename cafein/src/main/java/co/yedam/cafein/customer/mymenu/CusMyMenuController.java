@@ -18,12 +18,18 @@ public class CusMyMenuController {
 	@Autowired
 	CusMyService cusmyService;
 	
-	//고객 나만의 메뉴 조회
+	//怨좉컼 �굹留뚯쓽 硫붾돱 議고쉶
 			@ResponseBody
 			@RequestMapping(value="/customer/{cId}",  method=RequestMethod.GET)
 			public List<ViewMymenuVO> getMymenu(@PathVariable("cId") String cId, ViewMymenuVO vo) {
 				vo.setcId(cId);
 				return cusmyService.getMymenu(vo);
 			}
-
+			@ResponseBody
+			@RequestMapping("deleteMymenu.do")
+			public MyMenuVO deleteMymenu(@PathVariable("cuNum") String cuNum, MyMenuVO vo) {
+				cusmyService.deleteMymenu(vo);
+				return vo;
+				
+			}
 }

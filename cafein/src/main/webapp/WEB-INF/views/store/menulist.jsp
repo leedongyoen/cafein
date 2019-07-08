@@ -11,15 +11,18 @@
 <script src="./js/json.min.js"></script>
 <script>
 $(function(){
-	
+	  
 	//조회, 등록, 수정 폼 처음에 숨기기
 	$('#toggleTable').hide();
 	$('#insertMenuFormTable').hide();
+	$('#recipeTable').hide();
 	
 	$("#menuTable tbody tr").click(function(){
 		
 		$('#insertMenuFormTable').hide();
 		$('#toggleTable').show();
+		$('#recipeTable').show();
+		
 		var str="";
 		var tdArr = new Array();
 		
@@ -35,10 +38,10 @@ $(function(){
 		var saleState = td.eq(4).text();
 		var menuState = td.eq(5).text();
 		
-		if(mCate=='CACO'){mCate="coffee";}
-		else if(mCate=='CADR'){mCate="drink";}
-		else if(mCate=='CADE'){mCate="desert";}
-		else if(mCate=='CAOP'){mCate="option";}
+		if(mCate=='CACO'){mCate="CACO";}
+		else if(mCate=='CADR'){mCate="CADR";}
+		else if(mCate=='CADE'){mCate="CADE";}
+		else if(mCate=='CAOP'){mCate="CAOP";}
 		console.log("sale : "+saleState);
 		console.log("menu : "+menuState);
 		$("#mNum").val(mNum);
@@ -49,6 +52,21 @@ $(function(){
 		$("input:radio[id=salestate]:input[value='"+saleState+"']").attr("checked", true);
 		$('input[id="menustate"]').removeAttr('checked');
 		$("input:radio[id=menustate]:input[value='"+menuState+"']").attr("checked", true);
+		
+		
+		
+		$.ajax({
+			url:'recipes/SH001/ME004',
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:userListResult
+		});
+		
+		
 		
 	})
 	
@@ -74,7 +92,8 @@ function insertMenuForm(){
 	$('#insertMenuFormTable').show();
 	
 }
-//------------------------------
+
+
 function menuInsert(){
 	$.ajax({
 		url: "menues",
@@ -94,7 +113,6 @@ function menuInsert(){
 	
 }
 
-//------------------------------
 
 function menuDelete(){
 	var menuId = $("#mNum").val();
@@ -203,26 +221,13 @@ function menuUpdate() {
 							<th>카테고리</th>
 							<td><select id="mmCategory" name="caNum">
 									<option value="">선택</option>
-									<option value="coffee">커피</option>
-									<option value="drink">음료</option>
-									<option value="desert">디저트</option>
-									<option value="option">옵션</option>
+									<option value="CACO">커피</option>
+									<option value="CADR">음료</option>
+									<option value="CADE">디저트</option>
+									<option value="CAOP">옵션</option>
 							</select></td>
 						</tr>
 
-						<tr>
-							<th>판매 상태</th>
-							<td>
-							<input type="radio" id="msalestate" name="mStat" value="A1">판매 가능
-							<input type="radio" id="msalestate" name="mStat" value="A2">sold out</td>
-						</tr>
-						<tr>
-							<th>메뉴 상태</th>
-							<td>
-							<input type="radio" id="mmenustate" name="menuSale" value="Y">Y
-							<input type="radio" id="mmenustate" name="menuSale" value="N">N</td>
-							
-						</tr>
 							<tr>
 								<th>메뉴 사진</th>
 								<td><input type="file" value="파일 선택" name="file" /></td>
@@ -261,10 +266,10 @@ function menuUpdate() {
 							<th>카테고리</th>
 							<td><select id="mCategory" name="caNum">
 									<option value="">선택</option>
-									<option value="coffee">커피</option>
-									<option value="drink">음료</option>
-									<option value="desert">디저트</option>
-									<option value="option">옵션</option>
+									<option value="CACO">커피</option>
+									<option value="CADR">음료</option>
+									<option value="CADE">디저트</option>
+									<option value="CAOP">옵션</option>
 							</select></td>
 						</tr>
 
@@ -297,7 +302,7 @@ function menuUpdate() {
 
 		</div>
 
-
+      
 
 
 		<!-- 레시피 CRUD-->
@@ -305,7 +310,8 @@ function menuUpdate() {
 			<!-- 레시피 등록, 메뉴 하나 Select된 상태에서 레시피 레시피 조회가능, 등록 버튼 활성화 -->
 
 			<!-- Recipe Detail List로 표현-->
-			<div style="border: 1px solid gray;">
+			<div id="recipeTable" style="border: 1px solid gray;">
+			
 				<h3>상세 레시피</h3>
 				<table border="1">
 					<tr>

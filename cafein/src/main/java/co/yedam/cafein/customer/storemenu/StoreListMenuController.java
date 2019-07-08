@@ -1,7 +1,6 @@
 package co.yedam.cafein.customer.storemenu;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +31,7 @@ public class StoreListMenuController {
 		  return service.getStoreList(vo); 
 	  }
 	 
-	  // 수정 필요
+	  
 	  @RequestMapping(value="/storelistmenu/{sid}", method=RequestMethod.GET) 
 	  public List<MenuVO> getmenulist(@PathVariable("sid") String sid){ 
 		  MenuVO vo = new MenuVO();
@@ -40,6 +39,12 @@ public class StoreListMenuController {
 		  return service.getMenuList(vo);
 	  }
 	
+	  @RequestMapping(value="/searchstorelist/{sadd}", method=RequestMethod.GET) 
+	  public List<StoreVO> getsearchstorelist(@PathVariable("sadd") String sadd){ 
+		  StoreVO vo = new StoreVO();
+		  vo.setSadd(sadd);
+		  return service.getSearchStoreList(vo);
+	  }
 	
 	/*
 	 * @RequestMapping(value="/storelistmenu", method=RequestMethod.GET) public

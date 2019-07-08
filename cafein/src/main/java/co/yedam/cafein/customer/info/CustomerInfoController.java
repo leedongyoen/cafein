@@ -36,7 +36,18 @@ public class CustomerInfoController {
 	@RequestMapping(value="/customerinfo", method=RequestMethod.PUT, consumes="application/json")
 	public CustomerVO infoedit(@RequestBody CustomerVO vo, Model model,HttpServletRequest req) {
 		System.out.println(vo+"==============================");
+		vo.setcPw(null);
 		customService.infoedit(vo);
+		return vo;
+	}
+	
+	//비밀번호 변경
+	@ResponseBody
+	@RequestMapping(value="/customerpw/{cId}", method=RequestMethod.PUT, consumes="application/json")
+	public CustomerVO checkpw(@PathVariable("cId") String id,@RequestBody CustomerVO vo, Model model,HttpServletRequest req) {
+		System.out.println(vo+"==============================");
+		vo.setcId(id);
+		customService.checkpw(vo);
 		return vo;
 	}
 	
