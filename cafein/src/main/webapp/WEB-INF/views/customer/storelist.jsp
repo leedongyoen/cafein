@@ -8,6 +8,7 @@
 <%@ include file="cushead.jsp" %>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
+<script src="./js/json.min.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -82,8 +83,12 @@
 					<h5 class="modal-title">메뉴</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
+				<form class="form-borizontal" id="menudetailForm" action="${pageContext.request.contextPath}/customerorder" method="POST">
 				<div class="modal-body">
-					<form class="form-borizontal" action="#" method="POST">
+					
+						<input type="text" name="sId" style="display: none;" >
+						<input type="text" name="cAdd" style="display: none;" >
+						<input type="text" name="stDeliService" style="display: none;" >
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
@@ -109,24 +114,26 @@
 							</tr>
 							<tr>
 								<th>OPTION</th>
-								<td><input type="checkbox" name="whipping" value="whipping">휘핑크림 추가(+500)<br>
-									<input type="checkbox" name="syrup" value="syrup">시럽 추가(+500)<br>
-									<input type="checkbox" name="shot" value="shhot">샷 추가(+500)</td>
+								<td><input type="checkbox" class="checkoption" name="whipping" value="whipping">휘핑크림 추가(+500)<br>
+									<input type="checkbox" class="checkoption" name="syrup" value="syrup">시럽 추가(+500)<br>
+									<input type="checkbox" class="checkoption" name="shot" value="shhot">샷 추가(+500)
+								</td>
 							</tr>
 							<tr>
 								<th>TOTAL PRICE</th>
 								<td><input type="text" id="totalPrice" name="totalPrice" readonly="readonly"></td>
 							</tr>
 						</table>
-					</form>
+					
 				
 				</div>
 				<div class="modal-footer">	
-					<button type="button" class="btn btn-outline-primary" >나만의 메뉴 등록</button>	
-					<button type="button" class="btn btn-outline-primary" >주문</button>	
+					<button type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" >나만의 메뉴 등록</button>	
+					<button type="submit"  class="btn btn-outline-primary" >주문</button>	
 					<button type="button" class="btn btn-outline-primary" >담기</button>			
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -186,8 +193,10 @@
 </div>
 <script>
 	
-	// 메뉴 상세 모달창에 띄우기 위한 변수
+	// 메뉴 상세 모달창에 매장 이름 띄우기 위한 변수
 	var storename;
+	
+	var selectstoreid;
 	
 	// 거리를 구하기 위해서 좌표를 저장하는 변수
 	var searchLine;
@@ -198,13 +207,20 @@
 	// 기준이 되는 매장 주소 앞 두자리
 	var standardsearchStore;
 	
+	// 고객의 주소 ( DB 또는 검색한 주소)
+	var standardsearchAddress;
+	
+	// 선택한 매장의 배달 서비스 여부
+	var storedeliservice;
+	
 	//주소-좌표 변환 객체를 생성
     var geocoder = new daum.maps.services.Geocoder();
 	
 	
-	function menuList(sid,sname){
-		var sid = sid;
+	function menuList(sid,sname,stdeliservice){
+		selectstoreid = sid;
 		storename=sname;
+		storedeliservice = stdeliservice;
 		console.log(sid,sname)
 		$.ajax({
 			url:'storelistmenu/'+sid,
@@ -265,6 +281,7 @@
     	// 주소로 좌표를 검색합니다
     	geocoder.addressSearch(saddress, function(result, status) {
 	    	console.log("for문 안 ge "+saddress);
+	    	
 	        // 정상적으로 검색이 완료됐으면 
 	         if (status === kakao.maps.services.Status.OK) {
 	
@@ -280,7 +297,7 @@
 	           
 	            if(distance < 300){
 	            	
-	            	$('<tr>').attr("onclick","menuList('"+sid+"','"+sname+"')")
+	            	$('<tr>').attr("onclick","menuList('"+sid+"','"+sname+"','"+stdeliservice+"')")
 					.append($('<td>').html(sname))
 					.append($('<td>').html(saddress))
 					.append($('<td>').html(distance+"m"))
@@ -325,6 +342,7 @@
 		new daum.Postcode({
             oncomplete: function(data) {
                 var addr = data.address; // 최종 주소 변수
+                standardsearchAddress = addr;
                 $("#customerAddress").html(addr);
                 standardsearchStore = addr.substr(0,2);
                 console.log(standardsearchStore);
@@ -371,7 +389,7 @@
 				success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 					$("#storetable tbody").empty();
 					$("#customerAddress").html(data.cAdd);
-					
+					standardsearchAddress = data.cAdd;
 					geocoder.addressSearch(data.cAdd, function(results, status) {
 	                    // 정상적으로 검색이 완료됐으면
 	                    if (status === daum.maps.services.Status.OK) {
@@ -407,11 +425,12 @@
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				standardsearchAddress="";
 				$("#storetable tbody").empty();
 				$("#storemodalminititle").html("모든매장");
 				$("#customerAddress").html("");
 				$.each(data,function(idx,item){
-					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"')")
+					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')")
 					.append($('<td>').html(item.sname))
 					.append($('<td>').html(item.sadd))
 					.append($('<td>').html("-"))
@@ -467,7 +486,10 @@ $(function(){
 		$('#price').val($(this).children().eq(2).text());
 		$('#totalPrice').val($(this).children().eq(2).text());
 		$('#sName').val(storename);
-		console.log(storename);
+		$('input:text[name="sId"]').val(selectstoreid);
+		$('input:text[name="cAdd"]').val(standardsearchAddress);
+		$('input:text[name="stDeliService"]').val(storedeliservice);
+		console.log(selectstoreid);
 		 $('#menudetailModal').modal('show');
      });
 	
@@ -477,6 +499,9 @@ $(function(){
 		$('#price').val($(this).children().eq(2).text());
 		$('#totalPrice').val($(this).children().eq(2).text());
 		$('#sName').val(storename);
+		$('input:text[name="sId"]').val(selectstoreid);
+		$('input:text[name="cAdd"]').val(standardsearchAddress);
+		$('input:text[name="stDeliService"]').val(storedeliservice);
 		 $('#menudetailModal').modal('show');
     });
 	
@@ -486,6 +511,9 @@ $(function(){
 		$('#price').val($(this).children().eq(2).text());
 		$('#totalPrice').val($(this).children().eq(2).text());
 		$('#sName').val(storename);
+		$('input:text[name="sId"]').val(selectstoreid);
+		$('input:text[name="cAdd"]').val(standardsearchAddress);
+		$('input:text[name="stDeliService"]').val(storedeliservice);
 		 $('#menudetailModal').modal('show');
     });
 
@@ -506,10 +534,7 @@ $(function(){
 		$("#storeserch").val("");
 		$("#storelistmodal").modal('show');
 	});
-	
-/* 	$("#allstorelistbtn").on("click",function(){
-		alert("in");
-	}); */
+
 		
 	
 	// 메뉴 검색
@@ -521,17 +546,31 @@ $(function(){
 	});
   
 	
- // 매장 검색
+	 // 매장 검색
   	$("#storeserch").on("keyup", function() {
 		var value = $(this).val().toLowerCase();
 		$("#storetable tr").filter(function() {
 			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 		});
 	});
- 
+
  	
-  	
+	 // 옵션 선택시
+  	$(".checkoption").change(function(){
+  		var v_totalprice = $('#totalPrice').val();
+  		if($(this).is(":checked")){
+				v_totalprice = Number(v_totalprice)+500;
+		}else{
+			v_totalprice = Number(v_totalprice)-500;
+		}
+  		$('#totalPrice').val(v_totalprice);
+  	});
   
+	// 나만의 메뉴 등록 시
+	$("#mymenuInsertbtn").on("click",function(){
+		
+		
+	});
 });
 </script>
 
