@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.cafein.vo.MenuVO;
+import co.yedam.cafein.vo.StockVO;
 
 @RestController
 public class MenuController {
@@ -24,10 +25,17 @@ public class MenuController {
 	@Autowired
 	MenuServiceImpl service;
 
+	@Autowired
+	RecipeSerciveImpl service2;
+
+	
 	@RequestMapping(value="/storerecipemenu", method=RequestMethod.GET)
 	public ModelAndView getMenuList(ModelAndView mv) {
+		StockVO vo2 = new StockVO();
 		MenuVO vo = new MenuVO();
+		vo2.setsId("SH001");
 		mv.addObject("storemenu",service.getMenuList(vo));
+		mv.addObject("recistock",service2.getRecipeStockList(vo2));
 		mv.setViewName("store/menulist");
 		return mv;
 	}
