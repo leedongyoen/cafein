@@ -1,10 +1,6 @@
 package co.yedam.cafein.store.sales;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +16,7 @@ public class SalesAjaxController {
 	@RequestMapping("/getsalesday.do")
 	@ResponseBody
 	public List<SalesSumVO> salesDayForm(SalesSumVO vo) {
+		System.out.println(vo);
 		return salesService.getDaySales(vo) ;
 		
 	}
