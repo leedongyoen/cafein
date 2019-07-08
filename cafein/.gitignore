@@ -7,3 +7,4 @@ pom.properties
 /target/
 /target/*
 */target/*
+database.properties
