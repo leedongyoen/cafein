@@ -52,6 +52,7 @@
 		if(checklogin == null || checklogin =="null"){
 			alert('로그인이 필요합니다.');
 		}else{
+			var v_storeId = $("#storeid").val();
 			$.ajax({
 				url:'customerinfo/'+checklogin,
 				type:'GET',
@@ -63,7 +64,21 @@
 				success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 					customerAdd= data.cAdd;
 					$('input:text[name="cAdd"]').val(customerAdd);
+					$('input:text[name="cAdd"]').val(customerAdd);
+				}
+			});
+			// 고객 마일리지 가져오기.
+			$.ajax({
+				url:'customerreserve',
+				type:'GET',
+				dataType:'json',
+				data: {cId: checklogin, sId: v_storeId},
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 					
+					$('input:text[name="mileage"]').attr("placeholder",data.mileAge);
 				}
 			});
 		}
@@ -87,7 +102,7 @@
 	<body>
 		<h1 align="center">주 문</h1>
 		<div class="container">
-
+			<input id="storeid" value="${store.sid}" style="display: none" >
 			<table class="table">
 			
 				<tr>
@@ -110,21 +125,21 @@
 				<tr>
 					<th>옵션</th>
 					<td>
-						<c:if test="${selectmenu.whipping == 'whipping'} ">
-							${selectmenu.whipping} ,
+						<c:if test="${selectmenu.whipping eq 'Y'}">
+							휘핑 추가 
 						</c:if>
-						<c:if test="${selectmenu.syrup == 'syrup'} ">
-							${selectmenu.syrup} ,
+						<c:if test="${selectmenu.syrup eq 'Y'}">
+							시럽 추가 
 						</c:if>
-						<c:if test="${selectmenu.whipping == 'whipping'} ">
-							${selectmenu.shot} ,
+						<c:if test="${selectmenu.shot eq 'Y'}">
+							샷 추가 
 						</c:if>
 					 </td>
 				</tr>
 				<tr>
 					<th>금 액</th>
 					<td><span id="cost">${selectmenu.price}</span>&nbsp;&nbsp;
-						<button onclick="add(1)">+</button> <span id="no">1개 </span>
+						<button onclick="add(1)">+</button> <span id="no">${selectmenu.qty}</span>
 						<button onclick="add(-1)">-</button></td>
 				</tr>
 				
@@ -138,7 +153,7 @@
 
 					</td>
 				</tr>
-				<c:if test="${selectmenu.stDeliService eq 'Y'}">
+				<c:if test="${store.stdeliservice eq 'Y'}">
 					<tr>
 						<th>수 령 방 식</th>
 						<td><input type="radio" name="receipt" value="delivery "
@@ -150,27 +165,26 @@
 					<tr>
 						<th>배 달 주 소</th>
 						<td>
-						<c:if test="${selectmenu.cAdd  != null or selectmenu.cAdd !='' }">
+						<c:if test="${selectmenu.cAdd !='' }">
 							<input type="text" name="cAdd" value="${selectmenu.cAdd}" style="width: 500px;">
 						</c:if>
-						<c:if test="${selectmenu.cAdd  == null or selectmenu.cAdd =='' }">
+						<c:if test="${selectmenu.cAdd =='' }">
 							<script>
 								getCostomerInfo();
 							</script>
 							<input type="text" name="cAdd" style="width: 500px;">
 						</c:if>
-						
 							<button type="button" onclick="getCostomerInfo()">현 주소로하기</button>
 							<button type="button" id="changeAdd" onclick="alert('새 주소로 변경되었습니다.')">새
 								주소로하기</button>
 						</td>
 					</tr>
 				</c:if>
-				<c:if test="${selectmenu.stDeliService eq 'N'} ">
+				<c:if test="${store.stdeliservice eq 'N'} ">
 					<tr>
 						<th>수 령 방 식</th>
 						<td>
-							<input type="radio" name="receipt" value="takeout" id="takeout"> 
+							<input type="radio" name="receipt" value="takeout" id="takeout" checked="checked"> 
 							<label for="takeout">직접받아가기</label>
 							</td>
 					</tr>

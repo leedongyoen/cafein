@@ -89,6 +89,7 @@
 						<input type="text" name="sId" style="display: none;" >
 						<input type="text" name="cAdd" style="display: none;" >
 						<input type="text" name="stDeliService" style="display: none;" >
+						<input type="text" name="qty" value="1" style="display: none;">
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
@@ -114,9 +115,9 @@
 							</tr>
 							<tr>
 								<th>OPTION</th>
-								<td><input type="checkbox" class="checkoption" name="whipping" value="whipping">휘핑크림 추가(+500)<br>
-									<input type="checkbox" class="checkoption" name="syrup" value="syrup">시럽 추가(+500)<br>
-									<input type="checkbox" class="checkoption" name="shot" value="shhot">샷 추가(+500)
+								<td><input type="checkbox" class="checkoption" name="whipping" value="Y">휘핑크림 추가(+500)<br>
+									<input type="checkbox" class="checkoption" name="syrup" value="Y">시럽 추가(+500)<br>
+									<input type="checkbox" class="checkoption" name="shot" value="Y">샷 추가(+500)
 								</td>
 							</tr>
 							<tr>
@@ -468,6 +469,7 @@
 		
 		$('#totalPrice').val(v_totalprice);
 		$("#ordernum").html(no);
+		$('input:text[name="qty"]').val(no);
 	}
 
 $(function(){
