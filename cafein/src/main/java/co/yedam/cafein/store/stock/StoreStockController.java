@@ -20,12 +20,7 @@ public class StoreStockController {
 		return "store/stocklist";
 		
 	}
-	@RequestMapping(value="/deleteStock.do")
-	public String deleteStock(StockVO vo) {
-		storeStockService.deleteStock(vo);
-		return "store/stocklist";
-		
-	}
+	
 	
 	@RequestMapping(value="warehousingregi.do")
 	public String warehousingregi() {

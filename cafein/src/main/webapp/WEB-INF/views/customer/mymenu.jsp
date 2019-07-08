@@ -8,7 +8,9 @@
 <%@ include file="cushead.jsp"%>
 <title>Insert title here</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 <style type="text/css">
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -163,26 +165,29 @@ to {
 	<hr>
 	<br>
 	<div class="container">
-		<div align="right">
+		<div id="play" align="right">
 
-			<a href="${pageContext.request.contextPath}/storelistmenu"
-				class="test btn">추가</a><br>
+			<a href="${pageContext.request.contextPath}/customerstorelist.do"
+				class="test btn">추가</a>
+				<a class="test btn" href="javascript:deleteMymenu()" id="deletemymenu">삭제</a>
+				<br>
 			<div id="somediv" title="" style="display: none;">
 				<div id="thedialog"></div>
 			</div>
+			
+			
+			
 
-			<button>삭제</button>
-		</div>
-		<div id="menulist">
-		<ul class="gallery">
-		</ul>
+			
 		</div>
 		<table class="table text-center">
 
 			<tbody id="GoToDetail"></tbody>
-				
 </table>
-
+</div>
+<div class="deleteCheckon" align="right">
+<a class="deletetest btn" href="javascript:deleteMymenu()" id="deletemymenuon">삭제하기</a>
+<a class="offtest btn" href="javascript:deleteMymenu()" id="offtest">돌아가기</a>
 </div>
 
 
@@ -202,10 +207,19 @@ to {
 			<td><input type="text" id="mName" name="mName"
 						readonly="readonly"></td>
 		</tr>
+		
 		<tr>
 			<th>가 격</th>
 			<td><input type="text" id="mPrice" name="mPrice"
 						readonly="readonly"></td>
+		</tr>
+		<tr>
+			<th>수 량</th>
+			<td>
+				<button onclick="add(1)">-</button>
+				<span id="no">1개 </span>
+				<button onclick="add(-1)">+</button>
+			</td>
 		</tr>
 		<tr>
 			<th>HOT/ICE</th>
@@ -220,7 +234,7 @@ to {
 			<td>
 			<input type="checkbox" name="mNum" value="ME021" /> <label for="whipping">휘핑크림 추가(+500원)</label><br>
 			<input type="checkbox" name="mNum" value="ME022" />	 <label for="shot">1샷 추가(+500원)</label><br>
-			<input type="checkbox" name="mNum" value="syrup" /> <label for="syrup">시럽 추가(+0원)</label>
+			<input type="checkbox" name="mNum" value="ME023" /> <label for="syrup">시럽 추가(+0원)</label>
 			</td>
 		</tr>
 		<tr>
@@ -232,7 +246,7 @@ to {
 	<br>
 	<div align="right">
 	<button class="btn btn-default " onclick="location='Order.do'">주문</button>&nbsp;&nbsp;
-	<button class="btn btn-default " onclick="location='cusCart.jsp'">담기</button>&nbsp;&nbsp;
+	<button class="btn btn-default " onclick="location='cusCart.do'">담기</button>&nbsp;&nbsp;
 	<button class="btn btn-default " onclick="location='update.do'">수정</button>&nbsp;&nbsp;
 	</div>
 	<span class="close">&times;</span>
@@ -241,12 +255,12 @@ to {
 <script type="text/javascript">
 	myMenuList('ju123');
 	var datas;
+	var totalcheckboxnum;
 	
 	//화면에 뿌리기.
-	function myMenuList(cId) {
-		var cId = cId;
+	function myMenuList() {
 		$.ajax({
-			url : 'customer/' + cId,
+			url : 'customer/',
 			type : 'GET',
 			dataType : 'json',
 			error : function(xhr, status, msg) {
@@ -254,13 +268,18 @@ to {
 			},
 			success : function myMenuListResult(data){
 				datas=data;
+				$("#GoToDetail").empty();
 				$.each(data, function(idx, item) {
-				$("#GoToDetail").append("<td onclick=detailmyMenuListResult"+"('"+item.cuNum+"'"+")><div>"
+				$("#GoToDetail").append("<td onclick=detailmyMenuListResult"+"('"+item.cuNum+"'"+")><div class='container'>"
 									+"<img class=\"myImg\" id=\""
-									+item.cuNum+"\" src=\"image/coffee1.jpg\" width=\"200\" heigh=\"200\">"+"</div>"
-									+item.mName+","+item.sName+"</td>");
-				}
-			)}
+									+item.cuNum+"\" src=\"image/coffee1.jpg\" width=\"200\" heigh=\"200\">"+"</div><div class='container'>"
+									+item.mName+"</div><div class='container'>"+item.sName
+									+"</div></td><td><div class=\"deleteCheck\"><input type='checkbox' name=\"checkDel\" id='hidden_cuNum"+idx+"'value='"
+									+item.cuNum+"'></div></td>");
+				})
+				$(".deleteCheck").hide();
+				$(".deleteCheckon").hide();
+			}
 		});
 	}
 	// 세부화면 모달창
@@ -273,7 +292,6 @@ to {
 				var opNum = item.opNum;
 				var s = opNum.split(",");
 					console.log(s);
-				
  				$("#cuNum").val(item.cuNum);
 				$("#sName").val(item.sName);
 				$("#mName").val(item.mName);
@@ -283,9 +301,47 @@ to {
 			}
 		})
 	};
+	//삭제창
+	function deleteMymenu(cuNum) {
+		$(".deleteCheckon").show();
+		$(".deleteCheck").show();
+		$("#deletemymenuon").on("click",function(){
+			if(confirm("삭제하시겠습니까??")){
+				var checked = [];
+				$('input[name=checkDel]:checked').each(function(idx, item){
+					checked.push(item.value);
+				});
+				console.log(checked);
+				$.ajax({
+					url : 'customer',
+					type : 'DELETE',
+					dataType : 'json',
+					data: JSON.stringify({ cuNumList: checked}),
+					contentType: 'application/json',
+					error : function(xhr, status, msg) {
+						alert("상태값 :" + status + " Http에러메시지 :" + msg);
+					},
+					success :function(data) {
+							myMenuList();
+							
+					}
+				});
+			}
+		});
+		$("#offtest").on("click",function(){
+			myMenuList();
+		});
+	};
 	
 	
-
+	
+	//수량
+	
+	//커스텀 수정
+	
+	
+	
+	
 	//Get the modal
 	var modal = document.getElementById("myModal");
 

@@ -16,6 +16,7 @@
 		<typeAlias type="co.yedam.cafein.vo.MenuVO" alias="menu"/>
 		<typeAlias type="co.yedam.cafein.vo.CustomerVO" alias="customer"/>
 		<typeAlias type="co.yedam.cafein.vo.StockVO" alias="stock"/>
+		<typeAlias type="co.yedam.cafein.vo.WarehousingVO" alias="warehousing"/>
 		
 		<typeAlias type="co.yedam.cafein.viewvo.ViewMymenuVO" alias="viewmymenu"/>
 	</typeAliases>

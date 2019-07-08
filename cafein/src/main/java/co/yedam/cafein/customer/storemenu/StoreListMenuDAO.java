@@ -22,4 +22,8 @@ public class StoreListMenuDAO {
 	public List<MenuVO> getMenuList(MenuVO vo){
 		return dao.selectList("StoremenuDAO.getMenuList",vo);
 	}
+	
+	public List<StoreVO> getSearchStoreList(StoreVO vo){
+		return dao.selectList("StoremenuDAO.getStoreList", vo);
+	}
 }

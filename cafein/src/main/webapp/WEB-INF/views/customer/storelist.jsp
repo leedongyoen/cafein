@@ -6,7 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp" %>
-
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
+<script src="./js/json.min.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -14,7 +16,7 @@
 
 <div class="container">
 
-	<button id="selectStore">매장 선택</button>
+	<button id="selectStore" class="btn btn-outline-info" >매장 선택</button>
 	<hr>
 	
 	<input class="form-control" id="myInput" type="text" placeholder="Search..">
@@ -81,8 +83,12 @@
 					<h5 class="modal-title">메뉴</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
+				<form class="form-borizontal" id="menudetailForm" action="${pageContext.request.contextPath}/customerorder" method="POST">
 				<div class="modal-body">
-					<form class="form-borizontal" action="#" method="POST">
+					
+						<input type="text" name="sId" style="display: none;" >
+						<input type="text" name="cAdd" style="display: none;" >
+						<input type="text" name="stDeliService" style="display: none;" >
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
@@ -108,24 +114,26 @@
 							</tr>
 							<tr>
 								<th>OPTION</th>
-								<td><input type="checkbox" name="whipping" value="whipping">휘핑크림 추가(+500)<br>
-									<input type="checkbox" name="syrup" value="syrup">시럽 추가(+500)<br>
-									<input type="checkbox" name="shot" value="shhot">샷 추가(+500)</td>
+								<td><input type="checkbox" class="checkoption" name="whipping" value="whipping">휘핑크림 추가(+500)<br>
+									<input type="checkbox" class="checkoption" name="syrup" value="syrup">시럽 추가(+500)<br>
+									<input type="checkbox" class="checkoption" name="shot" value="shhot">샷 추가(+500)
+								</td>
 							</tr>
 							<tr>
 								<th>TOTAL PRICE</th>
 								<td><input type="text" id="totalPrice" name="totalPrice" readonly="readonly"></td>
 							</tr>
 						</table>
-					</form>
+					
 				
 				</div>
 				<div class="modal-footer">	
-					<button type="button" class="btn btn-default" >나만의 메뉴 등록</button>	
-					<button type="button" class="btn btn-default" >주문</button>	
-					<button type="button" class="btn btn-default" >담기</button>			
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" >나만의 메뉴 등록</button>	
+					<button type="submit"  class="btn btn-outline-primary" >주문</button>	
+					<button type="button" class="btn btn-outline-primary" >담기</button>			
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -140,17 +148,21 @@
 				</div>
 				<div class="modal-body">
 					<div align="center">
-						<button type="button" id="storelistbtn1" class="btn btn-default" >주변매장</button>
-						<button type="button" id="storelistbtn2" class="btn btn-default">기입주소매장조회</button>
-						<button type="button" id="allstorelistbtn" onclick="allstroelist();" class="btn btn-default">모든매장</button>	
+						<button type="button" id="storelistbtn1" onclick="searchstorelist();" class="btn btn-outline-info" >주변매장</button>
+
+						<button type="button" id="storelistbtn2" onclick="currentaddressStorelist()" class="btn btn-outline-info">기입주소매장조회</button>
+						<button type="button" id="allstorelistbtn" onclick="allstroelist();" class="btn btn-outline-info">모든매장</button>	
 					</div>
+					<hr>
+					<h3 id="storemodalminititle" align="center"></h3><hr>
+					<h5 id="customerAddress" align="center"></h5>
 					<hr>
 					<form class="form-borizontal" action="#" method="POST">
 						<input class="form-control" id="storeserch" type="text" placeholder="Search..">
 						<div class="table-responsive">
 						<table id="storetable" class="table">
 							<thead>
-							<tr>
+							<tr> 
 								<th>매장명</th>
 								<th>주소</th>
 								<th>거리</th>
@@ -173,7 +185,7 @@
 				
 				</div>
 				<div class="modal-footer">		
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
@@ -181,11 +193,34 @@
 </div>
 <script>
 	
+	// 메뉴 상세 모달창에 매장 이름 띄우기 위한 변수
 	var storename;
-
-	function menuList(sid,sname){
-		var sid = sid;
+	
+	var selectstoreid;
+	
+	// 거리를 구하기 위해서 좌표를 저장하는 변수
+	var searchLine;
+	
+	// 기준이 되는 매장 좌표
+	var searchPostion;
+	
+	// 기준이 되는 매장 주소 앞 두자리
+	var standardsearchStore;
+	
+	// 고객의 주소 ( DB 또는 검색한 주소)
+	var standardsearchAddress;
+	
+	// 선택한 매장의 배달 서비스 여부
+	var storedeliservice;
+	
+	//주소-좌표 변환 객체를 생성
+    var geocoder = new daum.maps.services.Geocoder();
+	
+	
+	function menuList(sid,sname,stdeliservice){
+		selectstoreid = sid;
 		storename=sname;
+		storedeliservice = stdeliservice;
 		console.log(sid,sname)
 		$.ajax({
 			url:'storelistmenu/'+sid,
@@ -231,6 +266,153 @@
 			}
 		});
 	}
+	
+    // 거리 계산을 위하여
+    function setSearchLine(searchpostion){
+    	searchLine = new kakao.maps.Polyline({
+
+        	path: [searchpostion]
+        	
+        });
+    }
+    
+    // DB정보로 거리 계산
+    function getDBStoreDistance(sid,sname,saddress,stdeliservice){
+    	// 주소로 좌표를 검색합니다
+    	geocoder.addressSearch(saddress, function(result, status) {
+	    	console.log("for문 안 ge "+saddress);
+	    	
+	        // 정상적으로 검색이 완료됐으면 
+	         if (status === kakao.maps.services.Status.OK) {
+	
+	            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	            console.log(saddress+'  : '+coords);
+	            // 거리 계산
+	            var path= searchLine.getPath();
+	            path.push(coords);
+	            searchLine.setPath(path);
+	            
+	            var distance = Math.round(searchLine.getLength());
+	            console.log(sname+' 거리  : '+distance+"m");
+	           
+	            if(distance < 300){
+	            	
+	            	$('<tr>').attr("onclick","menuList('"+sid+"','"+sname+"','"+stdeliservice+"')")
+					.append($('<td>').html(sname))
+					.append($('<td>').html(saddress))
+					.append($('<td>').html(distance+"m"))
+					.append($('<td>').html(stdeliservice))
+					.appendTo('#storetable tbody');
+						
+	            }
+	            
+	            // 다른 매장과 거리 계산을 위해 초기화
+	            searchLine.setMap(null);
+	        	searchLine = null;
+	        	
+	        	// 기준 매장 주소를 다시 넣는다.
+	            setSearchLine(searchPostion);
+	        } 
+	    }); 
+    }
+    
+    // 주변매장 - DB에서 정보 가져옴
+    function getstorelist(){
+    	console.log(standardsearchStore);
+		// 매장 정보 가져와서 거리 계산 후 뿌리기
+		$.ajax({
+			url:'searchstorelist/'+standardsearchStore,
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(list){
+				$("#storetable tbody").empty();
+				$("#storemodalminititle").html("주변매장");
+				$.each(list,function(idx,item){
+					getDBStoreDistance(item.sid,item.sname,item.sadd,item.stdeliservice);
+				});
+			}
+		});
+    }
+	
+	function searchstorelist(){
+		new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = data.address; // 최종 주소 변수
+                standardsearchAddress = addr;
+                $("#customerAddress").html(addr);
+                standardsearchStore = addr.substr(0,2);
+                console.log(standardsearchStore);
+                // 주소로 상세 정보를 검색
+                geocoder.addressSearch(data.address, function(results, status) {
+                    // 정상적으로 검색이 완료됐으면
+                    if (status === daum.maps.services.Status.OK) {
+
+                        var result = results[0]; //첫번째 결과의 값을 활용
+
+                        // 해당 주소에 대한 좌표를 받아서
+                        searchPostion = new daum.maps.LatLng(result.y, result.x);
+                        
+                    
+        	        	
+                        
+                        // 거리 계산을 위해서 설정.
+                        setSearchLine(searchPostion);  
+                        
+                        // db에서 기준 매장 도시이름으로 검색
+                        getstorelist();
+                    }
+                });
+            }
+        }).open();
+     	
+	}
+	
+	// 사용자가 입력한 주소 정보를 기준으로 검색하기.
+	function currentaddressStorelist(){
+		var checklogin = "<%=(String) session.getAttribute("cId")%>";
+		console.log(checklogin);
+		if(checklogin == null || checklogin =="null"){
+			alert('로그인이 필요합니다.');
+		}else{
+			$.ajax({
+				url:'customerinfo/'+checklogin,
+				type:'GET',
+				//contentType:'application/json;charset=utf-8',
+				dataType:'json',
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+					$("#storetable tbody").empty();
+					$("#customerAddress").html(data.cAdd);
+					standardsearchAddress = data.cAdd;
+					geocoder.addressSearch(data.cAdd, function(results, status) {
+	                    // 정상적으로 검색이 완료됐으면
+	                    if (status === daum.maps.services.Status.OK) {
+
+	                        var result = results[0]; //첫번째 결과의 값을 활용
+
+	                        // 해당 주소에 대한 좌표를 받아서
+	                        searchPostion = new daum.maps.LatLng(result.y, result.x);
+	                        
+	                             	        	
+	                        
+	                        // 거리 계산을 위해서 설정.
+	                        setSearchLine(searchPostion);  
+	                        
+	                        // db에서 기준 매장 도시이름으로 검색
+	                        getstorelist();
+	                    }
+	                });
+				}
+			});
+		}
+		
+	}
 	 
 	// 모든 매장 리스트 보여주기
 	function allstroelist(){
@@ -243,12 +425,15 @@
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				standardsearchAddress="";
 				$("#storetable tbody").empty();
+				$("#storemodalminititle").html("모든매장");
+				$("#customerAddress").html("");
 				$.each(data,function(idx,item){
-					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"')")
+					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')")
 					.append($('<td>').html(item.sname))
 					.append($('<td>').html(item.sadd))
-					.append($('<td>').html(""))
+					.append($('<td>').html("-"))
 					.append($('<td>').html(item.stdeliservice))
 					.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.sid))
 					.appendTo('#storetable tbody');
@@ -301,7 +486,10 @@ $(function(){
 		$('#price').val($(this).children().eq(2).text());
 		$('#totalPrice').val($(this).children().eq(2).text());
 		$('#sName').val(storename);
-		console.log(storename);
+		$('input:text[name="sId"]').val(selectstoreid);
+		$('input:text[name="cAdd"]').val(standardsearchAddress);
+		$('input:text[name="stDeliService"]').val(storedeliservice);
+		console.log(selectstoreid);
 		 $('#menudetailModal').modal('show');
      });
 	
@@ -311,6 +499,9 @@ $(function(){
 		$('#price').val($(this).children().eq(2).text());
 		$('#totalPrice').val($(this).children().eq(2).text());
 		$('#sName').val(storename);
+		$('input:text[name="sId"]').val(selectstoreid);
+		$('input:text[name="cAdd"]').val(standardsearchAddress);
+		$('input:text[name="stDeliService"]').val(storedeliservice);
 		 $('#menudetailModal').modal('show');
     });
 	
@@ -320,6 +511,9 @@ $(function(){
 		$('#price').val($(this).children().eq(2).text());
 		$('#totalPrice').val($(this).children().eq(2).text());
 		$('#sName').val(storename);
+		$('input:text[name="sId"]').val(selectstoreid);
+		$('input:text[name="cAdd"]').val(standardsearchAddress);
+		$('input:text[name="stDeliService"]').val(storedeliservice);
 		 $('#menudetailModal').modal('show');
     });
 
@@ -340,10 +534,7 @@ $(function(){
 		$("#storeserch").val("");
 		$("#storelistmodal").modal('show');
 	});
-	
-/* 	$("#allstorelistbtn").on("click",function(){
-		alert("in");
-	}); */
+
 		
 	
 	// 메뉴 검색
@@ -355,17 +546,31 @@ $(function(){
 	});
   
 	
- // 매장 검색
+	 // 매장 검색
   	$("#storeserch").on("keyup", function() {
 		var value = $(this).val().toLowerCase();
 		$("#storetable tr").filter(function() {
 			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 		});
 	});
- 
+
  	
-  	
+	 // 옵션 선택시
+  	$(".checkoption").change(function(){
+  		var v_totalprice = $('#totalPrice').val();
+  		if($(this).is(":checked")){
+				v_totalprice = Number(v_totalprice)+500;
+		}else{
+			v_totalprice = Number(v_totalprice)-500;
+		}
+  		$('#totalPrice').val(v_totalprice);
+  	});
   
+	// 나만의 메뉴 등록 시
+	$("#mymenuInsertbtn").on("click",function(){
+		
+		
+	});
 });
 </script>
 

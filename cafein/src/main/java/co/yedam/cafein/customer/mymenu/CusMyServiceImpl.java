@@ -29,7 +29,7 @@ public class CusMyServiceImpl implements CusMyService{
 	}
 	
 	public void deleteMymenu(MyMenuVO vo) {
-		//DAO.deleteMymenu(vo);
+		 DAO.deleteMymenu(vo);
 	}
 	
 	

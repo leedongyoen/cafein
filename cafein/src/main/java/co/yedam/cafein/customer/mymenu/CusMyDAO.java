@@ -14,29 +14,23 @@ public class CusMyDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 	
-//	private static final String mymenu = "mapper.mymenuMapper";
 
-	/*
-	 * public List<MyMenuVO> getMymenu(MyMenuVO vo) {
-	 * System.out.println("===> Mybatis getMymenu()"); return
-	 * mybatis.selectList("MymenuDAO.getMymenu", vo); }
-	 */
-	
+
 	public List<ViewMymenuVO> getMymenu(ViewMymenuVO vo) {
 		System.out.println("===> Mybatis getMymenu()");
 		return mybatis.selectList("MymenuDAO.getMymenu", vo);
 	}
 	
+	public void deleteMymenu(MyMenuVO vo) {
+		  System.out.println("===> Mybatis deleteMymenu()");
+		  mybatis.update("MymenuDAO.deleteMymenu", vo); }
+	  
+	
+	
 	/*
-	 * //������ �޴� �Է�
-	 * 
 	 * public void inserMymenu(MyMenuVO vo) {
 	 * System.out.println("===> Mybatis inserMymenu()");
 	 * mybatis.insert("MymenuDAO.insertBoard", vo); }
-	 * 
-	 * public void deleteMymenu(MyMenuVO vo) {
-	 * System.out.println("===> Mybatis deleteMymenu()");
-	 * mybatis.update("MymenuDAO.deleteMymenu", vo); }
 	 * 
 	 * public void updateMymenu(MyMenuVO vo) {
 	 * System.out.println("===> Mybatis updateMymenu()");

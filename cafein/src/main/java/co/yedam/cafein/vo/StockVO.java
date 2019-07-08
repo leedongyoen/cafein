@@ -13,7 +13,7 @@ public class StockVO {
 	private String stStatus;
 	private int truthQty;
 	
-	private int[] stNumList;
+	private String[] stNumList;
 	
 	
 	public String getStNum() {
@@ -78,10 +78,10 @@ public class StockVO {
 	}
 	
 	
-	public int[] getStNumList() {
+	public String[] getStNumList() {
 		return stNumList;
 	}
-	public void setStNumList(int[] stNumList) {
+	public void setStNumList(String[] stNumList) {
 		this.stNumList = stNumList;
 	}
 	@Override
