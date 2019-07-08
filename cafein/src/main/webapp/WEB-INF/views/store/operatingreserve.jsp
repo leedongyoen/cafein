@@ -10,7 +10,7 @@
 <h3 align = "center">매장 영업 준비금</h3><br>
 <div class="container">
 	<div class="row">
-		<div class="col-11" style="height:350px;width:550px;overflow:auto;">
+		<div class="col-12" style="height:350px;width:550px;overflow:auto;">
 			<table class="table table-striped">
 				<tr>
 					<th>순번</th>
@@ -50,7 +50,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="col-11">
+		<div style="margin:auto;">
 			<table>
 				<tr>
 					<th>항목</th>

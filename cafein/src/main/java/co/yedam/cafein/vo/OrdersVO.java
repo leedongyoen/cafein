@@ -11,6 +11,7 @@ public class OrdersVO {
 	private String receipt;
 	private String sId;
 	private String payMethod;
+	private int mileage;
 	
 	public String getoNum() {
 		return oNum;
@@ -54,11 +55,16 @@ public class OrdersVO {
 	public void setPayMethod(String payMethod) {
 		this.payMethod = payMethod;
 	}
-	
+	public int getMileage() {
+		return mileage;
+	}
+	public void setMileage(int mileage) {
+		this.mileage = mileage;
+	}
 	@Override
 	public String toString() {
 		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
-				+ receipt + ", sId=" + sId + ", payMethod=" + payMethod + "]";
+				+ receipt + ", sId=" + sId + ", payMethod=" + payMethod + ", mileage=" + mileage + "]";
 	}
 
 }
