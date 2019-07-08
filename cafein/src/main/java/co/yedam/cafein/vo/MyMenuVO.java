@@ -1,12 +1,24 @@
 package co.yedam.cafein.vo;
 
+import java.util.Arrays;
+
 public class MyMenuVO {
 	
 	private String myNum;
 	private String cId;
 	private String mNum;
 	private String cuNum;
+	private String[] cuNumList;
+	
+	
 
+	
+	public String[] getCuNumList() {
+		return cuNumList;
+	}
+	public void setCuNumList(String[] cuNumList) {
+		this.cuNumList = cuNumList;
+	}
 	public String getMyNum() {
 		return myNum;
 	}
@@ -33,8 +45,10 @@ public class MyMenuVO {
 	}
 	@Override
 	public String toString() {
-		return "MyMenuVO [myNum=" + myNum + ", cId=" + cId + ", mNum=" + mNum + ", cuNum=" + cuNum + "]";
+		return "MyMenuVO [myNum=" + myNum + ", cId=" + cId + ", mNum=" + mNum + ", cuNum=" + cuNum + ", cuNumList="
+				+ Arrays.toString(cuNumList) + "]";
 	}
+	
 	
 	
 

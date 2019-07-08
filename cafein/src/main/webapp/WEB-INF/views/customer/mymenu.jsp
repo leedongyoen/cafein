@@ -8,7 +8,9 @@
 <%@ include file="cushead.jsp"%>
 <title>Insert title here</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 <style type="text/css">
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -178,9 +180,11 @@ to {
 		<table class="table text-center">
 
 			<tbody id="GoToDetail"></tbody>
-				
 </table>
-
+</div>
+<div class="deleteCheckon" align="right">
+<a class="deletetest btn" href="javascript:deleteMymenu()" id="deletemymenuon">삭제하기</a>
+<a class="offtest btn" href="javascript:deleteMymenu()" id="offtest">돌아가기</a>
 </div>
 
 
@@ -200,10 +204,19 @@ to {
 			<td><input type="text" id="mName" name="mName"
 						readonly="readonly"></td>
 		</tr>
+		
 		<tr>
 			<th>가 격</th>
 			<td><input type="text" id="mPrice" name="mPrice"
 						readonly="readonly"></td>
+		</tr>
+		<tr>
+			<th>수 량</th>
+			<td>
+				<button onclick="add(1)">-</button>
+				<span id="no">1개 </span>
+				<button onclick="add(-1)">+</button>
+			</td>
 		</tr>
 		<tr>
 			<th>HOT/ICE</th>
@@ -242,10 +255,9 @@ to {
 	var totalcheckboxnum;
 	
 	//화면에 뿌리기.
-	function myMenuList(cId) {
-		var cId = cId;
+	function myMenuList() {
 		$.ajax({
-			url : 'customer/' + cId,
+			url : 'customer/',
 			type : 'GET',
 			dataType : 'json',
 			error : function(xhr, status, msg) {
@@ -253,18 +265,18 @@ to {
 			},
 			success : function myMenuListResult(data){
 				datas=data;
+				$("#GoToDetail").empty();
 				$.each(data, function(idx, item) {
 				$("#GoToDetail").append("<td onclick=detailmyMenuListResult"+"('"+item.cuNum+"'"+")><div class='container'>"
 									+"<img class=\"myImg\" id=\""
 									+item.cuNum+"\" src=\"image/coffee1.jpg\" width=\"200\" heigh=\"200\">"+"</div><div class='container'>"
 									+item.mName+"</div><div class='container'>"+item.sName
-									+"</div><div id=\"deleteCheck"+idx+"\"><input type='checkbox' id='hidden_cuNum"+idx+"'value='"
+									+"</div></td><td><div class=\"deleteCheck\"><input type='checkbox' name=\"checkDel\" id='hidden_cuNum"+idx+"'value='"
 									+item.cuNum+"'></div></td>");
-				$("#deleteCheck"+idx).hide();
-				
-				totalcheckboxnum = idx;
-				}
-			)}
+				})
+				$(".deleteCheck").hide();
+				$(".deleteCheckon").hide();
+			}
 		});
 	}
 	// 세부화면 모달창
@@ -286,38 +298,47 @@ to {
 			}
 		})
 	};
-	function deleteMymenu() {
-		//삭제 버튼 클릭
-		for(var i=0;i<totalcheckboxnum;i++){
-			$("#deleteCheck"+i).show();
-		}
-		$("#play div").on('click','#deletemymenu',function(){
-			
-			
-			$("#deleteCheck"+idx).click(function(){
-				$("#deleteCheck"+idx).attr("id", cuNum);
+	//삭제창
+	function deleteMymenu(cuNum) {
+		$(".deleteCheckon").show();
+		$(".deleteCheck").show();
+		$("#deletemymenuon").on("click",function(){
+			if(confirm("삭제하시겠습니까??")){
+				var checked = [];
+				$('input[name=checkDel]:checked').each(function(idx, item){
+					checked.push(item.value);
 				});
-				
-			
-			var id = $(this).closest('td').find('#hidden_cuNum').val();
-			var result = confirm(id +" 사용자를 정말로 삭제하시겠습니까?");
-			if(result) {
+				console.log(checked);
 				$.ajax({
-					url:'users/'+id,  
-					type:'DELETE',
-					contentType:'application/json;charset=utf-8',
-					dataType:'json',
-					error:function(xhr,status,msg){
-						console.log("상태값 :" + status + " Http에러메시지 :"+msg);
-					}, success:function(xhr) {
-						console.log(xhr.result);
-						userList();
+					url : 'customer',
+					type : 'DELETE',
+					dataType : 'json',
+					data: JSON.stringify({ cuNumList: checked}),
+					contentType: 'application/json',
+					error : function(xhr, status, msg) {
+						alert("상태값 :" + status + " Http에러메시지 :" + msg);
+					},
+					success :function(data) {
+							myMenuList();
+							
 					}
-				});      }//if
-		}); //삭제 버튼 클릭
-	}//userDelete
-
-
+				});
+			}
+		});
+		$("#offtest").on("click",function(){
+			myMenuList();
+		});
+	};
+	
+	
+	
+	//수량
+	
+	//커스텀 수정
+	
+	
+	
+	
 	//Get the modal
 	var modal = document.getElementById("myModal");
 
