@@ -14,54 +14,47 @@
 	});
 	google.charts.setOnLoadCallback(drawBasic);
 
+	var daydata;
 	function drawBasic() {
 		$.ajax({
 			url : "./getsalesmonth.do",
-		//	data : {oDnum : 1},
-			type : "get",
+			data : { sId : "SH001", week : "M", dates : "19"},
+			type : "POST",
 			datatype : "json",
-			success : function() {
-
-				var datas = google.visualization.arrayToDataTable([
-						[ '월', '총 수량','총 금액' ],
-						[ '1월', 561,2712300, ],
-						[ '2월', 401,450000 ],
-						[ '3월', 123,502000 ],
-						[ '4월', 321,720000 ],
-						[ '5월', 122,870000 ],
-						[ '6월', 492,2400000 ],
-						[ '7월', 122,3400000 ],
-						[ '8월', 122,3400000 ],
-						[ '9월', 122,3400000 ],
-						[ '10월', 122,3400000 ],
-						[ '11월', 122,3400000 ],
-						[ '12월', 122,3400000 ]
-						]);
-
+			success : function(days) {
+				var chartData = [];
+				chartData.push(['월','수량','금액'])
+					for(i=0; i<days.length; i++) {		
+						var dayss = [days[i].week + "월", parseInt(days[i].cnt), parseInt(days[i].atotal)];
+						chartData.push(dayss);
+						console.log(dayss);
+						
+				}
+				
+				daydata = google.visualization.arrayToDataTable(chartData);	
 				var options = {
-					title : '',
 					chartArea : {
 						width : '40%'
 					}
 				};
 
 				var table = new google.visualization.Table(document
-						.getElementById('test_dataview2'))
-				table.draw(datas, {
+							.getElementById('test_dataview2'))
+
+				table.draw(daydata, {
 					 width: '30%', height: '30%'
 				});
 
 				var chart = new google.visualization.BarChart(document
-						.getElementById('chart_div'));
+							.getElementById('chart_div'));
 
-				chart.draw(datas, options);
+				chart.draw(daydata, options);
 			}
 		});
 
 	};
 	$(window).resize(function() {
 		drawBasic();
-
 	});
 	</script>
 </head>
@@ -69,8 +62,7 @@
 	<h2 align="center">매출</h2>
 	<h3 align="center">월별 통계</h3>
 	<div id="chart_div"></div>
-	<div align="center" id="test_dataview2"></div>
-	<p align="center"><input type="date"></p>
+	<div align="center" id="test_dataview2"></div><br>
 	<div>
 		<table align="center">
 			<tr>

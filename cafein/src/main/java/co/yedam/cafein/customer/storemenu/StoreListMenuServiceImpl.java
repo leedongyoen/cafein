@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.vo.MenuVO;
+import co.yedam.cafein.vo.ReserveVO;
 import co.yedam.cafein.vo.StoreVO;
 
 @Service
@@ -25,5 +26,13 @@ public class StoreListMenuServiceImpl {
 	
 	public List<StoreVO> getSearchStoreList(StoreVO vo){
 		return dao.getSearchStoreList(vo);
+	}
+	
+	public StoreVO getgetSearchStore(StoreVO vo) {
+		return dao.getSearchStore(vo);
+	}
+	
+	public ReserveVO getReserve(ReserveVO vo) {
+		return dao.getReserve(vo);
 	}
 }

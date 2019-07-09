@@ -30,6 +30,21 @@
 		</if>
 		ORDER BY S_NAME DESC
 	</select>
+	
+	<select id="getSearchStore" resultType="store" resultMap="storeMap">
+		SELECT S_ID
+				,S_PW
+				,S_NAME
+				,S_ADD
+				,S_TEL
+				,ST_DELI_SERVICE
+				,ST_OPEN_TIME
+				,ST_CLOSE_TIME
+				, ST_MILE_SERVICE
+		FROM STORE
+		WHERE S_ID = #{sid}
+	
+	</select>
 
 	<resultMap type="menu" id="menuMap">
 		<id column="M_NUM" property="mNum"></id>
@@ -52,6 +67,14 @@
 		WHERE S_ID = #{sId}
 				AND MENUSALE = 'Y'
 		ORDER BY CA_NUM
+	</select>
+	
+	<select id="getReserve" resultType="reserve">
+		SELECT MILEAGE, S_ID, C_ID
+			FROM RESERVE
+			WHERE C_ID = #{cId}
+			      AND S_ID = #{sId}
+	
 	</select>
 
 </mapper>

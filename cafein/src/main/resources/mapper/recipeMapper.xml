@@ -15,6 +15,14 @@
       <result column="STAN_UNIT" property="stanUnit"/>
    </resultMap>
       
+<resultMap type="co.yedam.cafein.vo.StockVO" id="recistockMap">
+      <id column="ST_NUM" property="stNum"></id>
+      <result column="S_ID" property="sId"/>
+      <result column="ST_NAME" property="stName"/>
+     
+   </resultMap>      
+
+
 
 <select id="getRecipeList" resultMap="reciMap" parameterType="co.yedam.cafein.viewvo.ViewStockCheckVO">
 		select
@@ -29,5 +37,37 @@
 		from stock_check_view
 		where s_id=#{sId} and m_num=#{mNum}
 	</select>
+	
+	<select id="getRecipeStockList"  resultMap="recistockMap"  parameterType="co.yedam.cafein.vo.StockVO">
+	
+		select ST_NUM 
+				,S_ID 
+				,ST_NAME 
+			from stock
+			where s_id=#{sId}
+	</select>
+
+	<insert id="insertRecipe" parameterType="co.yedam.cafein.vo.RecipeVO">
+	INSERT INTO RECIPE (RECIPENO
+						, S_ID
+						, CONSUM
+						, ST_NUM
+						, M_NUM)
+			 	
+			 	VALUES ( 'RE'||lpad(MENU_SEQ.nextval,3,0)
+			 			, #{sId}
+			 			, #{consum}
+			 			, #{stNum}
+			 			, #{mNum}
+			 		)
+	
+	</insert>
+	
+	
+	<delete id="deleteRecipe" parameterType="co.yedam.cafein.vo.RecipeVO">
+	DELETE FROM RECIPE WHERE RECIPENO = #{recipeno};
+	
+	</delete>
+	
 
 </mapper>
