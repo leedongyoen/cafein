@@ -13,7 +13,7 @@ public class MenuVO {
 	private String menuSale;
 	private MultipartFile uploadFile;
 	
-	
+	   
 	
 	public MultipartFile getUploadFile() {
 		return uploadFile;
