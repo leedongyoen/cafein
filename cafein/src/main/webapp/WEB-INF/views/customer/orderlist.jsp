@@ -15,6 +15,7 @@
 	
 	function getOrderList(){
 		var checklogin = "<%=(String) session.getAttribute("cId")%>";
+		var orderdate;
 		$.ajax({
 			url:'orderlist/'+checklogin,
 			type:'GET',
@@ -28,17 +29,18 @@
 				
 				$.each(data,function(idx,item){
 					console.log(item.oDate);
+					orderdate= new Date(item.oDate);
 					if(item.payMethod == 'crd')
 						item.payMethod = '카드';
 					$('<tr>').attr("onclick","orderDetail('"+item.oNum+"')")//.addClass("openmodal")
 					.append($('<td>').html(item.oNum))
-					.append($('<td>').html(item.oDate))
+					.append($('<td>').html(orderdate.toLocaleDateString()))
 					.append($('<td>').html(item.sName))
 					.append($('<td>').html(item.total+'원'))
 					.append($('<td>').html(item.payMethod))
 					.appendTo('#orderlist tbody');
 				});
-			}
+			} 
 		});
 	}
 	
@@ -57,10 +59,10 @@
 			<p align="right">
 				<b>등록순</b> <select name="선택">
 					<optgroup>
-						<option selected>일주일 이내</option>
-						<option>1개월 이내</option>
-						<option>3개월 이내</option>
-						<option>6개월 이내</option>
+						<option value="1" selected>일주일 이내</option>
+						<option value="2">1개월 이내</option>
+						<option value="3">3개월 이내</option>
+						<option value="4">6개월 이내</option>
 					</optgroup>
 				</select>
 			</p>
