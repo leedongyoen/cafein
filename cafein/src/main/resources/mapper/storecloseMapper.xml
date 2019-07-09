@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.storecloseMapper">
-	<!-- <select id="getCashadvance" resultType="warehousing">
-	</select> -->
+<mapper namespace="storeCloseDAO">
+	<!-- 매장 영업 준비금 조회 -->
+	<select id="getWarehousing" resultType="viewwarehousing">
+		SELECT W.WARE_DATE "wareDate"
+			 , W.WARE_QTY "wareQty"
+			 , W.WARE_PRICE "warePrice"
+			 , W.S_ID "sId"
+			 , UPPER(W.ST_PAY_METHOD) "stPayMethod"
+			 , S.ST_NAME "stName"
+		FROM WAREHOUSING W, STOCK S
+		WHERE W.ST_NUM = S.ST_NUM 
+			  AND 
+			  W.S_ID = #{sId}
+			  AND 
+			  TO_CHAR(W.WARE_DATE,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+			  AND W.WARE_QTY > 0 
+			  AND W.WARE_PRICE > 0
+	</select>
 </mapper>
