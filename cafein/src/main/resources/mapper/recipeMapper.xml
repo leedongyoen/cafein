@@ -112,7 +112,7 @@
 	
 	
 	<delete id="deleteRecipe" parameterType="co.yedam.cafein.vo.RecipeVO">
-	DELETE FROM RECIPE WHERE RECIPENO = #{recipeno};
+	DELETE FROM RECIPE WHERE RECIPENO = #{recipeno}
 	
 	</delete>
 	

@@ -17,7 +17,7 @@
 <script>
 
 
-
+var selRecinum = "";
 
 $(function(){
 	  
@@ -153,7 +153,9 @@ $(function(){
 		var tr = $(this);
 		var td = tr.children();
 		
-		console.log(td.eq(4).text()+"here~~~~~!!!===========================================");
+		selRecinum = td.eq(4).text();
+		console.log(selRecinum);
+		
 		 });
 	
 	
@@ -280,10 +282,10 @@ function recipeInsert(){
 	}); 
 }
 function recipeDelete(){
-	var reciId = $("#mNum").val();
-	console.log(menuId);
+	
+	console.log(selRecinum);
 	$.ajax({
-		url:'menues/'+menuId,  
+		url:'recipes/'+selRecinum,  
 		type:'DELETE',
 		contentType:'application/json',
 		dataType:'json',
@@ -293,7 +295,7 @@ function recipeDelete(){
 			console.log(xhr.result);
 			window.location.reload();
 		}
-	});
+	}); 
 }
 
 
