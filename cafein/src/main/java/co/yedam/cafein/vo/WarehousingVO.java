@@ -52,15 +52,12 @@ public class WarehousingVO {
 	}
 	public void setStPayMethod(String stPayMethod) {
 		this.stPayMethod = stPayMethod;
-<<<<<<< HEAD
+
 	}
 	@Override
 	public String toString() {
 		return "WarehousingVO [wareNum=" + wareNum + ", wareDate=" + wareDate + ", wareQty=" + wareQty + ", warePrice="
 				+ warePrice + ", stNum=" + stNum + ", sId=" + sId + ", stPayMethod=" + stPayMethod + "]";
 	}
-=======
-	}
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
-	
+
 }
