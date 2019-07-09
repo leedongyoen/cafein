@@ -1,27 +1,26 @@
 package co.yedam.cafein.vo;
 
-import java.util.Date;
+import java.sql.Timestamp;
+
 
 public class WarehousingVO {
-
 	private String wareNum;
-	private Date wareDate;
+	private Timestamp wareDate;
 	private int wareQty;
 	private String warePrice;
 	private String stNum;
 	private String sId;
 	private String stPayMethod;
-	
 	public String getWareNum() {
 		return wareNum;
 	}
 	public void setWareNum(String wareNum) {
 		this.wareNum = wareNum;
 	}
-	public Date getWareDate() {
+	public Timestamp getWareDate() {
 		return wareDate;
 	}
-	public void setWareDate(Date wareDate) {
+	public void setWareDate(Timestamp wareDate) {
 		this.wareDate = wareDate;
 	}
 	public int getWareQty() {
@@ -53,11 +52,15 @@ public class WarehousingVO {
 	}
 	public void setStPayMethod(String stPayMethod) {
 		this.stPayMethod = stPayMethod;
+<<<<<<< HEAD
 	}
 	@Override
 	public String toString() {
 		return "WarehousingVO [wareNum=" + wareNum + ", wareDate=" + wareDate + ", wareQty=" + wareQty + ", warePrice="
 				+ warePrice + ", stNum=" + stNum + ", sId=" + sId + ", stPayMethod=" + stPayMethod + "]";
 	}
+=======
+	}
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 	
 }

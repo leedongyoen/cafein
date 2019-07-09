@@ -6,10 +6,44 @@
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp" %>
 <title>Store Information Edit Page</title>
-<script src="../js/jquery-1.11.0.min.js"></script>
+
 
 <script>
+
+	$(function(){
+		readstoreinfo();
+	});
+	
+	function readstoreinfo(){
+		
+		$.ajax({
+        	url : 'storeinfo/' + 'SH001',
+        	type : 'GET',
+        	dataType : 'json',
+        	error : function(xhr, status, msg){
+        		alert("상태값 : " + status + "Http에러메시지 : " + msg);
+        	},
+        	sucess : function(data){
+        		console.log(data);
+        		$('input:text[name="sid"]').val(data.sid);
+        		$('input:text[name="spw"]').val(data.spw);
+        		$('input:text[name="sname"]').val(data.sname);
+        		$("#stel").val(data.stel);
+        		$('input:text[name="s_add"]').val(data.sadd);
+        		$("#stopentime").val(data.stopentime);
+        		$("#stclosetime").val(data.stclosetime);
+        		$("#stdeliservice").val(data.stdeliservice);
+        		$("#stmileservice").val(data.stmileservice);
+        		
+        		
+        		
+        	}
+        });
+	}
+
+	
 	function edit() {
+		
 
 		$("#edit_after").css('display', 'inline');
         $("#edit_before").css('display', 'none');
@@ -43,6 +77,9 @@
         $("#deli_service_n").attr("disabled",true);
         $("#savings_service_y").attr("disabled",true);
         $("#savings_service_n").attr("disabled",true);
+        
+        readstoreinfo();
+        
 	}
 </script>
 </head>
@@ -54,44 +91,44 @@
       <table class ="table">
         <tr>
           <th>ID</th>
-          <td><input type = "text" name = "s_id" readonly></td>
+          <td><input type = "text" name = "sid" readonly></td>
         </tr>
         <tr>
           <th>매장상호</th>
-          <td><input type = "text" name = "s_name" id = "s_name" readonly></td>
+          <td><input type = "text" name = "sname" id = "sname" readonly></td>
         </tr>
         <tr>
           <th>비밀번호</th>
-          <td><input type = "text" name = "s_pw" id = "s_pw" readonly></td>
+          <td><input type = "text" name = "spw" id = "spw" readonly></td>
         </tr>
         <tr>
           <th>매장연락처</th>
-          <td><input type = "tel" name = "s_tel" id = "s_tel" readonly></td>
+          <td><input type = "tel" name = "stel" id = "stel" readonly></td>
         </tr>
         <tr>
           <th>매장주소</th>
-          <td><input type = "text" name = "s_add" id = "s_add" readonly></td>
+          <td><input type = "text" name = "sadd" id = "sadd" readonly></td>
         </tr>
         <tr>
           <th>영업시간</th>
           <td>
-            <input type = "time" name = "open_time" id = "open_time" value = "10:00" readonly> ~ 
-            <input type = "time" name = "close_time" id = "close_time" value = "22:00" readonly><br>
+            <input type = "time" name = "stopentime" id = "stopentime" value = "10:00" readonly> ~ 
+            <input type = "time" name = "stclosetime" id = "stclosetime" value = "22:00" readonly><br>
             <font color = "gray" size = "2pt">* 영업시간은 1시간 단위로 설정이 가능합니다.</font>
           </td>
         </tr>
         <tr>
           <th>배달유무</th>
           <td>
-            <input type = "radio" name = "deli_service" id = "deli_service_y" value = 'Y' disabled>배달 가능
-            <input type = "radio" name = "deli_service" id = "deli_service_n" value = 'N' checked disabled> 배달 불가능
+            <input type = "radio" name = "stdeliservice" id = "stdeliservice" value = 'Y' disabled>배달 가능
+            <input type = "radio" name = "stdeliservice" id = "stdeliservice" value = 'N' checked disabled> 배달 불가능
           </td>
         </tr>
         <tr>
           <th>적립금 사용 유무</th>
           <td>
-            <input type = "radio" name = "savings_service" id = "savings_service_y" value = 'Y' disabled>적립 가능
-            <input type = "radio" name = "savings_service" id = "savings_service_n" value = 'N' checked disabled>적립 불가능
+            <input type = "radio" name = "stmileservice" id = "savings_service_y" value = 'Y' disabled>적립 가능
+            <input type = "radio" name = "stmileservice" id = "savings_service_n" value = 'N' checked disabled>적립 불가능
           </td>
         </tr>
       </table>

@@ -37,6 +37,20 @@ public class RecipeController {
 	
 	
 	@ResponseBody
+	@RequestMapping(value="/recipes/{recipeno}", method=RequestMethod.DELETE)
+	public Map deleteRecipe( @PathVariable("recipeno") String recipeno, RecipeVO vo, Model model) {
+		vo.setRecipeno(recipeno);
+		System.out.println("controller: 전"+recipeno);
+		service.deleteRecipe(vo);
+		Map result = new HashMap<String, Object>();
+		result.put("result", Boolean.TRUE);
+		return result;
+	}
+	
+	
+	
+	
+	@ResponseBody
 	@RequestMapping(value="/recipes"
 					,method=RequestMethod.POST
 				//	,produces="application/json"     

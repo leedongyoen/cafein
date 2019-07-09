@@ -31,7 +31,6 @@
 		st_status,
 		truth_qty
 	FROM STOCK
-  
   </select>
   
    <select id="getStock" resultMap="stockMap">
@@ -116,5 +115,6 @@
 
 
 </mapper>
+
  
  
