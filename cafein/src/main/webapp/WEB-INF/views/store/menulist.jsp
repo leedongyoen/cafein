@@ -21,6 +21,7 @@
 
 $(function(){
 	  
+	
 	//조회, 등록, 수정 폼 처음에 숨기기
 	$('#toggleTable').hide();
 	$('#insertMenuFormTable').hide();
@@ -88,6 +89,7 @@ $(function(){
 				}
 				else
 					{
+					
 						$("#recipeTable tbody").empty();
 						for(var i = 0;i<data.length;i++){
 						
@@ -98,6 +100,7 @@ $(function(){
 								.append($('<td>').html(data[i].consum))
 								.append($('<td>').html(data[i].stAqty))
 								.append($('<td>').html(data[i].stanUnit))
+								.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
 								.appendTo("#recipeTable tbody");
 							}
 							console.log(data);
@@ -141,16 +144,28 @@ $(function(){
 	});
 
 	
-	$("#recipeTable").on('click',function(){
-		
+	
+	
+	$(document).on("click","#recipeTable tbody tr",function(){ 
 		var str="";
 		var tdArr = new Array();
 		
 		var tr = $(this);
 		var td = tr.children();
 		
-		console.log("row: "+tr.text());
-	});
+		console.log(td.eq(4).text()+"here~~~~~!!!===========================================");
+		 });
+	
+	
+	$(document).on("click","#optionTable tbody tr",function(){ 
+		var str="";
+		var tdArr = new Array();
+		
+		var tr = $(this);
+		var td = tr.children();
+		
+		 });
+	
 	 
 });
 
@@ -265,8 +280,20 @@ function recipeInsert(){
 	}); 
 }
 function recipeDelete(){
-	alert("dele?3222");
-
+	var reciId = $("#mNum").val();
+	console.log(menuId);
+	$.ajax({
+		url:'menues/'+menuId,  
+		type:'DELETE',
+		contentType:'application/json',
+		dataType:'json',
+		error:function(xhr,status,msg){
+			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
+		}, success:function(xhr) {
+			console.log(xhr.result);
+			window.location.reload();
+		}
+	});
 }
 
 
