@@ -7,7 +7,47 @@
 <%@ include file="cushead.jsp"%>
 <title>주문 목록</title>
 </head>
+<script>
 
+	$(function(){
+		getOrderList();
+	});
+	
+	function getOrderList(){
+		var checklogin = "<%=(String) session.getAttribute("cId")%>";
+		$.ajax({
+			url:'orderlist/'+checklogin,
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				$("#orderlist tbody").empty();
+				
+				$.each(data,function(idx,item){
+					console.log(item.oDate);
+					if(item.payMethod == 'crd')
+						item.payMethod = '카드';
+					$('<tr>').attr("onclick","orderDetail('"+item.oNum+"')")//.addClass("openmodal")
+					.append($('<td>').html(item.oNum))
+					.append($('<td>').html(item.oDate))
+					.append($('<td>').html(item.sName))
+					.append($('<td>').html(item.total+'원'))
+					.append($('<td>').html(item.payMethod))
+					.appendTo('#orderlist tbody');
+				});
+			}
+		});
+	}
+	
+	function orderDetail(ordernum){
+		$("#orderdetailmodal").modal('show');
+	}
+	
+
+</script>
 <body>
 	<form action="updateBoard.do" method="post">
 		<h2 align="center">주문 목록</h2>
@@ -26,32 +66,79 @@
 			</p>
 			<hr>
 
-			<table class="table table-hover">
+			<table id="orderlist" class="table table-hover">
 				<thead>
 					<tr>
 						<th>주문번호</th>
-						<th>메뉴명</th>
-						<th>총 수량</th>
-						<th>금액</th>
+						<th>주문날짜</th>
+						<th>매장명</th>
+						<th>총 금액</th>
+						<th>결제 방식</th>
 					</tr>
 				</thead>
-
-				<tr onclick="location.href='orderdetailsForm.do'">
-					<td>OR0012019617</td>
-					<td>아메리카노(ICE)<br>바닐라라떼(HOT)
-					</td>
-					<td>2</td>
-					<td>9000원</td>
-				</tr>
-
+				<tbody>
+				
+				</tbody>
 			</table>
 
 			<hr>
 			<br>
-			<p align="right">
-				<button type="button" onclick="location='cusMenu.jsp'">메뉴</button>
-				&nbsp; <a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
 		</div>
 		</form>
+		
+		
+		
+		<!-- 주문 상세  Modal -->
+	<div class="modal fade" id="orderdetailmodal" role="dialog">
+		<div class="modal-dialog">		
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">매장</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form class="form-borizontal" action="#">
+						<div class="table-responsive">
+						<table id="orderdetailtable" class="table">
+						
+							<tr>
+								<th>주문번호</th>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<th>매장명</th>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<th>메뉴명</th>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<th>수량</th>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<th>총 금액</th>
+								<td></td>
+							</tr>
+							<tr>
+								<th>결제 방식</th>
+								<td></td>
+							</tr>
+						</table>
+						</div>
+					</form>
+				
+				</div>
+				<div class="modal-footer">		
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
