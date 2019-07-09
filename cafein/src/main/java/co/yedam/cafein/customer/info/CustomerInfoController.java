@@ -50,7 +50,7 @@ public class CustomerInfoController {
 		customService.checkpw(vo);
 		return vo;
 	}
-	
+
 	//삭제
 	@ResponseBody
 	@RequestMapping(value="/customerinfo/{cId}", method=RequestMethod.DELETE)
