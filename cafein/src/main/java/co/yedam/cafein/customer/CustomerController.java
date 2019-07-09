@@ -45,7 +45,7 @@ public class CustomerController {
 	}
 
 
-	//고객 로그인
+	//고객 정보
 	@RequestMapping("customerinfoedit.do")
 	public String customerinfoedit(@ModelAttribute("customer") CustomerVO vo) {
 		return "customer/infoedit";

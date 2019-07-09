@@ -10,7 +10,6 @@ public class WarehousingVO {
 	private String warePrice;
 	private String stNum;
 	private String sId;
-	private Date expDate;
 	private String stPayMethod;
 	
 	public String getWareNum() {
@@ -49,12 +48,6 @@ public class WarehousingVO {
 	public void setsId(String sId) {
 		this.sId = sId;
 	}
-	public Date getExpDate() {
-		return expDate;
-	}
-	public void setExpDate(Date expDate) {
-		this.expDate = expDate;
-	}
 	public String getStPayMethod() {
 		return stPayMethod;
 	}
@@ -64,8 +57,7 @@ public class WarehousingVO {
 	@Override
 	public String toString() {
 		return "WarehousingVO [wareNum=" + wareNum + ", wareDate=" + wareDate + ", wareQty=" + wareQty + ", warePrice="
-				+ warePrice + ", stNum=" + stNum + ", sId=" + sId + ", expDate=" + expDate + ", stPayMethod="
-				+ stPayMethod + "]";
+				+ warePrice + ", stNum=" + stNum + ", sId=" + sId + ", stPayMethod=" + stPayMethod + "]";
 	}
 	
 }
