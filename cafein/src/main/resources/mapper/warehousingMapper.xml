@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="WarehousingDAO">
+	<resultMap type="warehousing" id="wareMap">
+	     <id column="WARE_NUM" property="wareNum"></id>
+	     <result column="WARE_DATE" property="wareDate" />
+	     <result column="WARE_QTY" property="wareQty" />
+	     <result column="WARE_PRICE" property="warePrice" />
+	     <result column="ST_NUM" property="stNum" />
+	     <result column="S_ID" property="sId" />
+	     <result column="ST_PAY_METHOD" property="stPayMethod" />
+	     </resultMap>
+	     
+	<select id="getWareList" resultMap="wareMap">
+		SELECT *
+		FROM warehousing
+	
+	</select>	
+	
+	<select id="getWare" resultMap="wareMap">
+		SELECT *
+		FROM warehousing
+	
+	</select>     
+	     
+	     
+	     
+	     
+</mapper> 
