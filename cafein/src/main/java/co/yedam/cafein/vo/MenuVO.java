@@ -1,5 +1,7 @@
 package co.yedam.cafein.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class MenuVO {
 	
 	private String 	mNum;
@@ -9,6 +11,16 @@ public class MenuVO {
 	private String	caNum;
 	private String	mStat;
 	private String menuSale;
+	private MultipartFile uploadFile;
+	
+	
+	
+	public MultipartFile getUploadFile() {
+		return uploadFile;
+	}
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
 	public String getmNum() {
 		return mNum;
 	}
