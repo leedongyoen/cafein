@@ -18,15 +18,23 @@
 	<resources mapping="/css/**" location="/css/" />
 	<resources mapping="/fonts/**" location="/fonts/" />
 	<resources mapping="/image/**" location="/image/" />
+	<resources mapping="/jqgrid/**" location="/jqgrid/" />
+	<resources mapping="/jqueryui/**" location="/jqueryui/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	
-	<context:component-scan base-package="co.yedam.cafein" />
-	
-	<beans:bean id="naverLoginVO" class="co.yedam.cafein.vo.NaverLoginVO" />
-	
+
+	<context:component-scan
+		base-package="co.yedam.cafein">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<beans:bean id="naverLoginVO"
+		class="co.yedam.cafein.vo.NaverLoginVO" />
+
 </beans:beans>
