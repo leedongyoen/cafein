@@ -30,9 +30,10 @@ public class StoreInfoController {
 	  
 	  //매정 수정
 	  @ResponseBody
-	  @RequestMapping
+	  @RequestMapping(value="/storeinfo", method=RequestMethod.PUT, consumes="application/json")
 	  public StoreVO infoedit(@RequestBody StoreVO vo, Model model, HttpServletRequest req) {
 		  System.out.println(vo + "=============");
+		  vo.setSpw(null);
 		  storeService.infoedit(vo);
 		  return vo;
 	  }
