@@ -8,35 +8,49 @@
 <title>Store Main Page</title>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.load('current', {	packages : [ 'table','corechart', 'line' ]});
 google.charts.setOnLoadCallback(drawBasic);
 
+var daydata;
 function drawBasic() {
+	$.ajax({
+		url : "./getsalestime.do",
+		data : { sId : "SH001"},
+		type : "POST",
+		datatype : "json",
+		success : function(days) {
+			var chartData = [];
+			chartData.push(['시간별','수량','금액'])
+				for(i=0; i<days.length; i++) {		
+					var dayss = [days[i].week, parseInt(days[i].cnt), parseInt(days[i].atotal)];
+					chartData.push(dayss);
+					console.log(dayss);
+					
+			}
+			
+			daydata = google.visualization.arrayToDataTable(chartData);	
+			var options = {
+					width : '100%'
+			};
 
-      var data = new google.visualization.DataTable();
-      data.addColumn('number', 'X');
-      data.addColumn('number', 'Sales');
+			var table = new google.visualization.Table(document
+						.getElementById('test_dataview3'))
 
-      data.addRows([
-    	  [10, 55000], [11, 76000], [12, 120000], [13, 118000],  
-          [14, 108000], [15, 238000], [16, 171000], [17, 335000],  
-          [18, 52000], [19, 87000], [20, 95000], [21, 52000],
-          [22, 23000]
-      ]);
+			table.draw(daydata, {
+				 width: '30%', height: '30%'
+			});
 
-      var options = {
-        hAxis: {
-          title: 'Time'
-        },
-        vAxis: {
-          title: 'Popularity'
-        }
-      };
+			var chart = new google.visualization.LineChart(document
+						.getElementById('chart_div'));
 
-      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+			chart.draw(daydata, options);
+		}
+	});
 
-      chart.draw(data, options);
-    }
+};
+	$(window).resize(function() {
+		drawBasic();
+});
 </script>
 <style>
 table {
@@ -46,8 +60,10 @@ table {
 </style>
 </head>
 <body>
-<!-- 일일매출 그래프 -->
-<div id="chart_div"></div>
+<!-- 시간별 매출 그래프 -->
+	<h3 align="center">시간별 통계</h3>
+	<div id="chart_div"></div><br>
+	<div align="center" id="test_dataview3"></div>
 <!-- 판매율 -->
 <div style = "float:left;margin-right:10px;">
 <table border = "1" onclick = "location.href='menuInquiry.jsp'">

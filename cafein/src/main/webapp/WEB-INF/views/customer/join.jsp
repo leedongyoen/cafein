@@ -6,15 +6,141 @@
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp" %>
 <title>Customer Join Page</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script type="text/javascript">
+	
+	var idCheck = 0;
+	var id = $('#c_id').val();
+	$(function(){
+		$("#idCheck").click(function() {
+			$.ajax({
+				url:"getcustomerjoin/"+$('#c_id').val(),
+				type : "POST",
+				datatype: "json",
+				data: {cId:id},
+				success: function(data){
+					if(data.cnt == 0){
+						alert("사용 가능한 아이디입니다.");
+					}else{
+						alert("사용 중인 아이디입니다.");
+					}
+				}
+			})
+		})
+	});
+		function checkForm() {
+// 			var c_pw = $("#c_pw").val();
+// 			var c_pw_check = $("#c_pw_check").val();
+			
+			form = document.customerjoinForm;
+			if (form.c_id.value == "") {
+				alert("아이디를 입력하세요.");
+				return form.c_id.focus();
+			}
+			if (form.c_nick.value == "") {
+				alert("닉네임을 입력하세요.");
+				return form.c_nick.focus();
+			}
+			if (form.c_pw.value == "") {
+				alert("비밀번호를 입력하세요.");
+				return form.c_pw.focus();
+			}
+			if (form.c_pw.value != form.c_pw_check.value) {
+				alert("비밀번호가 서로 다릅니다. 다시 입력해주세요.");
+				form.c_pw_check.focus
+				return false();
+			}
+			if (form.c_name.value == "") {
+				alert("이름을 입력하세요.");
+				return form.c_name.focus();
+			}
+			if (form.c_tel.value == "") {
+				alert("연락처를 입력하세요.");
+				return form.c_tel.focus();
+			}
+			if (form.c_add.value == "") {
+				alert("주소를 입력하세요.");
+				return form.c_add.focus();
+			}
+			if (form.dob.value == "") {
+				alert("생년월일을 입력하세요.");
+				return form.dob.focus();
+			}		
+			form.submit();
+		};
+		function post_check(){
+			//유효성체크하고 싶은 값의 id, name="content_pwd", maxlength="16"
+			var UserPassword = document.customerjoinForm.c_pw;
+			  if(UserPassword.value.length<8) {
+			    alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
+			    return false;
+			  }
+			  
+			  if(!UserPassword.value.match(/([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~,-])|([!,@,#,$,%,^,&,*,?,_,~,-].*[a-zA-Z0-9])/)) {
+			      alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
+			    return false;
+			  }
+			 
+			  return true;
+		};
+		//다음 API 주소를 넣는 부분.
+		function execPostCode() {
+	         new daum.Postcode({
+	             oncomplete: function(data) {
+	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	 
+	                // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	                var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+	                var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+	 
+	                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                    extraRoadAddr += data.bname;
+	                }
+	                // 건물명이 있고, 공동주택일 경우 추가한다.
+	                if(data.buildingName !== '' && data.apartment === 'Y'){
+	                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                }
+	                // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                if(extraRoadAddr !== ''){
+	                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+	                }
+	                // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+	                if(fullRoadAddr !== ''){
+	                    fullRoadAddr += extraRoadAddr;
+	                }
+	 
+	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	                console.log(data.zonecode);
+	                console.log(fullRoadAddr);
+	                
+	                
+	          //      $("[name=addr1]").val(data.zonecode);
+	          //     $("[name=addr2]").val(fullRoadAddr);
+	                
+	                document.getElementById('c_add').value = data.zonecode; //5자리 새우편번호 사용
+	                document.getElementById('c_add2').value = fullRoadAddr;
+	                document.getElementById('c_add3').value = data.jibunAddress; 
+	            }
+	         }).open();
+	     }
+
+</script>
 </head>
 <body>
  <div class = "container" align="center">
-  <form name = "customerjoinForm" action = "login.jsp" method = "post">
+  <form name = "customerjoinForm" action ="customerlogin.do" method="post">
     <h3>회원가입</h3>
       <table class = "table table-hover">
         <tr>
           <th>ID</th>
-          <td><input type = "text" name = "c_id"><button class="btn btn-default " >중복확인</button></td>
+          <td>
+          <input type = "text" name = "c_id" id="c_id">
+          <button type = "button" class="btn btn-default" id="idCheck">중복확인</button>
+          </td>
         </tr>
         <tr>
           <th>닉네임</th>
@@ -22,11 +148,13 @@
         </tr>
         <tr>
           <th>비밀번호</th>
-          <td><input type = "text" name = "c_pw"></td>
+          <td><input type = "password" name = "c_pw">
+          <button type="button" class="btn btn-default" onclick="post_check()">비밀번호 체크</button>
+          </td>
         </tr>
         <tr>
           <th>비밀번호 확인</th>
-          <td><input type = "text" name = "c_pw_check"></td>
+          <td><input type = "password" name = "c_pw_check"></td>
         </tr>
         <tr>
           <th>이름</th>
@@ -34,18 +162,26 @@
         </tr>
         <tr>
           <th>연락처</th>
-          <td><input type = "tel" name = "c_tel"></td>
+          <td><input type = "tel" name = "c_tel" id="c_tel"></td>
         </tr>
         <tr>
           <th>주소</th>
-          <td><input type = "text" name = "c_add"></td>
+          <td>
+          <input type = "text" name="c_add" id = "c_add" placeholder="우편번호">
+          <button type = "button" onclick="execPostCode()">우편번호 찾기</button><br>
+          <input type = "text" id = "c_add2" placeholder="주소">
+          <input type = "text" id = "c_add3" placeholder="상세주소">
+          </td>
         </tr>
         <tr>
           <th>생년월일</th>
           <td><input type = "date" name = "dob"></td>
         </tr>
       </table>
-      <input type = "submit" class="btn btn-default " value = "가입하기">
+      <button type ="button" class="btn btn-default"
+      onclick="checkForm()">가입하기</button>
+      <input type="button"  class="btn btn-default"
+       onclick="location.href='customerlogin.do'" value="돌아가기">
   </form>
   </div>
 </body>
