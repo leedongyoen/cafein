@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PosDAO">
+
+
+
+<!-- 매장 pos기 메뉴조회 -->
+	<select id="getStoreMenuList" resultType="menu">
+		SELECT M_NUM "mNum"
+			  ,M_NAME "mName"
+			  ,M_PRICE "mPrice"
+		FROM MENU
+		WHERE S_ID= #{sId}
+				AND CA_NUM='CACO'
+				OR CA_NUM='CADR'
+				OR CA_NUM='CADE'
+		ORDER BY CA_NUM
+	</select>
+
+
+
+</mapper>

@@ -22,7 +22,7 @@ public class StoreListMenuController {
 	StoreListMenuDAO service;
 	
 	
-	
+		// 모든 매장 보여줌
 	  @RequestMapping(value="/storelistmenu", method=RequestMethod.GET) 
 	  public List<StoreVO> getstorelist(ModelAndView mv){
 		  StoreVO vo = new StoreVO();
@@ -33,8 +33,15 @@ public class StoreListMenuController {
 	  
 		  return service.getStoreList(vo); 
 	  }
-	 
 	  
+	  @RequestMapping(value="/getstoredetail/{sid}",method=RequestMethod.GET)
+	  public StoreVO getstoredetail(@PathVariable("sid") String sid){
+		  StoreVO vo = new StoreVO();
+		  vo.setSid(sid);
+		  return service.getSearchStore(vo);
+	  }
+	 
+	  // 매장 메뉴 가져오기
 	  @RequestMapping(value="/storelistmenu/{sid}", method=RequestMethod.GET) 
 	  public List<MenuVO> getmenulist(@PathVariable("sid") String sid){ 
 		  MenuVO vo = new MenuVO();
@@ -42,6 +49,7 @@ public class StoreListMenuController {
 		  return service.getMenuList(vo);
 	  }
 	
+	  // 범위 지정해서 매장 정보 가져오기
 	  @RequestMapping(value="/searchstorelist/{sadd}", method=RequestMethod.GET) 
 	  public List<StoreVO> getsearchstorelist(@PathVariable("sadd") String sadd){ 
 		  StoreVO vo = new StoreVO();
