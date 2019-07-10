@@ -24,7 +24,7 @@ function startTime() {
     var m = today.getMinutes();
     var s = today.getSeconds();
 	var yy = 1900 + today.getYear();
-    var mm = today.getMonth();
+    var mm = 1 + today.getMonth();
     var dd = today.getDate();
     var day = today.getDay();
     m = checkTime(m);

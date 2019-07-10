@@ -85,6 +85,8 @@
 </div>
 
 <button>시재등록</button>
+<button>시재 재등록</button>
 <button>취소</button>
+<button>저장</button>
 </body>
 </html>
