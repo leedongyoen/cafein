@@ -19,29 +19,45 @@
 var minimum = 8;
 var maximun = 12;
 
+var submitcheck = false;
+
 function chkPw(obj, viewObj) {
 	var paramVal = obj.value;	
 
 	var msg = chkPwLength(obj);
 
-	if(msg == "") msg = "안전한 비밀번호 입니다.";
-
+	if(msg =="") {
+		msg = "안전한 비밀번호 입니다.";
+		$("#changepwbtn").removeAttr("disabled");
+	}else{
+		$("#changepwbtn").attr("disabled","disabled");
+	}
 	document.getElementById(viewObj).innerHTML=msg;
 }
 
+/* function changecheck(obj) {
+
+	console.log("in");
+	submitcheck = chkPwLength(obj); 
+	if(submitcheck == "") submitcheck = true;
+	console.log(submitcheck);
+}
+ */
 // 글자 갯수 제한
 function chkPwLength(paramObj) {
-	var msg = "";
+
 	var paramCnt = paramObj.value.length;
 
 	if(paramCnt < minimum) {
 		msg = "최소 암호 글자수는 <b>" + minimum + "</b> 입니다.";
+		
 	} else if(paramCnt > maximun) {
 		msg = "최대 암호 글자수는 <b>" + maximun + "</b> 입니다.";
+	
 	} else {
 		msg = chkPwNumber(paramObj);
+		
 	}
-
 	return msg;
 }
 
@@ -54,10 +70,11 @@ function chkPwNumber(paramObj) {
 	if(!paramObj.value.match(/([a-zA-Z0-9])|([a-zA-Z0-9])/)) {
 		// msg = "비밀번호는 영어, 숫자, 특수문자의 조합으로 6~16자리로 입력해주세요.";
 		msg = "비밀번호는 영어, 숫자의 조합으로 6~16자리로 입력해주세요.";
+		
 	} else {
 		msg = chkPwContinuity(paramObj);
+		
 	}
-
 	return msg;
 }
 
@@ -118,11 +135,13 @@ function chkPwContinuity(paramObj) {
 	
 	if(SamePass_0 > 1) {
 		msg = "동일숫자 및 문자를 3번 이상 사용하면 비밀번호가 안전하지 못합니다.(ex : aaa, bbb, 111)";
+		return msg;
 	}
 
 	if(SamePass_1_str > 1 || SamePass_2_str > 1 || SamePass_1_num > 1 || SamePass_2_num > 1)
 	{
 		msg = "연속된 문자열(123 또는 321, abc, cba 등)을\n 3자 이상 사용 할 수 없습니다.";
+		return msg;
 	}
 
 	return msg;
@@ -134,11 +153,17 @@ function chkPwContinuity(paramObj) {
 
 ////////////////////////////////////////////////////////
 
+
+	
  	var current_pw;
 	function openModeal(){
 		$("#checkpw").modal('show');
 	}
-
+	
+	$(function(){
+		
+		readcustomerinfo();
+	});
 
 	function edit() {
 		$("#edit_after").css('display', 'inline');
@@ -163,7 +188,7 @@ function chkPwContinuity(paramObj) {
 			dataType : 'json',
 			data : JSON.stringify($("#customerinfoForm").serializeObject()),
 			success : function(data) {
-				alert("수정완료되었습니다. ㅎㅎㅎㅎ")
+				alert("수정완료되었습니다.")
 
 			}
 		});
@@ -180,30 +205,34 @@ function chkPwContinuity(paramObj) {
 		$("#dob").attr("readonly", true);
  
 	}
-
-	$.ajax({
-		url : 'customerinfo/' + '<%=(String) session.getAttribute("cId")%>',
-		type : 'GET',
-		dataType : 'json',
-		error : function(xhr, status, msg) {
-			alert("상태값 :" + status + " Http에러메시지 :" + msg);
-		},
-		success : function(data) {
-			$('input:text[name="cId"]').val(data.cId);
-			$('input:text[name="cNick"]').val(data.cNick);
-			//$('input:text[name="cPw"]').val(data.cPw);
-			current_pw=data.cPw;
-			$('input:text[name="cName"]').val(data.cName);
-			//c_tel
-			$("#c_tel").val(data.cTel);
-			//$('input:tel[name="cTel"]').val(data.cTel);
-			$('input:text[name="cAdd"]').val(data.cAdd);
-			// 			conso le.log(data.dob)
-			$("#dob").val(data.dob.substring(0, 10));
-		}
-
-	});
 	
+	function readcustomerinfo(){
+		$.ajax({
+			url : 'customerinfo/' + '<%=(String) session.getAttribute("cId")%>',
+			type : 'GET',
+			dataType : 'json',
+			error : function(xhr, status, msg) {
+				alert("상태값 :" + status + " Http에러메시지 :" + msg);
+			},
+			success : function(data) {
+				$('input:text[name="cId"]').val(data.cId);
+				$('input:text[name="cNick"]').val(data.cNick);
+				//$('input:text[name="cPw"]').val(data.cPw);
+				current_pw=data.cPw;
+				$('input:text[name="cName"]').val(data.cName);
+				//c_tel
+				$("#c_tel").val(data.cTel);
+				//$('input:tel[name="cTel"]').val(data.cTel);
+				$('input:text[name="cAdd"]').val(data.cAdd);
+				// 			conso le.log(data.dob)
+				$("#dob").val(data.dob.substring(0, 10));
+			}
+	
+		});
+	
+		
+	}
+
 	
 	function checkpwbtn(){
 		
@@ -217,6 +246,7 @@ function chkPwContinuity(paramObj) {
 		if(current_pw == $("#c_pw").val()  ){
 // 			console.log("==");
 			if($("#new_pw").val() == $("#newck_pw").val()){
+				
 				$.ajax({
 					url : 'customerpw/'+'<%=(String) session.getAttribute("cId")%>',
 					type : 'PUT',
@@ -229,9 +259,10 @@ function chkPwContinuity(paramObj) {
 						$("#new_pw").val('');
 						$("#newck_pw").val('');
 						$("#checkpw").modal('hide');
-
+						readcustomerinfo();
 					}
 				});
+				
 
 			}
 
@@ -279,8 +310,8 @@ function chkPwContinuity(paramObj) {
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" onclick="checkpwbtn()"
-						class="btn btn-default">변경하기</button>
+					<button type="button" onclick="checkpwbtn()" id="changepwbtn"
+						class="btn btn-default" disabled="disabled" >변경하기</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>

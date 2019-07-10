@@ -8,12 +8,27 @@ public class StoreVO {
 	private String sadd;
 	private String stel;
 	private String stdeliservice;
-	private int stopentime;
-	private int stclosetime;
+	private String stopentime;
+	private String stclosetime;
 	private String stappstat;
 	private String stmileservice;
 	
 	
+	
+	
+	
+	public String getStopentime() {
+		return stopentime;
+	}
+	public void setStopentime(String stopentime) {
+		this.stopentime = stopentime;
+	}
+	public String getStclosetime() {
+		return stclosetime;
+	}
+	public void setStclosetime(String stclosetime) {
+		this.stclosetime = stclosetime;
+	}
 	public String getSid() {
 		return sid;
 	}
@@ -51,18 +66,7 @@ public class StoreVO {
 	public void setStdeliservice(String stdeliservice) {
 		this.stdeliservice = stdeliservice;
 	}
-	public int getStopentime() {
-		return stopentime;
-	}
-	public void setStopentime(int stopentime) {
-		this.stopentime = stopentime;
-	}
-	public int getStclosetime() {
-		return stclosetime;
-	}
-	public void setStclosetime(int stclosetime) {
-		this.stclosetime = stclosetime;
-	}
+	
 	public String getStappstat() {
 		return stappstat;
 	}

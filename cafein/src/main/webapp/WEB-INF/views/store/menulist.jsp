@@ -8,9 +8,6 @@
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
 <title>Insert title here</title>
-<script src="./js/json.min.js"></script>
-<script src="./js/jquery-3.2.1.min.js"></script>
-<script src="./js/jquery.form.min.js"></script>
 
 
 
@@ -18,6 +15,8 @@
 
 
 var selRecinum = "";
+//c태그 받기 연습
+
 
 $(function(){
 	  
@@ -26,16 +25,18 @@ $(function(){
 	$('#toggleTable').hide();
 	$('#insertMenuFormTable').hide();
 	$('#recipeTablediv').hide();
+	$('#optionDiv').hide();
 	
 	$("#menuTable tbody tr").click(function(){
 		
 		//tr 누를때 session에서 sid가져옴
 		var storeid = "SH001";
-		
+
 		
 		$('#insertMenuFormTable').hide();
 		$('#toggleTable').show();
 		$('#recipeTablediv').show();
+		$('#optionDiv').show();
 		
 		var str="";
 		var tdArr = new Array();
@@ -44,6 +45,7 @@ $(function(){
 		var td = tr.children();
 		
 		console.log("row: "+tr.text());
+
 		
 		var mNum = td.eq(0).text();
 		var mName = td.eq(1).text();
@@ -126,6 +128,23 @@ $(function(){
 		});
 
 		
+		$.ajax({
+			url:'recipes/'+storeid,
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){
+				console.log(data);
+			}
+			
+		});
+		
+		
+		
+		
 		
 	})
 	
@@ -190,6 +209,8 @@ function upload(){
 
 function insertMenuForm(){
 	$('#toggleTable').hide();
+	$('#recipeTablediv').hide();
+	$('#optionDiv').hide();
 	$('#insertMenuFormTable').show();
 	
 }
@@ -354,7 +375,7 @@ function recipeDelete(){
 
 
         </div>
-        
+        </div>
         
         
         
@@ -465,10 +486,10 @@ function recipeDelete(){
 				</form>
 			</div>
 
-		</div>
-        
+		
 		<!-- 레시피 CRUD-->
-		<div style="float: left; border: 1px solid pink;">
+		<div style="float: left; border: 1px solid pink;" >
+		
 			<!-- 레시피 등록, 메뉴 하나 Select된 상태에서 레시피 레시피 조회가능, 등록 버튼 활성화 -->
 
 		<form id="recipeTableForm">
@@ -489,11 +510,11 @@ function recipeDelete(){
 
 				<h4>재료 추가</h4>
 				<select name="stNum">
-				
+				<%-- 
 					<c:forEach items="${recistock}" var="stock">
-						<option value="${stock.stNum}">${stock.stName}</option>
-						
+						<option value="${stock.stNum}">${stock.stName} & ${stock.caNum }</option>
 					</c:forEach>
+				 --%>
 				</select> <input type="text" value="0" id="consum" name="consum">
 
 
@@ -524,7 +545,7 @@ function recipeDelete(){
 		
 		
 		<!-- 메뉴 옵션 추가 CRUD -->
-		<div style="float: left; border: 1px solid blue"; padding="2px">
+		<div style="float: left; border: 1px solid blue; margin: 3px" id="optionDiv">
 		
 		
 		<h4>옵션 추가</h4>
@@ -552,9 +573,10 @@ function recipeDelete(){
 				</table>
 		
 		</div>
-		
+		</div>
+        
         </div>
-    </div>
+    
 
 
 
