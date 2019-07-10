@@ -34,6 +34,13 @@
 		ST_CLOSE_TIME =		#{stclosetime}
 		where S_ID = 		#{sid}
 	</update>
+	
+<!-- 	비밀번호 변경 -->
+	<update id="checkpw" parameterType="store">
+		update store set
+		S_PW = #{spw}
+		where S_ID = #{sid}
+	</update>
 
 
 </mapper>

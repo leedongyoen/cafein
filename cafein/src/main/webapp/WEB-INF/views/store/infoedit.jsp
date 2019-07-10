@@ -7,7 +7,181 @@
 <%@ include file="storehead.jsp" %>
 <title>Store Information Edit Page</title>
  
+ <META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+ 
 <script>
+//최소길이 & 최대길이 제한
+var minimum = 8;
+var maximun = 12;
+
+var submitcheck = false;
+
+function chkPw(obj, viewObj) {
+	var paramVal = obj.value;	
+
+	var msg = chkPwLength(obj);
+
+	if(msg =="") {
+		msg = "안전한 비밀번호 입니다.";
+		$("#changepwbtn").removeAttr("disabled");
+	}else{
+		$("#changepwbtn").attr("disabled","disabled");
+	}
+	document.getElementById(viewObj).innerHTML=msg;
+}
+
+/* function changecheck(obj) {
+
+	console.log("in");
+	submitcheck = chkPwLength(obj); 
+	if(submitcheck == "") submitcheck = true;
+	console.log(submitcheck);
+}
+ */
+// 글자 갯수 제한
+function chkPwLength(paramObj) {
+
+	var paramCnt = paramObj.value.length;
+
+	if(paramCnt < minimum) {
+		msg = "최소 암호 글자수는 <b>" + minimum + "</b> 입니다.";
+		
+	} else if(paramCnt > maximun) {
+		msg = "최대 암호 글자수는 <b>" + maximun + "</b> 입니다.";
+	
+	} else {
+		msg = chkPwNumber(paramObj);
+		
+	}
+	return msg;
+}
+
+// 암호 유용성 검사
+function chkPwNumber(paramObj) {
+	var  msg = "";
+
+	// 특수 문자 포함 이라면 주석을 바꿔 주시기 바랍니다.
+	// if(!paramObj.value.match(/([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])/))
+	if(!paramObj.value.match(/([a-zA-Z0-9])|([a-zA-Z0-9])/)) {
+		// msg = "비밀번호는 영어, 숫자, 특수문자의 조합으로 6~16자리로 입력해주세요.";
+		msg = "비밀번호는 영어, 숫자의 조합으로 6~16자리로 입력해주세요.";
+		
+	} else {
+		msg = chkPwContinuity(paramObj);
+		
+	}
+	return msg;
+}
+
+// 암호 연속성 검사 및 동일 문자
+function chkPwContinuity(paramObj) {
+	var msg = "";
+	var SamePass_0 = 0; //동일문자 카운트
+	var SamePass_1_str = 0; //연속성(+) 카운드(문자)
+	var SamePass_2_str = 0; //연속성(-) 카운드(문자)
+	var SamePass_1_num = 0; //연속성(+) 카운드(숫자)
+	var SamePass_2_num = 0; //연속성(-) 카운드(숫자)
+
+	var chr_pass_0;
+	var chr_pass_1;
+	var chr_pass_2;
+	
+	for(var i=0; i < paramObj.value.length; i++) {
+		chr_pass_0 = paramObj.value.charAt(i);
+		chr_pass_1 = paramObj.value.charAt(i+1);
+
+		//동일문자 카운트
+		if(chr_pass_0 == chr_pass_1)
+		{
+			SamePass_0 = SamePass_0 + 1
+		}
+
+
+		chr_pass_2 = paramObj.value.charAt(i+2);
+		
+		if(chr_pass_0.charCodeAt(0) >= 48 && chr_pass_0.charCodeAt(0) <= 57) {
+			//숫자
+			//연속성(+) 카운드
+			if(chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == 1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == 1)
+			{
+				SamePass_1_num = SamePass_1_num + 1
+			}
+			
+			//연속성(-) 카운드
+			if(chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == -1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == -1)
+			{
+				SamePass_2_num = SamePass_2_num + 1
+			}
+		} else {
+			//문자
+			//연속성(+) 카운드
+			if(chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == 1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == 1)
+			{
+				SamePass_1_str = SamePass_1_str + 1
+			}
+			
+			//연속성(-) 카운드
+			if(chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == -1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == -1)
+			{
+				SamePass_2_str = SamePass_2_str + 1
+			}
+		}
+	}
+	
+	if(SamePass_0 > 1) {
+		msg = "동일숫자 및 문자를 3번 이상 사용하면 비밀번호가 안전하지 못합니다.(ex : aaa, bbb, 111)";
+		return msg;
+	}
+
+	if(SamePass_1_str > 1 || SamePass_2_str > 1 || SamePass_1_num > 1 || SamePass_2_num > 1)
+	{
+		msg = "연속된 문자열(123 또는 321, abc, cba 등)을\n 3자 이상 사용 할 수 없습니다.";
+		return msg;
+	}
+
+	return msg;
+}
+	
+	
+	
+	
+	
+	///////////////////////////////////////
+	var current_pw;
+	function openModeal(){
+		$("#checkpw").modal('show');
+	}
+	
+function checkpwbtn(){
+		if(current_pw == $("#s_pw").val()  ){
+			if($("#new_pw").val() == $("#newck_pw").val()){
+				$.ajax({
+					url : 'storepw/'+'SH001',
+					type : 'PUT',
+					contentType : 'application/json;charrset=utf-8',
+					dataType : 'json',
+					data : JSON.stringify($("#ckckpw").serializeObject()),
+					success : function(data) {
+						alert("비밀번호가 변경되었습니다.")
+						$("#s_pw").val('');
+						$("#new_pw").val('');
+						$("#newck_pw").val('');
+						$("#checkpw").modal('hide');
+						readstoreinfo();
+					}
+				});
+			}
+		} else {
+			alert("비밀번호가 다릅니다. 다시입력해주세요.")
+			$("#s_pw").val('');
+			$("#new_pw").val('');
+			$("#newck_pw").val('');
+		}
+	}
+
 
 	$(function(){
 		readstoreinfo();
@@ -25,7 +199,8 @@
         	success : function(data){ 
         		console.log(data);
         		$('input:text[name="sid"]').val(data.sid);
-        		$('input:text[name="spw"]').val(data.spw);
+//         		$('input:text[name="spw"]').val(data.spw);
+				current_pw=data.spw;
         		$('input:text[name="sname"]').val(data.sname);
         		$("#stel").val(data.stel);
         		$('input:text[name="sadd"]').val(data.sadd);
@@ -77,7 +252,8 @@
 			dataType : 'json',
 			data : JSON.stringify($("#storeinfoForm").serializeObject()),
 			success : function(data) {
-				alert("수정완료되었습니다. ㅎㅎㅎㅎ")
+				alert("수정완료되었습니다.")
+				
 
 			}
 		});
@@ -104,6 +280,49 @@
 </script>
 </head>
 <body>
+
+<!-- 비밀번호 변경을 위한 모다르창 -->
+	<div class="modal fade" id="checkpw" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">비밀번호 변경하기</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form class="form-borizontal" id="ckckpw" action="#" method="post">
+
+						<table class="table">
+
+							<tr>
+								<th>현재 비밀번호</th>
+								<th><input type="password" id="s_pw">
+							</tr>
+							<tr>
+								<th>새 비밀번호</th>
+								<th><input type="password" id="new_pw" name="spw" onKeyUp="javascript:chkPw(this, 'chkPwView');">
+								<br><span id="chkPwView"></span>
+								</th>
+							</tr>
+							<tr>
+								<th>새 비밀번호 확인</th>
+								<th><input type="password" id="newck_pw" ></th>
+							</tr>
+
+						</table>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" onclick="checkpwbtn()" id="changepwbtn"
+						class="btn btn-default" disabled="disabled">변경하기</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
 <div class = "container" align="center">
     <h3 id = "s_info">매장 정보</h3>
     <h3 id = "s_infoedit" style=" display:none ">매장 정보 수정</h3>
@@ -119,7 +338,10 @@
         </tr>
         <tr>
           <th>비밀번호</th>
-          <td><input type = "text" name = "spw" id = "spw" readonly></td>
+          <td>
+<!--           <input type = "text" name = "spw" id = "spw" readonly> -->
+          		<button type="button" onclick="openModeal()"> 비밀번호 변경하기 </button>
+          </td>
         </tr>
         <tr>
           <th>매장연락처</th>
