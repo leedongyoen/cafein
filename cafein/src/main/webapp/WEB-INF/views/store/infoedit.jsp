@@ -6,8 +6,7 @@
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp" %>
 <title>Store Information Edit Page</title>
-
-
+ 
 <script>
 
 	$(function(){
@@ -23,18 +22,24 @@
         	error : function(xhr, status, msg){
         		alert("상태값 : " + status + "Http에러메시지 : " + msg);
         	},
-        	sucess : function(data){
+        	success : function(data){ 
         		console.log(data);
         		$('input:text[name="sid"]').val(data.sid);
         		$('input:text[name="spw"]').val(data.spw);
         		$('input:text[name="sname"]').val(data.sname);
         		$("#stel").val(data.stel);
-        		$('input:text[name="s_add"]').val(data.sadd);
+        		$('input:text[name="sadd"]').val(data.sadd);
         		$("#stopentime").val(data.stopentime);
         		$("#stclosetime").val(data.stclosetime);
-        		$("#stdeliservice").val(data.stdeliservice);
+    /*     		$("#stdeliservice").val(data.stdeliservice); */
+        		if(data.stdeliservice == 'Y'){
+        			$("#stdeliservice_y").attr("checked","checked");
+        		}
         		$("#stmileservice").val(data.stmileservice);
-        		
+        		if(data.stmileservice == 'Y'){
+        			$("#savings_service_y").attr("checked","checked");
+        			
+        		}
         		
         		
         	}
@@ -49,32 +54,47 @@
         $("#edit_before").css('display', 'none');
         $("#s_infoedit").css('display', 'inline');
         $("#s_info").css('display', 'none');
-        $("#s_name").removeAttr("readonly");
-        $("#s_pw").removeAttr("readonly");
-        $("#s_tel").removeAttr("readonly");
-        $("#s_add").removeAttr("readonly");
-        $("#open_time").removeAttr("readonly");
-        $("#close_time").removeAttr("readonly");
-        $("#deli_service_y").removeAttr("disabled");
-        $("#deli_service_n").removeAttr("disabled");
-        $("#savings_service_y").removeAttr("disabled");
-        $("#savings_service_n").removeAttr("disabled");
+//         $("#sname").removeAttr("readonly");
+//         $("#spw").removeAttr("readonly");
+        $("#stel").removeAttr("readonly");
+        $("#sadd").removeAttr("readonly");
+        $("#stopentime").removeAttr("readonly");
+        $("#stclosetime").removeAttr("readonly");
+        $("#stdeliservice_y").removeAttr("disabled");
+        $("#stdeliservice_n").removeAttr("disabled");
+//         $("#savings_service_y").removeAttr("disabled");
+//         $("#savings_service_n").removeAttr("disabled");
+
+		
 	}
 	
 	function editok() {
+		
+		$.ajax({
+			url : 'storeinfo',
+			type : 'PUT',
+			contentType : 'application/json;charrset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify($("#storeinfoForm").serializeObject()),
+			success : function(data) {
+				alert("수정완료되었습니다. ㅎㅎㅎㅎ")
+
+			}
+		});
+		
 		
 		$("#edit_after").css('display', 'none');
         $("#edit_before").css('display', 'inline');
         $("#s_infoedit").css('display', 'none');
         $("#s_info").css('display', 'inline');
-        $("#s_name").attr("readonly",true);
-        $("#s_pw").attr("readonly",true);
-        $("#s_tel").attr("readonly",true);
-        $("#s_add").attr("readonly",true);
-        $("#open_time").attr("readonly",true);
-        $("#close_time").attr("readonly",true);
-        $("#deli_service_y").attr("disabled",true);
-        $("#deli_service_n").attr("disabled",true);
+        $("#sname").attr("readonly",true);
+        $("#spw").attr("readonly",true);
+        $("#stel").attr("readonly",true);
+        $("#sadd").attr("readonly",true);
+        $("#stopentime").attr("readonly",true);
+        $("#stclosetime").attr("readonly",true);
+        $("#stdeliservice_y").attr("disabled",true);
+        $("#stdeliservice_n").attr("disabled",true);
         $("#savings_service_y").attr("disabled",true);
         $("#savings_service_n").attr("disabled",true);
         
@@ -85,9 +105,9 @@
 </head>
 <body>
 <div class = "container" align="center">
-  <form name = "storejoinForm" method = "post">
     <h3 id = "s_info">매장 정보</h3>
     <h3 id = "s_infoedit" style=" display:none ">매장 정보 수정</h3>
+  <form id = "storeinfoForm" method = "post">
       <table class ="table">
         <tr>
           <th>ID</th>
@@ -107,28 +127,28 @@
         </tr>
         <tr>
           <th>매장주소</th>
-          <td><input type = "text" name = "sadd" id = "sadd" readonly></td>
+          <td><input type = "text" size=50 name = "sadd" id = "sadd" readonly></td>
         </tr>
         <tr>
           <th>영업시간</th>
           <td>
-            <input type = "time" name = "stopentime" id = "stopentime" value = "10:00" readonly> ~ 
-            <input type = "time" name = "stclosetime" id = "stclosetime" value = "22:00" readonly><br>
+            <input type = "time" name = "stopentime" id = "stopentime"  readonly> ~ 
+            <input type = "time" name = "stclosetime" id = "stclosetime" readonly><br>
             <font color = "gray" size = "2pt">* 영업시간은 1시간 단위로 설정이 가능합니다.</font>
           </td>
         </tr>
         <tr>
           <th>배달유무</th>
           <td>
-            <input type = "radio" name = "stdeliservice" id = "stdeliservice" value = 'Y' disabled>배달 가능
-            <input type = "radio" name = "stdeliservice" id = "stdeliservice" value = 'N' checked disabled> 배달 불가능
+            <input type = "radio" name = "stdeliservice" id = "stdeliservice_y" value = 'Y' disabled>배달 가능
+            <input type = "radio" name = "stdeliservice" id = "stdeliservice_n" value = 'N' checked="checked" disabled> 배달 불가능
           </td>
         </tr>
         <tr>
           <th>적립금 사용 유무</th>
           <td>
             <input type = "radio" name = "stmileservice" id = "savings_service_y" value = 'Y' disabled>적립 가능
-            <input type = "radio" name = "stmileservice" id = "savings_service_n" value = 'N' checked disabled>적립 불가능
+            <input type = "radio" name = "stmileservice" id = "savings_service_n" value = 'N' checked="checked" disabled>적립 불가능
           </td>
         </tr>
       </table>
