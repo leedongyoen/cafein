@@ -39,6 +39,7 @@ public class CustomerController {
 
 	@Autowired
 	CustomerLoginService customerLoginService;
+	@Autowired
 	CustomerInfoService customService;
 	private void setNaverLoginVO(NaverLoginVO naverLoginVO) {
 		this.naverLoginVO = naverLoginVO;
