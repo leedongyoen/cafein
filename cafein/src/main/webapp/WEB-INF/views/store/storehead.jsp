@@ -14,6 +14,21 @@
 
 <script src="./js/json.min.js"></script>   
 <script>
+
+$(function(){
+	var id = "<%= (String)session.getAttribute("sid") %>";
+	console.log("store id = " + id);
+	
+	if(id == "null") {
+		$("#loginbtn").css('display', 'inline');
+		$("#logoutbtn").css('display', 'none');
+	}
+	if(id != "null") {
+		$("#loginbtn").css('display', 'none');
+		$("#logoutbtn").css('display', 'inline');
+	}
+});
+
 function startTime() {
 	var dayko = ['일','월','화','수','목','금','토'];
     var today = new Date();
@@ -106,10 +121,10 @@ body {
         <ul class="navbar-nav mr-auto">
         		<li class="nav-link"  id="clock" style="color:orange; font-size:16px;"><a></a></li>
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/storelogin.do">Login</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/storelogin.do" id="loginbtn">Login</a>
                 </li>
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/storelogin.do">Logout</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/storelogout.do" id="logoutbtn">Logout</a>
                 </li>
 
         </ul>

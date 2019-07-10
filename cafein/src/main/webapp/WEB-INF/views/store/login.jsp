@@ -10,13 +10,13 @@
 		
 		function checkForm() {
 			var form = document.loginForm;
-			if(form.id.value == ""){
+			if(form.sid.value == ""){
 				alert("아이디를 입력해 주세요.");
-				form.id.focus();
+				form.sid.focus();
 				return;
-			} else if(form.pw.value == ""){
+			} else if(form.spw.value == ""){
 				alert("비밀번호를 입력해 주세요.");
-				form.pw.focus();
+				form.spw.focus();
 				return;
 			}
 			
@@ -26,13 +26,12 @@
 </head>
 <body>
   <div class = "container" align="center">
-  <form name = "loginForm" action = "storemain.jsp" method = "post">
+  <form name = "loginForm" action="${pageContext.request.contextPath}/storeloginresult.do">
     <h3>로그인</h3>
-      <label>ID </label><input type = "text" name = "id"><br>
-      <label>PW </label><input type = "password" name = "pw"><br><br>
+      <label>ID </label><input type = "text" name = "sid"><br>
+      <label>PW </label><input type = "password" name = "spw"><br><br>
       <input type = "button" class="btn btn-default " onclick = "checkForm()" value = "로그인">
-      <input type = "button" class="btn btn-default " onclick = "location.href='storejoin.jsp'" value = "회원가입">
-      <input type = "button" class="btn btn-default " onclick = "location.href='findIdPw.jsp'" value = "ID/PW 찾기">
+      <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/storejoin.do'" value = "회원가입">
   </form>
   </div>
 </body>
