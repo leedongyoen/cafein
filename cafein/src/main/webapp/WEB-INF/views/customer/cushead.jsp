@@ -63,7 +63,7 @@ body {
 	<div class="top-right">
         <ul class="navbar-nav mr-auto">
         		 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/allstorelist.do">주변 매장</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/allstorelist.do">매장</a>
                 <li class="nav-item">
                 	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogin.do" id="loginbtn">Login</a>
                 </li>                
