@@ -180,7 +180,7 @@
 				if(data.stmileservice == 'Y'){
 					$("#mileservice").html("사용");
 				}else if(data.stmileservice == 'N'){
-					$("#mileservice").html(");
+					$("#mileservice").html("사용 안함");
 				}
 
 				$("#sName").html(data.sname);
