@@ -22,7 +22,7 @@
       <id column="ST_NUM" property="stNum"></id>
       <result column="S_ID" property="sId"/>
       <result column="ST_NAME" property="stName"/>
- 
+      <result column="CA_NUM" property="caNum"/>
    </resultMap>      
 
 	<resultMap type="co.yedam.cafein.vo.RecipeVO" id="reciDetailMap">
@@ -87,7 +87,8 @@
 	
 		select ST_NUM 
 				,S_ID 
-				,ST_NAME 
+				,ST_NAME
+				,CA_NUM 
 			from stock
 			where s_id=#{sId}
 	</select>
