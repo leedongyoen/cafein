@@ -38,5 +38,15 @@ public class StoreInfoController {
 		  return vo;
 	  }
 	  
+	  //매점 비밀번호 변경
+	  @ResponseBody
+	  @RequestMapping(value="/storepw/{sid}", method=RequestMethod.PUT, consumes="application/json")
+	  public StoreVO checkpw(@PathVariable("sid") String id, @RequestBody StoreVO vo, Model model, HttpServletRequest req) {
+		  System.out.println(vo+"==============");
+		  vo.setSid(id);
+		  storeService.checkpw(vo);
+		  return vo;
+	  }
+	  
 	 
 }

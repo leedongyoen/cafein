@@ -22,4 +22,9 @@ public class StoreInfoDAO {
 		return mybatis.update("storeinfoDAO.infoedit", vo);
 	}
 
+	public int checkpw(StoreVO vo) {
+		System.out.println("mybatis 매장정보비밀번호수정");
+		return mybatis.update("storeinfoDAO.checkpw", vo);
+	}
+
 }
