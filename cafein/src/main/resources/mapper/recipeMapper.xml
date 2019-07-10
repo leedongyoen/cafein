@@ -100,13 +100,16 @@
 						, S_ID
 						, CONSUM
 						, ST_NUM
-						, M_NUM)
+						, M_NUM
+						,CA_NUM
+						)
 			 	
 			 	VALUES ( 'RE'||lpad(RECIPE_SEQ.nextval,3,0)
 			 			, #{sId}
 			 			, #{consum}
 			 			, #{stNum}
 			 			, #{mNum}
+			 			, #{caNum}
 			 		)
 	
 	</insert>
