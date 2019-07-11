@@ -40,4 +40,10 @@ public class RecipeDAO {
 		return mybatis.insert("RecipeDAO.insertOption",vo);
 	}
 	
+	
+	
+	public int deleteOption(RecipeVO vo) {
+		System.out.println("mybatis delete Option");
+		return mybatis.delete("RecipeDAO.deleteOption",vo);
+	}
 }

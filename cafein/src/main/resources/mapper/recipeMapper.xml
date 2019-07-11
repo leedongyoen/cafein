@@ -106,7 +106,7 @@
 			 	
 			 	VALUES ( 'RE'||lpad(RECIPE_SEQ.nextval,3,0)
 			 			, #{sId}
-			 			, #{consum}
+			 			, #{consum}/1000
 			 			, #{stNum}
 			 			, #{mNum}
 			 			, #{caNum}
@@ -139,7 +139,7 @@
 					
 					VALUES ( 'ME'||lpad(RECIPE_SEQ.nextval,3,0)
 							, #{sId}
-							, #{consum}
+							, #{consum}/1000
 							, #{stNum}
 							, #{mNum}
 							, #{caNum}
@@ -149,7 +149,10 @@
 	
 	
 	</insert>
+	<delete id="deleteOption" parameterType="recipe">
+		DELETE FROM RECIPE WHERE RECIPENO = #{recipeno}
 	
+	</delete>
 		
 	
 	

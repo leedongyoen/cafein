@@ -35,4 +35,9 @@ public class RecipeSerciveImpl {
 	public int insertOption(RecipeVO vo) {
 		return recipeDao.insertOption(vo);
 	}
+	
+	public int deleteOption(RecipeVO vo) {
+		return recipeDao.deleteOption(vo);
+	}
+	
 }

@@ -11,43 +11,21 @@
 </head>
 <body>
 
-<div class = "container">
-	<h2 align="center">레시피 조회</h2>
+	<h2 align="center">Dw2iree v e테스트</h2>
 	<hr>	
-</div>
-<div class = "container">
-<table class = "table table-hover">
+<div style="position: absolute; border: 1px solid orange; padding: 3px; width:100%">
+<div style="float: left; width: 50%; height:300px; border: 1px solid pink; padding: 3px;">
 
-<thead>
-<tr>
-	<th>No.</th>
-	<th>메뉴 번호</th>
-	<th>메뉴 이름</th>
+</div>
+<div style="float: right; width: 50%; height:500px; border: 1px solid blue; padding: 3px;">
+<div style="float: left; width: 100%; height:100px; border: 1px solid red; padding: 3px;"></div>
+<div style="float: left; width: 100%; height:100px; border: 2px solid purple; padding: 3px;"></div>
+<div style="float: left; width: 100%; height:100px; border: 2px solid cyan; padding: 3px;"></div>
+</div>
+</div>
 
-</tr>
-</thead>
-<tbody>
-<form action="#">
-<tr onclick= "location.href='recipedetail.do'">
-	<td>1</td>
-	<td>ME001</td>
-	<td>아메리카노</td>
-</tr>
-</form>
-</tbody>
-</table>
-<hr>
-<a class="btn btn-default pull-right"  href="reciperegi.do">등록</a>
-<a class="btn btn-default pull-right"  href="javascript:history.go(-1)">돌아가기</a>
-</div>
-<div class = "text-center">
-	<ul class="pagination"><!-- 페이지 처리하는 부분 -->
-		<li><a href="%">1</a></li>
-		<li><a href="%">2</a></li>
-		<li><a href="%">3</a></li>
-		<li><a href="%">4</a></li>
-		<li><a href="%">5</a></li>
-	</ul>
-</div>
+
+
+
 </body>
 </html>

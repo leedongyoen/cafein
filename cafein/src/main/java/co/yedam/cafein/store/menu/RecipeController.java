@@ -93,6 +93,8 @@ public class RecipeController {
 				)public Map<String, Boolean> insertOption(@RequestBody RecipeVO vo, Model model){
 			
 			vo.setsId("SH001");
+			//여기도 출력 안되는거보면 jsp쪽에서 수정
+			System.out.println(vo.getConsum());
 			
 			service.insertOption(vo);
 			Map<String, Boolean> map = new HashMap<String, Boolean>();
@@ -103,7 +105,16 @@ public class RecipeController {
 		
 		
 		
-		
+		@ResponseBody
+		@RequestMapping(value="/options/{recipeno}", method=RequestMethod.DELETE)
+		public Map deleteOption( @PathVariable("recipeno") String recipeno, RecipeVO vo, Model model) {
+			vo.setRecipeno(recipeno);
+			System.out.println("controller: 전"+recipeno);
+			service.deleteOption(vo);
+			Map result = new HashMap<String, Object>();
+			result.put("result", Boolean.TRUE);
+			return result;
+		}
 		
 		
 		
