@@ -154,7 +154,7 @@ function chkPwContinuity(paramObj) {
 ////////////////////////////////////////////////////////
 
 
-	
+	 
  	var current_pw;
 	function openModeal(){
 		$("#checkpw").modal('show');
@@ -162,10 +162,14 @@ function chkPwContinuity(paramObj) {
 	
 	$(function(){
 		
+		
+		
 		readcustomerinfo();
 	});
 
 	function edit() {
+		
+		
 		$("#edit_after").css('display', 'inline');
 		$("#edit_before").css('display', 'none');
 		$("#c_infoedit").css('display', 'inline');
@@ -175,7 +179,7 @@ function chkPwContinuity(paramObj) {
 		$("#c_name").removeAttr("readonly");
 		$("#c_tel").removeAttr("readonly");
 		$("#c_add").removeAttr("readonly");
-		$("#date").removeAttr("readonly");
+		$("#dob").removeAttr("readonly");
 
 	}
 
@@ -215,17 +219,22 @@ function chkPwContinuity(paramObj) {
 				alert("상태값 :" + status + " Http에러메시지 :" + msg);
 			},
 			success : function(data) {
+				
 				$('input:text[name="cId"]').val(data.cId);
 				$('input:text[name="cNick"]').val(data.cNick);
-				//$('input:text[name="cPw"]').val(data.cPw);
+				//$('input:text[name="cPw"]').val (data.cPw);
 				current_pw=data.cPw;
 				$('input:text[name="cName"]').val(data.cName);
 				//c_tel
 				$("#c_tel").val(data.cTel);
 				//$('input:tel[name="cTel"]').val(data.cTel);
 				$('input:text[name="cAdd"]').val(data.cAdd);
-				// 			conso le.log(data.dob)
-				$("#dob").val(data.dob.substring(0, 10));
+				// 			console.log(data.dob)
+				$("#dob").val(data.dob);
+				console.log(data.cJoin);
+				if(data.cJoin!="web"){
+					$('.notweb').hide();
+				}
 			}
 	
 		});
@@ -328,15 +337,15 @@ function chkPwContinuity(paramObj) {
 
 			<h3 id="c_infoedit" style="display: none">회원 정보 수정</h3>
 			<table class="table">
-				<tr>
+				<tr class="notweb">
 					<th>ID</th>
 					<td><input type="text" name="cId" readonly></td>
 				</tr>
-				<tr>
+				<tr class="notweb">
 					<th>닉네임</th>
 					<td><input type="text" id="c_nick" name="cNick" readonly></td>
 				</tr>
-				<tr>
+				<tr class="notweb">
 					<th>비밀번호</th>
 					<td>
 						<!-- 					<input type="text" id="c_pw" name="cPw" readonly> -->
