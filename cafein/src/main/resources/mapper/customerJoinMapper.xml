@@ -21,8 +21,7 @@
 		 #{cAdd},
 		 #{cAdd2},
 		 #{cAdd3}, 
-		 #{dob}
-		 ) 
+		 #{dob}) 
 	</insert> 
 	<select id="idCheck" resultType="int">
 		SELECT COUNT(*) 
