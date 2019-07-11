@@ -76,5 +76,31 @@
 			      AND S_ID = #{sId}
 	
 	</select>
+	
+	<select id="getmenuoptionlist" parameterType="recipe" resultType="recipe" >
+		SELECT 	M_NUM
+				, OP_NAME
+				, ST_NUM
+				,OP_PRICE
+		FROM RECIPE
+		WHERE M_NUM=#{mNum} 
+				AND CA_NUM = 'CAOP' 
+				AND S_ID= #{sId}
+	</select>
+	
+	<select id="getmenudetail" parameterType="menu" resultType="menu" >
+		SELECT M_NUM
+		      , M_NAME
+		      , M_PRICE
+		      , S_ID
+		      , CA_NUM
+		      , M_STAT
+		      , MENUSALE
+		      , UPLOADFILE
+		FROM MENU
+		WHERE M_NUM= #{mNum}
+		      AND S_ID= #{sId}
+	
+	</select>
 
 </mapper>
