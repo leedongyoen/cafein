@@ -86,10 +86,6 @@
 				<form class="form-borizontal" id="menudetailForm" action="${pageContext.request.contextPath}/customerorder" method="POST">
 				<div class="modal-body">
 						<input type="text" name="mNum" style="display: none;" >
-						<input type="text" name="sId" style="display: none;" >
-						<input type="text" name="cAdd" style="display: none;" >
-						<input type="text" name="stDeliService" style="display: none;" >
-						<input type="text" name="qty" value="1" style="display: none;">
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
@@ -496,6 +492,11 @@
 						$("<label>").attr("for",item.stNum)
 									.append(item.opName+"("+item.opPrice+"원 추가)")
 									.appendTo("#menudetailoption");
+						$("<input>").attr({
+							type:'hidden',
+							id : 'option'+item.stNum,
+							value: item.opPrice
+						}).appendTo("#menudetailoption");
 						$("<br>").appendTo("#menudetailoption");
 						
 					});
@@ -519,14 +520,12 @@
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ 
-				console.log(data);
+	
 				$('#mName').val(data.mName);
 				$('#price').val(data.mPrice);
 				$('#totalPrice').val(data.mPrice);
 				$('#sName').val(storename);
-				$('input:text[name="sId"]').val(data.sId);
-				$('input:text[name="cAdd"]').val(standardsearchAddress);
-				$('input:text[name="stDeliService"]').val(storedeliservice);
+				$('#ordernum').text('1');
 				$('input:text[name="mNum"]').val(data.mNum);
 				getmenuoptionlist(data.sId,data.mNum);
 			}
@@ -534,15 +533,8 @@
 	}
 
 $(function(){
-/* 	//openmodal123
-	$("#openmodal123").on("click",function(){
-		$('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		console.log("in");
-		$('#menudetailModal').modal('show');
-	}); */
-	
-	//menudetailhotice
+
+
 	// 커피 메뉴 선택시 모달창
 	 $(document).on("click","#coffeetable tbody tr",function(event){
 		 $("#menudetailhotice").show();
@@ -602,12 +594,14 @@ $(function(){
 	 
  	// 옵션 선택시
   	$(document).on("change",".checkoption",function(){
-  		console.log("in");
+  		
   		var v_totalprice = $('#totalPrice').val();
+  		var option_price = $('#option'+$(this).val()).val();
+  
   		if($(this).is(":checked")){
-				v_totalprice = Number(v_totalprice)+500;
+				v_totalprice = Number(v_totalprice)+Number(option_price);
 		}else{
-			v_totalprice = Number(v_totalprice)-500;
+			v_totalprice = Number(v_totalprice)-Number(option_price);
 		}
   		$('#totalPrice').val(v_totalprice);
   	});
