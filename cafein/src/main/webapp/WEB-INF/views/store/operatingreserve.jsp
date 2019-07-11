@@ -11,14 +11,14 @@
 
 	var i, cnt=1, sum;
 
-	// javascript local storage 이용해서 db저장 없이 데이터 읽어오는거 찾아보기
 	// 추가 지출 추가 (빈칸 입력 시 alert 창 띄우기) --------------------------------------------------
 	function addList(){
 
 		var stName = $('#stName').val();
 		var wareQty = $('#wareQty').val();
 		var warePrice = $('#warePrice').val();
-		var stPayMethod = $('#stPayMethod').val();
+		var stPayMethod = $('input[name="stPayMethod"]:checked').val();
+		console.log('stPayMethod : ' + stPayMethod)
 		
 		// 현재 날짜
 		var now = new Date();
@@ -30,25 +30,23 @@
 	    console.log('sysdate : ' + sysdate);
 	    
 	    if(stName != '' && wareQty != '' && warePrice != '') {
-	    	if(stPayMethod == '카드') {
-	    		stPayMethod = 'CARD';
-	    	} else if(stPayMethod == '현금') {
-	    		stPayMethod = 'CASH';
-	    	}
-	    	// vo에 들어갈 객체들을 list에 담는다
+	    	
+	    	// 배열에 들어갈 객체들을 list에 담는다
 			var voList = {		// llist
-					 wareDate: sysdate
-				    , wareQty: wareQty
-				    , warePrice: removeCommas(warePrice)
-				    , stName: stName
-				    , sId: sId
-				    , stPayMethod: stPayMethod
+					 wareDate : sysdate
+				    , wareQty : wareQty
+				    , warePrice : removeCommas(warePrice)
+				    , sum : wareQty*removeCommas(warePrice)
+				    , stName : stName
+				    , sId : sId
+				    , stPayMethod : stPayMethod
 			};
-			// 문자열을 json형태로 체인지
-			var jsonVoList = JSON.stringify(voList);		//person
-			  
 			// 배열에 넣기
-			addDataList.push(jsonVoList);
+			addDataList.push(voList);
+			// 문자열을 json 타입으로 변환
+			var jsonVoList = JSON.stringify(addDataList);
+			// json을 이용해 string 형식으로 만들어서 session storage에 저장
+			sessionStorage.setItem("jsonVoList",jsonVoList);
 	    }
 
 		console.log('adddatalist : '+addDataList);
@@ -125,10 +123,11 @@
 	   // 배열에 담긴 데이터 삭제
 	   Array.prototype.remove = function (index) { this.splice(index, 1); }
 	   for (var i = 0; i < addDataList.length; i++) {
-		   var jsonAddDataList = JSON.parse(addDataList[i]);
-	       if (jsonAddDataList.stName == deleteRow) {
-	    	   console.log('배열에서 항목 : '+jsonAddDataList.stName + ', 삭제될 항목 : ' + deleteRow);
+		
+	       if (addDataList[i].stName == deleteRow) {
+	    	   console.log('배열에서 항목 : '+addDataList[i].stName + ', 삭제될 항목 : ' + deleteRow);
 	    	   addDataList.remove(i);
+	    	   sessionStorage.setItem("jsonVoList",JSON.stringify(addDataList));
             }
         }
 
@@ -141,6 +140,7 @@
 	   
 	   $('#totalSum').text(addCommas(addTotalSum)+'원');
 	   
+	   
 	   $(this).closest("tr").remove();
 	   
 	});
@@ -150,14 +150,33 @@
 		$('#stName').val('');
 		$('#wareQty').val('');
 		$('#warePrice').val('');
-		$("#stPayMethod").val('카드').prop("selected", true);
+		$("#stPayMethod").val('카드').prop("checked", true);
 	})
 	
 	// 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
-	// 저장 후 데이터 변경 못하게 할지 생각해보기
 	$('#savebtn').on("click",function(){
 		$('#operatingreserveSave').text('수정 완료');
+		$('#addbtn').attr('disabled',true);
+		$('#backbtn').attr('disabled',true);
+		for(i=0;i<addDataList.length;i++){
+			$('#delCheck'+[i]).attr('disabled',true);
+			$('#delCheck'+[i]).attr('value','삭제불가');
+		}
+		
 	})
+	
+	// 수정 버튼 클릭 시 실행 ------------------------------------------------------------------------------
+	// 저장 후 데이터 변경 못하게 할지 생각해보기
+	$('#editbtn').on("click",function(){
+		$('#operatingreserveSave').text('수정 전');
+		$('#addbtn').attr('disabled',false);
+		$('#backbtn').attr('disabled',false);
+		for(i=0;i<addDataList.length;i++){
+			$('#delCheck'+[i]).attr('disabled',false);
+			$('#delCheck'+[i]).attr('value','삭제');
+		}
+	})
+	
 
 </script>
 </head>
@@ -210,10 +229,8 @@
 				</tr>
 				<tr>
 					<td>
-						<select id="stPayMethod">
-							<option id="card" selected>카드
-							<option id="cash">현금
-						</select>
+						<input type="radio" name="stPayMethod" id="card" value="카드" checked>카드
+						<input type="radio" name="stPayMethod" id="cash" value="현금">현금
 					</td>
 				</tr>
 				
@@ -221,6 +238,7 @@
 			<button type="button" id="addbtn" onclick="addList()">추가</button>
 			<button type="button" id="backbtn">취소</button>
 			<button type="button" id="savebtn">저장</button>
+			<button type="button" id="editbtn">수정</button>
 		</form>
 		</div>
 	</div>

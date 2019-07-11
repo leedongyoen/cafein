@@ -46,8 +46,8 @@ var sId="SH001"; //헤더에있는 Id로 교체
            rowNum:5,// 그리드에 보여줄 데이터의 갯수,-1하면 무한으로 보여준단다..
            width:600,//그리드의 총 가로길이
     //       rowList:[10,20,30],//몇개식 보여줄건지 선택가능하다, 배열형식이라 5,10,15,20,,,가능
-           multiboxonly : true,
-           multiselect : true,//체크박스 사라짐
+    //       multiboxonly : true,
+    //       multiselect : true,//체크박스 사라짐
            scrollrows : true, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
   		   pager: "#pager",
            gridview : true
@@ -90,29 +90,28 @@ footerrow : true});
 		$("#desserttable tbody").empty();
 		$.each(data,function(idx,item){
 			// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
-			if(item.caNum == "CACO"){
+			if(item.caNum == "CACO" && item.opName == null){
 				$('<tr>')
 				.append($('<br>'))
-				.append($('<input type=\'button\' id=\'coffee\'>').val(item.mName))
+				.append($('<input type=\'button\'class=\'mbutton\' id=\'coffee\'>').val(item.mName))
 				.appendTo('#coffeetable tbody');
 			}
 			else if(item.caNum == "CADR"){
 				$('<tr>')
 				.append($('<br>'))
-				.append($('<input type=\'button\' id=\'beverage\'>').val(item.mName))
+				.append($('<input type=\'button\' class=\'mbutton2\' id=\'beverage\'>').val(item.mName))
 				.appendTo('#beveragetable tbody');
 			}else if(item.caNum == "CADE"){
 				$('<tr>')
 				.append($('<br>'))
-				.append($('<input type=\'button\' id=\'dessert\'>').val(item.mName))
+				.append($('<input type=\'button\' class=\'mbutton3\' id=\'dessert\'>').val(item.mName))
 				.appendTo('#desserttable tbody');
 			}
 		});
 	}
- $("#tab-content input").on("click",function(){
+ $(document).on("click",".mbutton", function(){
 	 console.log(sId);
- });
- 
+ })
 
 </script>
 <br><br>
