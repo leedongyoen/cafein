@@ -21,6 +21,16 @@
 		</repository>
 	</repositories>
 	<dependencies>
+	
+	<!-- lombok -->
+	<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.8</version>
+		<scope>provided</scope>
+	</dependency>
+	
+	
 		<!-- 다른환경에서 할시 jdbc 연동 가능하게 함. -->
 		<dependency>
 			<groupId>com.oracle</groupId>

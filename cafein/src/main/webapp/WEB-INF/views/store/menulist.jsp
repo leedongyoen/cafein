@@ -161,8 +161,8 @@ $(function(){
 						/* var option = $("<option>"+data[i].caNum+"</option>");
 		                $('#opSelct').append(option);
  */
-						
-						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
+ 						var json='{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}';
+ 						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
 						
  
  
@@ -271,10 +271,11 @@ $(function(){
 	
 	$(document).on("change","#reciSelect",function(){
 		
-		console.log($(this).val());
-		console.log($(this));
-		
-		$("#recicaNum").val("");
+		var json = $(this).val();
+		var obj=JSON.parse(json);
+        console.log(obj.value1+" : "+obj.value2);
+        $("#recistNum").val(obj.value1);
+		$("#recicaNum").val(obj.value2);
 		
 		
 	});
@@ -410,6 +411,32 @@ function recipeDelete(){
 	}); 
 }
 
+
+
+function optionInsert(){
+	alert("it's work!");
+	alert(JSON.stringify($("#recipeTableForm").serializeObject()));
+	
+	$.ajax({
+		url: "recipes",
+		type: 'POST',
+		dataType: 'json',
+		data: JSON.stringify($("#recipeTableForm").serializeObject()),
+		contentType: 'application/json',
+		success: function(data) {
+			if(data.result == true) {
+				console.log(data);
+				window.location.reload();
+	    	}
+			
+		}
+		
+	}); 
+}
+
+function optionDelete(){
+	alert("it's work!");
+}
 
 
 </script>
@@ -598,25 +625,33 @@ function recipeDelete(){
 						<td><input type="text" id="cmName" readonly></td>
 					</tr>
 				</table>
-
-				<h4>재료 추가</h4>
-				<select id="reciSelect" name="stNum">
 					
-					
-				<%-- 
-					<c:forEach items="${recistock}" var="stock">
-						<option value="${stock.stNum}">${stock.stName} & ${stock.caNum }</option>
-					</c:forEach>
-				 --%>
-				</select> <input type="text" value="0" id="consum" name="consum">
-				
-				<input type="hidden" id="recicaNum" name="caNum">
+						<h4>재료 추가</h4>
+						<table border="1">
+							<tr>
+								<th>카테고리 선택</th>
+								<td><select id="reciSelect">
 
-				
-			<input type="button" value=" + " onclick="recipeInsert()">
-			<input type="button" value=" - " onclick="recipeDelete()">
+								</select></td>
+							</tr>
+							<tr>
+								<th>소모량</th>
+								<td><input type="text" value="0" id="consum" name="consum"></td>
+							</tr>
+							<tr>
+								<td><input type="button" value=" + "
+									onclick="recipeInsert()"></td>
+								<td><input type="button" value=" - "
+									onclick="recipeDelete()"></td>
+							</tr>
+						</table>
 
+
+						<input type="hidden" id="recicaNum" name="caNum">
+						<input type="hidden" id="recistNum" name="stNum">
+				
 			
+				<br>
 				<table border="1"  id="recipeTable" class = "table table-hover">
 					<thead>
 					<tr>
@@ -663,8 +698,10 @@ function recipeDelete(){
 						<td><input type="text" value="500">원</td>
 					</tr>
 					<tr>
-						<td><button>+</button></td>
-						<td><button>-</button></td>
+
+					<tr>
+						<td><input type="button" value=" + " onclick="optionInsert()"></td>
+						<td><input type="button" value=" - " onclick="optionDelete()"></td>
 					</tr>
 
 				</table>

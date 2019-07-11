@@ -75,7 +75,6 @@ public class RecipeController {
 		@RequestMapping(value="/recipes/{sId}", method=RequestMethod.GET)
 		public List<StockVO> getStockCaNumList(
 									@PathVariable("sId") String sId
-									
 									,StockVO vo
 									,Model model){
 			vo.setsId(sId);
@@ -85,6 +84,22 @@ public class RecipeController {
 	
 		
 	//옵션 
+		@ResponseBody
+		@RequestMapping(value="/options"
+						,method=RequestMethod.POST
+					//	,produces="application/json"     
+					//	,consumes="application/json"
+						,headers = {"Content-type=application/json" }
+				)public Map<String, Boolean> insertOption(@RequestBody RecipeVO vo, Model model){
+			
+			vo.setsId("SH001");
+			
+			service.insertOption(vo);
+			Map<String, Boolean> map = new HashMap<String, Boolean>();
+			map.put("result", true);
+			return map;
+			
+		}	
 		
 		
 		
