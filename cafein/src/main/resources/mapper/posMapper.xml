@@ -7,16 +7,17 @@
 
 <!-- 매장 pos기 메뉴조회 -->
 	<select id="getStoreMenuList" resultType="menu">
-		SELECT M_NUM "mNum"
-			  ,M_NAME "mName"
-			  ,M_PRICE "mPrice"
-			  ,CA_NUM "caNum"
-		FROM MENU
-		WHERE S_ID= #{sId}
-				AND( CA_NUM='CACO'
-				OR CA_NUM='CADR'
-				OR CA_NUM='CADE')
-		ORDER BY CA_NUM
+		SELECT RECIPENO
+		        , S_ID "sId"
+		        , M_NAME "mName"
+		        , ST_NUM "stNum"
+		        , M_NUM "mNum"
+		        , ST_NAME "stName"
+		        , CA_NUM "caNum"
+		        , OP_NAME "opName"
+		        , OP_PRICE "opPrice"
+		FROM POSSEL_VIEW
+		WHERE S_ID=#{sId}
 	</select>
 
 
