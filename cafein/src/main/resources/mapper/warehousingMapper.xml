@@ -3,29 +3,62 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="WarehousingDAO">
-	<resultMap type="warehousing" id="wareMap">
-	     <id column="WARE_NUM" property="wareNum"></id>
-	     <result column="WARE_DATE" property="wareDate" />
-	     <result column="WARE_QTY" property="wareQty" />
-	     <result column="WARE_PRICE" property="warePrice" />
-	     <result column="ST_NUM" property="stNum" />
-	     <result column="S_ID" property="sId" />
-	     <result column="ST_PAY_METHOD" property="stPayMethod" />
-	     </resultMap>
-	     
-	<select id="getWareList" resultMap="wareMap">
-		SELECT *
-		FROM warehousing
+
+<!-- 	<resultMap type="warehousing" id="wareMap"> -->
+<!-- 	     <id column="WARE_NUM" property="wareNum"></id> -->
+<!-- 	     <result column="WARE_DATE" property="wareDate" /> -->
+<!-- 	     <result column="WARE_QTY" property="wareQty" /> -->
+<!-- 	     <result column="WARE_PRICE" property="warePrice" /> -->
+<!-- 	     <result column="ST_NUM" property="stNum" /> -->
+<!-- 	     <result column="S_ID" property="sId" /> -->
+<!-- 	     <result column="ST_PAY_METHOD" property="stPayMethod" /> -->
+<!-- 	     <result column="ST_LOSS" property="stLoss" /> -->
+<!-- 	     </resultMap> -->
+	    
 	
-	</select>	
+	<select id="getEnteredList" resultType="warehousing">
+		SELECT w.st_num "stNum",
+	      s.st_name "stName",
+	      sum(w.ware_price) "warePrice",
+	      sum(w.ware_qty) "wareQty"
+		FROM warehousing w left outer join stock s
+		ON w.st_num = s.st_num
+		WHERE w.ware_qty <![CDATA[ > ]]> 0
+		GROUP BY w.ST_NUM, s.st_name
+	</select>		
+	 
+	<select id="getReleasedList" resultType="warehousing">
+		SELECT w.st_num "stNum",
+	      s.st_name "stName",
+	      sum(w.ware_price) "warePrice",
+	      sum(w.ware_qty) "wareQty"
+		FROM warehousing w left outer join stock s
+		ON w.st_num = s.st_num
+		<where>
+			<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
+				 ware_date between #{startDate} and #{endDate}
+			</if>
+			and w.ware_qty <![CDATA[ < ]]> 0
+		</where>
+		GROUP BY w.ST_NUM, s.st_name
+			
+	</select>
 	
-	<select id="getWare" resultMap="wareMap">
-		SELECT *
-		FROM warehousing
-	
-	</select>     
-	     
-	     
+	<select id="getWarehousingList" resultType="warehousing">
+		SELECT w.st_num 	"stNum",
+	      s.st_name 		"stName",
+	      sum(w.ware_price) "warePrice",
+	      sum(w.ware_qty)	"wareQty",
+	      sum(w.st_loss)	"stLoss"
+		FROM warehousing w left outer join stock s
+		ON w.st_num = s.st_num
+		<where>
+			<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
+			 and ware_date between #{startDate} and #{endDate}
+			</if>
+		</where>
+		GROUP BY w.ST_NUM, s.st_name
+	</select>
 	     
 	     
 </mapper> 

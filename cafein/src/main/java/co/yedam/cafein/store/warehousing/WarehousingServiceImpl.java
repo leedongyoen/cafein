@@ -11,10 +11,22 @@ public class WarehousingServiceImpl implements WarehousingService{
 
 	@Autowired
 	WarehousingDAO wareDao;
+
 	@Override
-	public List<WarehousingVO> getWareList(WarehousingVO vo) {
-		
+	public List<WarehousingVO> getWarehousingList(WarehousingVO vo) {
+		// TODO Auto-generated method stub
 		return wareDao.getWarehousingList(vo);
 	}
+	@Override
+	public List<WarehousingVO> getReleasedList(WarehousingVO vo) {
+		// TODO Auto-generated method stub
+		return wareDao.getReleasedList(vo);
+	}
+	@Override
+	public List<WarehousingVO> getEnteredList(WarehousingVO vo) {
+		// TODO Auto-generated method stub
+		return wareDao.getEndteredList(vo);
+	}
+	
 
 }
