@@ -10,19 +10,78 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script>
 
-	// 영업 준비금 (재고 입고, 인건비 등)
-	function operatingreserve() {
+	var sId = 'SH001';
+	var sum, totalSum=0;
+	var listnum;
+	
+	function getoperatingreserve(){
+		
 		$.ajax({
-			url:"operatingreserve.do",		// request 보낼 서버경로
-			//data:,						// 보낼 데이터 (매장id 보내야함)
+			url:"operatingreserve",		// request 보낼 서버경로
+			type:'GET',			
+			data:{sId:sId},						// 보낼 데이터 (매장id 보내야함)
 			error:function(){
 				alert('통신 실패');
 			},
 			success:function(data){
+				console.log(data);
+				
+				$('#operatingreservTable tbody').empty();
+				$.each(data,function(idx,item){		// idx : length 와 비슷한 느낌, item : data
+					sum = item.wareQty*item.warePrice;
+					totalSum += sum;
+					
+					if(item.stPayMethod == 'CARD') {
+						$('<tr>')
+						.append($('<td>').html(idx+1))
+						.append($('<td>').html(item.stName))
+						.append($('<td>').html(item.wareQty))
+						.append($('<td>').html(item.warePrice))
+						.append($('<td>').html(sum))
+						.append($('<td>').html('카드'))
+						.appendTo('#operatingreservTable tbody');
+						listnum =idx+1;
+					} else if(item.stPayMethod == 'CASH') {
+						$('<tr>')
+						.append($('<td>').html(idx+1))
+						.append($('<td>').html(item.stName))
+						.append($('<td>').html(item.wareQty))
+						.append($('<td>').html(item.warePrice))
+						.append($('<td>').html(sum))
+						.append($('<td>').html('현금'))
+						.appendTo('#operatingreservTable tbody');
+						listnum =idx+1;
+					}
+				});
+				$('<tr>')
+				.append($('<th>').html('총금액'))
+				.append($('<th>').html(totalSum).attr('colspan','5').attr('id','totalSum').css('text-align','right'))
+				.appendTo('#operatingreservTable tfoot');
+				totalSum=0;
+			}
+		});
+	}
+	
+	// 영업 준비금 (재고 입고, 인건비 등) 페이지 호출
+	function operatingreserve() {
+		$.ajax({
+			url:"operatingreserve.do",		// request 보낼 서버경로
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				getoperatingreserve();		// json 형식으로 변환된 데이터를 가지고 온다
 				$('#content').html(data);
 			}
 		});
 	}
+	
+	/* var i = 0;
+	var stName = $('#stName').val();
+	var wareQty = $('#wareQty').val();
+	var warePrice = $('#warePrice').val();
+	var stPayMethod = $('#stPayMethod').val(); */		// selected도 val인지 확인
+	
 	
 	// 현금 시재 정산
 	function cashadvance() {

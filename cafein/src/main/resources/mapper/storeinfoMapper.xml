@@ -1,3 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.storeinfoMapper"></mapper>
+<mapper namespace="storeinfoDAO">
+
+	<resultMap type="store" id="storeMap">
+		<id column="S_ID" property="sid"></id>
+		<result column="s_pw" property="spw" />
+		<result column="s_name" property="sname" />
+		<result column="s_add" property="sadd" />
+		<result column="s_tel" property="stel" />
+		<result column="st_deli_service" property="stdeliservice" />
+		<result column="st_open_time" property="stopentime" />
+		<result column="st_close_time" property="stclosetime" />
+		<result column="st_app_stat" property="stappstat" />
+		<result column="st_mile_service" property="stmileservice" />
+	</resultMap>
+	<!-- 단건 회원조회 -->
+	<select id="getStore" parameterType="store" resultMap="storeMap">
+		SELECT
+		S_ID, S_PW, S_NAME, S_ADD, S_TEL, ST_DELI_SERVICE,
+		ST_OPEN_TIME,
+		ST_CLOSE_TIME, ST_MILE_SERVICE
+		FROM STORE
+		WHERE S_ID = #{sid}
+	</select>
+
+	<!-- 수정 -->
+	<update id="infoedit" parameterType="store" >
+		update store set
+		S_TEL =				#{stel},
+		S_ADD = 			#{sadd},
+		ST_DELI_SERVICE = 	#{stdeliservice},
+		ST_OPEN_TIME = 		#{stopentime},
+		ST_CLOSE_TIME =		#{stclosetime}
+		where S_ID = 		#{sid}
+	</update>
+	
+<!-- 	비밀번호 변경 -->
+	<update id="checkpw" parameterType="store">
+		update store set
+		S_PW = #{spw}
+		where S_ID = #{sid}
+	</update>
+
+
+</mapper>

@@ -9,52 +9,100 @@
       <result column="S_ID" property="sId"/>
       <result column="CONSUM" property="consum"/>
       <result column="M_NUM" property="mNum"/>
+      <result column="CA_NUM" property="caNum"/>
+      <result column="OP_NAME" property="opName"/>
+      <result column="OP_PRICE" property="opPrice"/>
       <result column="ST_NUM" property="stNum"/>
       <result column="ST_NAME" property="stName"/>
       <result column="ST_AQTY" property="stAqty"/>
       <result column="STAN_UNIT" property="stanUnit"/>
    </resultMap>
       
-<resultMap type="co.yedam.cafein.vo.StockVO" id="recistockMap">
+	<resultMap type="co.yedam.cafein.vo.StockVO" id="recistockMap">
       <id column="ST_NUM" property="stNum"></id>
       <result column="S_ID" property="sId"/>
       <result column="ST_NAME" property="stName"/>
-     
+      <result column="CA_NUM" property="caNum"/>
    </resultMap>      
+
+	<resultMap type="co.yedam.cafein.vo.RecipeVO" id="reciDetailMap">
+      <id column="RECIPENO" property="recipeno"></id>
+      <result column="S_ID" property="sId"/>
+      <result column="CONSUM" property="consum"/>
+	  <result column="ST_NUM" property="stNum"/>
+      <result column="M_NUM" property="mNum"/>
+      <result column="CA_NUM" property="caNum"/>
+      <result column="OP_NAME" property="opName"/>
+      <result column="OP_PRICE" property="opPrice"/>
+   </resultMap>
+
+ 
+     
+
+<select id="getReciDetailList" resultMap="reciDetailMap" parameterType="co.yedam.cafein.vo.RecipeVO">
+
+			select RECIPENO
+					, S_ID
+					, CONSUM
+					, ST_NUM
+					, M_NUM
+					, CA_NUM
+					, OP_NAME 
+		
+			from recipe 
+			where s_id=#{sId} and CA_NUM= #{caNum} and m_num=#{mNum}
+
+</select>
+
+
+
 
 
 
 <select id="getRecipeList" resultMap="reciMap" parameterType="co.yedam.cafein.viewvo.ViewStockCheckVO">
 		select
-			RECIPENO,
-			S_ID,
-			CONSUM,
-			M_NUM,
-			ST_NUM,
-			ST_NAME,
-			ST_AQTY,
-			STAN_UNIT
+			S_ID
+			,CONSUM
+			,M_NUM
+			,CA_NUM
+			,OP_NAME
+			,OP_PRICE
+			,ST_NUM
+			,ST_NAME
+			,RECIPENO
+			,ST_AQTY
+			,STAN_UNIT
 		from stock_check_view
 		where s_id=#{sId} and m_num=#{mNum}
+		
+		
 	</select>
+	
+	
+	
+	
+	
 	
 	<select id="getRecipeStockList"  resultMap="recistockMap"  parameterType="co.yedam.cafein.vo.StockVO">
 	
 		select ST_NUM 
 				,S_ID 
-				,ST_NAME 
+				,ST_NAME
+				,CA_NUM 
 			from stock
 			where s_id=#{sId}
 	</select>
 
+
+
 	<insert id="insertRecipe" parameterType="co.yedam.cafein.vo.RecipeVO">
-	INSERT INTO RECIPE (RECIPENO
+	INSERT INTO RECIPE (  RECIPENO
 						, S_ID
 						, CONSUM
 						, ST_NUM
 						, M_NUM)
 			 	
-			 	VALUES ( 'RE'||lpad(MENU_SEQ.nextval,3,0)
+			 	VALUES ( 'RE'||lpad(RECIPE_SEQ.nextval,3,0)
 			 			, #{sId}
 			 			, #{consum}
 			 			, #{stNum}
@@ -65,7 +113,7 @@
 	
 	
 	<delete id="deleteRecipe" parameterType="co.yedam.cafein.vo.RecipeVO">
-	DELETE FROM RECIPE WHERE RECIPENO = #{recipeno};
+	DELETE FROM RECIPE WHERE RECIPENO = #{recipeno}
 	
 	</delete>
 	

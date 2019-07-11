@@ -32,14 +32,5 @@ DELETE MY_MENU
 	</choose>
 </where>  
 </delete>
-<update id="updatemymenu">
-UPDATE MY_MENU
-<set>
-<if test="title != null and title != ''">TITLE = #{title} ,</if>
-			<if test="content != null and content != ''">CONTENT = #{content} ,</if>
-			<if test="writer != null and writer != ''">WRITER = #{writer} ,</if>
-			<if test="cnt != 0">CNT = CNT + 1 </if>
-</set>
-	WHERE CU_NUM = #{cuNum}
-</update>
+
 </mapper>

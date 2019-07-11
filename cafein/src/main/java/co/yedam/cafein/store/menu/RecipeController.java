@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.yedam.cafein.viewvo.ViewStockCheckVO;
 import co.yedam.cafein.vo.MenuVO;
 import co.yedam.cafein.vo.RecipeVO;
+import co.yedam.cafein.vo.StockVO;
 
 @RestController
 public class RecipeController {
@@ -37,6 +38,20 @@ public class RecipeController {
 	
 	
 	@ResponseBody
+	@RequestMapping(value="/recipes/{recipeno}", method=RequestMethod.DELETE)
+	public Map deleteRecipe( @PathVariable("recipeno") String recipeno, RecipeVO vo, Model model) {
+		vo.setRecipeno(recipeno);
+		System.out.println("controller: 전"+recipeno);
+		service.deleteRecipe(vo);
+		Map result = new HashMap<String, Object>();
+		result.put("result", Boolean.TRUE);
+		return result;
+	}
+	
+	
+	
+	
+	@ResponseBody
 	@RequestMapping(value="/recipes"
 					,method=RequestMethod.POST
 				//	,produces="application/json"     
@@ -54,6 +69,18 @@ public class RecipeController {
 		
 	}	
 	
+	
+	
+	//stock caNum List 받아옴
+		@RequestMapping(value="/recipes/{sId}", method=RequestMethod.GET)
+		public List<StockVO> getStockCaNumList(
+									@PathVariable("sId") String sId
+									
+									,StockVO vo
+									,Model model){
+			vo.setsId(sId);
+			return service.getRecipeStockList(vo);
+		}
 	
 	
 	

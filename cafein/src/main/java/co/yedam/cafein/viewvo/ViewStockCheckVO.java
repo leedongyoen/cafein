@@ -10,6 +10,28 @@ public class ViewStockCheckVO {
 	private String stName;
 	private double stAqty;
 	private double stanUnit;
+	private String caNum;
+	private String opName;
+	private int opPrice;
+	
+	public String getCaNum() {
+		return caNum;
+	}
+	public void setCaNum(String caNum) {
+		this.caNum = caNum;
+	}
+	public String getOpName() {
+		return opName;
+	}
+	public void setOpName(String opName) {
+		this.opName = opName;
+	}
+	public int getOpPrice() {
+		return opPrice;
+	}
+	public void setOpPrice(int opPrice) {
+		this.opPrice = opPrice;
+	}
 	public String getRecipeNo() {
 		return recipeNo;
 	}

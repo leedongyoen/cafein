@@ -184,11 +184,12 @@ to {
 
 			<tbody id="GoToDetail"></tbody>
 </table>
-</div>
 <div class="deleteCheckon" align="right">
 <a class="deletetest btn" href="javascript:deleteMymenu()" id="deletemymenuon">삭제하기</a>
 <a class="offtest btn" href="javascript:deleteMymenu()" id="offtest">돌아가기</a>
 </div>
+</div>
+
 
 
 
@@ -196,6 +197,7 @@ to {
 <div id="myModal" class="modal">
 <div class="modal-content">
 		<h1 align="center">나만의메뉴상세</h1>
+		<input type="text" name="qty" value="1" style="display: none;">
 		<table id="detailtable" class="table table-hover">
 		<tr>
 			<th>매 장 명</th>
@@ -216,9 +218,10 @@ to {
 		<tr>
 			<th>수 량</th>
 			<td>
-				<button onclick="add(1)">-</button>
-				<span id="no">1개 </span>
-				<button onclick="add(-1)">+</button>
+			
+				<button onclick="add(-1)">-</button>
+				<span id="no">1 </span>
+				<button onclick="add(1)">+</button>
 			</td>
 		</tr>
 		<tr>
@@ -247,13 +250,12 @@ to {
 	<div align="right">
 	<button class="btn btn-default " onclick="location='Order.do'">주문</button>&nbsp;&nbsp;
 	<button class="btn btn-default " onclick="location='cusCart.do'">담기</button>&nbsp;&nbsp;
-	<button class="btn btn-default " onclick="location='update.do'">수정</button>&nbsp;&nbsp;
 	</div>
 	<span class="close">&times;</span>
 	</div>
 	</div>
 <script type="text/javascript">
-	myMenuList('ju123');
+
 	var datas;
 	var totalcheckboxnum;
 	
@@ -336,7 +338,26 @@ to {
 	
 	
 	//수량
-	
+	function add(num) {
+		var price = $('#mPrice').val();
+		var v_totalprice = $('#totalPrice').val();
+
+		var no = $("#no").html();
+		if (num == -1) {
+			if (Number(no) == 1) {
+				alert("1개 이상으로 주문해주세요.");
+				return;
+			}
+			no = Number(no) - 1;
+			v_totalprice = Number(v_totalprice) - Number(price);
+		} else if (num == 1) {
+			no = Number(no) + 1;
+			v_totalprice = Number(v_totalprice) + Number(price);
+		}
+		$('#totalPrice').val(v_totalprice);
+		$("#no").html(no);
+		$('input:text[name="qty"]').val(no);
+	}
 	//커스텀 수정
 	
 	

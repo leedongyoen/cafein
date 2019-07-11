@@ -39,10 +39,15 @@ public class CustomerMenuController {
 		public String mymenudetail() {
 			return "customer/mymenudetail";
 		}
-		//고객주변매장조회
+		//고객 주문 페이지로 이동
 		@RequestMapping("customerstorelist.do")
 		public String customerstorelist() {
 			return "customer/storelist";
+		}
+		//고객 주문 페이지로 이동
+		@RequestMapping("allstorelist.do")
+		public String allstorelist() {
+			return "customer/allstorelist";
 		}
 		
 }

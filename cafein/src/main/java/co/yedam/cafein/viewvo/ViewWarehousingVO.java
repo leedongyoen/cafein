@@ -6,7 +6,6 @@ public class ViewWarehousingVO {
 	private Date wareDate;
 	private int wareQty;
 	private String warePrice;
-	private String stNum;
 	private String stName;
 	private String sId;
 	private String stPayMethod;
@@ -29,12 +28,6 @@ public class ViewWarehousingVO {
 	public void setWarePrice(String warePrice) {
 		this.warePrice = warePrice;
 	}
-	public String getStNum() {
-		return stNum;
-	}
-	public void setStNum(String stNum) {
-		this.stNum = stNum;
-	}
 	public String getStName() {
 		return stName;
 	}
@@ -56,7 +49,7 @@ public class ViewWarehousingVO {
 	@Override
 	public String toString() {
 		return "ViewWarehousingVO [wareDate=" + wareDate + ", wareQty=" + wareQty + ", warePrice=" + warePrice
-				+ ", stNum=" + stNum + ", stName=" + stName + ", sId=" + sId + ", stPayMethod=" + stPayMethod + "]";
+				+ ", stName=" + stName + ", sId=" + sId + ", stPayMethod=" + stPayMethod + "]";
 	}
 
 }

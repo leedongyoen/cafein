@@ -34,34 +34,34 @@
 // 			var c_pw_check = $("#c_pw_check").val();
 			
 			form = document.customerjoinForm;
-			if (form.c_id.value == "") {
+			if (form.cId.value == "") {
 				alert("아이디를 입력하세요.");
-				return form.c_id.focus();
+				return form.cId.focus();
 			}
-			if (form.c_nick.value == "") {
+			if (form.cNick.value == "") {
 				alert("닉네임을 입력하세요.");
-				return form.c_nick.focus();
+				return form.cNick.focus();
 			}
-			if (form.c_pw.value == "") {
+			if (form.cPw.value == "") {
 				alert("비밀번호를 입력하세요.");
-				return form.c_pw.focus();
+				return form.cPw.focus();
 			}
-			if (form.c_pw.value != form.c_pw_check.value) {
+/* 			if (form.c_pw.value != form.c_pw_check.value) {
 				alert("비밀번호가 서로 다릅니다. 다시 입력해주세요.");
 				form.c_pw_check.focus
 				return false();
-			}
-			if (form.c_name.value == "") {
+			} */
+			if (form.cName.value == "") {
 				alert("이름을 입력하세요.");
-				return form.c_name.focus();
+				return form.cName.focus();
 			}
-			if (form.c_tel.value == "") {
+			if (form.cTel.value == "") {
 				alert("연락처를 입력하세요.");
-				return form.c_tel.focus();
+				return form.cTel.focus();
 			}
-			if (form.c_add.value == "") {
+			if (form.cAdd.value == "") {
 				alert("주소를 입력하세요.");
-				return form.c_add.focus();
+				return form.cAdd.focus();
 			}
 			if (form.dob.value == "") {
 				alert("생년월일을 입력하세요.");
@@ -70,8 +70,8 @@
 			form.submit();
 		};
 		function post_check(){
-			//유효성체크하고 싶은 값의 id, name="content_pwd", maxlength="16"
-			var UserPassword = document.customerjoinForm.c_pw;
+			//비밀번호 유효성체크를 하는 부분, maxlength="16"
+			var UserPassword = document.customerjoinForm.cPw;
 			  if(UserPassword.value.length<8) {
 			    alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
 			    return false;
@@ -132,45 +132,45 @@
 </head>
 <body>
  <div class = "container" align="center">
-  <form name = "customerjoinForm" action ="customerlogin.do" method="post">
+  <form name = "customerjoinForm" action ="customerjoin.do" method="post">
     <h3>회원가입</h3>
       <table class = "table table-hover">
         <tr>
           <th>ID</th>
           <td>
-          <input type = "text" name = "c_id" id="c_id">
+          <input type = "text" name = "cId" id="c_id">
           <button type = "button" class="btn btn-default" id="idCheck">중복확인</button>
           </td>
         </tr>
         <tr>
           <th>닉네임</th>
-          <td><input type = "text" name = "c_nick"></td>
+          <td><input type = "text" name = "cNick"></td>
         </tr>
         <tr>
           <th>비밀번호</th>
-          <td><input type = "password" name = "c_pw">
+          <td><input type = "password" name = "cPw">
           <button type="button" class="btn btn-default" onclick="post_check()">비밀번호 체크</button>
           </td>
         </tr>
-        <tr>
+<!--         <tr>
           <th>비밀번호 확인</th>
-          <td><input type = "password" name = "c_pw_check"></td>
-        </tr>
+          <td><input type = "password" id = "c_pw_check"></td>
+        </tr> -->
         <tr>
           <th>이름</th>
-          <td><input type = "text" name = "c_name"></td>
+          <td><input type = "text" name = "cName" id="c_name"></td>
         </tr>
         <tr>
           <th>연락처</th>
-          <td><input type = "tel" name = "c_tel" id="c_tel"></td>
+          <td><input type = "tel" name = "cTel" id="c_tel"></td>
         </tr>
         <tr>
           <th>주소</th>
           <td>
-          <input type = "text" name="c_add" id = "c_add" placeholder="우편번호">
+          <input type = "text" name="cAdd" id = "c_add" placeholder="우편번호">
           <button type = "button" onclick="execPostCode()">우편번호 찾기</button><br>
-          <input type = "text" id = "c_add2" placeholder="주소">
-          <input type = "text" id = "c_add3" placeholder="상세주소">
+          <input type = "text" name = "cAdd2" id="c_add2" placeholder="주소">
+          <input type = "text" name = "cAdd3" id="c_add3" placeholder="상세주소">
           </td>
         </tr>
         <tr>

@@ -8,45 +8,35 @@
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
 <title>Insert title here</title>
-<script src="./js/json.min.js"></script>
-<style>
-    div {
-        width: 100%;
-        
-    }
-    div.left {
-        width: 50%;
-        float: left;
-        box-sizing: border-box;
-        
-    }
-    div.right {
-        width: 50%;
-        float: right;
-        box-sizing: border-box;
-        
-    }
-    </style>
 
 
 
 <script>
+
+
+var selRecinum = "";
+//c태그 받기 연습
+
+
 $(function(){
 	  
+	
 	//조회, 등록, 수정 폼 처음에 숨기기
 	$('#toggleTable').hide();
 	$('#insertMenuFormTable').hide();
 	$('#recipeTablediv').hide();
+	$('#optionDiv').hide();
 	
 	$("#menuTable tbody tr").click(function(){
 		
 		//tr 누를때 session에서 sid가져옴
 		var storeid = "SH001";
-		
+
 		
 		$('#insertMenuFormTable').hide();
 		$('#toggleTable').show();
 		$('#recipeTablediv').show();
+		$('#optionDiv').show();
 		
 		var str="";
 		var tdArr = new Array();
@@ -55,6 +45,7 @@ $(function(){
 		var td = tr.children();
 		
 		console.log("row: "+tr.text());
+
 		
 		var mNum = td.eq(0).text();
 		var mName = td.eq(1).text();
@@ -100,24 +91,59 @@ $(function(){
 				}
 				else
 					{
+					
 						$("#recipeTable tbody").empty();
 						for(var i = 0;i<data.length;i++){
 						
-							$('<tr>')
-							.append($('<td>').html(data[i].stName))
-							.append($('<td>').html(data[i].consum))
-							.append($('<td>').html(data[i].stAqty))
-							.append($('<td>').html(data[i].stanUnit))
-							.appendTo("#recipeTable tbody");
-							
+							if(data[i].caNum!='CAOP')
+							{
+								$('<tr>')
+								.append($('<td>').html(data[i].stName))
+								.append($('<td>').html(data[i].consum))
+								.append($('<td>').html(data[i].stAqty))
+								.append($('<td>').html(data[i].stanUnit))
+								.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
+								.appendTo("#recipeTable tbody");
+							}
 							console.log(data);
 							
 						}
+						
+						$("#optionTable tbody").empty();
+						for(var i = 0;i<data.length;i++){
+							if(data[i].caNum=='CAOP')
+							{
+								$('<tr>')
+								.append($('<td>').html(data[i].opName))
+								.append($('<td>').html(data[i].consum))
+								.append($('<td>').html(data[i].opPrice))
+								.appendTo("#optionTable tbody");
+							}
+							
+						}
+						
 							
 					}
 			}
 		});
 
+		
+		$.ajax({
+			url:'recipes/'+storeid,
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){
+				console.log(data);
+			}
+			
+		});
+		
+		
+		
 		
 		
 	})
@@ -137,22 +163,54 @@ $(function(){
 	});
 
 	
-	$("#recipeTable").on('click',function(){
-		
+	
+	
+	$(document).on("click","#recipeTable tbody tr",function(){ 
 		var str="";
 		var tdArr = new Array();
 		
 		var tr = $(this);
 		var td = tr.children();
 		
-		console.log("row: "+tr.text());
-	});
+		selRecinum = td.eq(4).text();
+		console.log(selRecinum);
+		
+		 });
+	
+	
+	$(document).on("click","#optionTable tbody tr",function(){ 
+		var str="";
+		var tdArr = new Array();
+		
+		var tr = $(this);
+		var td = tr.children();
+		
+		 });
+	
 	 
 });
+
+function upload(){
+	$("#frm").ajaxForm({
+		url : "/upload.do",
+		enctype : "multipart/form-data",
+		dataType : "json",
+		error : function(){
+			alert("에러") ;
+		},
+		success : function(result){
+			alert("성공") ;
+		}
+	});
+
+	$("#frm").submit() ;
+}
 
 
 function insertMenuForm(){
 	$('#toggleTable').hide();
+	$('#recipeTablediv').hide();
+	$('#optionDiv').hide();
 	$('#insertMenuFormTable').show();
 	
 }
@@ -245,8 +303,20 @@ function recipeInsert(){
 	}); 
 }
 function recipeDelete(){
-	alert("delete223222");
-
+	
+	console.log(selRecinum);
+	$.ajax({
+		url:'recipes/'+selRecinum,  
+		type:'DELETE',
+		contentType:'application/json',
+		dataType:'json',
+		error:function(xhr,status,msg){
+			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
+		}, success:function(xhr) {
+			console.log(xhr.result);
+			window.location.reload();
+		}
+	}); 
 }
 
 
@@ -255,16 +325,16 @@ function recipeDelete(){
 </head>
 <body>
 
-<div>
+<div style="width:100%">
         <div class="left">
         <!-- 메뉴 CRUD -->
 		<div style="float: left; width: 50%; border: 1px solid pink;">
 
 			<!-- 메뉴 List-->
-			<div>
+			<div class = "container">
 				<h3>[메뉴 목록]</h3>
 				<form action="#">
-					<table border="1" id="menuTable">
+					<table border="1" id="menuTable" class = "table table-hover" >
 						<thead>
 							<tr>
 								<th>메뉴 번호</th>
@@ -304,16 +374,23 @@ function recipeDelete(){
 			</div>
 
 
-
-
-			<!-- 등록폼 사진 추가 작업-->
+        </div>
+        </div>
+        
+        
+        
+        
+        
+        <div class="right">
+        
+        			<!-- 등록폼 사진 추가 작업-->
 			<div style="border: 1px solid orange; margin: 3px"
 				id="insertMenuFormTable">
 				<h3>[메뉴 추가]</h3>
 
 				<form id="insertmenudetail" enctype="multipart/form-data"
 					method="post">
-					<table border="1">
+					<table border="1" >
 
 
 						<tr>
@@ -340,6 +417,7 @@ function recipeDelete(){
 
 							<td><input type="file" value="사진 선택" name="uploadFile" />
 						</tr>
+						
 					</table>
 					<!-- hidden 으로 sId 넘기기 -->
 
@@ -355,7 +433,7 @@ function recipeDelete(){
 				<h3>[메뉴 상세 조회/수정]</h3>
 
 				<form id="menudetail">
-					<table border="1">
+					<table border="1" >
 
 
 						<tr>
@@ -408,15 +486,10 @@ function recipeDelete(){
 				</form>
 			</div>
 
-		</div>
-
-        
-        
-        </div>
-        <div class="right">
-        
+		
 		<!-- 레시피 CRUD-->
-		<div style="float: left; border: 1px solid pink;">
+		<div style="float: left; border: 1px solid pink;" >
+		
 			<!-- 레시피 등록, 메뉴 하나 Select된 상태에서 레시피 레시피 조회가능, 등록 버튼 활성화 -->
 
 		<form id="recipeTableForm">
@@ -424,7 +497,7 @@ function recipeDelete(){
 			<div id="recipeTablediv" style="border: 1px solid gray;">
 
 				<h3>상세 레시피</h3>
-				<table border="1">
+				<table border="1" class = "table table-hover">
 					<tr>
 						<th>메뉴 번호</th>
 						<td><input type="text" id="cmNum" name="mNum" readonly></td>
@@ -437,18 +510,20 @@ function recipeDelete(){
 
 				<h4>재료 추가</h4>
 				<select name="stNum">
-				
+				<%-- 
 					<c:forEach items="${recistock}" var="stock">
-						<option value="${stock.stNum}">${stock.stName}</option>
-						
+						<option value="${stock.stNum}">${stock.stName} & ${stock.caNum }</option>
 					</c:forEach>
+				 --%>
 				</select> <input type="text" value="0" id="consum" name="consum">
 
+
+				
 			<input type="button" value=" + " onclick="recipeInsert()">
 			<input type="button" value=" - " onclick="recipeDelete()">
 
 			
-				<table border="1"  id="recipeTable">
+				<table border="1"  id="recipeTable" class = "table table-hover">
 					<thead>
 					<tr>
 						<th>재료명</th>
@@ -461,16 +536,56 @@ function recipeDelete(){
 				</table>
 			</div>
 			
+			
+			
         </form>
-			<!-- 수정 버튼 누르면 수정가능하게 action  -->
-			<button onclick="">수정</button>
 
 		</div>
+		
+		
+		
+		<!-- 메뉴 옵션 추가 CRUD -->
+		<div style="float: left; border: 1px solid blue; margin: 3px" id="optionDiv">
+		
+		
+		<h4>옵션 추가</h4>
+					<select id="" name="">
+							<option value="">재고</option>
+							<option value="">테이블에서</option>
+							<option value="">현재 메뉴번호에 맞는</option>
+							<option value="">옵션리스트를</option>
+							<option value="">가져온다</option>
+					</select>
+					
+				<input type="text" value="휘핑 추가">
+				<input type="text" value="0.3">
+				<button> + </button><button> - </button>
+		
+		<table border="1"  id="optionTable" class = "table table-hover">
+					<thead>
+					<tr>
+						<th>옵션 이름</th>
+						<th>소모량</th>
+						<th>옵션 가격</th>
+					</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+		
+		</div>
+		</div>
+        
         </div>
-    </div>
+    
 
 
 
+<form name="frm" id="frm" method="post" enctype="multipart/form-data">
+	<input type="file" name="upfile" id="upfile">
+</form>
+
+
+<a href="javascript:upload();">등록</a>
 
 
 
