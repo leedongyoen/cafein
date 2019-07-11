@@ -13,7 +13,15 @@ public class WarehousingDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 	
-	public List<WarehousingVO> getWarehousingList(WarehousingVO vo){
-		return mybatis.selectList("WarehousingDAO.getWareList",vo);
+	public List<WarehousingVO> getEndteredList(WarehousingVO vo){
+		return mybatis.selectList("WarehousingDAO.getEnteredList",vo);
 	}
+	public List<WarehousingVO> getReleasedList(WarehousingVO vo){
+		return mybatis.selectList("WarehousingDAO.getReleasedList",vo);
+	}
+	
+	public List<WarehousingVO> getWarehousingList(WarehousingVO vo){
+		return mybatis.selectList("WarehousingDAO.getWarehousingList",vo);
+	}
+	
 }

@@ -5,7 +5,13 @@ import java.util.List;
 import co.yedam.cafein.vo.WarehousingVO;
 
 public interface WarehousingService {
-	public List<WarehousingVO> getWareList(WarehousingVO vo);
+	public List<WarehousingVO> getWarehousingList(WarehousingVO vo);
+	
+	public List<WarehousingVO> getReleasedList(WarehousingVO vo);
+	
+	public List<WarehousingVO> getEnteredList(WarehousingVO vo);
+	
+	
 	
 	
 }
