@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CustomerJoinDAO">
+	<insert id="insertJoin" parameterType="customer" >
+	INSERT INTO CUSTOMER 
+		(C_ID, 
+		C_NICK, 
+		C_TEL, 
+		C_NAME, 
+		C_PW, 
+		C_ADD,
+		C_ADD2,
+		C_ADD3, 
+		DOB)
+	VALUES 
+		(#{cId},
+		 #{cNick}, 
+		 #{cTel}, 
+		 #{cName}, 
+		 #{cPw}, 
+		 #{cAdd},
+		 #{cAdd2},
+		 #{cAdd3}, 
+		 #{dob}
+		 ) 
+	</insert> 
+	<select id="idCheck" resultType="int">
+		SELECT COUNT(*) 
+		FROM CUSTOMER
+		WHERE C_ID= #{cId}
+	</select>
+</mapper>

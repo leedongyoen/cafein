@@ -1,6 +1,8 @@
 package co.yedam.cafein.vo;
+
 import java.sql.Timestamp;
 import java.util.Date;
+
 
 public class WarehousingVO {
 
@@ -88,5 +90,11 @@ public class WarehousingVO {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	
+
+
+	@Override
+	public String toString() {
+		return "WarehousingVO [wareNum=" + wareNum + ", wareDate=" + wareDate + ", wareQty=" + wareQty + ", warePrice="
+				+ warePrice + ", stNum=" + stNum + ", sId=" + sId + ", stPayMethod=" + stPayMethod + "]";
+	}
 }

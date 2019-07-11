@@ -14,8 +14,14 @@ public class CustomerVO {
 	private int pPoint;
 	private String grade;
 	private String cAdd;
+	private String cAdd2;
+	private String cAdd3;
 	private int stmp;
+
 	
+	
+	
+
 	@JsonFormat(pattern = "yyyy-MM-dd")			//날짜형식 포맷
 	private Date dob;
 	private String cJoin;
@@ -66,6 +72,18 @@ public class CustomerVO {
 	}
 	public void setcAdd(String cAdd) {
 		this.cAdd = cAdd;
+	}
+	public String getcAdd2() {
+		return cAdd2;
+	}
+	public void setcAdd2(String cAdd2) {
+		this.cAdd2 = cAdd2;
+	}
+	public String getcAdd3() {
+		return cAdd3;
+	}
+	public void setcAdd3(String cAdd3) {
+		this.cAdd3 = cAdd3;
 	}
 	public int getStmp() {
 		return stmp;

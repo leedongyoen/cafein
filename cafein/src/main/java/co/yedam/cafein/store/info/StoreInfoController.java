@@ -29,11 +29,22 @@ public class StoreInfoController {
 	  }
 	  
 	  //매정 수정
-	  @ResponseBody
-	  @RequestMapping
+	  @ResponseBody 
+	  @RequestMapping(value="/storeinfo", method=RequestMethod.PUT, consumes="application/json")
 	  public StoreVO infoedit(@RequestBody StoreVO vo, Model model, HttpServletRequest req) {
 		  System.out.println(vo + "=============");
+		  vo.setSpw(null);
 		  storeService.infoedit(vo);
+		  return vo;
+	  }
+	  
+	  //매점 비밀번호 변경
+	  @ResponseBody
+	  @RequestMapping(value="/storepw/{sid}", method=RequestMethod.PUT, consumes="application/json")
+	  public StoreVO checkpw(@PathVariable("sid") String id, @RequestBody StoreVO vo, Model model, HttpServletRequest req) {
+		  System.out.println(vo+"==============");
+		  vo.setSid(id);
+		  storeService.checkpw(vo);
 		  return vo;
 	  }
 	  

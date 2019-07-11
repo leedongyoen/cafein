@@ -4,152 +4,183 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="storehead.jsp" %>
+ <%@ include file="storehead.jsp" %> 
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>매장POS</title>
-<style>
-	* {
-		padding: 0;
-		margin: 0;
-		font-family: arial;
-	}
-	.left-box {
+<style type="text/css">
+.left {
+  position:absolute;
+  width:600px;
+  height: 600px;
+  border: 1px solid;
+}
+.content {
+  position:relative;
+  width:70%;
+  left:600px;
+  height:600px;
+  border: 1px solid;
+}
 
-		  float: left;
-		  width: 50%;
-	}
-	.right-box {
-		  float: right;
-		  width: 50%;
-	}
-	[data-tabs2] {
-		display: flex;
-		background: #eee;
-		padding: 10px;
-		border: 2px solid #ccc;
-	}
-	[data-tabs2] >* {
-		padding: 5px 20px;
-		cursor: pointer;
-	}
-	[data-tabs2] .active {
-		background: #31a3e8;
-		color: #fff;
-		border-radius: 5px;
-	}
-	[data-panes2] > * {
-		display: none;
-		border: 2px solid #ccc;
-		border-top: none;
-		padding: 20px;
-	}
-	[data-panes2] > .active {
-		display: block;	
-	}
-	</style>
+</style>
 </head>
 <body>
-<br><br><br><br>
-<div class="container">
-<div class='left-box'>
-   <div data-tabs2>
-      <div>음료</div>
-      <div>푸드</div>
-   </div>
+<script type="text/javascript">
+//포스기 버튼
 
-   <div data-panes2>
-      <div>
-         <div data-tabs2>
-            <div>COFFEE</div>
-            <div>VEBERAGE</div>
-         </div>
-         <div data-panes2>
-            <div>
-            <table style="margin-left: auto; margin-right: auto;" width="300" height="50" margin:auto;>
-   <tr>
-       <td><input type="button" value="에스프레소(3600)"></td>
-       <td><input type="button" value="아메리카노(4100)"></td>
-       <td><input type="button" value="카페라떼(4600)"></td>
-       <td><input type="button" value="카페모카(5100)"></td>
-   </tr>
-    </table>
-            </div>
-            <div>
-            <table style="margin-left: auto; margin-right: auto;" width="400" height="50" margin:auto;>
-            <tr>
-               <td><input type="button" value="홍차라떼(5000)"></td>
-                <td><input type="button" value="녹차라떼(4200)"></td>
-                <td><input type="button" value="레몬에이드(5000)"></td>
-            </tr>
-             </table>
-            </div>
-         </div>
-      </div>
-      <div>
-      <table style="margin-left: 20; margin-right:20;" width="400" height="50" margin:auto;>
-            <tr>
-               <td><input type="button" value="프레즐(2500)"></td>
-                <td><input type="button" value="베이글(2000)"></td>
-                <td><input type="button" value="치즈케이크(5500)"></td>
-            </tr>
-             </table>
-      </div>
-   </div>
-   </div>
+//jqgrid의 orderlist
+   $(document).ready(function() {
+	   $("#gridlist").jqGrid({
+           url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+           mtype: "GET",
+           datatype: "jsonp",
+           colModel: [
+               { label: '메뉴명', name: 'OrderID', key: true, width: 75 },
+               { label: '수량', name: 'CustomerID', width: 150  },
+               { label: '금액', name: 'OrderDate', width: 150  }
+           ],
+           viewrecords:true,
+           caption:'주문목록', // 그리드 왼쪽 위에 캡션
+           rownumbers:false,//왼쪽에 index 가 생김 1부터 시작
+           rownumWidth:40,//로우넘의 가로길이
+           rowNum:5,// 그리드에 보여줄 데이터의 갯수,-1하면 무한으로 보여준단다..
+           width:600,//그리드의 총 가로길이
+           rowList:[10,20,30],//몇개식 보여줄건지 선택가능하다, 배열형식이라 5,10,15,20,,,가능
+           multiboxonly : true,
+           multiselect : true,//체크박스 사라짐
+           scrollrows : true, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
+  		   pager: "#pager",
+           gridview : true
+       });
+   });
+
+/*  $("#firstTable").jqGrid("setCell",rowid,"status","normal"); // 셀에 지정한 컬럼에 지정한 값 집어넣을수있음
+var buffdata = $('#testGrid').jqGrid('getDataIDs'); // 테이블에 있는 모든 데이터를 수집한다.
+$('#testGrid').jqGrid('addRowData',로우넘,localdata[i]); // 테이블에 데이터를 넣는다.
+$('#testGrid').jqGrid('getGridParam','selarrrow') // 체크한줄 불러옴 배열로 가져옴
+$("#testGrid").jqGrid('editRow', 로우넘,true,'clientArray'); // 동적으로 선택한애의 셀을 수정가능하게 변경
+$("#testGrid").jqGrid('setRowData', 로우넘, {id:'changed', name:'changed', memo:'changed'}, {color:'red'}) // 선택한 로우의 데이터를 다 바꿀수있다
+$("#testGrid").jqGrid('delRowData', rowids[i]); // 로우 삭제
+$("#jourTable").getDataIDs(); // 모든 로우 ids 가져옴
+var updateList = $("#schoolGrid").getChangedCells('all'); //<--셀에값이 변한 줄 불러옴
+footerrow : true});
+ $('#debtorTable').jqGrid('footerData', 'set', {accountName:'합계', amount:debTotal});  //footer 데이터  */
+
+ 
+ //메뉴탭에서 매장메뉴 나오기
+var sId="SH001";
+ function getStoreMenuList(sId){
+		$.ajax({
+			url:'pos/'+sId,
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success: function posMenuListResult(data) {
+				console.log(data);
+				$("#coffeetable tbody").empty();
+				$("#beveragetable tbody").empty();
+				$("#bakerytable tbody").empty();
+				$.each(data,function(idx,item){
+					// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
+					if(item.caNum == "CACO"){
+						$('<tr>').attr("data-toggle","modal")//.addClass("openmodal")
+						.append($('<td><button>').html(item.mName))
+						.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
+						.appendTo('#coffeetable tbody');
+					}
+					else if(item.caNum == "CADR"){
+						$('<tr>').attr("data-toggle","modal")
+						.append($('<td><button>').html(item.mName))
+						.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
+						.appendTo('#beveragetable tbody');
+					}else if(item.caNum == "CADE"){
+						$('<tr>').attr("data-toggle","modal")
+						.append($('<td><button>').html(item.mName))
+						.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
+						.appendTo('#bakerytable tbody');
+					}
+				});
+			}
+		});
+	}	
 	
 	
-	
-	<div class='right-box'>
-	<div data-tabs2>
-		<div>옵션</div>
-	</div>
-	<div data-panes2>
-		<div>
-		<table style="margin-left: 20; margin-right:20; width:400; height: 50; margin:auto">
-				<tr>
-					<td><input type="button" value="ICE"></td>
-				    <td><input type="button" value="HOT"></td>
-				</tr>
-				<tr>
-					<td><input type="button" value="샷추가(500)"></td>
-				    <td><input type="button" value="휘핑(500)"></td>
-				    <td><input type="button" value="초코소스(300)"></td>
-				    <td><input type="button" value="카라멜소스(300)"></td>
-				</tr>
-		</table>
-				</div>
-	</div>
+
+</script>
+<br><br>
+<br><br>
+<div class ="container">
+<div class="left">
+    <table id="gridlist"></table>
+    <div id="pager"></div>
 </div>
-</div>
-	<hr>
+<!-- 메뉴 선택 창 -->
+  <div class="content">
+	<ul id="topclick" class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#coffee">커피</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#beverage">음료</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#bakery">디저트</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+	<div class="tab-content">
+		<div id="coffee" class="container tab-pane active"><br>
+			<div class="table-responsive">
+			<table id="coffeetable" class="table">
+				<tbody id="coffeetable">
+				
+			</tbody>
+			</table>
+			</div>
+  		</div>
+   		<div id="beverage" class="container tab-pane fade"><br>
+    		<table id="beveragetable" class="table">
+				<tbody id="beveragetable">
+				
+				</tbody>
+			</table>
+   		</div>
+   		<div id="bakery" class="container tab-pane fade"><br>
+     		<table id="bakerytable" class="table">
+				<tbody id="bakerytable">
+				
+				</tbody>
+			</table>
+   		</div>
+ 	</div>
+  </div>
+
 
 <hr>
-<div class ="container">
-
-
-	<p>아메리카노 + ICE + 샷추가</p>
-	<div style="text-align:right"> <button>주문 추가</button></div>
+	<div style="text-align:left">
+	<button>전체취소</button>
+	<button>선택취소</button>
+	<button>수량변경</button>
+	<button>-</button>
+	<button>+</button>
+	
+	
+	</div>
 	<div style="text-align:right"> 총 가격 4600원</div>
 			<div style="text-align:right">
+			<button>회원검색</button>
 			<button>현금</button>
 			<button>카드</button>
 			<button onclick="location.href='#'">결제하기</button>
 		</div>
-
 </div>
-	<script src="js/tabbis.js"></script>
-	
-	<script>
-		var tabs = tabbis.init({
-			tabGroup: '[data-tabs2]',
-			paneGroup: '[data-panes2]',
-			tabActive: 'active',
-			paneActive: 'active',
-			callback: function(tab2, pane2) {
-				console.log(tab);
-				console.log(pane);
-			}
-		});
-	</script>
+
+
+
+
 </body>
 </html>

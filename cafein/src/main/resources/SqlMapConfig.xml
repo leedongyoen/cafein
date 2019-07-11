@@ -18,8 +18,11 @@
 		<typeAlias type="co.yedam.cafein.vo.StockVO" alias="stock"/>
 		<typeAlias type="co.yedam.cafein.vo.WarehousingVO" alias="warehousing"/>
 		<typeAlias type="co.yedam.cafein.vo.ReserveVO" alias="reserve"/>
+		<typeAlias type="co.yedam.cafein.vo.RecipeVO" alias="recipe"/>
+		
 		
 		<typeAlias type="co.yedam.cafein.viewvo.ViewMymenuVO" alias="viewmymenu"/>
+		<typeAlias type="co.yedam.cafein.viewvo.ViewWarehousingVO" alias="viewwarehousing"/>
 	</typeAliases>
 	
 

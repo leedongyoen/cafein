@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -15,9 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,6 +30,7 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 
 import co.yedam.cafein.customer.login.CustomerLoginService;
 import co.yedam.cafein.customer.info.CustomerInfoService;
+import co.yedam.cafein.customer.join.CustomerJoinService;
 import co.yedam.cafein.customer.login.KakaoRestAPI;
 import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.NaverLoginVO;
@@ -37,15 +42,19 @@ public class CustomerController {
 	private NaverLoginVO naverLoginVO;
 	private String apiResult = null;
 
-	@Autowired
-	CustomerLoginService customerLoginService;
-	CustomerInfoService customService;
+
+	@Autowired	CustomerLoginService customerLoginService;
+	
+	@Autowired CustomerInfoService customService;
+	
+	@Autowired CustomerJoinService customerjoinService;
+
 	private void setNaverLoginVO(NaverLoginVO naverLoginVO) {
 		this.naverLoginVO = naverLoginVO;
 	}
 
 
-	//고객 로그인
+	//고객 정보
 	@RequestMapping("customerinfoedit.do")
 	public String customerinfoedit(@ModelAttribute("customer") CustomerVO vo) {
 		return "customer/infoedit";
@@ -130,11 +139,37 @@ public class CustomerController {
 	}
 	
 	//고객 회원가입
-	@RequestMapping("customerjoin.do")
-	public String join() {
-		return "customer/join";
+	@RequestMapping("customerjoin.do" )
+	public ModelAndView insertJoin(CustomerVO vo) {
+		int n = customerjoinService.insertJoin(vo);
+		
+		ModelAndView mv = new ModelAndView();
+		if(n == 1) {
+			
+			mv.setViewName("customer/login");
+			
+		}else {
+			mv.setViewName("customer/join");
+		}
+		
+		return mv;
 		
 	}
+	
+	// ajax 회원가입 id 체크를 할 컨트롤러
+	@RequestMapping(value="/getcustomerjoin/{cId}",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<Object, Object> idCheck(@PathVariable("cId") String cId) {
+		CustomerVO  vo = new CustomerVO();
+		vo.setcId(cId);
+		System.out.println("================"+vo.getcId());
+		int n = customerjoinService.idCheck(vo);
+		Map<Object, Object>	map = new HashMap<Object, Object>();
+		map.put("cnt", n);
+		return map;
+		
+	}
+	
 	//ID/PW 찾기
 	@RequestMapping("customerfindidpw.do")
 	public String findidpw() {

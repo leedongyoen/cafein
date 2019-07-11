@@ -19,7 +19,12 @@ public class StoreInfoDAO {
 
 	public int infoedit(StoreVO vo) {
 		System.out.println("mybatis 매장정보수정");
-		return mybatis.update("StoreDAO.infoedit", vo);
+		return mybatis.update("storeinfoDAO.infoedit", vo);
+	}
+
+	public int checkpw(StoreVO vo) {
+		System.out.println("mybatis 매장정보비밀번호수정");
+		return mybatis.update("storeinfoDAO.checkpw", vo);
 	}
 
 }

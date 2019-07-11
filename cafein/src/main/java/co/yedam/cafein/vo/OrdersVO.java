@@ -1,6 +1,6 @@
 package co.yedam.cafein.vo;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class OrdersVO {
 
@@ -13,6 +13,17 @@ public class OrdersVO {
 	private String payMethod;
 	private int mileage;
 	
+	// store name을 가져오기 위해서
+	private String sName;
+	
+	
+	
+	public String getsName() {
+		return sName;
+	}
+	public void setsName(String sName) {
+		this.sName = sName;
+	}
 	public String getoNum() {
 		return oNum;
 	}

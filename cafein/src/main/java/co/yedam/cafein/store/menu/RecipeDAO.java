@@ -35,4 +35,9 @@ public class RecipeDAO {
 		return mybatis.delete("RecipeDAO.deleteRecipe",vo);
 	}
 	
+	public int insertOption(RecipeVO vo) {
+		System.out.println("mybatis insertOption");
+		return mybatis.insert("RecipeDAO.insertOption",vo);
+	}
+	
 }

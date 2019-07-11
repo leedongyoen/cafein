@@ -23,7 +23,6 @@
 			form.cPw.focus();
 			return;
 		}
-		
 		form.submit();
 	}	
 

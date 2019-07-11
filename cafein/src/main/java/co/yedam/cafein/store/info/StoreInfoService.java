@@ -8,6 +8,9 @@ public interface StoreInfoService {
 	public StoreVO getStore(StoreVO vo);
 
 	public int infoedit(StoreVO vo);
+
+	public int checkpw(StoreVO vo);
 	
 
 }
+

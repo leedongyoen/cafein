@@ -19,6 +19,12 @@ public class StoreInfoServiceImpl implements StoreInfoService{
 	@Override
 	public int infoedit(StoreVO vo) {
 		return StoreDAO.infoedit(vo);
+	}
+	
+	//비밀번호변경
+	@Override
+	public int checkpw(StoreVO vo) {
+		return StoreDAO.checkpw(vo);
 	} 
 
 }

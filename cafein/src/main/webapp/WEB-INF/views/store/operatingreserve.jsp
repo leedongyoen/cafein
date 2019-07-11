@@ -1,90 +1,227 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>      
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>매장 영업 준비금</title>
+
+<script>
+
+	var i, cnt=1, sum;
+
+	// javascript local storage 이용해서 db저장 없이 데이터 읽어오는거 찾아보기
+	// 추가 지출 추가 (빈칸 입력 시 alert 창 띄우기) --------------------------------------------------
+	function addList(){
+
+		var stName = $('#stName').val();
+		var wareQty = $('#wareQty').val();
+		var warePrice = $('#warePrice').val();
+		var stPayMethod = $('#stPayMethod').val();
+		
+		// 현재 날짜
+		var now = new Date();
+	    var year= now.getFullYear();
+	    var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+	    var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	              
+	    var sysdate = year + '-' + mon + '-' + day;		//chan_val
+	    console.log('sysdate : ' + sysdate);
+	    
+	    if(stName != '' && wareQty != '' && warePrice != '') {
+	    	if(stPayMethod == '카드') {
+	    		stPayMethod = 'CARD';
+	    	} else if(stPayMethod == '현금') {
+	    		stPayMethod = 'CASH';
+	    	}
+	    	// vo에 들어갈 객체들을 list에 담는다
+			var voList = {		// llist
+					 wareDate: sysdate
+				    , wareQty: wareQty
+				    , warePrice: removeCommas(warePrice)
+				    , stName: stName
+				    , sId: sId
+				    , stPayMethod: stPayMethod
+			};
+			// 문자열을 json형태로 체인지
+			var jsonVoList = JSON.stringify(voList);		//person
+			  
+			// 배열에 넣기
+			addDataList.push(jsonVoList);
+	    }
+
+		console.log('adddatalist : '+addDataList);
+		
+		sum = removeCommas(wareQty) * removeCommas(warePrice);
+		
+		if(stName == "") {
+			alert("항목을 입력해 주세요.");
+			$('#stName').focus();
+			return;
+		} else if(wareQty == "") {
+			alert("수량을 입력해 주세요.");
+			$('#wareQty').focus();
+			return;
+		} else if(warePrice == "") {
+			alert("가격을 입력해 주세요.");
+			$('#warePrice').focus();
+			return;
+		}
+
+		$('<tr>')
+		.append($('<td>').html(stName))
+		.append($('<td>').html(wareQty))
+		.append($('<td>').html(warePrice+'원'))
+		.append($('<td>').html(addCommas(sum)+'원').attr('id','sum'))
+		.append($('<td>').html(stPayMethod))
+		.append($('<td>').append($('<input>').attr({
+			type:'button',
+			id:'delCheck',
+			value:'삭제'
+		})))
+		.appendTo('#operatingreservTable tbody');
+		
+		addTotalSum += sum;
+		
+		console.log('addTotalSum : ' +addTotalSum)
+		
+		$('#totalSum').text(addCommas(addTotalSum)+'원');
+		
+		$('#stName').val('');
+		$('#wareQty').val('');
+		$('#warePrice').val('');
+		$("#stPayMethod").val('카드').prop("selected", true);
+		
+		console.log("operatingreserv에서 daycal total.val : " + $('#totalSum').text())
+		
+	}
+	
+	// 가격과 수량은 숫자만 입력 가능하고 3단위마다 콤마 생성
+	$("input:text[numberOnly]").on("keyup", function() {
+		$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+    
+	});
+	
+	// 숫자 3단위마다 콤마 생성
+	function addCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	//모든 콤마 제거
+	function removeCommas(x) {
+	    if(!x || x.length == 0) return "";
+	    else return x.split(",").join("");
+	}
+
+	// 삭제 버튼 클릭 시 실행 ------------------------------------------------------------------------------
+	$('#operatingreservTable').on("click", "#delCheck", function() {
+	   
+	   // ''+ 를 해주지 않으면 문자열로 인식을 못함
+	   var delSum =''+ $(this).parent().parent().children().eq(3).text();		// 지출액의 text
+	   var len = $(this).parent().parent().children().eq(3).text().length;		// 지출액의 길이
+	   var deleteRow = ''+ $(this).parent().parent().children().eq(0).text();
+	  
+	   // 배열에 담긴 데이터 삭제
+	   Array.prototype.remove = function (index) { this.splice(index, 1); }
+	   for (var i = 0; i < addDataList.length; i++) {
+		   var jsonAddDataList = JSON.parse(addDataList[i]);
+	       if (jsonAddDataList.stName == deleteRow) {
+	    	   console.log('배열에서 항목 : '+jsonAddDataList.stName + ', 삭제될 항목 : ' + deleteRow);
+	    	   addDataList.remove(i);
+            }
+        }
+
+	   console.log("삭제 후 배열 : "+addDataList);
+	   console.log('삭제된 항목의 지출액 : '+delSum.substr(0,len-1));										// 지출액의 마지막 '원'을 자른다
+	   
+	   addTotalSum -= removeCommas(delSum.substr(0,len-1));
+	   
+	   console.log('minTotalSum : ' + addTotalSum)
+	   
+	   $('#totalSum').text(addCommas(addTotalSum)+'원');
+	   
+	   $(this).closest("tr").remove();
+	   
+	});
+	
+	// 취소 버튼 클릭 시 실행 ------------------------------------------------------------------------------
+	$('#backbtn').on("click",function(){
+		$('#stName').val('');
+		$('#wareQty').val('');
+		$('#warePrice').val('');
+		$("#stPayMethod").val('카드').prop("selected", true);
+	})
+	
+	// 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
+	// 저장 후 데이터 변경 못하게 할지 생각해보기
+	$('#savebtn').on("click",function(){
+		$('#operatingreserveSave').text('수정 완료');
+	})
+
+</script>
 </head>
 <body>
 <h3 align = "center">매장 영업 준비금</h3><br>
 <div class="container">
 	<div class="row">
 		<div class="col-12" style="height:350px;width:550px;overflow:auto;">
-			<table class="table table-striped">
+			<table class="table table-striped" id = "operatingreservTable">
+				<thead>
 				<tr>
-					<th>순번</th>
 					<th>항목</th>
 					<th>수량</th>
-					<th>단가</th>
+					<th>가격</th>
 					<th>지출액</th>
 					<th>결제방식</th>
+					<th>삭제</th>
 				</tr>
-				<tr>
-					<td>1</td>
-					<td>원두</td>
-					<td>3</td>
-					<td>10,000원</td>
-					<td>30,000원</td>
-					<td>카드</td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>우유</td>
-					<td>15</td>
-					<td>2,500원</td>
-					<td>37,500원</td>
-					<td>카드</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>망고소스</td>
-					<td>2</td>
-					<td>13,000원</td>
-					<td>26,000원</td>
-					<td>현금</td>
-				</tr>
-				<tr>
-					<td>총금액</td>
-					<td colspan="5" style="text-align:right;">93,500원</td>
-				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				<tfoot>
+				</tfoot>
 			</table>
 		</div>
 		<div style="margin:auto;">
+		<form id="addform">
+		
 			<table>
 				<tr>
 					<th>항목</th>
 				</tr>
 				<tr>
-					<td><input type="text" id="name"></td>
+					<td><input type="text" id="stName"></td>
 				</tr>
 				<tr>
 					<th>수량</th>
 				</tr>
 				<tr>
-					<td><input type="text" id="qty"></td>
+					<td><input type="text" id="wareQty" numberOnly></td>
 				</tr>
 				<tr>
-					<th>단가</th>
+					<th>가격</th>
 				</tr>
 				<tr>
-					<td><input type="text" id=""></td>
+					<td><input type="text" id="warePrice" numberOnly></td>
 				</tr>
 				<tr>
 					<th>결제방식</th>
 				</tr>
 				<tr>
 					<td>
-						<select>
+						<select id="stPayMethod">
 							<option id="card" selected>카드
 							<option id="cash">현금
 						</select>
 					</td>
 				</tr>
+				
 			</table>
-			<button>추가</button>
-			<button>취소</button>
-			<button>저장</button>
+			<button type="button" id="addbtn" onclick="addList()">추가</button>
+			<button type="button" id="backbtn">취소</button>
+			<button type="button" id="savebtn">저장</button>
+		</form>
 		</div>
 	</div>
 </div>

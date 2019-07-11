@@ -7,7 +7,29 @@ public class RecipeVO {
 	private int consum;
 	private String stNum;
 	private String mNum;
+	private String caNum;
+	private String opName;
+	private String opPrice;
 	
+	
+	public String getOpPrice() {
+		return opPrice;
+	}
+	public void setOpPrice(String opPrice) {
+		this.opPrice = opPrice;
+	}
+	public String getCaNum() {
+		return caNum;
+	}
+	public void setCaNum(String caNum) {
+		this.caNum = caNum;
+	}
+	public String getOpName() {
+		return opName;
+	}
+	public void setOpName(String opName) {
+		this.opName = opName;
+	}
 	public String getRecipeno() {
 		return recipeno;
 	}
