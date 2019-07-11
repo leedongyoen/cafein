@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import co.yedam.cafein.vo.MenuVO;
+import co.yedam.cafein.viewvo.ViewPosVO;
 
 @Service("PosService")
 public class PosServiceImpl implements PosService{
@@ -15,7 +15,7 @@ public class PosServiceImpl implements PosService{
 	@Resource(name="posDAO")
 	private PosDAO DAO;
 	
-	public List<MenuVO> getStoreMenuList(MenuVO vo){
+	public List<ViewPosVO> getStoreMenuList(ViewPosVO vo){
 		System.out.println(vo.getsId());
 		return DAO.getStoreMenuList(vo);
 	}

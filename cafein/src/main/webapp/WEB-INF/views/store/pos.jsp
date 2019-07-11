@@ -96,12 +96,12 @@ footerrow : true});
 				.append($('<input type=\'button\'class=\'mbutton\' id=\'coffee\'>').val(item.mName))
 				.appendTo('#coffeetable tbody');
 			}
-			else if(item.caNum == "CADR"){
+			else if(item.caNum == "CADR" && item.opName == null){
 				$('<tr>')
 				.append($('<br>'))
 				.append($('<input type=\'button\' class=\'mbutton2\' id=\'beverage\'>').val(item.mName))
 				.appendTo('#beveragetable tbody');
-			}else if(item.caNum == "CADE"){
+			}else if(item.caNum == "CADE" && item.opName == null){
 				$('<tr>')
 				.append($('<br>'))
 				.append($('<input type=\'button\' class=\'mbutton3\' id=\'dessert\'>').val(item.mName))
@@ -109,9 +109,10 @@ footerrow : true});
 			}
 		});
 	}
- $(document).on("click",".mbutton", function(){
+ $(document).on("click",".mbutton", function(data){
 	 console.log(sId);
- })
+	 
+ });
 
 </script>
 <br><br>
@@ -141,7 +142,8 @@ footerrow : true});
 			<div class="table-responsive">
 			<table id="coffeetable" class="table">
 				<tbody id="coffeetable">
-				
+			</tbody>
+			<tbody id="coffeetableoption">
 			</tbody>
 			</table>
 			</div>
