@@ -17,8 +17,18 @@ public class WarehousingRestController {
 	WarehousingServiceImpl warehousingService;
 	
 	@RequestMapping(value="/warehousing", method=RequestMethod.GET)
-	public List<WarehousingVO> getWareList(Model model, WarehousingVO vo){
-		return warehousingService.getWareList(vo);
+	public List<WarehousingVO> getWarehousingList(Model model, WarehousingVO vo){
+		return warehousingService.getWarehousingList(vo);
 		
+	}
+	@RequestMapping(value="/released", method=RequestMethod.GET)
+	public List<WarehousingVO> getReleasedList(Model model, WarehousingVO vo){
+		return warehousingService.getReleasedList(vo);
+		
+	}
+	
+	@RequestMapping(value="/entered")
+	public List<WarehousingVO> getEnteredList(Model model, WarehousingVO vo){
+		return warehousingService.getEnteredList(vo);
 	}
 }

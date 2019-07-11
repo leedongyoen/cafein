@@ -27,17 +27,17 @@
 <body>
 <script type="text/javascript">
 //포스기 버튼
-
+var sId="SH001"; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
    $(document).ready(function() {
 	   $("#gridlist").jqGrid({
-           url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+           url: 'pos/'+sId,
            mtype: "GET",
-           datatype: "jsonp",
+           datatype: "json",
            colModel: [
-               { label: '메뉴명', name: 'OrderID', key: true, width: 75 },
-               { label: '수량', name: 'CustomerID', width: 150  },
-               { label: '금액', name: 'OrderDate', width: 150  }
+               { label: '메뉴명', name: 'mName', key: true, width: 75 },
+               { label: '수량', name: 'mNum', width: 150  },
+               { label: '금액', name: 'mPrice', width: 150  }
            ],
            viewrecords:true,
            caption:'주문목록', // 그리드 왼쪽 위에 캡션
@@ -45,7 +45,7 @@
            rownumWidth:40,//로우넘의 가로길이
            rowNum:5,// 그리드에 보여줄 데이터의 갯수,-1하면 무한으로 보여준단다..
            width:600,//그리드의 총 가로길이
-           rowList:[10,20,30],//몇개식 보여줄건지 선택가능하다, 배열형식이라 5,10,15,20,,,가능
+    //       rowList:[10,20,30],//몇개식 보여줄건지 선택가능하다, 배열형식이라 5,10,15,20,,,가능
            multiboxonly : true,
            multiselect : true,//체크박스 사라짐
            scrollrows : true, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
@@ -68,8 +68,8 @@ footerrow : true});
 
  
  //메뉴탭에서 매장메뉴 나오기
-var sId="SH001";
- function getStoreMenuList(sId){
+
+ $(document).ready(function getStoreMenuList(){
 		$.ajax({
 			url:'pos/'+sId,
 			type:'GET',
@@ -78,36 +78,41 @@ var sId="SH001";
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
-			success: function posMenuListResult(data) {
-				console.log(data);
-				$("#coffeetable tbody").empty();
-				$("#beveragetable tbody").empty();
-				$("#bakerytable tbody").empty();
-				$.each(data,function(idx,item){
-					// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
-					if(item.caNum == "CACO"){
-						$('<tr>').attr("data-toggle","modal")//.addClass("openmodal")
-						.append($('<td><button>').html(item.mName))
-						.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
-						.appendTo('#coffeetable tbody');
-					}
-					else if(item.caNum == "CADR"){
-						$('<tr>').attr("data-toggle","modal")
-						.append($('<td><button>').html(item.mName))
-						.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
-						.appendTo('#beveragetable tbody');
-					}else if(item.caNum == "CADE"){
-						$('<tr>').attr("data-toggle","modal")
-						.append($('<td><button>').html(item.mName))
-						.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
-						.appendTo('#bakerytable tbody');
-					}
-				});
+			success: posMenuListResult
+		});
+	});	
+	
+ function posMenuListResult(data) {
+		console.log(sId);
+		console.log(data);
+		$("#coffeetable tbody").empty();
+		$("#beveragetable tbody").empty();
+		$("#desserttable tbody").empty();
+		$.each(data,function(idx,item){
+			// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
+			if(item.caNum == "CACO"){
+				$('<tr>')
+				.append($('<br>'))
+				.append($('<input type=\'button\' id=\'coffee\'>').val(item.mName))
+				.appendTo('#coffeetable tbody');
+			}
+			else if(item.caNum == "CADR"){
+				$('<tr>')
+				.append($('<br>'))
+				.append($('<input type=\'button\' id=\'beverage\'>').val(item.mName))
+				.appendTo('#beveragetable tbody');
+			}else if(item.caNum == "CADE"){
+				$('<tr>')
+				.append($('<br>'))
+				.append($('<input type=\'button\' id=\'dessert\'>').val(item.mName))
+				.appendTo('#desserttable tbody');
 			}
 		});
-	}	
-	
-	
+	}
+ $("#tab-content input").on("click",function(){
+	 console.log(sId);
+ });
+ 
 
 </script>
 <br><br>
@@ -127,7 +132,7 @@ var sId="SH001";
       <a class="nav-link" data-toggle="tab" href="#beverage">음료</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#bakery">디저트</a>
+      <a class="nav-link" data-toggle="tab" href="#dessert">디저트</a>
     </li>
   </ul>
 
@@ -149,9 +154,9 @@ var sId="SH001";
 				</tbody>
 			</table>
    		</div>
-   		<div id="bakery" class="container tab-pane fade"><br>
-     		<table id="bakerytable" class="table">
-				<tbody id="bakerytable">
+   		<div id="dessert" class="container tab-pane fade"><br>
+     		<table id="desserttable" class="table">
+				<tbody id="desserttable">
 				
 				</tbody>
 			</table>
