@@ -588,6 +588,7 @@ function optionDelete(){
 									<option value="CACO">커피</option>
 									<option value="CADR">음료</option>
 									<option value="CADE">디저트</option>
+							
 									<option value="CAOP">옵션</option>
 							</select></td>
 						</tr>
