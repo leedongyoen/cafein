@@ -10,12 +10,10 @@
 
 <script>
 
-	var sId = 'SH002';
-	var sum, totalSum=0, addTotalSum=0;
+	var sId = 'SH001';
+	var sum, listSum=0, totalSum=0, addTotalSum=0;
 	var listnum;
-	
-	// 추가버튼 클릭시 데이터 저장하는 배열
-	var addDataList = new Array();
+	var addDataList;
 	
 	function getoperatingreserve(){
 		
@@ -27,13 +25,13 @@
 				alert('통신 실패');
 			},
 			success:function(data){
-				console.log(data);
+				//console.log(data);
 				
 				$('#operatingreservTable tbody').empty();
 				$.each(data,function(idx,item){		// idx : length 와 비슷한 느낌, item : data
 					sum = item.wareQty*item.warePrice;
 					totalSum += sum;
-					addTotalSum = totalSum;
+					
 					
 					if(item.stPayMethod == 'CARD') {
 						$('<tr>')
@@ -63,17 +61,56 @@
 							disabled:'disabled',
 							value:'삭제불가'
 						})));
-						listnum =idx+1;
 					}
 				});
+				
+				addDataList = sessionStorage.getItem("jsonVoList");
+				console.dir(addDataList)
+				// session에 값이 있는지 확인 있으면 값을 가지고 뿌려주고 없으면 새로운 배열 생성
+				if(addDataList == null) {
+					// 추가버튼 클릭시 데이터 저장하는 배열
+					addDataList = new Array();	
+				} else {
+					addDataList = JSON.parse(addDataList);
+					// 함수 생성해서 배열에 있는 값을 뿌려줘야함
+					console.log('addDataList : ' + addDataList);
+					getList();
+					for(i=0;i<addDataList.length;i++) {
+						listSum += addDataList[i].sum;
+					}
+					totalSum += listSum;
+				}
+				
 				$('<tr>')
 				.append($('<th>').html('총금액'))
 				.append($('<th>').html(addCommas(totalSum)+'원').attr('colspan','6').attr('id','totalSum').css('text-align','right'))
 				.appendTo('#operatingreservTable tfoot');
+				addTotalSum = totalSum;
 				totalSum=0;
+				listSum=0;
 				console.log("addTotalSum(daycal) : "+addTotalSum)
+
 			}
 		});
+	}
+	
+	// session에 값이 있을 면 화면에 뿌려주는 함수
+	function getList() {
+		for(i=0;i<addDataList.length;i++) {
+			console.log('addDataList.stName : ' + addDataList[i].stName);
+			$('<tr>')
+			.append($('<td>').html(addDataList[i].stName))
+			.append($('<td>').html(addDataList[i].wareQty))
+			.append($('<td>').html(addCommas(addDataList[i].warePrice)+'원'))
+			.append($('<td>').html(addCommas(addDataList[i].sum)+'원').attr('id','sum'))
+			.append($('<td>').html(addDataList[i].stPayMethod))
+			.append($('<td>').append($('<input>').attr({
+				type:'button',
+				id:'delCheck'+[i],
+				value:'삭제'
+			})))
+			.appendTo('#operatingreservTable tbody');
+		}
 	}
 	
 	// 영업 준비금 (재고 입고, 인건비 등) 페이지 호출
@@ -157,7 +194,7 @@
 					</tr>
 				</table>
 			</div>
-			<div class="col-7" id="content" style="border:1px dotted;height:700px;overflow:auto;">
+			<div class="col-7" id="content" style="border:1px dotted;height:680px;overflow:auto;">
 			</div><br><br>
 			<div class="col-4">
 				<button>마감정산</button>
