@@ -1,9 +1,11 @@
 package co.yedam.cafein.vo;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 public class WarehousingVO {
+
 	private String wareNum;
 	private Timestamp wareDate;
 	private int wareQty;
@@ -11,6 +13,12 @@ public class WarehousingVO {
 	private String stNum;
 	private String sId;
 	private String stPayMethod;
+	private String stName;
+	private int stLoss;
+	
+	private Date startDate;
+	private Date endDate;
+	
 	public String getWareNum() {
 		return wareNum;
 	}
@@ -47,17 +55,46 @@ public class WarehousingVO {
 	public void setsId(String sId) {
 		this.sId = sId;
 	}
+	
 	public String getStPayMethod() {
 		return stPayMethod;
 	}
 	public void setStPayMethod(String stPayMethod) {
 		this.stPayMethod = stPayMethod;
-
 	}
+	public int getStLoss() {
+		return stLoss;
+	}
+	public void setStLoss(int stLoss) {
+		this.stLoss = stLoss;
+	}
+	
+	
+	public String getStName() {
+		return stName;
+	}
+	public void setStName(String stName) {
+		this.stName = stName;
+	}
+	
+	
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+
 	@Override
 	public String toString() {
 		return "WarehousingVO [wareNum=" + wareNum + ", wareDate=" + wareDate + ", wareQty=" + wareQty + ", warePrice="
 				+ warePrice + ", stNum=" + stNum + ", sId=" + sId + ", stPayMethod=" + stPayMethod + "]";
 	}
-
 }

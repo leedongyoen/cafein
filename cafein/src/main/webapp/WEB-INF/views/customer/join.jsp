@@ -11,11 +11,11 @@
 <script type="text/javascript">
 	
 	var idCheck = 0;
-	var id = $('#c_id').val();
+	var id = $('#cId').val();
 	$(function(){
 		$("#idCheck").click(function() {
 			$.ajax({
-				url:"getcustomerjoin/"+$('#c_id').val(),
+				url:"getcustomerjoin/"+$('#cId').val(),
 				type : "POST",
 				datatype: "json",
 				data: {cId:id},
@@ -46,11 +46,11 @@
 				alert("비밀번호를 입력하세요.");
 				return form.cPw.focus();
 			}
-/* 			if (form.c_pw.value != form.c_pw_check.value) {
+ 			if (form.cPw.value != form.cPwcheck.value) {
 				alert("비밀번호가 서로 다릅니다. 다시 입력해주세요.");
-				form.c_pw_check.focus
+				form.cPwcheck.focus
 				return false();
-			} */
+			} 
 			if (form.cName.value == "") {
 				alert("이름을 입력하세요.");
 				return form.cName.focus();
@@ -64,9 +64,9 @@
 				return form.cAdd.focus();
 			}
 			if (form.dob.value == "") {
-				alert("생년월일을 입력하세요.");
-				return form.dob.focus();
-			}		
+			alert("생년월일을 입력하세요.");
+			return form.dob.focus();
+ 			}		
 			form.submit();
 		};
 		function post_check(){
@@ -121,9 +121,9 @@
 	          //      $("[name=addr1]").val(data.zonecode);
 	          //     $("[name=addr2]").val(fullRoadAddr);
 	                
-	                document.getElementById('c_add').value = data.zonecode; //5자리 새우편번호 사용
-	                document.getElementById('c_add2').value = fullRoadAddr;
-	                document.getElementById('c_add3').value = data.jibunAddress; 
+	                document.getElementById('cAdd').value = data.zonecode; //5자리 새우편번호 사용
+	                document.getElementById('cAdd2').value = fullRoadAddr;
+	                document.getElementById('cAdd3').value = data.jibunAddress; 
 	            }
 	         }).open();
 	     }
@@ -132,50 +132,50 @@
 </head>
 <body>
  <div class = "container" align="center">
-  <form name = "customerjoinForm" action ="customerjoin.do" method="post">
+  <form name = "customerjoinForm" action="customerjoin.do" method="post">
     <h3>회원가입</h3>
       <table class = "table table-hover">
         <tr>
           <th>ID</th>
           <td>
-          <input type = "text" name = "cId" id="c_id">
+          <input type = "text" name = "cId" id="cId">
           <button type = "button" class="btn btn-default" id="idCheck">중복확인</button>
           </td>
         </tr>
         <tr>
           <th>닉네임</th>
-          <td><input type = "text" name = "cNick"></td>
+          <td><input type = "text" name="cNick"></td>
         </tr>
         <tr>
           <th>비밀번호</th>
-          <td><input type = "password" name = "cPw">
+          <td><input type ="password" name ="cPw">
           <button type="button" class="btn btn-default" onclick="post_check()">비밀번호 체크</button>
           </td>
         </tr>
-<!--         <tr>
+    	<tr>
           <th>비밀번호 확인</th>
-          <td><input type = "password" id = "c_pw_check"></td>
-        </tr> -->
+          <td><input type = "password" id = "cPwcheck"></td>
+        </tr>
         <tr>
           <th>이름</th>
-          <td><input type = "text" name = "cName" id="c_name"></td>
+          <td><input type = "text" name="cName" id="cName"></td>
         </tr>
         <tr>
           <th>연락처</th>
-          <td><input type = "tel" name = "cTel" id="c_tel"></td>
+          <td><input type = "tel" name = "cTel" id="cTel"></td>
         </tr>
         <tr>
           <th>주소</th>
           <td>
-          <input type = "text" name="cAdd" id = "c_add" placeholder="우편번호">
+          <input type = "text" name="cAdd" id = "cAdd" placeholder="우편번호">
           <button type = "button" onclick="execPostCode()">우편번호 찾기</button><br>
-          <input type = "text" name = "cAdd2" id="c_add2" placeholder="주소">
-          <input type = "text" name = "cAdd3" id="c_add3" placeholder="상세주소">
+          <input type = "text" name = "cAdd2" id="cAdd2" placeholder="주소">
+          <input type = "text" name = "cAdd3" id="cAdd3" placeholder="상세주소">
           </td>
         </tr>
         <tr>
           <th>생년월일</th>
-          <td><input type = "date" name = "dob"></td>
+          <td><input type = "text" name="dob"></td>
         </tr>
       </table>
       <button type ="button" class="btn btn-default"

@@ -5,101 +5,128 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp" %>
-<title>Stock Statistics</title>
+<title>Stock Staticstics List</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 
 <h1 align="center">재고 통계</h1>
 <div class = "container">
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
+	$(function(){
+		warehousingList();
+	});
+	
+      google.charts.load('current', {packages:['corechart','table','bar']});
       google.charts.setOnLoadCallback(drawChart);
-
+      
+      var wareData;
+      
       function drawChart() {
+			$.ajax({
+				url:'warehousing',
+				type:'GET',
+				datatype: 'json',
+// 				data : JSON.stringify({ stName : stName, wareQty : wareQty, warePrice : warePrice, stLoss : stLoss}),
+				success: function(data){
+					var chartData = [];
+					chartData.push(['재고명','수량'])
+					for(i=0; i<data.length; i++){
+						var datas = [data[i].stName, data[i].wareQty];
+// 							data[i].warePrice, data[i].stLoss];
+						chartData.push(datas);
+						console.log(datas);
+					}
+					
 
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['원두',     41],
-          ['우유',      10],
-          ['두유',  4],
-          ['초코소스', 2],
-          ['카라멜소스',    2],
-          ['휘핑크림',    15],
-          ['레몬 원액',    2],
-          ['자몽 원액',    2],
-          ['딸기 소스',    3],
-          ['망고 소스',    3],
-          ['녹차파우더',    2],
-          ['홍차파우더',    2]
-        ]);
+					wareData = google.visualization.arrayToDataTable(chartData);	
+					var options = {
+						chartArea : {
+							width : '40%'
+						}
+					};
 
-        var options = {
-          title: ''
-        };
+					var table = new google.visualization.Table(document
+								.getElementById('test_dataview')) // table 만들 id 값
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+					table.draw(wareData, { 
+						 width: '30%', height: '30%'
+					});
 
-        chart.draw(data, options);
+					var chart = new google.visualization.PieChart(document
+								.getElementById('chart_div'));
+
+					chart.draw(wareData, options); // draw에 담길  메소드값와 옵션값을 넣어줌
+				}
+			});
+		};
+		
+		$(window).resize(function(){
+			drawChart();
+		});
+
+      
+
+  
+
+      //재고 입/출고 리스트 요청
+      function warehousingList(){
+    	  $.ajax({
+    		  url:'warehousing',
+    		  type:'GET',
+    		  dataType:'json',
+    		  error:function(status,msg){
+    			  alert(status+"메세지"+msg);
+    		  },
+    		  success:warehousingListResult
+    	  });
+    	}
+      
+      //입출고 리스트 뿌리기
+      function warehousingListResult(data){
+    	  $("tbody").empty();
+    	  $("tbody").empty();
+    	  $('<tr>')
+    			.append($('<th>').html('재고 명'))
+    			.append($('<th>').html('총 가격'))
+    			.append($('<th>').html('총 수량'))
+    			.append($('<th>').html('재고 손실'))
+    			.appendTo('thead');
+    	  $.each(data, function(idx,item){
+    		  $('<tr>')
+    		  	.append($('<td>').html(item.stName))
+    		  	.append($('<td>').html(item.warePrice))
+    		  	.append($('<td>').html(item.wareQty))
+    		  	.append($('<td>').html(item.stLoss))
+    		  	.appendTo('tbody');
+    	  })
       }
+      
     </script>
-     <div id="piechart" style="width: 900px; height: 500px; margin:auto;"></div>
-<input type="date">
-<input type="date">
-<input type="button" value="검색">
-<table class = "table table-hover">
-<tr>
-	<th>재고명</th><th>수량</th><th>단가 합계</th><th>재고 손실</th>
-</tr>
-<tr>
-	<td>원두</td><td>41</td><td>410,000</td><td>+2</td>
-</tr>
-<tr>
-	<td>우유</td><td>10</td><td>20,000</td><td>-2</td>
-</tr>
-<tr>
-	<td>두유</td><td>2</td><td>5,000</td><td>0</td>
-</tr>
-<tr>
-	<td>초코소스</td><td>1</td><td>10,000</td><td>0</td>
-</tr>
-<tr>
-	<td>카라멜소스</td><td>1</td><td>10,000</td><td>0</td>
-</tr>
-<tr>
-	<td>휘핑 크림</td><td>5</td><td>10,000</td><td>0</td>
-</tr>
-<tr>
-	<td>레몬원액</td><td>4</td><td>40,000</td><td>0</td>
-</tr>
-<tr>
-	<td>자몽원액</td><td>3</td><td>30,000</td><td>0</td>
-</tr>
-<tr>
-	<td>딸기소스</td><td>4</td><td>52,000</td><td>0</td>
-</tr>
-<tr>
-	<td>망고소스</td><td>4</td><td>52,000</td><td>0</td>
-</tr>
-<tr>
-	<td>프레즐</td><td>10</td><td>20,000</td><td>0</td>
-</tr>
-<tr>
-	<td>베이글</td><td>12</td><td>24,000</td><td>0</td>
-</tr>
-<tr>
-	<td>치즈케익</td><td>8</td><td>16,000</td><td>0</td>
-</tr>
-<tr>
-	<td>초코케익</td><td>5</td><td>10,000</td><td>0</td>
-</tr>
-<tr>
-	<td>녹차파우더</td><td>2</td><td>14,000</td><td>0</td>
-</tr>
-<tr>
-	<td>홍차파우더</td><td>2</td><td>14,000</td><td>0</td>
-</tr>
-</table>
+    <div id="chart_div" style="width: 900px; height: 500px;" ></div>
+	<div align="center" id="test_dataview"></div><br>
+	     <div class="btn-group">
+		<input type="button" value="입고 통계" class="btn btn-primary" id="btnEnterd">
+		<input type="button" value="출고 통계" class="btn btn-primary" id="btnReleased">
+		<input type="button" value="전체 통계" class="btn btn-primary" id="btnwarehousing">
+	</div>
+	<hr>
+	<div class="btn-group">
+		<input type="date" class="btn btn-primary" id="btnStartDate">
+		<input type="date" class="btn btn-primary" id="btnEndDate">
+		<input type="button" value="검색" class="btn btn-primary" id="btnSearch">
+	</div>
+	
+</div>
+	<br>
+	<hr>
+	
+<div class="container">
+	<table class="table text-center">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
 
 </div>
 </body>

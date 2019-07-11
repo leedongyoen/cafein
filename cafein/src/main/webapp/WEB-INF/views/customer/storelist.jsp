@@ -85,11 +85,7 @@
 				</div>
 				<form class="form-borizontal" id="menudetailForm" action="${pageContext.request.contextPath}/customerorder" method="POST">
 				<div class="modal-body">
-					
-						<input type="text" name="sId" style="display: none;" >
-						<input type="text" name="cAdd" style="display: none;" >
-						<input type="text" name="stDeliService" style="display: none;" >
-						<input type="text" name="qty" value="1" style="display: none;">
+						<input type="text" name="mNum" style="display: none;" >
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
@@ -108,16 +104,17 @@
 								</td>
 								
 							</tr>
-							<tr>
+							<tr id="menudetailhotice">
 								<th>HOT/ICE</th>
 								<td><input type="radio" name="hotice" value="hot" checked="checked">hot
 									<input type="radio" name="hotice" value="ice">ice</td>
 							</tr>
 							<tr>
 								<th>OPTION</th>
-								<td><input type="checkbox" class="checkoption" name="whipping" value="Y">휘핑크림 추가(+500)<br>
+								<td id="menudetailoption">
+									<!-- <input type="checkbox" class="checkoption" name="whipping" value="Y">휘핑크림 추가(+500)<br>
 									<input type="checkbox" class="checkoption" name="syrup" value="Y">시럽 추가(+500)<br>
-									<input type="checkbox" class="checkoption" name="shot" value="Y">샷 추가(+500)
+									<input type="checkbox" class="checkoption" name="shot" value="Y">샷 추가(+500) -->
 								</td>
 							</tr>
 							<tr>
@@ -444,12 +441,6 @@
 		});
 	}
 	
-/* 	<th>PRICE</th>
-	<td><input type="text" id="price" name="price" readonly="readonly">&nbsp;&nbsp;
-		<button type="button" onclick="add(1)">+</button> <span id="ordernum">1개 </span>
-		<button type="button" onclick="add(-1)">-</button>
-	</td> */
-		
 	function add(num) {
 		var price = $('#price').val();
 		var v_totalprice = $('#totalPrice').val();
@@ -471,63 +462,107 @@
 		$("#ordernum").html(no);
 		$('input:text[name="qty"]').val(no);
 	}
+	
+	
+	
+	// 상세 조회 후 해당 메뉴 옵션 조회
+	function getmenuoptionlist(sid, mnum){
+		$.ajax({
+			url:'getmenuoptionlist',
+			type:'GET',
+			dataType:'json',
+			data:{ sId: sid , mNum: mnum },
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ 
+				
+				$("#menudetailoption").empty();
+				if(data.length > 0){
+					$.each(data,function(idx,item){
+
+						$("<input>").attr({ 
+						     type: "checkbox",
+						     name: "stNum", 
+						     id: item.stNum,
+						     value: item.stNum,
+						   	})
+						   	.attr("class","checkoption")
+						   	.appendTo("#menudetailoption");			
+						$("<label>").attr("for",item.stNum)
+									.append(item.opName+"("+item.opPrice+"원 추가)")
+									.appendTo("#menudetailoption");
+						$("<input>").attr({
+							type:'hidden',
+							id : 'option'+item.stNum,
+							value: item.opPrice
+						}).appendTo("#menudetailoption");
+						$("<br>").appendTo("#menudetailoption");
+						
+					});
+				}else{
+					$("<p>").append('해당 메뉴에는 옵션이 없습니다.')
+							.appendTo("#menudetailoption");
+				}
+				
+			}
+		});
+	}
+	
+	// 선택한 메뉴 상세 조회
+	function getmenudetail(sid,mnum){
+		$.ajax({
+			url:'getmenudetail',
+			type:'GET',
+			dataType:'json',
+			data:{ sId: sid , mNum: mnum },
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ 
+	
+				$('#mName').val(data.mName);
+				$('#price').val(data.mPrice);
+				$('#totalPrice').val(data.mPrice);
+				$('#sName').val(storename);
+				$('#ordernum').text('1');
+				$('input:text[name="mNum"]').val(data.mNum);
+				getmenuoptionlist(data.sId,data.mNum);
+			}
+		});
+	}
 
 $(function(){
-/* 	//openmodal123
-	$("#openmodal123").on("click",function(){
-		$('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		console.log("in");
-		$('#menudetailModal').modal('show');
-	}); */
-	
-	
+
+
 	// 커피 메뉴 선택시 모달창
 	 $(document).on("click","#coffeetable tbody tr",function(event){
-		 $('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		$('#totalPrice').val($(this).children().eq(2).text());
-		$('#sName').val(storename);
-		$('input:text[name="sId"]').val(selectstoreid);
-		$('input:text[name="cAdd"]').val(standardsearchAddress);
-		$('input:text[name="stDeliService"]').val(storedeliservice);
+		 $("#menudetailhotice").show();
+		 
+		// 선택한 메뉴 상세조회 + 옵션
+		getmenudetail(selectstoreid,$(this).children().eq(3).val());
+		
 		console.log(selectstoreid);
 		 $('#menudetailModal').modal('show');
      });
 	
 	// 음료 메뉴 선택시 모달창
 	$(document).on("click","#beveragetable tbody tr",function(event){
-		 $('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		$('#totalPrice').val($(this).children().eq(2).text());
-		$('#sName').val(storename);
-		$('input:text[name="sId"]').val(selectstoreid);
-		$('input:text[name="cAdd"]').val(standardsearchAddress);
-		$('input:text[name="stDeliService"]').val(storedeliservice);
+		$("#menudetailhotice").hide();
+		
+		// 선택한 메뉴 상세조회 + 옵션
+		getmenudetail(selectstoreid,$(this).children().eq(3).val());
 		 $('#menudetailModal').modal('show');
     });
 	
 	// 빵 메뉴 선택시 모달창
 	$(document).on("click","#bakerytable tbody tr",function(event){
-		 $('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		$('#totalPrice').val($(this).children().eq(2).text());
-		$('#sName').val(storename);
-		$('input:text[name="sId"]').val(selectstoreid);
-		$('input:text[name="cAdd"]').val(standardsearchAddress);
-		$('input:text[name="stDeliService"]').val(storedeliservice);
+		$("#menudetailhotice").hide();
+		// 선택한 메뉴 상세조회 + 옵션
+		getmenudetail(selectstoreid,$(this).children().eq(3).val());
 		 $('#menudetailModal').modal('show');
     });
 
-/* 	
-	
-	// 한 행 클릭시
-	$("#coffeetable tbody tr").on("click",function(){
-		$('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		console.log("in");
-		$('#menudetailModal').modal('show');
-	}); */
 	
 	// 매장 선택시
 	$("#selectStore").on("click",function(){
@@ -556,18 +591,21 @@ $(function(){
 		});
 	});
 
- 	
-	 // 옵션 선택시
-  	$(".checkoption").change(function(){
+	 
+ 	// 옵션 선택시
+  	$(document).on("change",".checkoption",function(){
+  		
   		var v_totalprice = $('#totalPrice').val();
+  		var option_price = $('#option'+$(this).val()).val();
+  
   		if($(this).is(":checked")){
-				v_totalprice = Number(v_totalprice)+500;
+				v_totalprice = Number(v_totalprice)+Number(option_price);
 		}else{
-			v_totalprice = Number(v_totalprice)-500;
+			v_totalprice = Number(v_totalprice)-Number(option_price);
 		}
   		$('#totalPrice').val(v_totalprice);
   	});
-  
+ 	
 	// 나만의 메뉴 등록 시
 	$("#mymenuInsertbtn").on("click",function(){
 		

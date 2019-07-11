@@ -75,7 +75,6 @@ public class RecipeController {
 		@RequestMapping(value="/recipes/{sId}", method=RequestMethod.GET)
 		public List<StockVO> getStockCaNumList(
 									@PathVariable("sId") String sId
-									
 									,StockVO vo
 									,Model model){
 			vo.setsId(sId);
@@ -85,10 +84,37 @@ public class RecipeController {
 	
 		
 	//옵션 
+		@ResponseBody
+		@RequestMapping(value="/options"
+						,method=RequestMethod.POST
+					//	,produces="application/json"     
+					//	,consumes="application/json"
+						,headers = {"Content-type=application/json" }
+				)public Map<String, Boolean> insertOption(@RequestBody RecipeVO vo, Model model){
+			
+			vo.setsId("SH001");
+			//여기도 출력 안되는거보면 jsp쪽에서 수정
+			System.out.println(vo.getConsum());
+			
+			service.insertOption(vo);
+			Map<String, Boolean> map = new HashMap<String, Boolean>();
+			map.put("result", true);
+			return map;
+			
+		}	
 		
 		
 		
-		
+		@ResponseBody
+		@RequestMapping(value="/options/{recipeno}", method=RequestMethod.DELETE)
+		public Map deleteOption( @PathVariable("recipeno") String recipeno, RecipeVO vo, Model model) {
+			vo.setRecipeno(recipeno);
+			System.out.println("controller: 전"+recipeno);
+			service.deleteOption(vo);
+			Map result = new HashMap<String, Object>();
+			result.put("result", Boolean.TRUE);
+			return result;
+		}
 		
 		
 		

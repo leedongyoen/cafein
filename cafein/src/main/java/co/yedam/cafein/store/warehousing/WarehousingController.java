@@ -12,7 +12,7 @@ public class WarehousingController {
 	
 	@RequestMapping("/warehousing.do")
 	public String getWareList() {
-		return "store/warehousinglist";
+		return "store/stockstatisticslist";
 	}
 	
 }
