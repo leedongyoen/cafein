@@ -99,8 +99,8 @@ $(function(){
 							{
 								$('<tr>')
 								.append($('<td>').html(data[i].stName))
-								.append($('<td>').html(data[i].consum))
-								.append($('<td>').html(data[i].stAqty))
+								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
+								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].stAqty)))
 								.append($('<td>').html(data[i].stanUnit))
 								.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
 								.appendTo("#recipeTable tbody");
@@ -115,8 +115,8 @@ $(function(){
 							{
 								$('<tr>')
 								.append($('<td>').html(data[i].opName))
-								.append($('<td>').html(data[i].consum))
-								.append($('<td>').html(data[i].opPrice))
+								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
+								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].opPrice)))
 								.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
 								.appendTo("#optionTable tbody");
 							}
@@ -473,11 +473,11 @@ function optionDelete(){
 </head>
 <body>
 
-<div style="position: absolute; border: 1px solid orange; padding: 3px; width:100%">
-<div style="float: left; width: 50%; height:300px; border: 1px solid pink; padding: 3px;">
+<div style="position: absolute; padding: 3px; width:100%">
+<div style="float: left; width: 50%;   padding: 3px;">
 <!-- 메뉴 List-->
 			<div class = "container">
-				<h3>[메뉴 목록]</h3>
+				
 				<form action="#">
 					<table border="1" id="menuTable" class = "table table-hover" >
 						<thead>
@@ -518,7 +518,7 @@ function optionDelete(){
 				</form>
 			</div>
 </div>
-<div style="float: right; width: 50%; border: 1px solid blue; padding: 3px;">
+<div style="float: right; width: 50%;  padding: 3px;">
 		<!-- 등록폼 사진 추가 작업-->
 			<div style="border: 1px solid orange; padding: 3px; width: 100%;"
 				id="insertMenuFormTable">
@@ -562,7 +562,7 @@ function optionDelete(){
 				</form>
 			</div>
 <!-- 메뉴 상세조회&수정 -->
-			<div style="border: 1px solid orange; padding: 3px; width: 100%;" id="toggleTable">
+			<div style=" padding: 3px; width: 100%;" id="toggleTable">
 				<h3>[메뉴 상세 조회/수정]</h3>
 
 				<form id="menudetail">
@@ -619,7 +619,7 @@ function optionDelete(){
 				</form>
 			</div>
 <!-- 레시피 CRUD-->
-		<div style="float: left; border: 1px solid pink; padding: 3px; width: 100%;" >
+		<div style="float: left;  padding: 3px; width: 100%;" >
 		
 			<!-- 레시피 등록, 메뉴 하나 Select된 상태에서 레시피 레시피 조회가능, 등록 버튼 활성화 -->
 
@@ -687,7 +687,7 @@ function optionDelete(){
 
 		</div>
 		<!-- 메뉴 옵션 추가 CRUD -->
-		<div style="float: left; border: 1px solid blue; padding: 3px; width: 100%;" id="optionDiv">
+		<div style="float: left; border: 1px solid black; padding: 3px; width: 100%;" id="optionDiv">
 
 
 				<h4>옵션 추가</h4>
