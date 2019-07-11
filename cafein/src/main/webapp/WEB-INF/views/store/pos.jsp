@@ -4,36 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%-- <%@ include file="storehead.jsp" %> --%>
-
-<!-- <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.min.js" type="text/javascript"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="./jqgrid/js/jquery.jqGrid.min.js"></script>
-	Latest compiled and minified CSS
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
-
-<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.min.js" type="text/javascript"></script>
- <!-- The jQuery library is a prerequisite for all jqSuite products -->
-    <script type="text/ecmascript" src="./js/jquery.min.js"></script> 
-    <!-- We support more than 40 localizations -->
-    <script type="text/ecmascript" src="./jqgrid/js/i18n/grid.locale-en.js"></script>
-    <!-- This is the Javascript file of jqGrid -->   
-    <script type="text/ecmascript" src="./jqgrid/js/jquery.jqGrid.min.js"></script>
-    <!-- This is the localization file of the grid controlling messages, labels, etc.
-    <!-- A link to a jQuery UI ThemeRoller theme, more than 22 built-in and many more custom -->
-    <link rel="stylesheet" type="text/css" media="screen" href="./jqueryui/jquery-ui.css" />
-    <!-- The link to the CSS that the grid needs -->
-    <link rel="stylesheet" type="text/css" media="screen" href="./jqgrid/css/ui.jqgrid.css" />
-
-
-
-
-
-<!-- <link rel="stylesheet" type="text/css" href="./jqueryui/jquery-ui.js">
-
- <link rel="stylesheet" type="text/css" media="screen" href="./jqgrid/css/ui.jqgrid.css" /> 
-<link rel="stylesheet" type="text/css" href="./jqueryui/jquery-ui.css"> -->
-
+ <%@ include file="storehead.jsp" %> 
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>매장POS</title>
 <style type="text/css">
@@ -58,68 +29,95 @@
 //포스기 버튼
 
 //jqgrid의 orderlist
- var dataArray = [
-     {
-       "name": "Lorene Battle",
-       "phone": "(936) 574-3976"
-     },
-     {
-       "name": "Wendi Downs",
-       "phone": "(815) 510-3017"
-     },
-     {
-       "name": "Wendi Downs",
-       "phone": "(815) 510-3017"
-     },
-     {
-       "name": "Wendi Downs",
-       "phone": "(815) 510-3017"
-     },
-     {
-       "name": "Wendi Downs",
-       "phone": "(815) 510-3017"
-     },
-     {
-       "name": "Wendi Downs",
-       "phone": "(815) 510-3017"
-     },
-     {
-       "name": "Wendi Downs",
-       "phone": "(815) 510-3017"
-     }
-   ];
-
    $(document).ready(function() {
 	   $("#gridlist").jqGrid({
            url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
            mtype: "GET",
            datatype: "jsonp",
            colModel: [
-               { label: 'OrderID', name: 'OrderID', key: true, width: 75 },
-               { label: 'Customer ID', name: 'CustomerID', width: 150 },
-               { label: 'Order Date', name: 'OrderDate', width: 150 },
-               { label: 'Freight', name: 'Freight', width: 150 },
-               { label:'Ship Name', name: 'ShipName', width: 150 }
+               { label: '메뉴명', name: 'OrderID', key: true, width: 75 },
+               { label: '수량', name: 'CustomerID', width: 150  },
+               { label: '금액', name: 'OrderDate', width: 150  }
            ],
-           viewrecords: true,
-           height: 250,
-           rowNum: 101,
-           pager: "#jqGridPager"
+           viewrecords:true,
+           caption:'주문목록', // 그리드 왼쪽 위에 캡션
+           rownumbers:false,//왼쪽에 index 가 생김 1부터 시작
+           rownumWidth:40,//로우넘의 가로길이
+           rowNum:5,// 그리드에 보여줄 데이터의 갯수,-1하면 무한으로 보여준단다..
+           width:600,//그리드의 총 가로길이
+           rowList:[10,20,30],//몇개식 보여줄건지 선택가능하다, 배열형식이라 5,10,15,20,,,가능
+           multiboxonly : true,
+           multiselect : true,//체크박스 사라짐
+           scrollrows : true, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
+  		   pager: "#pager",
+           gridview : true
        });
    });
 
+/*  $("#firstTable").jqGrid("setCell",rowid,"status","normal"); // 셀에 지정한 컬럼에 지정한 값 집어넣을수있음
+var buffdata = $('#testGrid').jqGrid('getDataIDs'); // 테이블에 있는 모든 데이터를 수집한다.
+$('#testGrid').jqGrid('addRowData',로우넘,localdata[i]); // 테이블에 데이터를 넣는다.
+$('#testGrid').jqGrid('getGridParam','selarrrow') // 체크한줄 불러옴 배열로 가져옴
+$("#testGrid").jqGrid('editRow', 로우넘,true,'clientArray'); // 동적으로 선택한애의 셀을 수정가능하게 변경
+$("#testGrid").jqGrid('setRowData', 로우넘, {id:'changed', name:'changed', memo:'changed'}, {color:'red'}) // 선택한 로우의 데이터를 다 바꿀수있다
+$("#testGrid").jqGrid('delRowData', rowids[i]); // 로우 삭제
+$("#jourTable").getDataIDs(); // 모든 로우 ids 가져옴
+var updateList = $("#schoolGrid").getChangedCells('all'); //<--셀에값이 변한 줄 불러옴
+footerrow : true});
+ $('#debtorTable').jqGrid('footerData', 'set', {accountName:'합계', amount:debTotal});  //footer 데이터  */
 
-
-
+ 
+ //메뉴탭에서 매장메뉴 나오기
+var sId="SH001";
+ function getStoreMenuList(sId){
+		$.ajax({
+			url:'pos/'+sId,
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success: function posMenuListResult(data) {
+				console.log(data);
+				$("#coffeetable tbody").empty();
+				$("#beveragetable tbody").empty();
+				$("#bakerytable tbody").empty();
+				$.each(data,function(idx,item){
+					// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
+					if(item.caNum == "CACO"){
+						$('<tr>').attr("data-toggle","modal")//.addClass("openmodal")
+						.append($('<td><button>').html(item.mName))
+						.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
+						.appendTo('#coffeetable tbody');
+					}
+					else if(item.caNum == "CADR"){
+						$('<tr>').attr("data-toggle","modal")
+						.append($('<td><button>').html(item.mName))
+						.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
+						.appendTo('#beveragetable tbody');
+					}else if(item.caNum == "CADE"){
+						$('<tr>').attr("data-toggle","modal")
+						.append($('<td><button>').html(item.mName))
+						.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
+						.appendTo('#bakerytable tbody');
+					}
+				});
+			}
+		});
+	}	
+	
+	
 
 </script>
 <br><br>
 <br><br>
 <div class ="container">
-  <div class="left">
-  <table id="gridlist"><tr><td></td></tr></table> 
-	<div id="pager"></div> 
-  </div>
+<div class="left">
+    <table id="gridlist"></table>
+    <div id="pager"></div>
+</div>
+<!-- 메뉴 선택 창 -->
   <div class="content">
 	<ul id="topclick" class="nav nav-tabs">
     <li class="nav-item">
@@ -129,7 +127,7 @@
       <a class="nav-link" data-toggle="tab" href="#beverage">음료</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#bakery">베이커리</a>
+      <a class="nav-link" data-toggle="tab" href="#bakery">디저트</a>
     </li>
   </ul>
 
@@ -138,7 +136,7 @@
 		<div id="coffee" class="container tab-pane active"><br>
 			<div class="table-responsive">
 			<table id="coffeetable" class="table">
-				<tbody id="searchTable">
+				<tbody id="coffeetable">
 				
 			</tbody>
 			</table>
@@ -146,14 +144,14 @@
   		</div>
    		<div id="beverage" class="container tab-pane fade"><br>
     		<table id="beveragetable" class="table">
-				<tbody id="searchTable">
+				<tbody id="beveragetable">
 				
 				</tbody>
 			</table>
    		</div>
    		<div id="bakery" class="container tab-pane fade"><br>
      		<table id="bakerytable" class="table">
-				<tbody id="searchTable">
+				<tbody id="bakerytable">
 				
 				</tbody>
 			</table>
@@ -172,7 +170,6 @@
 	
 	
 	</div>
-	<div style="text-align:right"> <button>주문 추가</button></div>
 	<div style="text-align:right"> 총 가격 4600원</div>
 			<div style="text-align:right">
 			<button>회원검색</button>

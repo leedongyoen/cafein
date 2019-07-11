@@ -4,15 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Store Closing Page</title>
+
 <%@ include file="storehead.jsp" %>
-<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<title>Store Closing Page</title>
+
 <script>
 
-	var sId = 'SH001';
-	var sum, totalSum=0;
+	var sId = 'SH002';
+	var sum, totalSum=0, addTotalSum=0;
 	var listnum;
+	
+	// 추가버튼 클릭시 데이터 저장하는 배열
+	var addDataList = new Array();
 	
 	function getoperatingreserve(){
 		
@@ -30,34 +33,45 @@
 				$.each(data,function(idx,item){		// idx : length 와 비슷한 느낌, item : data
 					sum = item.wareQty*item.warePrice;
 					totalSum += sum;
+					addTotalSum = totalSum;
 					
 					if(item.stPayMethod == 'CARD') {
 						$('<tr>')
-						.append($('<td>').html(idx+1))
 						.append($('<td>').html(item.stName))
-						.append($('<td>').html(item.wareQty))
-						.append($('<td>').html(item.warePrice))
-						.append($('<td>').html(sum))
+						.append($('<td>').html(addCommas(item.wareQty)))
+						.append($('<td>').html(addCommas(item.warePrice)+'원'))
+						.append($('<td>').html(addCommas(sum)+'원'))
 						.append($('<td>').html('카드'))
-						.appendTo('#operatingreservTable tbody');
-						listnum =idx+1;
+						.appendTo('#operatingreservTable tbody')
+						.append($('<td>').append($('<input>').attr({
+							type:'button',
+							id:'nonDelCheck',
+							disabled:'disabled',
+							value:'삭제불가'
+						})));
 					} else if(item.stPayMethod == 'CASH') {
 						$('<tr>')
-						.append($('<td>').html(idx+1))
 						.append($('<td>').html(item.stName))
-						.append($('<td>').html(item.wareQty))
-						.append($('<td>').html(item.warePrice))
-						.append($('<td>').html(sum))
+						.append($('<td>').html(addCommas(item.wareQty)))
+						.append($('<td>').html(addCommas(item.warePrice)+'원'))
+						.append($('<td>').html(addCommas(sum)+'원'))
 						.append($('<td>').html('현금'))
-						.appendTo('#operatingreservTable tbody');
+						.appendTo('#operatingreservTable tbody')
+						.append($('<td>').append($('<input>').attr({
+							type:'button',
+							id:'nonDelCheck',
+							disabled:'disabled',
+							value:'삭제불가'
+						})));
 						listnum =idx+1;
 					}
 				});
 				$('<tr>')
 				.append($('<th>').html('총금액'))
-				.append($('<th>').html(totalSum).attr('colspan','5').attr('id','totalSum').css('text-align','right'))
+				.append($('<th>').html(addCommas(totalSum)+'원').attr('colspan','6').attr('id','totalSum').css('text-align','right'))
 				.appendTo('#operatingreservTable tfoot');
 				totalSum=0;
+				console.log("addTotalSum(daycal) : "+addTotalSum)
 			}
 		});
 	}
@@ -75,13 +89,6 @@
 			}
 		});
 	}
-	
-	/* var i = 0;
-	var stName = $('#stName').val();
-	var wareQty = $('#wareQty').val();
-	var warePrice = $('#warePrice').val();
-	var stPayMethod = $('#stPayMethod').val(); */		// selected도 val인지 확인
-	
 	
 	// 현금 시재 정산
 	function cashadvance() {
@@ -110,6 +117,11 @@
 			}
 		});
 	}
+	
+	// 숫자 3단위마다 콤마 생성
+	function addCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 
 </script>
 </head>
@@ -131,7 +143,7 @@
 					<tr onclick="operatingreserve()">
 						<td>지출</td>
 						<td>영업 준비금</td>
-						<td>수정 전</td>
+						<td id = "operatingreserveSave">수정 전</td>
 					</tr>
 					<tr onclick="cashadvance()">
 						<td>정산</td>
@@ -149,7 +161,7 @@
 			</div><br><br>
 			<div class="col-4">
 				<button>마감정산</button>
-				<button>엑셀저장</button>
+				<button>PDF저장</button>
 				<button>종료</button>
 			</div>
 			<div class="col-7">

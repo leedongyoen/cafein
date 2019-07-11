@@ -6,14 +6,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" media="screen" href="./css/jqgrid/jquery-ui.theme.css" />
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+<script type="text/javascript" src="./js/jquery.jqGrid.min.js"></script>
+<script type="text/ecmascript" src="./js/i18n/grid.locale-en.js"></script>
 <script src="./js/json.min.js"></script>   
 <script>
+
+$(function(){
+	var id = "<%= (String)session.getAttribute("sid") %>";
+	console.log("store id = " + id);
+	
+	if(id == "null") {
+		$("#loginbtn").css('display', 'inline');
+		$("#logoutbtn").css('display', 'none');
+	}
+	if(id != "null") {
+		$("#loginbtn").css('display', 'none');
+		$("#logoutbtn").css('display', 'inline');
+	}
+});
+
 function startTime() {
 	var dayko = ['일','월','화','수','목','금','토'];
     var today = new Date();
@@ -21,7 +39,7 @@ function startTime() {
     var m = today.getMinutes();
     var s = today.getSeconds();
 	var yy = 1900 + today.getYear();
-    var mm = today.getMonth();
+    var mm = 1 + today.getMonth();
     var dd = today.getDate();
     var day = today.getDay();
     m = checkTime(m);
@@ -106,10 +124,10 @@ body {
         <ul class="navbar-nav mr-auto">
         		<li class="nav-link"  id="clock" style="color:orange; font-size:16px;"><a></a></li>
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/storelogin.do">Login</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/storelogin.do" id="loginbtn">Login</a>
                 </li>
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/storelogin.do">Logout</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/storelogout.do" id="logoutbtn">Logout</a>
                 </li>
 
         </ul>

@@ -137,8 +137,88 @@ $(function(){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){
-				console.log(data);
-			}
+				//console.log(data);
+				
+				
+				
+				
+				$("#reciSelect").empty();
+				$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#reciSelect');
+
+				$('<option value="{\'foo\':\'bar\',\'one\':\'two\'}">' + '2개 value' + '</option>').appendTo('#reciSelect');
+				
+				//=====================================================================================select 한후 stNum, caNum 둘다 넘겨야하는데.......
+				
+				
+				for(var i = 0;i<data.length;i++){
+
+					
+					if(data[i].caNum=='CACP' || data[i].caNum=='CACM')
+					{
+						console.log(data[i].caNum);
+						//data[i].caNum
+						//옵션에 caNum이 CACM과 CACP를 추가
+						/* var option = $("<option>"+data[i].caNum+"</option>");
+		                $('#opSelct').append(option);
+ */
+						
+						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
+						
+ 
+ 
+ 							
+					}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM')){
+						console.log(data[i].caNum);
+						//data[i].caNum
+						//옵션에 caNum이 CACM과 CAJP를 추가
+						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#reciSelect');
+						
+					}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
+						console.log(data[i].caNum);
+						//data[i].caNum
+						//옵션에 caNum이 CACM과 CADP를 추가
+						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#reciSelect');
+						
+						}
+					}
+				
+				
+				$("#opSelct").empty();
+				for(var i = 0;i<data.length;i++){
+					//console.log('hello: '+data[i].caNum);
+					if(mCate=='CACO' && (data[i].caNum=='CACP' || data[i].caNum=='CACM'))
+					{
+						console.log(data[i].caNum);
+						//data[i].caNum
+						//옵션에 caNum이 CACM과 CACP를 추가
+						/* var option = $("<option>"+data[i].caNum+"</option>");
+		                $('#opSelct').append(option);
+ */
+						
+ 					$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#opSelct');
+					
+ 
+ 							
+					}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM')){
+						console.log(data[i].caNum);
+						//data[i].caNum
+						//옵션에 caNum이 CACM과 CAJP를 추가
+						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#opSelct');
+						
+					}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
+						console.log(data[i].caNum);
+						//data[i].caNum
+						//옵션에 caNum이 CACM과 CADP를 추가
+						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#opSelct');
+						
+						}
+					}
+				}
+				
+				
+				
+				
+			
 			
 		});
 		
@@ -156,11 +236,11 @@ $(function(){
 		
 		});
 		
-	$("#btnInsert").on('click',function(){
+		$("#btnInsert").on('click',function(){
 		
-		alert(JSON.stringify($("#insertmenudetail").serializeObject()));
-		menuInsert();
-	});
+			alert(JSON.stringify($("#insertmenudetail").serializeObject()));
+			menuInsert();
+		});
 
 	
 	
@@ -187,6 +267,17 @@ $(function(){
 		
 		 });
 	
+	
+	
+	$(document).on("change","#reciSelect",function(){
+		
+		console.log($(this).val());
+		console.log($(this));
+		
+		$("#recicaNum").val("");
+		
+		
+	});
 	 
 });
 
@@ -509,14 +600,17 @@ function recipeDelete(){
 				</table>
 
 				<h4>재료 추가</h4>
-				<select name="stNum">
+				<select id="reciSelect" name="stNum">
+					
+					
 				<%-- 
 					<c:forEach items="${recistock}" var="stock">
 						<option value="${stock.stNum}">${stock.stName} & ${stock.caNum }</option>
 					</c:forEach>
 				 --%>
 				</select> <input type="text" value="0" id="consum" name="consum">
-
+				
+				<input type="hidden" id="recicaNum" name="caNum">
 
 				
 			<input type="button" value=" + " onclick="recipeInsert()">
@@ -546,22 +640,40 @@ function recipeDelete(){
 		
 		<!-- 메뉴 옵션 추가 CRUD -->
 		<div style="float: left; border: 1px solid blue; margin: 3px" id="optionDiv">
-		
-		
-		<h4>옵션 추가</h4>
-					<select id="" name="">
-							<option value="">재고</option>
-							<option value="">테이블에서</option>
-							<option value="">현재 메뉴번호에 맞는</option>
-							<option value="">옵션리스트를</option>
-							<option value="">가져온다</option>
-					</select>
-					
-				<input type="text" value="휘핑 추가">
-				<input type="text" value="0.3">
-				<button> + </button><button> - </button>
-		
-		<table border="1"  id="optionTable" class = "table table-hover">
+
+
+				<h4>옵션 추가</h4>
+
+				<table border="1">
+					<tr>
+						<th>재고 이름</th>
+						<td><select id="opSelct" name="">
+						</select></td>
+					</tr>
+					<tr>
+						<th>옵션 이름</th>
+						<td><input type="text" value="휘핑 추가"></td>
+					</tr>
+					<tr>
+						<th>소모량</th>
+						<td><input type="text" value="0.3"></td>
+					</tr>
+					<tr>
+						<th>옵션 가격</th>
+						<td><input type="text" value="500">원</td>
+					</tr>
+					<tr>
+						<td><button>+</button></td>
+						<td><button>-</button></td>
+					</tr>
+
+				</table>
+
+
+
+
+
+				<table border="1"  id="optionTable" class = "table table-hover">
 					<thead>
 					<tr>
 						<th>옵션 이름</th>
