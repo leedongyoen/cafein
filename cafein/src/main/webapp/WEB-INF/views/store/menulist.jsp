@@ -646,10 +646,15 @@ function optionDelete(){
 								<td><select id="reciSelect">
 
 								</select></td>
+								<th>Hot/Ice</th>
+								<td><input type="radio" id=salestate name="caNum">
+								<input type="radio" id=salestate></td>
 							</tr>
 							<tr>
 								<th>소모량</th>
 								<td><input type="text" value="0" id="consum" name="consum"></td>
+								<th>Hot/Ice</th>
+								<td><input type="radio"><input type="radio"></td>
 							</tr>
 							<tr>
 								<td><input type="button" value=" + "
