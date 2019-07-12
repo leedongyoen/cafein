@@ -17,13 +17,19 @@ public class RecipeDAO {
 	private SqlSessionTemplate mybatis;
 	
 	public List<ViewStockCheckVO> getRecipeList(ViewStockCheckVO vo){
-		System.out.println("-> mybatis getRecipeList 을 이용함");
+		System.out.println("-> mybatis getRecipeList 을 이용함stock 정보");
 		return mybatis.selectList("RecipeDAO.getRecipeList", vo);
 	}
 	
 	public List<StockVO> getRecipeStockList(StockVO vo){
 		return mybatis.selectList("RecipeDAO.getRecipeStockList",vo);
 	}
+	
+	public List<RecipeVO> getRecipeDetailList(RecipeVO vo){
+		System.out.println("");
+		return mybatis.selectList("RecipeDAO.getReciDetailList",vo);
+	}
+	
 	
 	public int insertRecipe(RecipeVO vo) {
 		System.out.println("mybatis insertRecipe");
@@ -34,6 +40,12 @@ public class RecipeDAO {
 		System.out.println("mybatis insertRecipe");
 		return mybatis.delete("RecipeDAO.deleteRecipe",vo);
 	}
+	
+	public int updateAqty(StockVO vo) {
+		System.out.println("mybatis updateAqty");
+		return mybatis.update("RecipeDAO.stockAqtyUpdate",vo);
+	}	
+	
 	
 	public int insertOption(RecipeVO vo) {
 		System.out.println("mybatis insertOption");
