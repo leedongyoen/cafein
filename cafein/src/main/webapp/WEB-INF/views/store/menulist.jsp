@@ -92,6 +92,8 @@ $(function(){
 				}
 				else
 					{
+					console.log(data);
+					
 					
 						$("#recipeTable tbody").empty();
 						for(var i = 0;i<data.length;i++){
@@ -106,23 +108,11 @@ $(function(){
 								.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
 								.appendTo("#recipeTable tbody");
 							}
-							console.log(data);
+							
 							
 						}
 						
-						$("#optionTable tbody").empty();
-						for(var i = 0;i<data.length;i++){
-							if(data[i].caNum=='CAOP')
-							{
-								$('<tr>')
-								.append($('<td>').html(data[i].opName))
-								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
-								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].opPrice)))
-								.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
-								.appendTo("#optionTable tbody");
-							}
-							
-						}
+						
 						
 							
 					}
@@ -130,8 +120,54 @@ $(function(){
 		});
 
 		
+		
+		
+		 $.ajax({
+			url:'options/'+storeid+'/'+mNum,
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){
+					console.log(data);
+					if(data.length==0){
+						$("#optionTable tbody").empty();
+						console.log("noting");
+					}
+					else{
+						
+						
+						$("#optionTable tbody").empty();
+						for(var i = 0;i<data.length;i++){
+							console.log("dad: "+data[i].caNum);
+							if(data[i].caNum=='CAOP'||data[i].caNum=='CAIC'||data[i].caNum=='CAHT')
+							{
+								
+								$('<tr>')
+								.append($('<td>').html(data[i].opName))
+								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
+								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].opPrice)))
+								.append($('<td style="visibility:hidden;">').html(data[i].recipeno))
+								.appendTo("#optionTable tbody");
+							}
+							
+						}
+						
+					}
+					
+										
+					
+
+			}
+		}); 
+	
+		
+		
+		
 		$.ajax({
-			url:'recipes/'+storeid,
+			url:'recipes/'+'SH001',
 			type:'GET',
 			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
@@ -186,7 +222,7 @@ $(function(){
 				
 				for(var i = 0;i<data.length;i++){
 					//console.log('hello: '+data[i].caNum);
-					if(mCate=='CACO' && (data[i].caNum=='CACP' || data[i].caNum=='CACM'))
+					if(mCate=='CACO' && (data[i].caNum=='CACP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT'))
 					{
 						//console.log(data[i].caNum);
 						//data[i].caNum
@@ -199,13 +235,13 @@ $(function(){
 						
  
  							
-					}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM')){
+					}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
 						console.log(data[i].caNum);
 						//data[i].caNum
 						//옵션에 caNum이 CACM과 CAJP를 추가
 						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
 						
-					}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
+					}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
 						console.log(data[i].caNum);
 						//data[i].caNum
 						//옵션에 caNum이 CACM과 CADP를 추가
@@ -215,12 +251,17 @@ $(function(){
 					}
 				}
 				
-				
-				
-				
-			
 			
 		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
@@ -264,6 +305,7 @@ $(function(){
 		
 		var tr = $(this);
 		var td = tr.children();
+		
 		
 		selRecinum = td.eq(3).text();
 		console.log(selRecinum);
@@ -493,7 +535,7 @@ function optionDelete(){
 <body>
 
 <div style="position: absolute; padding: 3px; width:100%">
-<div style="float: left; width: 50%;   padding: 3px;">
+<div style="overflow:scroll; height:800px;float: left; width: 50%;   padding: 3px;">
 <!-- 메뉴 List-->
 			<div class = "container">
 				
@@ -537,7 +579,7 @@ function optionDelete(){
 				</form>
 			</div>
 </div>
-<div style="float: right; width: 50%;  padding: 3px;">
+<div style="overflow:scroll; height:800px;float: right; width: 50%;  padding: 3px;">
 		<!-- 등록폼 사진 추가 작업-->
 			<div style="border: 1px solid orange; padding: 3px; width: 100%;"
 				id="insertMenuFormTable">
