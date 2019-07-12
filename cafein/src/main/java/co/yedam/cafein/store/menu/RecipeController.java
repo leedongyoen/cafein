@@ -83,9 +83,9 @@ public class RecipeController {
 														, Model model){
 		
 		vo.setsId("SH001");
-		System.out.println("-====================================="+stAqty);
-		vo2.setStAqty(Double.parseDouble(stAqty));
-		service2.updateStockAqty();
+		vo2.setStAqty(Double.parseDouble(stAqty)/1000);
+		vo2.setStNum(vo.getStNum());
+		service2.updateStockAqty(vo2);
 		service.insertRecipe(vo);
 		Map<String, Boolean> map = new HashMap<String, Boolean>();
 		map.put("result", true);
@@ -144,6 +144,20 @@ public class RecipeController {
 			return result;
 		}
 		
+		
+		
+		//ice hot 이 stnum이  null이라 급하게 가져옴
+		@RequestMapping(value="/options/{sId}/{mNum}", method=RequestMethod.GET)
+		public List<RecipeVO> getRecipeIceHotList(
+									@PathVariable("sId") String sId
+									, @PathVariable("mNum") String mNum
+									,RecipeVO vo
+									,Model model){
+			vo.setsId(sId);
+			vo.setmNum(mNum);
+			return service.getRecipeDetailList(vo);
+			
+		}
 		
 		
 	

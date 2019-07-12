@@ -4,7 +4,7 @@ public class RecipeVO {
 
 	private String recipeno;
 	private String sId;
-	private int consum;
+	private double consum;
 	private String stNum;
 	private String mNum;
 	private String caNum;
@@ -12,6 +12,12 @@ public class RecipeVO {
 	private String opPrice;
 	
 	
+	public double getConsum() {
+		return consum;
+	}
+	public void setConsum(double consum) {
+		this.consum = consum;
+	}
 	public String getOpPrice() {
 		return opPrice;
 	}
@@ -42,12 +48,7 @@ public class RecipeVO {
 	public void setsId(String sId) {
 		this.sId = sId;
 	}
-	public int getConsum() {
-		return consum;
-	}
-	public void setConsum(int consum) {
-		this.consum = consum;
-	}
+	
 	public String getStNum() {
 		return stNum;
 	}
