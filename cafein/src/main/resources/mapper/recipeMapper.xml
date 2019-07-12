@@ -89,6 +89,7 @@
 				,S_ID 
 				,ST_NAME
 				,CA_NUM 
+				 ,ST_AQTY*1000 "stAqty"
 			from stock
 			where s_id=#{sId}
 	</select>
