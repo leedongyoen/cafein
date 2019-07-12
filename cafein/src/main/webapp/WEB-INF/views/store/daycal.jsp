@@ -10,6 +10,21 @@
 
 <script>
 
+
+	//영업 준비금 페이지 호출
+	$(function startOperatingReserve() {
+		$.ajax({
+			url:"operatingreserve.do",		// request 보낼 서버경로
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				getoperatingreserve();		// json 형식으로 변환된 데이터를 가지고 온다
+				$('#content').html(data);
+			}
+		});
+	});
+
 	var sId = 'SH001';			// 로그인 한 매장 아이디(세션값 받아와야함)
 	var sum, listSum=0, totalSum=0, addTotalSum=0,i;	// 합계(row별), session의 합계(row별 총 합계), db의 총 합계, operatingreserve.jsp에서 추가하는 항목의 합계
 	var addDataList;			// sessionStorage 가 담길 배열
@@ -130,6 +145,7 @@
 		}
 	}
 	
+	
 	// 영업 준비금 (재고 입고, 인건비 등) 페이지 호출
 	function operatingreserve() {
 		$.ajax({
@@ -164,12 +180,14 @@
 					usedMile += item.mileage;
 					
 				});
-				cashSum += defaultcash;
-				// 총 현금 매출액 = 현금 매출액 - 기본금 - 마일리지 - 영업준비금 ..?
-				totalcashsales = cashSum - defaultcash - 
+				// 총 현금 매출액 = 현금 매출액 - 마일리지 - 영업준비금 ..?
+				totalcashsales = cashSum - usedMile - operatingreserveSum;
+				console.log('cashSum : '+cashSum+', usedMile : '+usedMile+', operatingreserveSum : '+operatingreserveSum)
 				
 				$('#cashSales').text(addCommas(cashSum)+'원');
 				$('#usedMileage').text('P'+addCommas(usedMile));
+				$('#totalCashSales').text(addCommas(totalcashsales)+'원');
+				
 				
 				cashSum=0;
 				usedMile=0;
@@ -259,7 +277,7 @@
 				<button>종료</button>
 			</div>
 			<div class="col-7">
-				<table>
+				<!-- <table>
 					<tr>
 						<th><button>1</button></th><th><button>2</button></th><th><button>3</button></th>
 						<th><button>4</button></th><th><button>5</button></th><th><button>6</button></th>
@@ -270,7 +288,7 @@
 						<th><button>0</button></th><th><button>00</button></th><th><button>000</button></th>
 						<th><button>C</button></th>
 					</tr>
-				</table>
+				</table> -->
 			</div><br>
 		</div>
 	</div>
