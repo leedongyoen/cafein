@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ReserveDAO">
-	<!-- 총 적립금 쿼리 -->
-	<select id="getTotalReserve" resultType="reserve">
-		SELECT SUM(O.MILEAGE)+R.MILEAGE
-			FROM 
-				RESERVE R JOIN ORDERS O
-			ON R.C_ID = O.C_ID
-			WHERE 
-				O.C_ID = #{cId}
-			GROUP BY R.MILEAGE
-	</select>
-	<!-- 사용된 적립금 쿼리  -->
-	<select id="getUseReserve" resultType="reserve">
-		SELECT NVL(SUM(RE.MILEAGE),0)- NVL(OR1.MILEAGE,0) MILEAGE
-			FROM RESERVE RE ,
-				(SELECT S_ID, 
-						C_ID, 
-						SUM(MILEAGE) MILEAGE
-				FROM ORDERS
-				WHERE 
-					C_ID= #{cId}
-					AND 
-					S_ID= #{sId}
-				GROUP BY S_ID, 
-						 C_ID) OR1
-			WHERE RE.C_ID = #{cId}
-		GROUP BY RE.S_ID,
-				 RE.C_ID,
-				 OR1.MILEAGE
-	</select>
+ 	<!-- 총 적립금 쿼리 --> 
+<!-- 	<select id="getTotalReserve" resultType="reserve"> -->
+<!-- 		SELECT NVL(SUM(O.MILEAGE)+R.MILEAGE,0) TOTALRE -->
+<!-- 			FROM  -->
+<!-- 				RESERVE R JOIN ORDERS O -->
+<!-- 			ON R.C_ID = O.C_ID -->
+<!-- 			WHERE  -->
+<!-- 				O.C_ID = #{cId} -->
+<!-- 			GROUP BY R.MILEAGE -->
+<!-- 	</select> -->
+ 	<!-- 사용된 적립금 쿼리  --> 
+<!-- 	<select id="getUseReserve" resultType="reserve"> -->
+<!-- 		SELECT NVL(SUM(RE.MILEAGE)-OR1.MILEAGE , 0) USERE -->
+<!-- 			FROM RESERVE RE , -->
+<!-- 				(SELECT S_ID,  -->
+<!-- 						C_ID,  -->
+<!-- 						SUM(MILEAGE) MILEAGE -->
+<!-- 				FROM ORDERS -->
+<!-- 				WHERE  -->
+<!-- 					C_ID= #{cId} -->
+<!-- 					AND  -->
+<!-- 					S_ID= #{sId} -->
+<!-- 				GROUP BY S_ID,  -->
+<!-- 						 C_ID) OR1 -->
+<!-- 			WHERE RE.C_ID = #{cId} -->
+<!-- 		GROUP BY RE.S_ID, -->
+<!-- 				 RE.C_ID, -->
+<!-- 				 OR1.MILEAGE -->
+<!-- 	</select> -->
 	<!-- 마일리지 리스트 쿼리 -->
 	<select id="getListReserve" resultType="reserve">
 		SELECT TO_CHAR(O_DATE, 'YYYY-MM-DD') DATES,
@@ -41,5 +41,22 @@
 				JOIN STORE S
 				ON R.S_ID = S.S_ID
 			WHERE O.C_ID = #{cId}
+	</select>
+	
+	<select id="getTotalReserve" resultType="reserve">
+		SELECT NVL(SUM(RE.MILEAGE)+OR1.MILEAGE ,0) TOTALRE,
+			   NVL(SUM(RE.MILEAGE)-OR1.MILEAGE,0) USERE
+		FROM RESERVE RE ,
+				(SELECT S_ID,
+						C_ID, 
+						SUM(MILEAGE) MILEAGE
+				 FROM ORDERS
+				 WHERE C_ID= #{cId}
+					   AND 
+					   S_ID= #{sId}
+				 GROUP BY S_ID,
+				 		  C_ID) OR1
+		WHERE RE.C_ID= #{cId}
+		GROUP BY OR1.MILEAGE
 	</select>
 </mapper>

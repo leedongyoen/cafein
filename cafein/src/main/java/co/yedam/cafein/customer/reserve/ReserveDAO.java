@@ -15,13 +15,13 @@ public class ReserveDAO {
 		private SqlSessionTemplate mybatis;
 		
 		//총 적립금 
-		public ReserveVO getTotalReserve(ReserveVO vo) {
-			return mybatis.selectOne("ReserveDAO.getTotalReserve", vo);
+		public List<ReserveVO> getTotalReserve(ReserveVO vo) {
+			return mybatis.selectList("ReserveDAO.getTotalReserve", vo);
 		}
-		//사용된 적립금
-		public ReserveVO getUseReserve(ReserveVO vo) {
-			return mybatis.selectOne("ReserveDAO.getUseReserve", vo);
-		}
+//		//사용된 적립금
+//		public ReserveVO getUseReserve(ReserveVO vo) {
+//			return mybatis.selectOne("ReserveDAO.getUseReserve", vo);
+//		}
 		//사용 매장별 마일리지 리스트 
 		public List<ReserveVO> getListReserve(ReserveVO vo) {
 			return mybatis.selectList("ReserveDAO.getListReserve", vo);

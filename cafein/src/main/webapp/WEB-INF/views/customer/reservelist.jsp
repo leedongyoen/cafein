@@ -9,12 +9,44 @@
 <title>매장별 적립금</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
-	
-	
-	$(function(){
-		getListReserve();
-	});
-	
+// 	//사용된 적립금 
+// 	function getUseReserve() {
+// 		$.ajax({
+// 			url : "getUseReserve.do",
+// 			data : {cId : "ju123", sId : "SH001"},
+// 			type :"GET",
+// 			datatype : "json",
+// 			success : function(data) {
+// 				console.log(data)
+// 				$("reservetable1 tbody").empty();
+// 				$.each(data, function(idx, item){
+// 					$('<tr>')
+// 					.append($('<td>').html(item.usere))
+// 					.appendTo('#reservetable1 tbody');
+// 				});
+// 			}
+// 		})
+// 	};
+
+	//총적립금 리스트
+	function getTotalReserve() {
+		$.ajax({
+			url : "getTotalReserve.do",
+			data : {cId : "ju123", sId : "SH001"},
+			type : "GET",
+			datatype : "json",
+			success : function(data) {
+				console.log(data);
+				$("#reservetable1 tbody").empty();
+				$.each(data,function(idx,item){
+					$('<tr>')
+					.append($('<td>').html(item.totalre))
+					.append($('<td>').html(item.usere))
+					.appendTo('#reservetable1 tbody');
+				});
+			}
+		})
+	};
 	//마일리지 리스트 
 	function getListReserve() {
 		$.ajax({
@@ -26,8 +58,7 @@
 				$("#reservetable tbody").empty();
 				console.log(data);
 				$.each(data,function(idx,item){
-				orderdate = new Date(item.dates);
-				
+				orderdate = new Date(item.dates);			
 					$('<tr>')
 					.append($('<td>').html(orderdate.toLocaleDateString()))
 					.append($('<td>').html(item.sName))
@@ -39,7 +70,14 @@
 		})
 	};
 	
-	
+	$(function(){
+		getListReserve();
+		
+		getTotalReserve();
+		
+	//	getUseReserve();
+		
+	});
 </script>
 </head>
 <body>
@@ -47,17 +85,21 @@
 	<hr>
 	 <p align="center"><b>회원님의 적립금은</b></p>
 	<div class = "container" align="center" >
-	 <table class = "table" >
+	 <table id="reservetable1" class = "table" >
+			<thead>
 			<tr>
-				<th>총 적립금</th>
-				<td>1.500 point</td>
+				<th>총 적립금</th>	
 				<th>사용된 적립금</th>
-				<td>500 point</td>
 			</tr>
-			
+			</thead>
+			<tbody>
+			</tbody>
+<!-- 				<th>사용된 적립금</th> -->
+<!-- 				<td>500 point</td> -->
+<!-- 			</tr> -->			
 		</table>
 		</div>
-	<hr><br>
+	<br>
 	<div class = "container" align="center">
 		<table id ="reservetable" class = "table">
 			<thead>
