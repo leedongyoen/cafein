@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
+import co.yedam.cafein.vo.OrdersVO;
 @Service
 public class StoreCloseServiceImpl implements StoreCloseService {
 	
@@ -15,6 +16,11 @@ public class StoreCloseServiceImpl implements StoreCloseService {
 	@Override
 	public List<ViewWarehousingVO> getWarehousing(ViewWarehousingVO vo) {
 		return dao.getWarehousing(vo);
+	}
+
+	@Override
+	public List<OrdersVO> getCashAdvance(OrdersVO vo) {
+		return dao.getCashAdvance(vo);
 	}
 
 }

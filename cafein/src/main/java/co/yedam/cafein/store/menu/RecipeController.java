@@ -21,7 +21,8 @@ import co.yedam.cafein.vo.StockVO;
 @RestController
 public class RecipeController {
 	@Autowired
-	RecipeSerciveImpl service;
+	RecipeSerciveImpl service,service2;
+	
 	
 	//조건있는 전체조회
 	@RequestMapping(value="/recipes/{sId}/{mNum}", method=RequestMethod.GET)
@@ -51,16 +52,40 @@ public class RecipeController {
 	
 	
 	
+	/* 0712 recipe update위해 잠시 막음
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping(value="/recipes" ,method=RequestMethod.POST //
+	 * ,produces="application/json" // ,consumes="application/json" ,headers =
+	 * {"Content-type=application/json" } )public Map<String, Boolean>
+	 * insertRecipe(@RequestBody RecipeVO vo, Model model){
+	 * 
+	 * vo.setsId("SH001");
+	 * 
+	 * service.insertRecipe(vo); Map<String, Boolean> map = new HashMap<String,
+	 * Boolean>(); map.put("result", true); return map;
+	 * 
+	 * 
+	 * }
+	 */
+	
+	
+	
 	@ResponseBody
-	@RequestMapping(value="/recipes"
+	@RequestMapping(value="/recipes/{stAqty}"
 					,method=RequestMethod.POST
 				//	,produces="application/json"     
 				//	,consumes="application/json"
 					,headers = {"Content-type=application/json" }
-			)public Map<String, Boolean> insertRecipe(@RequestBody RecipeVO vo, Model model){
+			)public Map<String, Boolean> insertRecipe(@RequestBody RecipeVO vo
+														,StockVO vo2
+														,@PathVariable("stAqty") String stAqty
+														, Model model){
 		
 		vo.setsId("SH001");
-		
+		System.out.println("-====================================="+stAqty);
+		vo2.setStAqty(Double.parseDouble(stAqty));
+		service2.updateStockAqty();
 		service.insertRecipe(vo);
 		Map<String, Boolean> map = new HashMap<String, Boolean>();
 		map.put("result", true);
@@ -68,6 +93,9 @@ public class RecipeController {
 		
 		
 	}	
+	
+
+	
 	
 	
 	
