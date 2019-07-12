@@ -13,7 +13,6 @@
 
 <script>
 
-
 var selRecinum = "";
 var aQty=0.0;
 //c태그 받기 연습
