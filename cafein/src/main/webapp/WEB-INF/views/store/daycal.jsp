@@ -10,9 +10,24 @@
 
 <script>
 
+
+	//영업 준비금 페이지 호출
+	$(function startOperatingReserve() {
+		$.ajax({
+			url:"operatingreserve.do",		// request 보낼 서버경로
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				getoperatingreserve();		// json 형식으로 변환된 데이터를 가지고 온다
+				$('#content').html(data);
+			}
+		});
+	});
+
 	var sId = 'SH001';			// 로그인 한 매장 아이디(세션값 받아와야함)
 	var sum, listSum=0, totalSum=0, addTotalSum=0,i;	// 합계(row별), session의 합계(row별 총 합계), db의 총 합계, operatingreserve.jsp에서 추가하는 항목의 합계
-	var addDataList;			// sessionStorage 가 담길 배열
+	var addDataList, cashDataList;			// sessionStorage 가 담길 배열 x 2
 	var operatingreserveSum=0, orSum=0;		// 영업 준비금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
 	
 	function getoperatingreserve(){
@@ -130,6 +145,7 @@
 		}
 	}
 	
+	
 	// 영업 준비금 (재고 입고, 인건비 등) 페이지 호출
 	function operatingreserve() {
 		$.ajax({
@@ -164,17 +180,63 @@
 					usedMile += item.mileage;
 					
 				});
-				cashSum += defaultcash;
-				// 총 현금 매출액 = 현금 매출액 - 기본금 - 마일리지 - 영업준비금 ..?
-				totalcashsales = cashSum - defaultcash - 
+				// 총 현금 매출액 = 현금 매출액 - 마일리지 - 영업준비금 ..?
+				totalcashsales = cashSum - usedMile - operatingreserveSum;
+				console.log('cashSum : '+cashSum+', usedMile : '+usedMile+', operatingreserveSum : '+operatingreserveSum)
 				
 				$('#cashSales').text(addCommas(cashSum)+'원');
 				$('#usedMileage').text('P'+addCommas(usedMile));
+				$('#totalCashSales').text(addCommas(totalcashsales)+'원');
+				
+				
+				cashDataList = sessionStorage.getItem("jsonCashList");
+				console.log('cashDataList : '+cashDataList)
+				console.dir(cashDataList)
+				// session에 값이 있는지 확인 있으면 값을 가지고 뿌려주고 없으면 새로운 배열 생성
+				if(cashDataList == null) {
+					// 추가버튼 클릭시 데이터 저장하는 배열
+					cashDataList = new Array();	
+				} else {
+					cashDataList = JSON.parse(cashDataList);
+					// 함수 생성해서 배열에 있는 값을 뿌려줘야함
+					console.log('cashDataList : ' + cashDataList);
+					getCashList();	
+					
+				}
+				
 				
 				cashSum=0;
 				usedMile=0;
 			}
 		});
+	}
+	
+	// session에 값이 있을 면 화면에 뿌려주는 함수
+	function getCashList() {
+		
+		var len = cashDataList.length-1;	// 입력한 현금 배열의 길이 -1
+		
+		// 배열의 마지막 값을 value에 담아준다
+		$('#cash50000').val(cashDataList[len].c50000);
+		$('#totalcash50000').val(addCommas($('#cash50000').val()*50000));
+		$('#cash10000').val(cashDataList[len].c10000);
+		$('#totalcash10000').val(addCommas($('#cash10000').val()*10000));
+		$('#cash5000').val(cashDataList[len].c5000);
+		$('#totalcash5000').val(addCommas($('#cash5000').val()*5000));
+		$('#cash1000').val(cashDataList[len].c1000);
+		$('#totalcash1000').val(addCommas($('#cash1000').val()*1000));
+		$('#cash500').val(cashDataList[len].c500);
+		$('#totalcash500').val(addCommas($('#cash500').val()*500));
+		$('#cash100').val(cashDataList[len].c100);
+		$('#totalcash100').val(addCommas($('#cash100').val()*100));
+		
+		
+		if($('#cashadvanceSave').text() == '수정 완료') {
+			$('#cashInsert').attr('disabled',true);
+			$('#cashBack').attr('disabled',true);
+			$('.cash').attr('readonly',true);
+			$('.totalcash').attr('readonly',true);
+		}
 	}
 	
 	
@@ -242,7 +304,7 @@
 					<tr onclick="cashadvance()">
 						<td>정산</td>
 						<td>시재 정산</td>
-						<td>수정 전</td>
+						<td id = "cashadvanceSave">수정 전</td>
 					</tr>
 					<tr onclick="stocktruthlist()">
 						<td>재고</td>
@@ -259,7 +321,7 @@
 				<button>종료</button>
 			</div>
 			<div class="col-7">
-				<table>
+				<!-- <table>
 					<tr>
 						<th><button>1</button></th><th><button>2</button></th><th><button>3</button></th>
 						<th><button>4</button></th><th><button>5</button></th><th><button>6</button></th>
@@ -270,7 +332,7 @@
 						<th><button>0</button></th><th><button>00</button></th><th><button>000</button></th>
 						<th><button>C</button></th>
 					</tr>
-				</table>
+				</table> -->
 			</div><br>
 		</div>
 	</div>

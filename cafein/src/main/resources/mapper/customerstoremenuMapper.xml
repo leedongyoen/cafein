@@ -82,9 +82,10 @@
 				, OP_NAME
 				, ST_NUM
 				,OP_PRICE
+				, CA_NUM
 		FROM RECIPE
 		WHERE M_NUM=#{mNum} 
-				AND CA_NUM = 'CAOP' 
+				AND CA_NUM IN ('CAOP','CAIC','CAHT') 
 				AND S_ID= #{sId}
 	</select>
 	

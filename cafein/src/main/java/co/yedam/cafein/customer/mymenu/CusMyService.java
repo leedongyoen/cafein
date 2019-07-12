@@ -19,4 +19,6 @@ public interface CusMyService {
 	 String getcunum();
 	 
 	 public List<MyMenuVO> getrecipelist(MyMenuVO vo);
+	 
+	 public int insertmymenu(MyMenuVO vo);
 }
