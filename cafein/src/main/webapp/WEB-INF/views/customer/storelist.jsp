@@ -106,12 +106,11 @@
 								</td>
 								
 							</tr>
-							<tr id="menudetailhotice">
+							<tr id="hoticetr">
 								<th>HOT/ICE</th>
-								<td><input type="radio" name="hotice" value="CAHT" checked="checked">hot
-									<input type="radio" name="hotice" value="CAIC">ice</td>
+								<td id="menudetailhotice"></td>
 							</tr>
-							<tr>
+							<tr id="optiontr">
 								<th>OPTION</th>
 								<td id="menudetailoption">
 									<!-- <input type="checkbox" class="checkoption" name="whipping" value="Y">휘핑크림 추가(+500)<br>
@@ -472,6 +471,7 @@
 	
 	// 상세 조회 후 해당 메뉴 옵션 조회
 	function getmenuoptionlist(sid, mnum){
+		var hoticelist = [];
 		$.ajax({
 			url:'getmenuoptionlist',
 			type:'GET',
@@ -481,35 +481,57 @@
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ 
-				
+				console.log(data);
 				$("#menudetailoption").empty();
+				$("#menudetailhotice").empty();
 				if(data.length > 0){
 					$.each(data,function(idx,item){
-
-						$("<input>").attr({ 
-						     type: "checkbox",
-						     name: "cuoptionlist", 
-						     id: item.stNum,
-						     value: item.stNum,
-						   	})
-						   	.attr("class","checkoption")
-						   	.appendTo("#menudetailoption");			
-						$("<label>").attr("for",item.stNum)
-									.append(item.opName+"("+item.opPrice+"원 추가)")
-									.appendTo("#menudetailoption");
-						$("<input>").attr({
-							type:'hidden',
-							id : 'option'+item.stNum,
-							value: item.opPrice
-						}).appendTo("#menudetailoption");
-						$("<br>").appendTo("#menudetailoption");
 						
+						if( item.caNum == "CAOP" ){
+							$("<input>").attr({ 
+							     type: "checkbox",
+							     name: "cuoptionlist", 
+							     id: item.stNum,
+							     value: item.stNum,
+							   	})
+							   	.attr("class","checkoption")
+							   	.appendTo("#menudetailoption");			
+							$("<label>").attr("for",item.stNum)
+										.append(item.opName+"("+item.opPrice+"원 추가)")
+										.appendTo("#menudetailoption");
+							$("<input>").attr({
+								type:'hidden',
+								id : 'option'+item.stNum,
+								value: item.opPrice
+							}).appendTo("#menudetailoption");
+							$("<br>").appendTo("#menudetailoption");
+						}else{
+							
+							console.log(item.caNum);
+							$("<input>").attr({ 
+							     type: "radio",
+							     name: "hotice_option", 
+							     id: item.caNum,
+							     value: item.caNum,
+							     checked: true
+							   	})
+							   	.appendTo("#menudetailhotice");			
+							$("<label>").attr("for",item.caNum)
+										.append(item.opName)
+										.appendTo("#menudetailhotice");
+							/* $("<input>").attr({
+								type:'hidden',
+								id : 'option'+item.caNum,
+								value: item.opPrice
+							}).appendTo("#menudetailhotice"); */
+						}
 					});
 					
 				}else{
-					$("<p>").append('해당 메뉴에는 옵션이 없습니다.')
-							.appendTo("#menudetailoption");
+					$("#hoticetr").hide();
+					$("#optiontr").hide();
 				}
+				
 				
 			}
 		});
@@ -551,8 +573,9 @@ $(function(){
 	
 	// 커피 메뉴 선택시 모달창
 	 $(document).on("click","#coffeetable tbody tr",function(event){
-		 $("#menudetailhotice").show();
-		 
+		$("#menudetailhotice").show();
+		$("#hoticetr").show();
+		$("#optiontr").show();
 		// 선택한 메뉴 상세조회 + 옵션
 		getmenudetail(selectstoreid,$(this).children().eq(3).val());
 		
@@ -562,8 +585,9 @@ $(function(){
 	
 	// 음료 메뉴 선택시 모달창
 	$(document).on("click","#beveragetable tbody tr",function(event){
-		$("#menudetailhotice").hide();
-		
+		$("#menudetailhotice").show();
+		$("#hoticetr").show();
+		$("#optiontr").show();
 		// 선택한 메뉴 상세조회 + 옵션
 		getmenudetail(selectstoreid,$(this).children().eq(3).val());
 		 $('#menudetailModal').modal('show');
@@ -571,7 +595,9 @@ $(function(){
 	
 	// 빵 메뉴 선택시 모달창
 	$(document).on("click","#bakerytable tbody tr",function(event){
-		$("#menudetailhotice").hide();
+		$("#menudetailhotice").show();
+		$("#hoticetr").show();
+		$("#optiontr").show();
 		// 선택한 메뉴 상세조회 + 옵션
 		getmenudetail(selectstoreid,$(this).children().eq(3).val());
 		 $('#menudetailModal').modal('show');

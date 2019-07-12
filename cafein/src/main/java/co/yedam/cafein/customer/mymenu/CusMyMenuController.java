@@ -67,49 +67,62 @@ public class CusMyMenuController {
 				}
 				
 				
+				// 커스텀 번호 가져오기
 				String cu_num = cusmyService.getcunum();
+				
+				// 최종적으로 레시피 테이블에 넣을 데이터 리스트
 				List<MyMenuVO> mymenulist = new ArrayList<MyMenuVO>();
 				
-		/*
-		 * vo.setsId("SH001"); vo.setmNum("ME002");
-		 */
+				// 옵션이 존재여부 체크
 				Boolean optioncheck=false;
+				
+				// 먼저, 해당 메뉴의 레시피 모두를 가져온다.
 				mymenulist = cusmyService.getrecipelist(vo);
 				
+				// 레시피 리스트를 돌면서 옵션과 HOT/ICE에 대한 정보와 비교하여 삭제
 				for(int n=0; n<mymenulist.size(); n++) {
 					mymenu = mymenulist.get(n);
 					mymenu.setCuNum(cu_num);
 					mymenu.setcId(cus_id);
-					System.out.println("==============mymenu "+mymenu);
-					if(mymenu.getCaNum().equals("CAOP") && ck_cunumlist) {
-						System.out.println("==============CAOP "+mymenu.getCaNum());
-				
+					
+					// 레시피 카테고리번호가 옵션이고 옵션 리스트에 정보가 있을 경우
+					if( mymenu.getCaNum().equals("CAOP")  && ck_cunumlist) {
 						
+						// 옵션 리스트 크기만큼 돌림
 						for(int i=0; i<cuslist.length; i++) { 
-							  if( mymenu.getStNum().equals(cuslist[i])){
-								  System.out.println("=============="+mymenu.getCaNum());
+							
+							//만약 동일한 옵션이 존재한다면 옵션체크변수를 true로  
+							if( mymenu.getStNum().equals(cuslist[i])){
 								  optioncheck = true; 
-								  
-							  }
-							  
+							  }							  
 						}
+						// 만약에 옵션이 하나도 없는 상태라면
+						// 옵션과 관련된 정보들은 지운다.
 						if(!optioncheck) { 
 							mymenulist.remove(n);
+							// 리스트 속 정보가 삭제되서 없어지므로 for문 n의 수를 1줄인다.
 							n-=1;
-							System.out.println("=============="+optioncheck);
 						}
+						// 다시 검사를 위해 false로 초기화
 						optioncheck = false; 
 						
+					//  옵션 리스트가 null일 경우엔 지움.
 					}else if(mymenu.getCaNum().equals("CAOP") && ck_cunumlist == false) {
-						System.out.println("======= false option" + mymenu);
+						mymenulist.remove(n);
+						n-=1;
+					}else if( mymenu.getCaNum().equals("CAIC") && mymenu.getCaNum().equals(vo.getHotice_option()) == false) {
+						// ICE 카테고리가 존재하지만 고객이 선택하지 않았으므로 삭제
+						mymenulist.remove(n);
+						n-=1;
+					}else if( mymenu.getCaNum().equals("CAHT") && mymenu.getCaNum().equals(vo.getHotice_option()) == false) {
+						// HOT 카테고리가 존재하지만 고객이 선택하지 않았으므로 삭제
 						mymenulist.remove(n);
 						n-=1;
 					}
 					
 					
 				}
-				System.out.println("============================"+mymenulist);
-						
+				
 				
 				
 				return mymenulist;

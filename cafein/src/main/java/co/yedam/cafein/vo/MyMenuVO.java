@@ -11,6 +11,7 @@ public class MyMenuVO {
 	private String[] cuNumList; // 옵션 저장.
 	private String caNum;
 	private String recipeno;
+	private String hotice_option;
 	
 	// java에서 필요한 부분
 	private String sId;
@@ -18,6 +19,13 @@ public class MyMenuVO {
 	private String stNum;
 	
 	
+	
+	public String getHotice_option() {
+		return hotice_option;
+	}
+	public void setHotice_option(String hotice_option) {
+		this.hotice_option = hotice_option;
+	}
 	public String getStNum() {
 		return stNum;
 	}
@@ -81,10 +89,9 @@ public class MyMenuVO {
 	@Override
 	public String toString() {
 		return "MyMenuVO [myNum=" + myNum + ", cId=" + cId + ", mNum=" + mNum + ", cuNum=" + cuNum + ", cuNumList="
-				+ Arrays.toString(cuNumList) + ", caNum=" + caNum + ", recipeno=" + recipeno + ", sId=" + sId
-				+ ", hotice=" + hotice + ", stNum=" + stNum + "]";
+				+ Arrays.toString(cuNumList) + ", caNum=" + caNum + ", recipeno=" + recipeno + ", hotice_option="
+				+ hotice_option + ", sId=" + sId + ", hotice=" + hotice + ", stNum=" + stNum + "]";
 	}
-	
-	
 
+	
 }

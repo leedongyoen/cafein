@@ -53,6 +53,28 @@ DELETE MY_MENU
       			<!-- AND CA_NUM = #{caNum} -->
 	</select>
 	
+	<insert id="insertmymenu" parameterType="mymenu">
+		<selectKey keyProperty="myNum" resultType="int" order="BEFORE">
+			SELECT MAX(MY_NUM)+1
+			FROM MY_MENU
+		</selectKey>
+		
+			INSERT INTO MY_MENU ( MY_NUM
+								, C_ID
+								, M_NUM
+								, CU_NUM
+								, RECIPENO
+								, CA_NUM
+								)
+			VALUES( #{myNum}
+					, #{cId}
+					, #{mNum}
+					, #{cuNum}
+					, #{recipeno}
+					, #{caNum}
+			)
+	
+	</insert>
 
 
 </mapper>
