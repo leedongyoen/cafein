@@ -21,6 +21,10 @@
   height:600px;
   border: 1px solid;
 }
+.selected{
+            background-color: skyblue;
+        }
+
 
 </style>
 </head>
@@ -31,9 +35,6 @@ var sId="SH001"; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
    $(document).ready(function() {
 	   $("#gridlist").jqGrid({
-           url: 'pos/'+sId,
-           mtype: "GET",
-           datatype: "json",
            colModel: [
                { label: '메뉴명', name: 'mName', key: true, width: 75 },
                { label: '수량', name: 'mNum', width: 150  },
@@ -93,27 +94,62 @@ footerrow : true});
 			if(item.caNum == "CACO" && item.opName == null){
 				$('<tr>')
 				.append($('<br>'))
-				.append($('<input type=\'button\'class=\'mbutton\' id=\'coffee\'>').val(item.mName))
+				.append($('<input type=\'button\'class=\'mbutton\'  id=\'coffee\'>').val(item.mName))
+				.append($('<input type=\'hidden\' id=\'hidden_mNum\'>').val(item.mNum))
 				.appendTo('#coffeetable tbody');
 			}
 			else if(item.caNum == "CADR" && item.opName == null){
 				$('<tr>')
 				.append($('<br>'))
-				.append($('<input type=\'button\' class=\'mbutton2\' id=\'beverage\'>').val(item.mName))
+				.append($('<input type=\'button\' class=\'mbutton\' id=\'beverage\'>').val(item.mName))
+				.append($('<input type=\'hidden\' id=\'hidden_menuId2\'>').val(item.mNum))
 				.appendTo('#beveragetable tbody');
 			}else if(item.caNum == "CADE" && item.opName == null){
 				$('<tr>')
 				.append($('<br>'))
-				.append($('<input type=\'button\' class=\'mbutton3\' id=\'dessert\'>').val(item.mName))
+				.append($('<input type=\'button\' class=\'mbutton\' id=\'dessert\'>').val(item.mName))
+				.append($('<input type=\'hidden\' id=\'hidden_menuId3\'>').val(item.opName))
 				.appendTo('#desserttable tbody');
 			}
 		});
+	//	$(".ok").hide();
+	//	 $(".ok").show();
 	}
- $(document).on("click",".mbutton", function(data){
-	 console.log(sId);
-	 
- });
-
+ //버튼 클릭시 옵션메뉴 출력
+ $(document).on("click",".mbutton", function(){
+	console.log($(this));
+     $(".mbutton").removeClass("selected");
+	$(this).addClass("selected");
+	     //클릭된 부분을 상단에 정의된 CCS인 selected클래스로 적용
+    // $(".mbutton").addClass("selected");
+	     var mNum = $(this).next().val();
+     
+	 $.ajax({
+			url:'pos/',
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			data: {sId: sId, mNum:mNum},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success: getOptionList
+		});
+	});
+ 
+ //커피 옵션 나타내기
+ 	function getOptionList(data){
+ 		
+ 		var mNum = $('#hidden_mNum').val();
+ 		$("#coffeetableoption tbody").empty();
+	    $.each(data, function(idx,item){
+	    	 $('<tr>')
+	          .append($('<br>'))
+	          .append($('<input type=\'button\'class=\'opbutton\' id=\'cooption\'>').val(item.opName))
+	          .appendTo('#coffeetableoption tbody');
+	    });
+	    
+ 	}
 </script>
 <br><br>
 <br><br>
@@ -123,7 +159,7 @@ footerrow : true});
     <div id="pager"></div>
 </div>
 <!-- 메뉴 선택 창 -->
-  <div class="content">
+  <div id="btn_group" class="content">
 	<ul id="topclick" class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link active" data-toggle="tab" href="#coffee">커피</a>
@@ -141,32 +177,40 @@ footerrow : true});
 		<div id="coffee" class="container tab-pane active"><br>
 			<div class="table-responsive">
 			<table id="coffeetable" class="table">
-				<tbody id="coffeetable">
+			<thead></thead>
+				<tbody>
 			</tbody>
-			<tbody id="coffeetableoption">
-			</tbody>
+			
+			</table>
+			<table id="coffeetableoption" class="table">
+			<thead></thead>
+				<tbody>
+				</tbody>
+				
 			</table>
 			</div>
   		</div>
    		<div id="beverage" class="container tab-pane fade"><br>
     		<table id="beveragetable" class="table">
-				<tbody id="beveragetable">
-				
+    		<thead></thead>
+				<tbody>
 				</tbody>
 			</table>
    		</div>
    		<div id="dessert" class="container tab-pane fade"><br>
      		<table id="desserttable" class="table">
-				<tbody id="desserttable">
-				
+     		<thead></thead>
+				<tbody>
 				</tbody>
 			</table>
    		</div>
  	</div>
+ 	<input style="float: right;" type='button'class="ok" id="ok" value="확인">
   </div>
 
 
 <hr>
+<p></p>
 	<div style="text-align:left">
 	<button>전체취소</button>
 	<button>선택취소</button>
