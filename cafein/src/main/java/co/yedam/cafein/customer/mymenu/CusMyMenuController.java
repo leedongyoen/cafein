@@ -51,12 +51,13 @@ public class CusMyMenuController {
 			//getcunum
 			@ResponseBody
 			@RequestMapping(value="/insertmymenu",  method=RequestMethod.PUT, consumes="application/json")
-			public List<MyMenuVO> insertmymenu(@RequestBody MyMenuVO vo) {
+			public Boolean insertmymenu(@RequestBody MyMenuVO vo) {
 				System.out.println("============================"+vo);
 				MyMenuVO mymenu;
 				String cuslist[] = null;
 				String cus_id = vo.getcId();
 				Boolean ck_cunumlist = true;
+				Boolean insertck=true;
 				
 				if(vo.getCuNumList() == null) {
 					ck_cunumlist =false;
@@ -122,10 +123,16 @@ public class CusMyMenuController {
 					
 					
 				}
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+mymenulist);
+				for(int i=0; i<mymenulist.size();i++) {
+					MyMenuVO invo = mymenulist.get(i);
+					int n = cusmyService.insertmymenu(invo);
+					if(n == 0 ) insertck= false;
+					System.out.println("========== insert result : "+n);
+				}
 				
 				
-				
-				return mymenulist;
+				return insertck;
 			}
 			
 }

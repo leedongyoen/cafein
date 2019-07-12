@@ -44,6 +44,11 @@ public class CusMyServiceImpl implements CusMyService{
 		
 		return DAO.getrecipelist(vo);
 	}
+
+	@Override
+	public int insertmymenu(MyMenuVO vo) {
+		return DAO.insertmymenu(vo);
+	}
 	
 	
 	
