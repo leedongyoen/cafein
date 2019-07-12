@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.cafein.viewvo.ViewPosVO;
 import co.yedam.cafein.vo.MenuVO;
+import co.yedam.cafein.vo.RecipeVO;
 
 @Controller
 public class PosController {
@@ -24,5 +25,13 @@ public class PosController {
 		vo.setsId(sId);
 		System.out.println("dd");
 		return posService.getStoreMenuList(vo);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/pos", method=RequestMethod.GET)
+	public List<RecipeVO> getOptionList(RecipeVO vo){
+		
+		System.out.println("rr");
+		return posService.getOptionList(vo);
 	}
 }

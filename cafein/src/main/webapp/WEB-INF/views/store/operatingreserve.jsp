@@ -9,10 +9,10 @@
 
 <script>
 
-	var i, cnt=1, sum;
+	var i, sum;
 
 	// 추가 지출 추가 (빈칸 입력 시 alert 창 띄우기) --------------------------------------------------
-	function addList(){
+	$('#addbtn').on("click",function(){
 
 		var stName = $('#stName').val();
 		var wareQty = $('#wareQty').val();
@@ -75,12 +75,17 @@
 		.append($('<td>').html(stPayMethod))
 		.append($('<td>').append($('<input>').attr({
 			type:'button',
-			id:'delCheck',
 			value:'삭제'
-		})))
+		}).addClass('delbtn')))
 		.appendTo('#operatingreservTable tbody');
 		
 		addTotalSum += sum;
+		
+		console.log('stPayMethod val : '+stPayMethod)
+		
+		if(stPayMethod == '현금') {
+			operatingreserveSum += sum;
+		}
 		
 		console.log('addTotalSum : ' +addTotalSum)
 		
@@ -92,34 +97,25 @@
 		$("#stPayMethod").val('카드').prop("selected", true);
 		
 		console.log("operatingreserv에서 daycal total.val : " + $('#totalSum').text())
+		console.log('operatingreserveSum (operatingreserv.jsp) : ' +operatingreserveSum)
 		
-	}
+	});
 	
 	// 가격과 수량은 숫자만 입력 가능하고 3단위마다 콤마 생성
 	$("input:text[numberOnly]").on("keyup", function() {
 		$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
     
 	});
-	
-	// 숫자 3단위마다 콤마 생성
-	function addCommas(x) {
-	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
-	
-	//모든 콤마 제거
-	function removeCommas(x) {
-	    if(!x || x.length == 0) return "";
-	    else return x.split(",").join("");
-	}
 
 	// 삭제 버튼 클릭 시 실행 ------------------------------------------------------------------------------
-	$('#operatingreservTable').on("click", "#delCheck", function() {
+	$('#operatingreservTable').on("click", ".delbtn", function() {
 	   
 	   // ''+ 를 해주지 않으면 문자열로 인식을 못함
 	   var delSum =''+ $(this).parent().parent().children().eq(3).text();		// 지출액의 text
 	   var len = $(this).parent().parent().children().eq(3).text().length;		// 지출액의 길이
 	   var deleteRow = ''+ $(this).parent().parent().children().eq(0).text();
 	  
+	   console.log('delete row : ' + deleteRow)
 	   // 배열에 담긴 데이터 삭제
 	   Array.prototype.remove = function (index) { this.splice(index, 1); }
 	   for (var i = 0; i < addDataList.length; i++) {
@@ -135,16 +131,15 @@
 	   console.log('삭제된 항목의 지출액 : '+delSum.substr(0,len-1));										// 지출액의 마지막 '원'을 자른다
 	   
 	   addTotalSum -= removeCommas(delSum.substr(0,len-1));
+	   operatingreserveSum -= removeCommas(delSum.substr(0,len-1));
 	   
 	   console.log('minTotalSum : ' + addTotalSum)
 	   
 	   $('#totalSum').text(addCommas(addTotalSum)+'원');
 	   
-	   
 	   $(this).closest("tr").remove();
 	   
 	});
-	
 	// 취소 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#backbtn').on("click",function(){
 		$('#stName').val('');
@@ -158,10 +153,8 @@
 		$('#operatingreserveSave').text('수정 완료');
 		$('#addbtn').attr('disabled',true);
 		$('#backbtn').attr('disabled',true);
-		for(i=0;i<addDataList.length;i++){
-			$('#delCheck'+[i]).attr('disabled',true);
-			$('#delCheck'+[i]).attr('value','삭제불가');
-		}
+		$('.delbtn').attr('disabled',true);
+		$('.delbtn').attr('value','삭제불가');
 		
 	})
 	
@@ -171,10 +164,8 @@
 		$('#operatingreserveSave').text('수정 전');
 		$('#addbtn').attr('disabled',false);
 		$('#backbtn').attr('disabled',false);
-		for(i=0;i<addDataList.length;i++){
-			$('#delCheck'+[i]).attr('disabled',false);
-			$('#delCheck'+[i]).attr('value','삭제');
-		}
+		$('.delbtn').attr('disabled',false);
+		$('.delbtn').attr('value','삭제');
 	})
 	
 
@@ -235,7 +226,7 @@
 				</tr>
 				
 			</table>
-			<button type="button" id="addbtn" onclick="addList()">추가</button>
+			<button type="button" id="addbtn">추가</button>
 			<button type="button" id="backbtn">취소</button>
 			<button type="button" id="savebtn">저장</button>
 			<button type="button" id="editbtn">수정</button>

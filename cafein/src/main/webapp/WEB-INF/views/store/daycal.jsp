@@ -10,10 +10,10 @@
 
 <script>
 
-	var sId = 'SH001';
-	var sum, listSum=0, totalSum=0, addTotalSum=0;
-	var listnum;
-	var addDataList;
+	var sId = 'SH001';			// 로그인 한 매장 아이디(세션값 받아와야함)
+	var sum, listSum=0, totalSum=0, addTotalSum=0,i;	// 합계(row별), session의 합계(row별 총 합계), db의 총 합계, operatingreserve.jsp에서 추가하는 항목의 합계
+	var addDataList;			// sessionStorage 가 담길 배열
+	var operatingreserveSum=0, orSum=0;		// 영업 준비금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
 	
 	function getoperatingreserve(){
 		
@@ -61,6 +61,7 @@
 							disabled:'disabled',
 							value:'삭제불가'
 						})));
+						orSum += sum;		// 현금 영업준비금 때문에 필요
 					}
 				});
 				
@@ -74,9 +75,14 @@
 					addDataList = JSON.parse(addDataList);
 					// 함수 생성해서 배열에 있는 값을 뿌려줘야함
 					console.log('addDataList : ' + addDataList);
+
 					getList();
 					for(i=0;i<addDataList.length;i++) {
 						listSum += addDataList[i].sum;
+						if(addDataList[i].stPayMethod == '현금') {
+							orSum += addDataList[i].sum;
+							console.log('session에 있는 현금  : ' + addDataList[i].stPayMethod)
+						}
 					}
 					totalSum += listSum;
 				}
@@ -86,6 +92,10 @@
 				.append($('<th>').html(addCommas(totalSum)+'원').attr('colspan','6').attr('id','totalSum').css('text-align','right'))
 				.appendTo('#operatingreservTable tfoot');
 				addTotalSum = totalSum;
+				operatingreserveSum = orSum;
+				
+				console.log('영업 준비금 총 현금 지출액 : ' + operatingreserveSum)
+				orSum=0;
 				totalSum=0;
 				listSum=0;
 				console.log("addTotalSum(daycal) : "+addTotalSum)
@@ -98,7 +108,7 @@
 	function getList() {
 		for(i=0;i<addDataList.length;i++) {
 			console.log('addDataList.stName : ' + addDataList[i].stName);
-			$('<tr>')
+			$('<tr>').attr('id','deleteRow'+[i])
 			.append($('<td>').html(addDataList[i].stName))
 			.append($('<td>').html(addDataList[i].wareQty))
 			.append($('<td>').html(addCommas(addDataList[i].warePrice)+'원'))
@@ -106,10 +116,17 @@
 			.append($('<td>').html(addDataList[i].stPayMethod))
 			.append($('<td>').append($('<input>').attr({
 				type:'button',
-				id:'delCheck'+[i],
-				value:'삭제'
-			})))
+				value:'삭제',
+			}).addClass('delbtn')))
 			.appendTo('#operatingreservTable tbody');
+		}
+		
+		
+		if($('#operatingreserveSave').text() == '수정 완료') {
+			$('#addbtn').attr('disabled',true);
+			$('#backbtn').attr('disabled',true);
+			$('.delbtn').attr('disabled',true);
+			$('.delbtn').attr('value','삭제불가');
 		}
 	}
 	
@@ -126,21 +143,55 @@
 			}
 		});
 	}
+//---------------------------------------------------------------------------------------------------------------------
 	
-	// 현금 시재 정산
-	function cashadvance() {
+	var cashSum=0, usedMile=0, totalcash=0;		// 현금 매출액, 사용된 마일리지, 총 현금 시재
+	var defaultcash=50000, totalcashsales=0;	// 기본준비금, 총 현금 매출액
+	
+	// 현금 시재 정산 페이지 호출
+	function getCashAdvance() {
 		$.ajax({
-			url:"cashadvance.do",		// request 보낼 서버경로
-			//data:,						// 보낼 데이터 (매장id 보내야함)
+			url:"cashadvance",		// request 보낼 서버경로
+			type:'GET',			
+			data:{sId:sId},				// 보낼 데이터 (매장id 보내야함)
 			error:function(){
 				alert('통신 실패');
 			},
 			success:function(data){
+				$.each(data,function(idx,item){		// idx : length 와 비슷한 느낌, item : data
+					
+					cashSum += item.total;
+					usedMile += item.mileage;
+					
+				});
+				cashSum += defaultcash;
+				// 총 현금 매출액 = 현금 매출액 - 기본금 - 마일리지 - 영업준비금 ..?
+				totalcashsales = cashSum - defaultcash - 
+				
+				$('#cashSales').text(addCommas(cashSum)+'원');
+				$('#usedMileage').text('P'+addCommas(usedMile));
+				
+				cashSum=0;
+				usedMile=0;
+			}
+		});
+	}
+	
+	
+	// 현금 시재 정산 페이지 호출
+	function cashadvance() {
+		$.ajax({
+			url:"cashadvance.do",		// request 보낼 서버경로
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				getCashAdvance();
 				$('#content').html(data);
 			}
 		});
 	}
-
+//---------------------------------------------------------------------------------------------------------------------
 	// 재고 실수량 확인
 	function stocktruthlist() {
 		$.ajax({
@@ -154,10 +205,16 @@
 			}
 		});
 	}
-	
+//---------------------------------------------------------------------------------------------------------------------
 	// 숫자 3단위마다 콤마 생성
 	function addCommas(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	//모든 콤마 제거
+	function removeCommas(x) {
+	    if(!x || x.length == 0) return "";
+	    else return x.split(",").join("");
 	}
 
 </script>

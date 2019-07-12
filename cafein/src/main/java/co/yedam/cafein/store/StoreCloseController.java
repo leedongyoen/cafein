@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import co.yedam.cafein.store.close.StoreCloseService;
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
+import co.yedam.cafein.vo.OrdersVO;
 
 @Controller
 public class StoreCloseController {
@@ -25,7 +26,7 @@ public class StoreCloseController {
 	// 매장 영업 준비금 (json 형식으로 data만 넘겨준다)
 	@ResponseBody
 	@RequestMapping(value="/operatingreserve", method=RequestMethod.GET)
-	public List<ViewWarehousingVO> getlist(ViewWarehousingVO vo){
+	public List<ViewWarehousingVO> getOperatingreserve(ViewWarehousingVO vo){
 		return service.getWarehousing(vo);
 	}
 	
@@ -34,23 +35,22 @@ public class StoreCloseController {
 	public String operatingreserve() {
 		return "store/operatingreserve";
 	}
-	 
-
-	/*
-	 * // 매장 영업 준비금
-	 * 
-	 * @RequestMapping("operatingreserve.do") public List<ViewWarehousingVO>
-	 * operatingreserve(ViewWarehousingVO vo) { List<ViewWarehousingVO> list =
-	 * service.getWarehousing(vo); System.out.println("list : " + list); return
-	 * list; }
-	 */
 	
+	//----------------------------------------------------------------------------
+	// 마감 시재 정산
+	@ResponseBody
+	@RequestMapping(value="/cashadvance", method=RequestMethod.GET)
+	public List<OrdersVO> getCashadvance(OrdersVO vo) {
+		return service.getCashAdvance(vo);
+	}
+
 	// 마감 시재 정산
 	@RequestMapping("cashadvance.do")
 	public String cashadvance() {
 		return "store/cashadvance";
 	}
 	
+	//----------------------------------------------------------------------------
 	// 재고 실수량 입력
 	@RequestMapping("stocktruthlist.do")
 	public String stocktruthlist() {
