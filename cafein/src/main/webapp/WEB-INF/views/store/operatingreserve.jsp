@@ -9,7 +9,7 @@
 
 <script>
 
-	var i, cnt=1, sum;
+	var i, sum;
 
 	// 추가 지출 추가 (빈칸 입력 시 alert 창 띄우기) --------------------------------------------------
 	$('#addbtn').on("click",function(){
@@ -81,6 +81,12 @@
 		
 		addTotalSum += sum;
 		
+		console.log('stPayMethod val : '+stPayMethod)
+		
+		if(stPayMethod == '현금') {
+			operatingreserveSum += sum;
+		}
+		
 		console.log('addTotalSum : ' +addTotalSum)
 		
 		$('#totalSum').text(addCommas(addTotalSum)+'원');
@@ -91,6 +97,7 @@
 		$("#stPayMethod").val('카드').prop("selected", true);
 		
 		console.log("operatingreserv에서 daycal total.val : " + $('#totalSum').text())
+		console.log('operatingreserveSum (operatingreserv.jsp) : ' +operatingreserveSum)
 		
 	});
 	
@@ -99,32 +106,7 @@
 		$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
     
 	});
-	
-	// 숫자 3단위마다 콤마 생성
-	function addCommas(x) {
-	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
-	
-	//모든 콤마 제거
-	function removeCommas(x) {
-	    if(!x || x.length == 0) return "";
-	    else return x.split(",").join("");
-	}
-	
-	/* function deleteList() {
-		 var delSum =''+ $(this).parent().parent().children().eq(3).text();		// 지출액의 text
-		 var len = $(this).parent().parent().children().eq(3).text().length;		// 지출액의 길이
-		 var deleteRow = ''+ $(this).parent().parent().children().eq(0).text();
-		 
-		 console.log('delSum : '+delSum+' len : '+len+' deleteRow : '+deleteRow)
-		 console.log('this : ' + $(this))
-	}
-	
-	$('#operatingreservTable').on("click", "button", function(e) {
-		console.log('this : ' + e)
-	}); 
-	*/
-	
+
 	// 삭제 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#operatingreservTable').on("click", ".delbtn", function() {
 	   
@@ -149,11 +131,11 @@
 	   console.log('삭제된 항목의 지출액 : '+delSum.substr(0,len-1));										// 지출액의 마지막 '원'을 자른다
 	   
 	   addTotalSum -= removeCommas(delSum.substr(0,len-1));
+	   operatingreserveSum -= removeCommas(delSum.substr(0,len-1));
 	   
 	   console.log('minTotalSum : ' + addTotalSum)
 	   
 	   $('#totalSum').text(addCommas(addTotalSum)+'원');
-	   
 	   
 	   $(this).closest("tr").remove();
 	   
