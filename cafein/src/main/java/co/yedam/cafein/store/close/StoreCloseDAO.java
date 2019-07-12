@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
+import co.yedam.cafein.vo.OrdersVO;
 
 @Repository
 public class StoreCloseDAO {
@@ -18,5 +19,10 @@ public class StoreCloseDAO {
 	// 영업 준비금 목록 조회
 	public List<ViewWarehousingVO> getWarehousing(ViewWarehousingVO vo) {
 		return mybatis.selectList("storeCloseDAO.getWarehousing", vo);
+	}
+	
+	// 마감 시재 정산 목록 조회
+	public List<OrdersVO> getCashAdvance(OrdersVO vo) {
+		return mybatis.selectList("storeCloseDAO.getChasAdvance", vo);
 	}
 }
