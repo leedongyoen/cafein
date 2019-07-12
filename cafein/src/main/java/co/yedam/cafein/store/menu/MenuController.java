@@ -1,19 +1,26 @@
 package co.yedam.cafein.store.menu;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.cafein.vo.MenuVO;
@@ -76,6 +83,26 @@ public class MenuController {
 	}
 	
 	
-	
+	@Value("${file.path}") private String up_dir;
+
+	//ajax 이미지 업로드
+	@RequestMapping(value = "/imgUpload.do")
+	@ResponseBody
+	public Map imgUpload(@RequestParam("upload") MultipartFile uploadFile, 
+			             HttpServletRequest request) throws IllegalStateException, IOException {
+		String contextPath = request.getContextPath();		
+		String filename = uploadFile.getOriginalFilename();	//업로드 파일명
+		String url = contextPath+"/"+ up_dir+"/"+filename; //src 경로 만들어줌
+		
+		String path = request.getSession().getServletContext().getRealPath(up_dir);
+		System.out.println("path: "+path);
+		uploadFile.transferTo(new File(path, filename));
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("uploaded","1");
+		map.put("fileName",filename);
+		map.put("url", url);
+		return map;
+	}
 	
 }
