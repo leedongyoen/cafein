@@ -123,7 +123,7 @@ footerrow : true});
 	     //클릭된 부분을 상단에 정의된 CCS인 selected클래스로 적용
     // $(".mbutton").addClass("selected");
 	     var mNum = $(this).next().val();
-     
+       
 	 $.ajax({
 			url:'pos/',
 			type:'GET',
