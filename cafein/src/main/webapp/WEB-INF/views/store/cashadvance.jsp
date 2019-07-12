@@ -7,6 +7,8 @@
 <title>마감 시재 정산</title>
 <script>
 
+	var totalcashSum;		// 총 현금 시재
+	
 	console.log('operatingreserveSum (cashadvance.jsp) : ' +operatingreserveSum)
 	$('#orSum').text(addCommas(operatingreserveSum)+'원');
 
@@ -54,10 +56,35 @@
 	// 시재 등록 및 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#cashInsert').on("click",function(){
 		
+		if($('.cash').val() != '') {
+
+			// input 태그에 입력한 값을 sessionStorage에 담기 위한 배열
+			var cashList = {
+					c50000:$('#cash50000').val(),
+					c10000:$('#cash10000').val(),
+					c5000:$('#cash5000').val(),
+					c1000:$('#cash1000').val(),
+					c500:$('#cash500').val(),
+					c100:$('#cash100').val()
+			};
+			// 배열에 넣기
+			cashDataList.push(cashList);
+			// json stringify 타입으로 변환
+			var jsonCashList = JSON.stringify(cashDataList);
+			// json을 이용해 string 형식으로 만들어서 session storage에 저장
+			sessionStorage.setItem("jsonCashList",jsonCashList);
+		}
+		
+		// 타입 수정 필요
+		totalcashSum = Number($('#totalcash50000').val()) + Number($('#totalcash10000').val()) + Number($('#totalcash5000').val()) 
+					+ Number($('#totalcash1000').val()) + Number($('#totalcash500').val()) + Number($('#totalcash100').val());
+		
+		console.log('totalcashSum : ' + totalcashSum);
+		
 		//console.log('input val(class) : '+$('.cash').val()+', input text(class) : '+$('.cash').text())
 		//console.log('input val(id) : '+$('#cash50000').val()+', input text(id) : '+$('#cash50000').text())
-		
-		$('#operatingreserveSave').text('수정 완료');
+		$('#resultTable').css('visibility','visible');
+		$('#cashadvanceSave').text('수정 완료');
 		$('#cashInsert').attr('disabled',true);
 		$('#cashBack').attr('disabled',true);
 		$('.cash').attr('readonly',true);
@@ -75,7 +102,8 @@
 	// 시재 재등록 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	// 저장 후 데이터 변경 못하게 할지 생각해보기
 	$('#cashEdit').on("click",function(){
-		$('#operatingreserveSave').text('수정 전');
+		$('#resultTable').css('visibility','hidden');
+		$('#cashadvanceSave').text('수정 전');
 		$('#cashInsert').attr('disabled',false);
 		$('#cashBack').attr('disabled',false);
 		$('.cash').attr('readonly',false);
