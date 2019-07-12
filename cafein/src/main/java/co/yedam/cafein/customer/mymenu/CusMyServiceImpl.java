@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.viewvo.ViewMymenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
+import co.yedam.cafein.vo.RecipeVO;
 
 @Service("CusMyService")
 public class CusMyServiceImpl implements CusMyService{
@@ -30,6 +31,18 @@ public class CusMyServiceImpl implements CusMyService{
 	
 	public void deleteMymenu(MyMenuVO vo) {
 		 DAO.deleteMymenu(vo);
+	}
+
+	@Override
+	public String getcunum() {
+		
+		return DAO.getcunum();
+	}
+
+	@Override
+	public List<MyMenuVO> getrecipelist(MyMenuVO vo) {
+		
+		return DAO.getrecipelist(vo);
 	}
 	
 	

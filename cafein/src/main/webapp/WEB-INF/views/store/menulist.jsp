@@ -15,6 +15,7 @@
 
 
 var selRecinum = "";
+var aQty=0.0;
 //c태그 받기 연습
 
 
@@ -148,7 +149,6 @@ $(function(){
 				
 				for(var i = 0;i<data.length;i++){
 
-					var json='{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}';
 					if(data[i].caNum=='CACP' || data[i].caNum=='CACM')
 					{
 						console.log(data[i].caNum);
@@ -157,9 +157,9 @@ $(function(){
 						/* var option = $("<option>"+data[i].caNum+"</option>");
 		                $('#opSelct').append(option);
  */
+ 
+ 						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty/1000+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum+" : "+data[i].stAqty + '</option>').appendTo('#reciSelect');
  						
- 						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
-						
  
  
  							
@@ -167,13 +167,13 @@ $(function(){
 						console.log(data[i].caNum);
 						//data[i].caNum
 						//옵션에 caNum이 CACM과 CAJP를 추가
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
 						
 					}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
 						console.log(data[i].caNum);
 						//data[i].caNum
 						//옵션에 caNum이 CACM과 CADP를 추가
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
 						
 						}
 					}
@@ -181,6 +181,8 @@ $(function(){
 				
 				$("#opSelct").empty();
 				$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#opSelct');
+				$('<option value=\'{"value1":"","value2":"CAIC"}\'>' + 'ICE' + '</option>').appendTo('#opSelct');
+				$('<option value=\'{"value1":"","value2":"CAHT"}\'>' + 'HOT' + '</option>').appendTo('#opSelct');
 				
 				for(var i = 0;i<data.length;i++){
 					//console.log('hello: '+data[i].caNum);
@@ -274,10 +276,11 @@ $(function(){
 		
 		var json = $(this).val();
 		var obj=JSON.parse(json);
-        console.log(obj.value1+" : "+obj.value2);
+		aQty=obj.value3;
+        console.log(obj.value1+" : "+obj.value2+" : "+obj.value3);
         $("#recistNum").val(obj.value1);
 		$("#recicaNum").val(obj.value2);
-		
+		$("#recistAqty").val(obj.value3);
 		
 	});
 	
@@ -393,10 +396,24 @@ function menuUpdate() {
 
 function recipeInsert(){
 	
-	alert(JSON.stringify($("#recipeTableForm").serializeObject()));
+	var reQty1 = $("#consum").val()/1000;
+	var reQty2 = aQty;
+		//$("#recistAqty").val();
 	
-	$.ajax({
-		url: "recipes",
+	if(reQty1 >= reQty2){
+		reQty2 = reQty1;
+		//$("#reciAqty").val(reQty1);
+		console.log(reQty1+" >= "+reQty2);
+	}else{
+		//$("#reciAqty").val(reQty2);
+		console.log(reQty1+" < "+reQty2);
+	}
+	
+	
+	alert(JSON.stringify($("#recipeTableForm").serializeObject()));
+	//=====================================================================================
+ 	$.ajax({
+		url: "recipes/"+(reQty2*1000),
 		type: 'POST',
 		dataType: 'json',
 		data: JSON.stringify($("#recipeTableForm").serializeObject()),
@@ -409,8 +426,10 @@ function recipeInsert(){
 			
 		}
 		
-	}); 
+	});  
 }
+
+
 function recipeDelete(){
 	
 	console.log(selRecinum);
@@ -645,23 +664,19 @@ function optionDelete(){
 						<table border="1" class = "table">
 							<tr>
 								<th>카테고리 선택</th>
-								<td><select id="reciSelect">
-
-								</select></td>
-								<th>Hot/Ice</th>
-								<td><input type="radio" id=salestate name="caNum">
-								<input type="radio" id=salestate></td>
+								<td><select id="reciSelect"></select></td>
+								<th>적정 수량</th>
+								<td><input type="text" id="recistAqty"></td>
+							
 							</tr>
 							<tr>
 								<th>소모량</th>
-								<td><input type="text" value="0" id="consum" name="consum"></td>
-								<th>Hot/Ice</th>
-								<td><input type="radio"><input type="radio"></td>
+								<td colspan="3"><input type="text" value="0" id="consum" name="consum"></td>
 							</tr>
 							<tr>
-								<td><input type="button" value=" + "
+								<td colspan="2"><input type="button" value=" + "
 									onclick="recipeInsert()"></td>
-								<td><input type="button" value=" - "
+								<td colspan="2"><input type="button" value=" - "
 									onclick="recipeDelete()"></td>
 							</tr>
 						</table>
@@ -669,6 +684,8 @@ function optionDelete(){
 
 						<input type="hidden" id="recicaNum" name="caNum">
 						<input type="hidden" id="recistNum" name="stNum">
+						<!--  <input type="hidden" id="reciAqty" name="stAqty">
+						-->
 				
 			
 				<br>
