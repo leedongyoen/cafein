@@ -11,7 +11,7 @@
 <script>
 
 	var sId = 'SH001';
-	var sum, listSum=0, totalSum=0, addTotalSum=0;
+	var sum, listSum=0, totalSum=0, addTotalSum=0,i;
 	var listnum;
 	var addDataList;
 	
@@ -74,6 +74,7 @@
 					addDataList = JSON.parse(addDataList);
 					// 함수 생성해서 배열에 있는 값을 뿌려줘야함
 					console.log('addDataList : ' + addDataList);
+
 					getList();
 					for(i=0;i<addDataList.length;i++) {
 						listSum += addDataList[i].sum;
@@ -98,7 +99,7 @@
 	function getList() {
 		for(i=0;i<addDataList.length;i++) {
 			console.log('addDataList.stName : ' + addDataList[i].stName);
-			$('<tr>')
+			$('<tr>').attr('id','deleteRow'+[i])
 			.append($('<td>').html(addDataList[i].stName))
 			.append($('<td>').html(addDataList[i].wareQty))
 			.append($('<td>').html(addCommas(addDataList[i].warePrice)+'원'))
@@ -106,10 +107,18 @@
 			.append($('<td>').html(addDataList[i].stPayMethod))
 			.append($('<td>').append($('<input>').attr({
 				type:'button',
-				id:'delCheck'+[i],
-				value:'삭제'
-			})))
+				value:'삭제',
+			}).addClass('delbtn')))
 			.appendTo('#operatingreservTable tbody');
+			console.log("i : " + i)
+		}
+		
+		
+		if($('#operatingreserveSave').text() == '수정 완료') {
+			$('#addbtn').attr('disabled',true);
+			$('#backbtn').attr('disabled',true);
+			$('.delbtn').attr('disabled',true);
+			$('.delbtn').attr('value','삭제불가');
 		}
 	}
 	
