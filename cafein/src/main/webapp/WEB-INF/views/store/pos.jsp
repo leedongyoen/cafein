@@ -124,7 +124,10 @@ footerrow : true});
     // $(".mbutton").addClass("selected");
 	     var mNum = $(this).next().val();
        
-	 $.ajax({
+	 $.ajax(
+			 
+			 
+			 {
 			url:'pos/',
 			type:'GET',
 			//contentType:'application/json;charset=utf-8',
