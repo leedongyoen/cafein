@@ -8,7 +8,7 @@
 <%@ include file="cushead.jsp" %>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
-<script src="./js/json.min.js"></script>
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -86,6 +86,8 @@
 				<form class="form-borizontal" id="menudetailForm" action="${pageContext.request.contextPath}/customerorder" method="POST">
 				<div class="modal-body">
 						<input type="text" name="mNum" style="display: none;" >
+						<input type="text" name="sId" style="display: none;" >
+						<input type="text" name="cId" style="display: none;" >
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
@@ -106,8 +108,8 @@
 							</tr>
 							<tr id="menudetailhotice">
 								<th>HOT/ICE</th>
-								<td><input type="radio" name="hotice" value="hot" checked="checked">hot
-									<input type="radio" name="hotice" value="ice">ice</td>
+								<td><input type="radio" name="hotice" value="CAHT" checked="checked">hot
+									<input type="radio" name="hotice" value="CAIC">ice</td>
 							</tr>
 							<tr>
 								<th>OPTION</th>
@@ -126,7 +128,7 @@
 				
 				</div>
 				<div class="modal-footer">	
-					<button type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" >나만의 메뉴 등록</button>	
+					<input type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" value="나만의 메뉴 등록" >
 					<button type="submit"  class="btn btn-outline-primary" >주문</button>	
 					<button type="button" class="btn btn-outline-primary" >담기</button>			
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
@@ -210,6 +212,9 @@
 	
 	// 선택한 매장의 배달 서비스 여부
 	var storedeliservice;
+	
+	// 나만의 메뉴 등록 가능 여부를 위한 로그인 체크
+	var mymenu_login_check;
 	
 	//주소-좌표 변환 객체를 생성
     var geocoder = new daum.maps.services.Geocoder();
@@ -483,7 +488,7 @@
 
 						$("<input>").attr({ 
 						     type: "checkbox",
-						     name: "stNum", 
+						     name: "cuoptionlist", 
 						     id: item.stNum,
 						     value: item.stNum,
 						   	})
@@ -500,6 +505,7 @@
 						$("<br>").appendTo("#menudetailoption");
 						
 					});
+					
 				}else{
 					$("<p>").append('해당 메뉴에는 옵션이 없습니다.')
 							.appendTo("#menudetailoption");
@@ -520,7 +526,8 @@
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ 
-	
+				$('input:text[name="sId"]').val(data.sId);
+				$('input:text[name="cId"]').val(mymenu_login_check);
 				$('#mName').val(data.mName);
 				$('#price').val(data.mPrice);
 				$('#totalPrice').val(data.mPrice);
@@ -534,7 +541,14 @@
 
 $(function(){
 
-
+	// 로그인시에만 나만의 메뉴 등록 가능하게
+	mymenu_login_check = "<%= (String)session.getAttribute("cId") %>";
+	if(mymenu_login_check == "null" || mymenu_login_check == ""){
+		$("#mymenuInsertbtn").hide();
+	}else{
+		$("#mymenuInsertbtn").show();
+	}
+	
 	// 커피 메뉴 선택시 모달창
 	 $(document).on("click","#coffeetable tbody tr",function(event){
 		 $("#menudetailhotice").show();
@@ -608,7 +622,35 @@ $(function(){
  	
 	// 나만의 메뉴 등록 시
 	$("#mymenuInsertbtn").on("click",function(){
+		var list =  $("#menudetailForm").serializeObject();
+		var selectop = [];
+		var selectoptionck=false;
+		$('[name=cuoptionlist]:checked').each(function(){
+			selectop.push($(this).val());
+			selectoptionck=true;
+		});
+		if(selectoptionck){
+			
+			list.cuNumList = selectop;
+		}else{
+			list.cuNumList = null;
+		}
 		
+		
+		$.ajax({
+			url : 'insertmymenu',
+			type : 'PUT',
+			contentType : 'application/json;charrset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify(list),
+			success : function(data) {
+				console.log(data);
+
+			},
+			error : function(request,status,error) {
+				alert(JSON.stringify(request,status,error));
+			}
+		});
 		
 	});
 });
