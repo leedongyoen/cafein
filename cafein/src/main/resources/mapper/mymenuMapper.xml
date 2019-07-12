@@ -54,8 +54,8 @@ DELETE MY_MENU
 	</select>
 	
 	<insert id="insertmymenu" parameterType="mymenu">
-		<selectKey keyProperty="myNum" resultType="int" order="BEFORE">
-			SELECT MAX(MY_NUM)+1
+		<selectKey keyProperty="myNum" resultType="string" order="BEFORE">
+			SELECT MAX(MY_NUM)+1 ||''
 			FROM MY_MENU
 		</selectKey>
 		

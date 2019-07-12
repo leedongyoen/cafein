@@ -37,6 +37,10 @@ public class CusMyDAO {
 		return mybatis.selectList("MymenuDAO.getrecipelist",vo);
 	} 
 	
+	public int insertmymenu(MyMenuVO vo) {
+		return mybatis.insert("MymenuDAO.insertmymenu",vo);
+	}
+	
 	/*
 	 * public void inserMymenu(MyMenuVO vo) {
 	 * System.out.println("===> Mybatis inserMymenu()");
