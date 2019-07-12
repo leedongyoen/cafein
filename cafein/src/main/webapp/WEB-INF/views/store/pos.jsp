@@ -53,6 +53,7 @@ var sId="SH001"; //헤더에있는 Id로 교체
   		   pager: "#pager",
            gridview : true
        });
+	   
    });
 
 /*  $("#firstTable").jqGrid("setCell",rowid,"status","normal"); // 셀에 지정한 컬럼에 지정한 값 집어넣을수있음
@@ -117,17 +118,13 @@ footerrow : true});
 	}
  //버튼 클릭시 옵션메뉴 출력
  $(document).on("click",".mbutton", function(){
-	console.log($(this));
      $(".mbutton").removeClass("selected");
 	$(this).addClass("selected");
 	     //클릭된 부분을 상단에 정의된 CCS인 selected클래스로 적용
     // $(".mbutton").addClass("selected");
 	     var mNum = $(this).next().val();
        
-	 $.ajax(
-			 
-			 
-			 {
+	 $.ajax({
 			url:'pos/',
 			type:'GET',
 			//contentType:'application/json;charset=utf-8',
@@ -142,7 +139,6 @@ footerrow : true});
  
  //커피 옵션 나타내기
  	function getOptionList(data){
- 		
  		var mNum = $('#hidden_mNum').val();
  		$("#coffeetableoption tbody").empty();
 	    $.each(data, function(idx,item){
@@ -151,8 +147,19 @@ footerrow : true});
 	          .append($('<input type=\'button\'class=\'opbutton\' id=\'cooption\'>').val(item.opName))
 	          .appendTo('#coffeetableoption tbody');
 	    });
+	    $(".opbutton").click(function(){
+	   // 	 $(".opbutton").removeClass("selected");
+	 		$(this).addClass("selected");	
+	    });
 	    
  	}
+ 	 //확인버튼 클릭시 grid로 값 보내기
+ 	$(document).on("click",".ok", function(){
+ 	 		console.log(this);
+ 	 	});
+ 	 
+
+ 	
 </script>
 <br><br>
 <br><br>
@@ -208,6 +215,7 @@ footerrow : true});
 			</table>
    		</div>
  	</div>
+ 	<input style="float: right;" type='reset'class="reset" id="reset" value="초기화">
  	<input style="float: right;" type='button'class="ok" id="ok" value="확인">
   </div>
 
