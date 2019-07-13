@@ -33,28 +33,41 @@
 //포스기 버튼
 var sId="SH001"; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
+var qty = 1;
    $(document).ready(function() {
 	   $("#gridlist").jqGrid({
            colModel: [
-               { label: '메뉴명', name: 'mName', key: true, width: 75 },
-               { label: '수량', name: 'mNum', width: 150  },
-               { label: '금액', name: 'mPrice', width: 150  }
+        	   { label: 'mNum', name:'mNum',key: true, hidden:true},
+               { label: '메뉴명', name: 'mName',  width: 130 },
+               { label: '옵션', name: 'opName', width: 150  },
+               { label: '금액', name: 'Price', width: 75 ,formatter:'integer' },
+               {label: '수량', name: 'qty', width: 75, editable:true}
            ],
+           formatter:{
+        	   integer:{thousandsSeparator:",",defaultValue:'0'}
+           },
            viewrecords:true,
            caption:'주문목록', // 그리드 왼쪽 위에 캡션
-           rownumbers:false,//왼쪽에 index 가 생김 1부터 시작
+           rownumbers: true,//왼쪽에 index 가 생김 1부터 시작
            rownumWidth:40,//로우넘의 가로길이
            rowNum:5,// 그리드에 보여줄 데이터의 갯수,-1하면 무한으로 보여준단다..
            width:600,//그리드의 총 가로길이
     //       rowList:[10,20,30],//몇개식 보여줄건지 선택가능하다, 배열형식이라 5,10,15,20,,,가능
     //       multiboxonly : true,
-    //       multiselect : true,//체크박스 사라짐
+           multiselect : true,//체크박스 사라짐
+    		height:300,
+    		scroll:1,
            scrollrows : true, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
-  		   pager: "#pager",
-           gridview : true
+           gridview : true,
+           footerrow:true,
+           userDataOnFooter:true
        });
 	   
    });
+  
+
+
+출처: https://nabaro.tistory.com/37 [nabaro story]
 
 /*  $("#firstTable").jqGrid("setCell",rowid,"status","normal"); // 셀에 지정한 컬럼에 지정한 값 집어넣을수있음
 var buffdata = $('#testGrid').jqGrid('getDataIDs'); // 테이블에 있는 모든 데이터를 수집한다.
@@ -97,6 +110,7 @@ footerrow : true});
 				.append($('<br>'))
 				.append($('<input type=\'button\'class=\'mbutton\'  id=\'coffee\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_mNum\'>').val(item.mNum))
+				.append($('<input type=\'hidden\' id=\'hidden_mPrice}\'>').val(item.mPrice))
 				.appendTo('#coffeetable tbody');
 			}
 			else if(item.caNum == "CADR" && item.opName == null){
@@ -104,26 +118,23 @@ footerrow : true});
 				.append($('<br>'))
 				.append($('<input type=\'button\' class=\'mbutton\' id=\'beverage\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId2\'>').val(item.mNum))
+				.append($('<input type=\'hidden\' id=\'hidden_mPrice2}\'>').val(item.mPrice))
 				.appendTo('#beveragetable tbody');
 			}else if(item.caNum == "CADE" && item.opName == null){
 				$('<tr>')
 				.append($('<br>'))
 				.append($('<input type=\'button\' class=\'mbutton\' id=\'dessert\'>').val(item.mName))
-				.append($('<input type=\'hidden\' id=\'hidden_menuId3\'>').val(item.opName))
+				.append($('<input type=\'hidden\' id=\'hidden_menuId3\'>').val(item.mNum))
+				.append($('<input type=\'hidden\' id=\'hidden_mPrice3}\'>').val(item.mPrice))
 				.appendTo('#desserttable tbody');
 			}
 		});
-	//	$(".ok").hide();
-	//	 $(".ok").show();
 	}
  //버튼 클릭시 옵션메뉴 출력
  $(document).on("click",".mbutton", function(){
-     $(".mbutton").removeClass("selected");
-	$(this).addClass("selected");
-	     //클릭된 부분을 상단에 정의된 CCS인 selected클래스로 적용
-    // $(".mbutton").addClass("selected");
+   		 var mName = $(this).val();
 	     var mNum = $(this).next().val();
-       
+	     var Price = $(this).next().next().val();
 	 $.ajax({
 			url:'pos/',
 			type:'GET',
@@ -135,28 +146,55 @@ footerrow : true});
 			},
 			success: getOptionList
 		});
+	 jQuery("#gridlist").jqGrid('addRow', {
+
+	       rowID : mNum,          //중복되지 않게 rowid설정
+
+	       initdata : { mNum, mName, Price, qty },
+
+	       position :"last",           //first, last
+
+	       useDefValues : false,
+
+	       useFormatter : false,
+
+	       addRowParams : {extraparam:{}}
+
+	});
+
+	 
 	});
  
  //커피 옵션 나타내기
  	function getOptionList(data){
+	 
  		var mNum = $('#hidden_mNum').val();
  		$("#coffeetableoption tbody").empty();
 	    $.each(data, function(idx,item){
 	    	 $('<tr>')
 	          .append($('<br>'))
 	          .append($('<input type=\'button\'class=\'opbutton\' id=\'cooption\'>').val(item.opName))
+	          .append($('<input type=\'hidden\' id=\'hidden_menuId4\'>').val(item.mNum))
+	          .append($('<input type=\'hidden\' id=\'hidden_menuId5\'>').val(item.opPrice))
 	          .appendTo('#coffeetableoption tbody');
-	    });
-	    $(".opbutton").click(function(){
-	   // 	 $(".opbutton").removeClass("selected");
-	 		$(this).addClass("selected");	
 	    });
 	    
  	}
- 	 //확인버튼 클릭시 grid로 값 보내기
- 	$(document).on("click",".ok", function(){
- 	 		console.log(this);
- 	 	});
+ 	$(document).on("click",".opbutton", function(){
+ 		var opName = $(this).val();
+		var mNum = $(this).next().val();
+		var Price = $(this).next().next().val();
+ 	 jQuery("#gridlist").jqGrid('addRow', {
+
+	       rowID : mNum,          //중복되지 않게 rowid설정
+	       initdata : {opName, Price, qty},
+	       position :"last",           //first, last
+	       useDefValues : false,
+	       useFormatter : false,
+	       addRowParams : {extraparam:{}}
+
+	});
+ 	})
  	 
 
  	
@@ -215,8 +253,6 @@ footerrow : true});
 			</table>
    		</div>
  	</div>
- 	<input style="float: right;" type='reset'class="reset" id="reset" value="초기화">
- 	<input style="float: right;" type='button'class="ok" id="ok" value="확인">
   </div>
 
 

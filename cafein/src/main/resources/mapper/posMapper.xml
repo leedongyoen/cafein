@@ -8,12 +8,13 @@
 	<!-- 매장 pos기 메뉴조회 -->
 	<select id="getStoreMenuList" resultType="viewpos">
 		SELECT
-		S_ID "sId"
+			S_ID "sId"
 			, M_NAME "mName"
 			, M_NUM "mNum"
 			, CA_NUM "caNum"
 			, OP_NAME "opName"
 			, OP_PRICE "opPrice"
+			, M_PRICE "mPrice"
 		FROM POSSEL_VIEW
 		group by S_ID
 			, M_NAME
@@ -21,6 +22,7 @@
 			, CA_NUM
 			, OP_NAME
 			, OP_PRICE
+			, M_PRICE
 	</select>
 	<!-- 메뉴선택시 옵션 가져오기 -->
 	<select id="getOptionList" resultType="recipe">
