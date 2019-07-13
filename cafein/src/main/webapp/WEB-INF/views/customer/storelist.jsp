@@ -694,11 +694,11 @@ $(function(){
 		}else{
 			list.cuNumList = null;
 		}
-		
-		console.log(list);
+		list.qty = $('#ordernum').html();
+		console.log("cart : "+list);
 		$.ajax({
 			url: 'insertcart',
-			type : 'PUT',
+			type : 'POST',
 			contentType : 'application/json;charrset=utf-8',
 			dataType : 'json',
 			data : JSON.stringify(list),

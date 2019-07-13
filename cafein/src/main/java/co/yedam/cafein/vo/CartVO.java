@@ -10,6 +10,7 @@ public class CartVO {
 	private int qty;
 	private String hotice_option;
 	private int mPrice;
+	
 	public String getsId() {
 		return sId;
 	}
@@ -55,6 +56,7 @@ public class CartVO {
 		return "CartVO [sId=" + sId + ", mNum=" + mNum + ", cuNumList=" + Arrays.toString(cuNumList) + ", qty=" + qty
 				+ ", hotice_option=" + hotice_option + ", mPrice=" + mPrice + "]";
 	}
+	
 
 
 

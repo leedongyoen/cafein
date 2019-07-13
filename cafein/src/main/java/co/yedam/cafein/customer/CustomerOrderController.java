@@ -1,5 +1,6 @@
 package co.yedam.cafein.customer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -74,11 +76,22 @@ public class CustomerOrderController {
 		return "customer/cartmng";
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="insertcart", method=RequestMethod.PUT)
-	public CartVO insertcart(CartVO vo , HttpSession session) {
+	
+	@RequestMapping(value="insertcart", method=RequestMethod.POST)
+	public @ResponseBody Boolean insertcart(@RequestBody CartVO vo , HttpSession session) {
 		
-		return vo;
+		ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
+		
+		if(list == null) {
+			list = new ArrayList<CartVO>();
+			list.add(vo);
+		}else{
+			list.add(vo);
+		}
+		
+		session.setAttribute("cartlist", list);
+		System.out.println("session : "+session.getAttribute("cartlist"));
+		return true;
 	}
 	
 	
