@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
+import co.yedam.cafein.store.menu.MenuServiceImpl;
+import co.yedam.cafein.store.menu.RecipeSerciveImpl;
 import co.yedam.cafein.vo.CartVO;
 import co.yedam.cafein.vo.MenuOrderVO;
+import co.yedam.cafein.vo.MenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
 import co.yedam.cafein.vo.OrdersVO;
+import co.yedam.cafein.vo.RecipeVO;
 import co.yedam.cafein.vo.StoreVO;
 
 @Controller
@@ -27,7 +31,11 @@ public class CustomerOrderController {
 	
 	@Autowired
 	CustomerOrderServiceImpl service;
-	
+	@Autowired
+	MenuServiceImpl service2;
+	@Autowired
+	RecipeSerciveImpl service3;
+
 	
 	// 주문으로 넘어가는 부분
 	  @RequestMapping(value="/customerorder",method=RequestMethod.POST) 
@@ -71,28 +79,31 @@ public class CustomerOrderController {
 		return "customer/orderdetails";
 	}
 	//고객장바구니 관리
-	@RequestMapping("cartmng.do")
-	public String cartmng() {
-		return "customer/cartmng";
-	}
+	/*
+	 * @RequestMapping(cartmng.do) 
+	 * public String cartmng() { return "customer/cartmng"; }
+	 */
 	
-	
-	@RequestMapping(value="insertcart", method=RequestMethod.POST)
-	public @ResponseBody Boolean insertcart(@RequestBody CartVO vo , HttpSession session) {
+	@RequestMapping(value="cartmng",method=RequestMethod.GET)
+	public ModelAndView cartmng(ModelAndView mv, HttpSession session) {
+		//getSession CartVO를 꺼내고 
+		//Mapper Query 돌아서 나머지 상세정보들을 들고와서 cartmng.jsp 보낸다
+		MenuVO vo = new MenuVO();
+		RecipeVO vo2 = new RecipeVO();
 		
+		mv.addObject("storemenu",service2.getMenuList(vo));
+		mv.addObject("storerecipe",service3.getRecipeDetailList(vo2));
 		ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
-		
-		if(list == null) {
-			list = new ArrayList<CartVO>();
-			list.add(vo);
-		}else{
-			list.add(vo);
+		for(int i = 0;i<list.size();i++) {
+			System.out.println(list.get(i).toString());
 		}
 		
-		session.setAttribute("cartlist", list);
-		System.out.println("session : "+session.getAttribute("cartlist"));
-		return true;
+		mv.setViewName("customer/cartmng");
+		return mv;
 	}
+	
+	
+	
 	
 	
 	
