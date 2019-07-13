@@ -13,6 +13,7 @@
 //test로 넘어오는값 임시로 넣은 json문장,
 var jsonString='[{"sId":"SH001","mNum":"ME001","qty":"1","hotice_option":"CAIC","mPrice":"4000","caNumList":"[{"":"","":""}]"},{"sId":"SH001","mNum":"ME002","qty":"2","hotice_option":"CAHT","mPrice":"4500","caNumList":"[{"":"","":""}]"}]';
 
+
 </script>
 </head>
 <body>
