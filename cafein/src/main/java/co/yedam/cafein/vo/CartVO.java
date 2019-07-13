@@ -10,7 +10,23 @@ public class CartVO {
 	private int qty;
 	private String hotice_option;
 	private int mPrice;
+	private String mName;
+	private String cId;
 	
+	
+	
+	public String getmName() {
+		return mName;
+	}
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+	public String getcId() {
+		return cId;
+	}
+	public void setcId(String cId) {
+		this.cId = cId;
+	}
 	public String getsId() {
 		return sId;
 	}
@@ -54,11 +70,8 @@ public class CartVO {
 	@Override
 	public String toString() {
 		return "CartVO [sId=" + sId + ", mNum=" + mNum + ", cuNumList=" + Arrays.toString(cuNumList) + ", qty=" + qty
-				+ ", hotice_option=" + hotice_option + ", mPrice=" + mPrice + "]";
+				+ ", hotice_option=" + hotice_option + ", mPrice=" + mPrice + ", mName=" + mName + ", cId=" + cId + "]";
 	}
-	
 
 
-
-	
 }

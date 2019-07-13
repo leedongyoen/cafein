@@ -129,7 +129,7 @@
 				<div class="modal-footer">	
 					<input type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" value="나만의 메뉴 등록" >
 					<button type="submit"  class="btn btn-outline-primary" >주문</button>	
-					<button type="button" id="cart" class="btn btn-outline-primary" >담기</button>			
+					<button type="button" id="cartbtn" class="btn btn-outline-primary" >담기</button>			
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 				</form>
@@ -563,12 +563,14 @@
 
 $(function(){
 
-	// 로그인시에만 나만의 메뉴 등록 가능하게
+	// 로그인시에만 나만의 메뉴 등록 가능하게 
 	mymenu_login_check = "<%= (String)session.getAttribute("cId") %>";
 	if(mymenu_login_check == "null" || mymenu_login_check == ""){
 		$("#mymenuInsertbtn").hide();
+		$("#cartbtn").hide();
 	}else{
 		$("#mymenuInsertbtn").show();
+		$("#cartbtn").show();
 	}
 	
 	// 커피 메뉴 선택시 모달창
@@ -680,7 +682,7 @@ $(function(){
 		
 	});
 	
-	$("#cart").on("click",function(){
+	$("#cartbtn").on("click",function(){
 		var list =  $("#menudetailForm").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
@@ -695,21 +697,24 @@ $(function(){
 			list.cuNumList = null;
 		}
 		list.qty = $('#ordernum').html();
-		console.log("cart : "+list);
-		$.ajax({
-			url: 'insertcart',
-			type : 'POST',
-			contentType : 'application/json;charrset=utf-8',
-			dataType : 'json',
-			data : JSON.stringify(list),
-			success : function(data) {
-				console.log(data);
+		
 
-			},
-			error : function(request,status,error) {
-				alert(JSON.stringify(request,status,error));
-			}
-		});
+		var local_cart = localStorage.getItem("cartlist");
+		if(local_cart == null){
+			local_cart = new Array();
+		}
+		
+		console.log(local_cart);
+		
+		var insert_session = new Array();
+		insert_session.push(local_cart);
+		insert_session.push(JSON.stringify(list));
+		
+		console.log("insert_session : "+insert_session);
+		
+		localStorage.setItem("cartlist",insert_session);
+		console.log("localStorage : "+localStorage.getItem("cartlist"));
+
 	});
 	
 	
