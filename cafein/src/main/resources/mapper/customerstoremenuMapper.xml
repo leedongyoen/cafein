@@ -33,7 +33,6 @@
 	
 	<select id="getSearchStore" resultType="store" resultMap="storeMap">
 		SELECT S_ID
-				,S_PW
 				,S_NAME
 				,S_ADD
 				,S_TEL

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class MyMenuVO {
 	
-	private String myNum;
+	private int myNum;
 	private String cId;
 	private String mNum;
 	private String cuNum;
@@ -62,10 +62,10 @@ public class MyMenuVO {
 	public void setCuNumList(String[] cuNumList) {
 		this.cuNumList = cuNumList;
 	}
-	public String getMyNum() {
+	public int getMyNum() {
 		return myNum;
 	}
-	public void setMyNum(String myNum) {
+	public void setMyNum(int myNum) {
 		this.myNum = myNum;
 	}
 	public String getcId() {

@@ -28,10 +28,7 @@ public class StoreListMenuDAO {
 	public List<StoreVO> getSearchStoreList(StoreVO vo){
 		return template.selectList("StoremenuDAO.getStoreList", vo);
 	}
-	
-	public StoreVO getSearchStore(StoreVO vo){
-		return template.selectOne("StoremenuDAO.getSearchStore",vo);
-	}
+
 	
 	public ReserveVO getReserve(ReserveVO vo) {
 		return template.selectOne("StoremenuDAO.getReserve",vo);

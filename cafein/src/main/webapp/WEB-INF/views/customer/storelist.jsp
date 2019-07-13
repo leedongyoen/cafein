@@ -100,7 +100,7 @@
 							</tr>
 							<tr>
 								<th>PRICE</th>
-								<td><input type="text" id="price" name="price" readonly="readonly">&nbsp;&nbsp;
+								<td><input type="text" id="price" name="mPrice" readonly="readonly">&nbsp;&nbsp;
 									<button type="button" onclick="add(1)">+</button> <span id="ordernum">1</span>
 									<button type="button" onclick="add(-1)">-</button>
 								</td>
@@ -129,7 +129,7 @@
 				<div class="modal-footer">	
 					<input type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" value="나만의 메뉴 등록" >
 					<button type="submit"  class="btn btn-outline-primary" >주문</button>	
-					<button type="button" class="btn btn-outline-primary" >담기</button>			
+					<button type="button" id="cart" class="btn btn-outline-primary" >담기</button>			
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 				</form>
@@ -679,6 +679,40 @@ $(function(){
 		});
 		
 	});
+	
+	$("#cart").on("click",function(){
+		var list =  $("#menudetailForm").serializeObject();
+		var selectop = [];
+		var selectoptionck=false;
+		$('[name=cuoptionlist]:checked').each(function(){
+			selectop.push($(this).val());
+			selectoptionck=true;
+		});
+		if(selectoptionck){
+			
+			list.cuNumList = selectop;
+		}else{
+			list.cuNumList = null;
+		}
+		
+		console.log(list);
+		$.ajax({
+			url: 'insertcart',
+			type : 'PUT',
+			contentType : 'application/json;charrset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify(list),
+			success : function(data) {
+				console.log(data);
+
+			},
+			error : function(request,status,error) {
+				alert(JSON.stringify(request,status,error));
+			}
+		});
+	});
+	
+	
 });
 </script>
 

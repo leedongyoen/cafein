@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
 import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.MenuVO;
 import co.yedam.cafein.vo.RecipeVO;
@@ -21,6 +22,9 @@ public class StoreListMenuController {
 	
 	@Autowired
 	StoreListMenuDAO service;
+	
+	@Autowired
+	CustomerOrderServiceImpl orderservice;
 	
 	
 		// 모든 매장 보여줌
@@ -39,7 +43,7 @@ public class StoreListMenuController {
 	  public StoreVO getstoredetail(@PathVariable("sid") String sid){
 		  StoreVO vo = new StoreVO();
 		  vo.setSid(sid);
-		  return service.getSearchStore(vo);
+		  return orderservice.getSearchStore(vo);
 	  }
 	 
 	  // 매장 메뉴 가져오기
@@ -58,18 +62,7 @@ public class StoreListMenuController {
 		  return service.getSearchStoreList(vo);
 	  }
 	  
-	  // 주문으로 넘어가는 부분
-	  @RequestMapping(value="/customerorder",method=RequestMethod.POST) 
-	  public ModelAndView customerorder(MenuOrderVO vo){ 
-		  ModelAndView mv = new ModelAndView();
-		  mv.addObject("selectmenu",vo );
-
-		  StoreVO stvo = new StoreVO();
-		  stvo.setSid(vo.getsId());
-		  mv.addObject("store",service.getSearchStore(stvo));
-		  mv.setViewName("customer/orderregi");
-		  return mv;
-	  }
+	  
 	  
 	// 고객 마일리지 가져오기. ( 매장 ID 사용 )
 	  @RequestMapping(value="/customerreserve",method=RequestMethod.GET) 

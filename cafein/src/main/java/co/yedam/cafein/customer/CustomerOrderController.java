@@ -2,17 +2,23 @@ package co.yedam.cafein.customer;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
+import co.yedam.cafein.vo.CartVO;
+import co.yedam.cafein.vo.MenuOrderVO;
+import co.yedam.cafein.vo.MyMenuVO;
 import co.yedam.cafein.vo.OrdersVO;
+import co.yedam.cafein.vo.StoreVO;
 
 @Controller
 public class CustomerOrderController {
@@ -20,10 +26,20 @@ public class CustomerOrderController {
 	@Autowired
 	CustomerOrderServiceImpl service;
 	
-	@RequestMapping("orderregi.do")
-	public String orderregi() {
-		return "customer/orderregi";
-	}
+	
+	// 주문으로 넘어가는 부분
+	  @RequestMapping(value="/customerorder",method=RequestMethod.POST) 
+	  public ModelAndView customerorder(MenuOrderVO vo){ 
+		  ModelAndView mv = new ModelAndView();
+		  mv.addObject("selectmenu",vo );
+
+		  StoreVO stvo = new StoreVO();
+		  stvo.setSid(vo.getsId());
+		  System.out.println(stvo.getSid());
+		  mv.addObject("store",service.getSearchStore(stvo));
+		  mv.setViewName("customer/orderregi");
+		  return mv;
+	  }
 	
 	//고객 주문 페이지로 이동.
 	@RequestMapping("orderlist.do")
@@ -58,6 +74,12 @@ public class CustomerOrderController {
 		return "customer/cartmng";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="insertcart", method=RequestMethod.PUT)
+	public CartVO insertcart(CartVO vo , HttpSession session) {
+		
+		return vo;
+	}
 	
 	
 	
