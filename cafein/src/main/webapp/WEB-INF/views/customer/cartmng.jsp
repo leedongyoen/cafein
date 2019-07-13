@@ -8,54 +8,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@ include file="cushead.jsp" %>
 <title>Insert title here</title>
+<script>
+
+//test로 넘어오는값 임시로 넣은 json문장,
+var jsonString='[{"sId":"SH001","mNum":"ME001","qty":"1","hotice_option":"CAIC","mPrice":"4000","caNumList":"[{"":"","":""}]"},{"sId":"SH001","mNum":"ME002","qty":"2","hotice_option":"CAHT","mPrice":"4500","caNumList":"[{"":"","":""}]"}]';
+
+</script>
 </head>
 <body>
-<h1 align="center">담기</h1>
 
-<h3 align="center">선택한 메뉴</h3>
+<h3 align="center">장바구니</h3>
 <div class = "container" align="center">
  <table class = "table">
  	<tr>
-	<th> </th>
-	<th>메뉴명</th>
-	<th>옵션</th>
-	<th>수량</th>
-	<th>가격</th>
-	<th>총가격</th>
-	</tr>
-	<tr>
-	    <td><input type="checkbox" name="cuscart" value="ORDER1"></td>
-	    <td>아메리카노</td>
-	    <td>ICE/휘핑</td>
-	    <td>1</td>
-	    <td>4600</td>
-	    <td>4600</td>
-	</tr>
-	<tr>
-		<td><input type="checkbox" name="cuscart2" value="ORDER"></td>
-	    <td>레몬에이드</td>
-	    <td>ICE</td>
-	    <td>2</td>
-	    <td>5000</td>
-	    <td>10000</td>
-	</tr>
-	<tr>
-		<td><input type="checkbox" name="cuscart3" value="ORDER"></td>
-	    <td>망고스무디</td>
-	    <td>ICE</td>
-	    <td>1</td>
-	    <td>3800</td>
-	    <td>3800</td>
-	</tr>
+ 		<th rowspan="7"><input type="checkbox"></th>
+ 		<th>매장 번호</th><td>SH001</td>
+ 	</tr>
+ 	<tr>
+ 		<th>메뉴 번호</th><td>ME001</td>
+ 	</tr>
+ 	<tr>
+ 		<th>ICE/HOT</th><td>CAIC</td>
+ 	</tr>
+ 	<tr>
+ 		<th>메뉴 가격</th><td>4000</td>
+ 	</tr>
+ 	<tr>
+ 		<th>담은 수량</th><td>1</td>
+ 	</tr>
+ 	<tr>
+ 		<th>옵션</th><td>...</td>
+ 	</tr>
+ 	<tr>
+ 		<th>총가격</th><td>4000*1</td>
+ 	</tr>
+
+
+
+ 	<tr>
+ 		<th rowspan="7"><input type="checkbox"></th>
+ 		<th>매장 번호</th><td>SH001</td>
+ 	</tr>
+ 	<tr>
+ 		<th>메뉴 번호</th><td>ME001</td>
+ 	</tr>
+ 	<tr>
+ 		<th>ICE/HOT</th><td>CAIC</td>
+ 	</tr>
+ 	<tr>
+ 		<th>메뉴 가격</th><td>4000</td>
+ 	</tr>
+ 	<tr>
+ 		<th>담은 수량</th><td>1</td>
+ 	</tr>
+ 	<tr>
+ 		<th>옵션</th><td>...</td>
+ 	</tr>
+ 	<tr>
+ 		<th>총가격</th><td>4000*1</td>
+ 	</tr>
+ 	
+ 	
+ 	 	<tr>
+ 		<th rowspan="7"><input type="checkbox"></th>
+ 		<th>매장 번호</th><td>SH001</td>
+ 	</tr>
+ 	<tr>
+ 		<th>메뉴 번호</th><td>ME001</td>
+ 	</tr>
+ 	<tr>
+ 		<th>ICE/HOT</th><td>CAIC</td>
+ 	</tr>
+ 	<tr>
+ 		<th>메뉴 가격</th><td>4000</td>
+ 	</tr>
+ 	<tr>
+ 		<th>담은 수량</th><td>1</td>
+ 	</tr>
+ 	<tr>
+ 		<th>옵션</th><td>...</td>
+ 	</tr>
+ 	<tr>
+ 		<th>총가격</th><td>4000*1</td>
+ 	</tr>
     </table>
    <div align="right" >   
 	    총가격 : 18400원
 	</div>
 	<br><br><br>
 	<div align="right" >
-		<button class="btn btn-default " onclick="location.href='cusMenu.jsp'">추가</button>
 		<button class="btn btn-default " onclick="#">삭제</button>
-	    <button class="btn btn-default " onclick="location.href='Order.jsp'">주문하기</button>
+	    <button class="btn btn-default " onclick="#">주문하기</button>
 	    <a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
 	</div>
 </div>
