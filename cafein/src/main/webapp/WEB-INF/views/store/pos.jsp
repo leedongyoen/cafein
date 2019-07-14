@@ -196,7 +196,11 @@ footerrow : true});
 	});
  	})
  	 
-
+ 
+ 	//회원 검색
+ 	$(document).on("click","#customersearch", function(){
+ 		
+ 	});
  	
 </script>
 <br><br>
@@ -255,7 +259,6 @@ footerrow : true});
  	</div>
   </div>
 
-
 <hr>
 <p></p>
 	<div style="text-align:left">
@@ -269,7 +272,47 @@ footerrow : true});
 	</div>
 	<div style="text-align:right"> 총 가격 4600원</div>
 			<div style="text-align:right">
-			<button>회원검색</button>
+			<button id="customersearch">회원검색</button>
+		<!-- 고객 검색 모달창 -->	
+			<div class="modal fade" id="cusSearchModal" role="dialog">
+		<div class="modal-dialog">
+		
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<form class="form-borizontal" id="menudetailForm" >
+				<div class="modal-body">
+						<h3 id="sName" align="center"></h3>
+						<table class="table">
+							<tr>
+								<th>이름</th>
+								<td id="sadd">
+								
+							</tr>
+							<tr>
+								<th>전화번호</th>
+								<td id="stel">
+							</tr>
+							<tr>
+								<th>등급</th>
+								<td id="deliservice">
+								</td>
+							</tr>
+							<tr>
+								<th>마일리지</th>
+								<td id="open" >
+							</tr>
+						</table>
+				</div>
+				<div class="modal-footer">	
+		
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
 			<button>현금</button>
 			<button>카드</button>
 			<button onclick="location.href='#'">결제하기</button>
