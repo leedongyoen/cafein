@@ -51,10 +51,31 @@
 		}
 		
 	}
+	
+	function inNumber(){
+        if(event.keyCode<48 || event.keyCode>57){
+           event.returnValue=false;
+        }
+    }
 
 
 	// 시재 등록 및 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#cashInsert').on("click",function(){
+		
+		// 총 현금 시재
+		totalcashSum = Number(removeCommas($('#totalcash50000').val())) + Number(removeCommas($('#totalcash10000').val())) + Number(removeCommas($('#totalcash5000').val())) 
+					+ Number(removeCommas($('#totalcash1000').val())) + Number(removeCommas($('#totalcash500').val())) + Number(removeCommas($('#totalcash100').val()));
+		
+		console.log('totalcashSum : ' + addCommas(totalcashSum));
+		
+		$('#totalCash').text(addCommas(totalcashSum)+'원');
+		
+		
+		console.log('operatingreserveSum 저장 시 (cashadvance.jsp) : ' +operatingreserveSum)
+		
+		minusCash = totalcashSum - totalcashsales;		// 차액 = 총 현금 시재 - 총 현금 매출액
+		
+		$('#difference').text(addCommas(minusCash)+'원');
 		
 		if($('.cash').val() != '') {
 
@@ -75,8 +96,10 @@
 			var jsonCashList = JSON.stringify(cashDataList);
 			// json을 이용해 string 형식으로 만들어서 session storage에 저장
 			sessionStorage.setItem("jsonCashList",jsonCashList);
+			
+			
 		}
-		
+		console.log('jsonCashList : ' + jsonCashList)
 		
 		if($('#cash50000').val() == "") {
 			alert("5만원 권수를 입력해 주세요.");
@@ -104,20 +127,7 @@
 			return;
 		}
 		
-		// 총 현금 시재
-		totalcashSum = Number(removeCommas($('#totalcash50000').val())) + Number(removeCommas($('#totalcash10000').val())) + Number(removeCommas($('#totalcash5000').val())) 
-					+ Number(removeCommas($('#totalcash1000').val())) + Number(removeCommas($('#totalcash500').val())) + Number(removeCommas($('#totalcash100').val()));
 		
-		console.log('totalcashSum : ' + addCommas(totalcashSum));
-		
-		$('#totalCash').text(addCommas(totalcashSum)+'원');
-		
-		
-		console.log('operatingreserveSum 저장 시 (cashadvance.jsp) : ' +operatingreserveSum)
-		
-		minusCash = totalcashSum - totalcashsales;		// 차액 = 총 현금 시재 - 총 현금 매출액
-		
-		$('#difference').text(addCommas(minusCash)+'원');
 
 		//console.log('input val(class) : '+$('.cash').val()+', input text(class) : '+$('.cash').text())
 		//console.log('input val(id) : '+$('#cash50000').val()+', input text(id) : '+$('#cash50000').text())
@@ -179,32 +189,32 @@
 			<table id="inputCash">
 				<tr>
 					<th>5만원 </th>
-					<td><input type="text" class="cash" id="cash50000" style="width:50px" autofocus onkeyup="call()"></td>
+					<td><input type="text" class="cash" id="cash50000" style="width:50px" autofocus onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash50000" readonly ></td>
 				</tr>
 				<tr>
 					<th>1만원 </th>
-					<td><input type="text" class="cash" id="cash10000" style="width:50px" onkeyup="call()"></td>
+					<td><input type="text" class="cash" id="cash10000" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash10000" readonly></td>
 				</tr>
 				<tr>
 					<th>5천원 </th>
-					<td><input type="text" class="cash" id="cash5000" style="width:50px" onkeyup="call()"></td>
+					<td><input type="text" class="cash" id="cash5000" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash5000" readonly></td>
 				</tr>
 				<tr>
 					<th>1천원 </th>
-					<td><input type="text" class="cash" id="cash1000" style="width:50px" onkeyup="call()"></td>
+					<td><input type="text" class="cash" id="cash1000" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash1000" readonly></td>
 				</tr>
 				<tr>
 					<th>5백원 </th>
-					<td><input type="text" class="cash" id="cash500" style="width:50px" onkeyup="call()"></td>
+					<td><input type="text" class="cash" id="cash500" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash500" readonly></td>
 				</tr>
 				<tr>
 					<th>1백원 </th>
-					<td><input type="text" class="cash" id="cash100" style="width:50px" onkeyup="call()"></td>
+					<td><input type="text" class="cash" id="cash100" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash100" readonly></td>
 				</tr>
 			</table>

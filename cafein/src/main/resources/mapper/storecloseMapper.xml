@@ -38,4 +38,19 @@
 			AND 
 			PAY_METHOD = 'CASH'
 	</select>
+	
+	<!-- 매장 재고 수량 조회 -->
+	<select id="getStockTruthList" resultType="stock">
+		SELECT ST_NUM
+			 , S_ID
+			 , ST_NAME
+			 , ST_QTY
+			 , ST_AQTY
+			 , CA_NUM
+			 , ST_STATUS
+		FROM STOCK
+		WHERE S_ID = #{sId}
+	</select>
+	
+	
 </mapper>
