@@ -39,10 +39,11 @@ public class CustomerOrderController {
 		  ModelAndView mv = new ModelAndView();
 		  mv.addObject("selectmenu",vo );
 		  System.out.println("================== 주문 내역 :"+vo);
-		  
+		  mv.addObject("option",service.getorderrecipeno(vo));
 		  mv.setViewName("customer/orderregi");
 		  return mv;
 	  }
+	  
 	
 	//고객 주문 페이지로 이동.
 	@RequestMapping("orderlist.do")
