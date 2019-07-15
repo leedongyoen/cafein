@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>매장POS</title>
 <style type="text/css">
-
+   
 .left {
   position:absolute;
   width:600px;
