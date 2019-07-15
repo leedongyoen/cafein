@@ -70,7 +70,7 @@ input {
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				console.log(data);
-				if(data.stdeliservice = 'Y')
+				
 					
 			}
 		}); 
