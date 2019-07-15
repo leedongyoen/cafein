@@ -16,8 +16,8 @@ public class WarehousingVO {
 	private String stName;
 	private int stLoss;
 	
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	
 	public String getWareNum() {
 		return wareNum;
@@ -77,21 +77,19 @@ public class WarehousingVO {
 		this.stName = stName;
 	}
 	
-	
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-
-
+	
 	@Override
 	public String toString() {
 		return "WarehousingVO [wareNum=" + wareNum + ", wareDate=" + wareDate + ", wareQty=" + wareQty + ", warePrice="

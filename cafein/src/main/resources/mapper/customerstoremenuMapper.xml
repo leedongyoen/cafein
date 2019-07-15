@@ -25,6 +25,7 @@
 				, ST_DELI_SERVICE
 		FROM STORE
 		WHERE ST_APP_STAT = 'Y'
+			AND TO_CHAR(SYSDATE,'HH24:MI') BETWEEN ST_OPEN_TIME AND ST_CLOSE_TIME
 		<if test="sadd != null and sadd !='' ">
 			AND S_ADD like #{sadd} || '%'
 		</if>
@@ -53,6 +54,7 @@
 		<result column="m_stat" property="mStat"/>
 		<result column="s_id" property="sId"/>
 		<result column="menusale" property="menuSale"/>
+		<result column="UPLOADFILE" property="uploadFileName" />
 	</resultMap>
 	
 	<select id="getMenuList" parameterType="menu" resultType="menu" resultMap="menuMap">
@@ -62,6 +64,7 @@
 				, CA_NUM
 				, M_STAT
 				, MENUSALE
+				, UPLOADFILE
 		FROM MENU
 		WHERE S_ID = #{sId}
 				AND MENUSALE = 'Y'
@@ -100,6 +103,15 @@
 		FROM MENU
 		WHERE M_NUM= #{mNum}
 		      AND S_ID= #{sId}
+	
+	</select>
+	
+	<select id="getstoredetail" resultType="int">
+	
+		SELECT count(*)
+		FROM STORE
+		WHERE S_ID='SH001'
+   			 AND TO_CHAR(SYSDATE,'HH24') BETWEEN TO_NUMBER(SUBSTR(ST_OPEN_TIME,1,2))+1 AND TO_NUMBER(SUBSTR(ST_CLOSE_TIME,1,2))-1
 	
 	</select>
 

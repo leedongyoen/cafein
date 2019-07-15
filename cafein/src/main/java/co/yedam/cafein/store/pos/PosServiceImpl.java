@@ -1,11 +1,14 @@
 package co.yedam.cafein.store.pos;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
 import co.yedam.cafein.viewvo.ViewPosVO;
 import co.yedam.cafein.vo.RecipeVO;
 
@@ -25,4 +28,13 @@ public class PosServiceImpl implements PosService{
 		System.out.println(vo.getmNum());
 		return DAO.getOptionList(vo);
 	}
+	
+	public List<ViewPosCusSearchVO> getCusList(ViewPosCusSearchVO vo) {
+		return DAO.getCusList(vo);
+	}
+
+	/*
+	 * public List<BoardVO> getBoardList(BoardVO vo) { return
+	 * boardDAO.getBoardList(vo); }
+	 */
 }

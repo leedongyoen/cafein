@@ -58,7 +58,13 @@
 		<table class="table text-center">
 			<thead>
 				<tr>
-					<th>입출고 번호</th><th>입출고 날짜</th><th>입출고 수량</th><th>입출고 가격</th><th>재고 번호</th><th>매장 명</th><th>결제 방식</th>
+					<th>입출고 번호</th>
+					<th>입출고 날짜</th
+					><th>입출고 수량</th>
+					<th>입출고 가격</th>
+					<th>재고 번호</th>
+					<th>매장 명</th>
+					<th>결제 방식</th>
 				</tr>
 			</thead>
 			<tbody></tbody>

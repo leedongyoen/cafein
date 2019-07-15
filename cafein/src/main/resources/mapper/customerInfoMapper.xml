@@ -7,11 +7,25 @@
 
 <!-- 	단건 회원조회 -->
 	<select id="getCustomer" parameterType="customer" resultType="customer">
-		SELECT C_ID, C_NICK, C_NAME, C_TEL, C_PW, C_ADD, DOB
+		SELECT C_ID, C_NICK, C_NAME, C_TEL, C_PW, C_ADD, DOB, C_JOIN, C_ADD2, C_ADD3
 		FROM CUSTOMER
-		WHERE C_ID = #{cId}
+		
+		<if test="cJoin == 'naver' ">
+			WHERE C_ID like #{cId} || '%'
+		</if>
+		<if test="cJoin != 'naver' ">
+			WHERE C_ID = #{cId}
+		</if>
+		
+		
+		
 	</select>
 
+	
+	
+	
+	
+	
 <!-- 	수정 -->
 	<update id="infoedit" parameterType="customer">
 		update customer set

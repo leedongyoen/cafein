@@ -72,7 +72,7 @@ body {
                 	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogout.do" id="logoutbtn" style="display: none;">Logout</a>
                 </li>                
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/cartmng.do">장바구니</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/cartmng">장바구니</a>
                 </li>
         </ul>
     </div>

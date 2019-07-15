@@ -11,7 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-<style type="text/css">
+<style type="text/css">  
 body {
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -138,7 +138,6 @@ to {
 	transform: scale(1)
 }
 
-}
 
 /* The Close Button */
 .close {
@@ -163,7 +162,7 @@ to {
 <body>
 	<h1 align="center">나만의 메뉴</h1>
 	<hr>
-	<br>
+	<br>	
 	<div class="container">
 		<div id="play" align="right">
 
@@ -174,11 +173,7 @@ to {
 			<div id="somediv" title="" style="display: none;">
 				<div id="thedialog"></div>
 			</div>
-			
-			
-			
 
-			
 		</div>
 		<table class="table text-center">
 

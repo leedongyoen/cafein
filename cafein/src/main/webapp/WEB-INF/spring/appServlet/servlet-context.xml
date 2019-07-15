@@ -39,4 +39,9 @@
 	<beans:bean id="naverLoginVO"
 		class="co.yedam.cafein.vo.NaverLoginVO" />
 
+	
+	<!-- 파일 업로드 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10000000"></beans:property>
+	</beans:bean>
 </beans:beans>

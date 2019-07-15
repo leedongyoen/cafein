@@ -53,13 +53,15 @@ $(function(){
 		var mCate = td.eq(3).text();
 		var saleState = td.eq(4).text();
 		var menuState = td.eq(5).text();
+		var menuImg = td.eq(6).text();
 		
 		if(mCate=='CACO'){mCate="CACO";}
 		else if(mCate=='CADR'){mCate="CADR";}
 		else if(mCate=='CADE'){mCate="CADE";}
 		else if(mCate=='CAOP'){mCate="CAOP";}
-		console.log("sale : "+saleState);
-		console.log("menu : "+menuState);
+		
+		var imgurl = "${pageContext.request.contextPath}/image/"+menuImg;
+		
 		$("#mNum").val(mNum);
 		$("#mName").val(mName);
 		$("#mPrice").val(mPrice);
@@ -68,7 +70,10 @@ $(function(){
 		$("input:radio[id=salestate]:input[value='"+saleState+"']").attr("checked", true);
 		$('input[id="menustate"]').removeAttr('checked');
 		$("input:radio[id=menustate]:input[value='"+menuState+"']").attr("checked", true);
+		$("#menuImg").attr("src",imgurl);
 		
+		$("#fileupdateName").val(mNum);
+	
 		
 		$.ajax({
 			url:'recipes/'+storeid+'/'+mNum,
@@ -560,7 +565,7 @@ function optionDelete(){
 			<div class = "container" style="width:100%">
 				
 				<form action="#">
-					<table border="1" id="menuTable" class = "table table-hover" >
+					<table border="1" id="menuTable" class = "table table-hover" style="width:100%" >
 						<thead class = "thead-dark">
 							<tr>
 								<th>메뉴 번호</th>
@@ -584,7 +589,7 @@ function optionDelete(){
 									<td>${menu.caNum}</td>
 									<td>${menu.mStat}</td>
 									<td>${menu.menuSale}</td>
-									
+									<td style="display:none;">${menu.uploadFileName}</td>
 								</tr>
 
 							</c:forEach>
@@ -605,8 +610,7 @@ function optionDelete(){
 				id="insertMenuFormTable">
 				<h3>[메뉴 추가]</h3>
 
-				<form id="insertmenudetail" enctype="multipart/form-data"
-					method="post">
+				<form id="insertmenudetail" encType="multipart/form-data" method="post">
 					<table border="1" class = "table">
 
 
@@ -632,7 +636,7 @@ function optionDelete(){
 						<tr>
 							<th>메뉴 사진</th>
 
-							<td><input type="file" value="사진 선택" name="uploadFile" />
+							<td>
 						</tr>
 						
 					</table>
@@ -641,12 +645,17 @@ function optionDelete(){
 					<input type="hidden" id="sId" name="sId" value="SH001"> <input
 						type="button" value="등록" id="btnInsert">
 				</form>
+				
+				
+				
 			</div>
 <!-- 메뉴 상세조회&수정 -->
 			<div style="width: 100%;" id="toggleTable">
-				<h3>[메뉴 상세 조회/수정]</h3>
 
 				<form id="menudetail">
+					<input type="button" value="확정" id="btnUpdate"> 
+					<input type="button" value="삭제" id="btnMenuDelete" onclick="menuDelete()">
+					<input type="hidden" id="sId" name="sId" value="SH001"> 
 					<table border="1" class="table table-hover">
 
 
@@ -689,24 +698,50 @@ function optionDelete(){
 
 						</tr>
 						<tr>
-							<th>메뉴 사진</th>
-							<td><form id="fileForm" action="/imgUpload.do"
+							<th rowspan="2">메뉴 사진</th>
+							<td>
+							
+							<!-- <form id="fileForm" action="/imgUpload.do"
 									enctype="multipart/form-data">
 
-									<!-- form에 두껍게 처리 된 부분은 ajaxForm에서 설정해주어도 괜찮지만 여기에 이렇게 명시해주어도 괜찮다 -->
+									form에 두껍게 처리 된 부분은 ajaxForm에서 설정해주어도 괜찮지만 여기에 이렇게 명시해주어도 괜찮다
 
 									<input type="file" name="testFile" id="testFile" />
 
-								</form></td>
+								</form>
+ -->								<img id="menuImg" style="width:200px; height:200px;">
+							</td>
+							</form>
+							
 						</tr>
+						
+							<tr>
+							
+								
+							
+							<form action="imgUpdate.do" encType="multipart/form-data" method="post">
+							<td>
+							<input id = "fileupdateName" type="hidden" name="mNum">
+								<input type="file" name="uploadFile" />
+								<input type="submit" value="사진제출">
+							</td>
+							</form>
+							
+							</tr>
+						
+						
 					</table>
 					<!-- hidden 으로 sId 넘기기 -->
 
-					<input type="hidden" id="sId" name="sId" value="SH001"> <input
-						type="button" value="확정" id="btnUpdate"> <input
-						type="button" value="삭제" id="btnMenuDelete" onclick="menuDelete()">
-					<input type="button" value="취소" id="btnCancle">
-				</form>
+					
+
+				
+				
+				
+				
+				
+				
+				
 			</div>
 			<!-- 레시피 CRUD-->
 		<div style="float: left;width: 100%;" >

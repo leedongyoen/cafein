@@ -10,6 +10,12 @@
 <script>
 
 	var i, sum;
+	
+	function inNumber(){
+        if(event.keyCode<48 || event.keyCode>57){
+           event.returnValue=false;
+        }
+    }
 
 	// 추가 지출 추가 (빈칸 입력 시 alert 창 띄우기) --------------------------------------------------
 	$('#addbtn').on("click",function(){
@@ -155,7 +161,12 @@
 		$('#backbtn').attr('disabled',true);
 		$('.delbtn').attr('disabled',true);
 		$('.delbtn').attr('value','삭제불가');
-		
+		$('#stName').attr('readonly',true);
+		$('#wareQty').attr('readonly',true);
+		$('#warePrice').attr('readonly',true);
+		$("input[name=stPayMethod]").attr('disabled',true); 
+
+
 	})
 	
 	// 수정 버튼 클릭 시 실행 ------------------------------------------------------------------------------
@@ -166,6 +177,10 @@
 		$('#backbtn').attr('disabled',false);
 		$('.delbtn').attr('disabled',false);
 		$('.delbtn').attr('value','삭제');
+		$('#stName').attr('readonly',false);
+		$('#wareQty').attr('readonly',false);
+		$('#warePrice').attr('readonly',false);
+		$("input[name=stPayMethod]").attr('disabled',false); 
 	})
 	
 
@@ -207,13 +222,13 @@
 					<th>수량</th>
 				</tr>
 				<tr>
-					<td><input type="text" id="wareQty" numberOnly></td>
+					<td><input type="text" id="wareQty"  onkeypress="inNumber()"></td>
 				</tr>
 				<tr>
 					<th>가격</th>
 				</tr>
 				<tr>
-					<td><input type="text" id="warePrice" numberOnly></td>
+					<td><input type="text" id="warePrice"  onkeypress="inNumber()" numberOnly></td>
 				</tr>
 				<tr>
 					<th>결제방식</th>

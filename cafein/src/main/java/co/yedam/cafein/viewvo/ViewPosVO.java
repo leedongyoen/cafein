@@ -10,6 +10,14 @@ public class ViewPosVO {
 	private String caNum;
 	private String opName;
 	private int opPrice;
+	private int mPrice;
+	
+	public int getmPrice() {
+		return mPrice;
+	}
+	public void setmPrice(int mPrice) {
+		this.mPrice = mPrice;
+	}
 	public String getsId() {
 		return sId;
 	}
@@ -61,7 +69,8 @@ public class ViewPosVO {
 	@Override
 	public String toString() {
 		return "ViewPosVO [sId=" + sId + ", mName=" + mName + ", stNum=" + stNum + ", mNum=" + mNum + ", stName="
-				+ stName + ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice + "]";
+				+ stName + ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice + ", mPrice=" + mPrice
+				+ "]";
 	}
 	
 	

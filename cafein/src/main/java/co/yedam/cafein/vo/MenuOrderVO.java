@@ -1,100 +1,130 @@
 package co.yedam.cafein.vo;
 
+import java.util.Arrays;
+
 public class MenuOrderVO {
-	   private String sId;
-	   private String sName;
-	   private String mName;
-	   private String price;
-	   private String hotice;
-	   private String syrup;
-	   private String shot;
-	   private String whipping;
-	   private String totalPrice;
-	   private String cAdd;
-	   private String stDeliService;
-	   private String qty;
-	   
-	   
-	   
-	   public String getQty() {
-		return qty;
+
+
+	private String cId;
+	private String mNum;
+	private String cuNum;
+	private String[] cuoptionlist; // 옵션 저장.
+	private String caNum;
+	private String recipeno;
+	
+	// java에서 필요한 부분
+	private String sId;
+	private String hotice_option;
+	private String stNum;
+	private String sName;
+	private String mPrice;
+	private String mName;
+	private String orderqty;
+	private String totalPrice;
+	
+	
+	
+	
+	public String getmName() {
+		return mName;
 	}
-	public void setQty(String qty) {
-		this.qty = qty;
+	public void setmName(String mName) {
+		this.mName = mName;
 	}
-	public String getcAdd() {
-	      return cAdd;
-	   }
-	   public void setcAdd(String cAdd) {
-	      this.cAdd = cAdd;
-	   }
-	   public String getStDeliService() {
-	      return stDeliService;
-	   }
-	   public void setStDeliService(String stDeliService) {
-	      this.stDeliService = stDeliService;
-	   }
-	   public String getsId() {
-	      return sId;
-	   }
-	   public void setsId(String sId) {
-	      this.sId = sId;
-	   }
-	   public String getsName() {
-	      return sName;
-	   }
-	   public void setsName(String sName) {
-	      this.sName = sName;
-	   }
-	   public String getmName() {
-	      return mName;
-	   }
-	   public void setmName(String mName) {
-	      this.mName = mName;
-	   }
-	   public String getPrice() {
-	      return price;
-	   }
-	   public void setPrice(String price) {
-	      this.price = price;
-	   }
-	   public String getHotice() {
-	      return hotice;
-	   }
-	   public void setHotice(String hotice) {
-	      this.hotice = hotice;
-	   }
-	   public String getSyrup() {
-	      return syrup;
-	   }
-	   public void setSyrup(String syrup) {
-	      this.syrup = syrup;
-	   }
-	   public String getShot() {
-	      return shot;
-	   }
-	   public void setShot(String shot) {
-	      this.shot = shot;
-	   }
-	   public String getWhipping() {
-	      return whipping;
-	   }
-	   public void setWhipping(String whipping) {
-	      this.whipping = whipping;
-	   }
-	   public String getTotalPrice() {
-	      return totalPrice;
-	   }
-	   public void setTotalPrice(String totalPrice) {
-	      this.totalPrice = totalPrice;
-	   }
+	public String getmPrice() {
+		return mPrice;
+	}
+	public void setmPrice(String mPrice) {
+		this.mPrice = mPrice;
+	}
+	public String getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(String totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+	
+	
+
+	public String getOrderqty() {
+		return orderqty;
+	}
+	public void setOrderqty(String orderqty) {
+		this.orderqty = orderqty;
+	}
+	public String getsName() {
+		return sName;
+	}
+	public void setsName(String sName) {
+		this.sName = sName;
+	}
+	
+	public String getcId() {
+		return cId;
+	}
+	public void setcId(String cId) {
+		this.cId = cId;
+	}
+	public String getmNum() {
+		return mNum;
+	}
+	public void setmNum(String mNum) {
+		this.mNum = mNum;
+	}
+	public String getCuNum() {
+		return cuNum;
+	}
+	public void setCuNum(String cuNum) {
+		this.cuNum = cuNum;
+	}
+
+
+	public String[] getCuoptionlist() {
+		return cuoptionlist;
+	}
+	public void setCuoptionlist(String[] cuoptionlist) {
+		this.cuoptionlist = cuoptionlist;
+	}
+	public String getCaNum() {
+		return caNum;
+	}
+	public void setCaNum(String caNum) {
+		this.caNum = caNum;
+	}
+	public String getRecipeno() {
+		return recipeno;
+	}
+	public void setRecipeno(String recipeno) {
+		this.recipeno = recipeno;
+	}
+
+	public String getsId() {
+		return sId;
+	}
+	public void setsId(String sId) {
+		this.sId = sId;
+	}
+	
+	public String getHotice_option() {
+		return hotice_option;
+	}
+	public void setHotice_option(String hotice_option) {
+		this.hotice_option = hotice_option;
+	}
+	public String getStNum() {
+		return stNum;
+	}
+	public void setStNum(String stNum) {
+		this.stNum = stNum;
+	}
 	@Override
 	public String toString() {
-		return "MenuOrderVO [sId=" + sId + ", sName=" + sName + ", mName=" + mName + ", price=" + price + ", hotice="
-				+ hotice + ", syrup=" + syrup + ", shot=" + shot + ", whipping=" + whipping + ", totalPrice="
-				+ totalPrice + ", cAdd=" + cAdd + ", stDeliService=" + stDeliService + ", qty=" + qty + "]";
+		return "MenuOrderVO [cId=" + cId + ", mNum=" + mNum + ", cuNum=" + cuNum + ", cuoptionlist="
+				+ Arrays.toString(cuoptionlist) + ", caNum=" + caNum + ", recipeno=" + recipeno + ", sId=" + sId
+				+ ", hotice_option=" + hotice_option + ", stNum=" + stNum + ", sName=" + sName + ", mPrice=" + mPrice
+				+ ", mName=" + mName + ", orderqty=" + orderqty + ", totalPrice=" + totalPrice + "]";
 	}
 
 
-	   
+	
 }
