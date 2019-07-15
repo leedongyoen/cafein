@@ -10,6 +10,11 @@
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
 
 <title>Insert title here</title>
+<style type="text/css">
+input {
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
+}
+</style>
 </head>
 <body>
 <br>
@@ -83,11 +88,13 @@
 					<h5 class="modal-title">메뉴</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-				<form class="form-borizontal" id="menudetailForm" action="${pageContext.request.contextPath}/customerorder" method="POST">
+				<form class="form-borizontal" id="menudetailForm" name="menudetailForm" action="customerorder" method="POST">
 				<div class="modal-body">
 						<input type="text" name="mNum" style="display: none;" >
 						<input type="text" name="sId" style="display: none;" >
 						<input type="text" name="cId" style="display: none;" >
+						<input type="text" name="orderqty" style="display: none;">
+						
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
@@ -128,7 +135,7 @@
 				</div>
 				<div class="modal-footer">	
 					<input type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" value="나만의 메뉴 등록" >
-					<button type="submit"  class="btn btn-outline-primary" >주문</button>	
+					<button type="button" id="cu_orderbtn"  class="btn btn-outline-primary" >주문</button>	
 					<button type="button" id="cartbtn" class="btn btn-outline-primary" >담기</button>			
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
@@ -237,15 +244,17 @@
 	}	
 	
 	function menuListResult(data) {
+		//var imgurl ="${pageContext.request.contextPath}/image/";
 		$('#storelistmodal').modal('hide');
 		$("#coffeetable tbody").empty();
 		$("#beveragetable tbody").empty();
 		$("#bakerytable tbody").empty();
 		$.each(data,function(idx,item){
+			
 			// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
 			if(item.caNum == "CACO" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")//.addClass("openmodal")
-				.append($('<td>').html(""))
+				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
 				.append($('<td>').html(item.mName))
 				.append($('<td>').html(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
@@ -253,20 +262,21 @@
 			}
 			else if(item.caNum == "CADR" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")
-				.append($('<td>').html(""))
+				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
 				.append($('<td>').html(item.mName))
 				.append($('<td>').html(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#beveragetable tbody');
 			}else if(item.caNum == "CADE" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")
-				.append($('<td>').html(""))
+				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
 				.append($('<td>').html(item.mName))
 				.append($('<td>').html(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#bakerytable tbody');
 			}
 		});
+		
 	}
 	
     // 거리 계산을 위하여
@@ -702,19 +712,61 @@ $(function(){
 		var local_cart = localStorage.getItem("cartlist");
 		if(local_cart == null){
 			local_cart = new Array();
+		}else {
+			
+			local_cart = JSON.parse(local_cart);
+			
 		}
 		
 		console.log(local_cart);
 		
-		var insert_session = new Array();
-		insert_session.push(local_cart);
-		insert_session.push(JSON.stringify(list));
+//		var insert_session = new Array();
+//		insert_session.push(local_cart);
+//		insert_session.push(JSON.stringify(list));
+		local_cart.push(list);
+//	console.log("insert_session : "+insert_session);
 		
-		console.log("insert_session : "+insert_session);
-		
-		localStorage.setItem("cartlist",insert_session);
+//localStorage.setItem("cartlist",insert_session);
+		localStorage.setItem("cartlist",JSON.stringify(local_cart));
 		console.log("localStorage : "+localStorage.getItem("cartlist"));
 
+	});
+	
+	$("#cu_orderbtn").on("click",function(){
+		var list =  $("#menudetailForm").serializeObject();
+		var selectop = [];
+		var selectoptionck=false;
+		$('[name=cuoptionlist]:checked').each(function(){
+			selectop.push($(this).val());
+			selectoptionck=true;
+		});
+		if(selectoptionck){
+			
+			list.cuNumList = selectop;
+		}else{
+			list.cuNumList = null;
+		}
+		
+		$('[name=orderqty]').val($('#ordernum').html());
+		console.log(JSON.stringify(list));
+		
+		document.menudetailForm.submit();
+		
+		/* 
+		$.ajax({
+			url : 'customerorder',
+			type : 'POST',
+			contentType : 'application/json;charrset=utf-8',
+			data : JSON.stringify(list),
+			success : function(data) {
+				console.log(data);
+
+			},
+			error : function(request,status,error) {
+				alert(JSON.stringify(request,status,error));
+			}
+		}); */
+		
 	});
 	
 	

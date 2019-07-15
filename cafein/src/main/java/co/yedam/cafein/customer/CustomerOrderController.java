@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
+import co.yedam.cafein.store.menu.MenuServiceImpl;
+import co.yedam.cafein.store.menu.RecipeSerciveImpl;
 import co.yedam.cafein.vo.CartVO;
 import co.yedam.cafein.vo.MenuOrderVO;
+import co.yedam.cafein.vo.MenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
 import co.yedam.cafein.vo.OrdersVO;
+import co.yedam.cafein.vo.RecipeVO;
 import co.yedam.cafein.vo.StoreVO;
 
 @Controller
@@ -28,20 +32,18 @@ public class CustomerOrderController {
 	@Autowired
 	CustomerOrderServiceImpl service;
 	
-	
 	// 주문으로 넘어가는 부분
+	
 	  @RequestMapping(value="/customerorder",method=RequestMethod.POST) 
 	  public ModelAndView customerorder(MenuOrderVO vo){ 
 		  ModelAndView mv = new ModelAndView();
 		  mv.addObject("selectmenu",vo );
-
-		  StoreVO stvo = new StoreVO();
-		  stvo.setSid(vo.getsId());
-		  System.out.println(stvo.getSid());
-		  mv.addObject("store",service.getSearchStore(stvo));
+		  System.out.println("================== 주문 내역 :"+vo);
+		  mv.addObject("option",service.getorderrecipeno(vo));
 		  mv.setViewName("customer/orderregi");
 		  return mv;
 	  }
+	  
 	
 	//고객 주문 페이지로 이동.
 	@RequestMapping("orderlist.do")
@@ -71,31 +73,67 @@ public class CustomerOrderController {
 		return "customer/orderdetails";
 	}
 	//고객장바구니 관리
-	@RequestMapping("cartmng.do")
-	public String cartmng() {
-		return "customer/cartmng";
-	}
-	
-	
-	@RequestMapping(value="insertcart", method=RequestMethod.POST)
-	public @ResponseBody Boolean insertcart(@RequestBody CartVO vo , HttpSession session) {
+
+	  @RequestMapping(value="cartmng",method=RequestMethod.GET) public ModelAndView
+	  cartmng(ModelAndView mv, HttpSession session) {
+	  
+	 // ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
+	 // for(int i = 0;i<list.size();i++) {
+	 // System.out.println(list.get(i).toString()); }
+	  
+	  
+	  RecipeVO vo = new RecipeVO();
+	  mv.addObject("optionname",service.getOptionName(vo));
+	  
+	  
+	  
+	  
+	  
+		/*
+		 * ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
+		 * 
+		 * if(list == null) { list = new ArrayList<CartVO>(); list.add(vo); }else{
+		 * list.add(vo); }
+		 * 
+		 * session.setAttribute("cartlist", list);
+		 * System.out.println("session : "+session.getAttribute("cartlist"));
+		 * 
+		 */
+	  
+	  
+	  
+	  ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
+	  if(list != null) {
+		  for(int i = 0;i<list.size();i++) {
+				System.out.println("-----------------------------------"+list.get(i).toString());
+			}  
+	  }else if(list == null) {
+		  System.out.println("없음");
+	  }
+	  
+	  mv.setViewName("customer/cartmng"); return mv; }
+	 
+	  
+	  
+	/*
+	@RequestMapping(value="cartmng",method=RequestMethod.GET)
+	public ModelAndView cartmng(ModelAndView mv, HttpSession session) {
+		//getSession CartVO를 꺼내고 
+		//Mapper Query 돌아서 나머지 상세정보들을 들고와서 cartmng.jsp 보낸다
+		MenuVO vo = new MenuVO();
+		RecipeVO vo2 = new RecipeVO();
+		
 		
 		ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
-		
-		if(list == null) {
-			list = new ArrayList<CartVO>();
-			list.add(vo);
-		}else{
-			list.add(vo);
+		for(int i = 0;i<list.size();i++) {
+			System.out.println(list.get(i).toString());
 		}
 		
-		session.setAttribute("cartlist", list);
-		System.out.println("session : "+session.getAttribute("cartlist"));
-		return true;
+		mv.setViewName("customer/cartmng");
+		return mv;
 	}
 	
-	
-	
+	*/
 	
 
 }
