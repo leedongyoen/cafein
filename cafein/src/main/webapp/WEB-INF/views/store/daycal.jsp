@@ -27,7 +27,7 @@
 
 	var sId = 'SH001';			// 로그인 한 매장 아이디(세션값 받아와야함)
 	var sum, listSum=0, totalSum=0, addTotalSum=0,i;	// 합계(row별), session의 합계(row별 총 합계), db의 총 합계, operatingreserve.jsp에서 추가하는 항목의 합계
-	var addDataList, cashDataList;			// sessionStorage 가 담길 배열 x 3
+	var addDataList, cashDataList, stockTruthList;			// sessionStorage 가 담길 배열 x 3
 	var operatingreserveSum=0, orSum=0;		// 영업 준비금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
 	
 	function getoperatingreserve(){
@@ -279,7 +279,8 @@
 					.append($('<td>').append($('<input>').attr({
 						type:'text',
 						'class':'truthQty',
-						onKeyup:"this.value=this.value.replace(/[^0-9]/g,'')"
+						onKeyup:"this.value=this.value.replace(/[^0-9]/g,'')",
+						//onchange:"addClass(this)"
 					})))
 					.appendTo('#stocktruthlistTable tbody');
 					
@@ -288,7 +289,10 @@
 		});
 	}
 	
-	
+	function addClass(obj) {
+		$(this).removeClass('truthQty');
+		obj.style.backgroundColor = 'skyblue';
+	}
 	
 	
 	// 재고 실수량 확인

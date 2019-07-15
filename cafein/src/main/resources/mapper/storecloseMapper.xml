@@ -9,8 +9,8 @@
           , W.S_ID "sId"
           , UPPER(W.ST_PAY_METHOD) "stPayMethod"
           , S.ST_NAME "stName"
-      FROM WAREHOUSING W, STOCK S
-      WHERE W.ST_NUM = S.ST_NUM 
+      	FROM WAREHOUSING W, STOCK S
+     	WHERE W.ST_NUM = S.ST_NUM 
            AND 
            W.S_ID = #{sId}
            AND 
@@ -52,5 +52,26 @@
 		WHERE S_ID = #{sId}
 	</select>
 	
+	<!-- 재고입고 테이블에 insert -->
+	<insert id="warehousingInsert">
+		INSERT INTO WAREHOUSING 
+		VALUES(WARE_SEQ.NEXTVAL
+			  ,SYSDATE
+			  ,0
+			  ,0
+			  ,#{stNum}
+			  ,#{sId}
+			  ,NULL
+			  ,#{stLoss}
+			  ,NULL)
+	</insert>
+	
+	<!-- 재고 테이블에 수량 update -->
+	<update id="stockUpdate">
+		UPDATE STOCK SET 
+			  ST_QTY = #{stQty}
+			, ST_STATUS = #{stStatus}
+		WHERE ST_NUM = #{stNum}
+	</update>
 	
 </mapper>

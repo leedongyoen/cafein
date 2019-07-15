@@ -15,10 +15,19 @@
 	// 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#truthsavebtn').on("click",function(){
 		
-		if(!$('.truthQty')) {
+		/* if($(this).hasClass('truthQty')) {
+			console.log('if문 in')
 			alert('수량을 모두 입력해주세요.');
 			return;
-		}
+		} */
+		
+		// 실수량 sessionStorage에 어떻게 넣을건지 고민해보기 ---------------
+		/* if($('.truthQty').val() != '') {
+			
+			var stockList = {
+					stocktruth:$('.truthQty').val();
+			}
+		} */
 		
 		console.log('value : '+$('.truthQty').val() + ', text : ' +$('.truthQty').text() + ', length : ' + $('.truthQty').length )
 		
