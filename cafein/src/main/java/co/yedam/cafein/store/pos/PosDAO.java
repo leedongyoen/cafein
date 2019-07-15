@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
 import co.yedam.cafein.viewvo.ViewPosVO;
 import co.yedam.cafein.vo.RecipeVO;
 
@@ -22,5 +23,9 @@ public class PosDAO {
 	public List<RecipeVO> getOptionList(RecipeVO vo){
 		System.out.println("===> Mybatis getOptionList()");
 		return mybatis.selectList("PosDAO.getOptionList", vo);
+	}
+	public List<ViewPosCusSearchVO> getCusList(ViewPosCusSearchVO vo) {
+		System.out.println("===> Mybatis getCus()");
+		return mybatis.selectList("PosDAO.getCusList", vo);
 	}
 }

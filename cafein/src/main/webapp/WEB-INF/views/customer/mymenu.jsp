@@ -138,7 +138,6 @@ to {
 	transform: scale(1)
 }
 
-}
 
 /* The Close Button */
 .close {
