@@ -8,6 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp"%>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
 <title>Insert title here</title>
 <%
 
@@ -18,6 +20,11 @@
  
 
 %>
+<style type="text/css">
+input {
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
+}
+</style>
 <script type="text/javascript">
 	var price = 4100;
 	var no = 1;
@@ -27,6 +34,7 @@
 	
 	$(function(){
 		getCostomerInfo();
+		getStoreDetail();
 	});
 	
 	
@@ -50,24 +58,46 @@
 		$("input:text[name='qty']").val(no);
 	}
 	
+	// 매장 정보 가져오기
+	function getStoreDetail(){
+		var v_storeId = $("#storeid").val();
+		$.ajax({
+			url:'getstoredetail/'+v_storeId,
+			type:'GET',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				console.log(data);
+				
+					
+			}
+		}); 
+		
+	}
+	
+	
 	// 고객 주소 가져오기 위한 함수
 	function getCostomerInfo(){
 		
 		var v_storeId = $("#storeid").val();
 		console.log(v_storeId);
-/* 		$.ajax({
-			url:'customerinfo/'+checklogin,
+ 		$.ajax({
+			url:'customerinfo/',
 			type:'GET',
-			contentType:'application/json;charset=utf-8',
 			dataType:'json',
+			data: {cId: checklogin},
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				customerAdd= data.cAdd;
 				$('input:text[name="cAdd"]').val(customerAdd);
+				$('input:text[name="cAdd2"]').val(data.cAdd2);
+				$('input:text[name="cAdd3"]').val(data.cAdd3);
 			}
-		}); */
+		}); 
 		// 고객 마일리지 가져오기.
 		$.ajax({
 			url:'customerreserve',
@@ -86,11 +116,7 @@
 		
 	}
 	
-	// 새 주소로 주문
-	$("#changeAdd").on("click",function(){
-		
-	});
-	
+
 
 	
 	$(function(){
@@ -119,6 +145,19 @@
 	  		 $("input:text[name='total']").val(v_totalprice);
 
 	  	});
+		 
+		// 새 주소로 주문
+		$("#changeAdd").on("click",function(){
+			 new daum.Postcode({
+			        oncomplete: function(data) {
+			        	var addr = data.address; 
+			        	var addr2 = data.zonecode;
+			        	$('input:text[name="cAdd"]').val(addr);
+						$('input:text[name="cAdd2"]').val(addr2);		        	
+			        }
+			    }).open();
+		});
+		
 	});
 	
 	
@@ -212,11 +251,11 @@
 					<tr id="deliveryaddress">
 						<th>배 달 주 소</th>
 						<td>
-							<input type="text" name="cAdd2" > <br>
-							<input type="text" name="cAdd" style="width: 500px;">						
+							<input type="text" name="cAdd2" placeholder="우편번호" readonly="readonly" > <br>
+							<input type="text" name="cAdd" style="width: 500px;" placeholder="주소" readonly="readonly">	<br>
+							<input type="text" name="cAdd3" style="width: 500px;" placeholder="상세 주소 입력"> <br>					
 							<button type="button" onclick="getCostomerInfo()">현 주소로하기</button>
-							<button type="button" id="changeAdd" onclick="alert('새 주소로 변경되었습니다.')">새
-								주소로하기</button>
+							<button type="button" id="changeAdd" >새	주소로하기</button>
 						</td>
 					</tr>				
 				

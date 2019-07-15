@@ -1,5 +1,6 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>매장POS</title>
 <style type="text/css">
+   
 .left {
   position:absolute;
   width:600px;
@@ -21,9 +23,6 @@
   height:600px;
   border: 1px solid;
 }
-.selected{
-            background-color: skyblue;
-        }
 
 
 </style>
@@ -34,10 +33,12 @@
 var sId="SH001"; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
 var qty = 1;
+var cnt =0;
    $(document).ready(function() {
 	   $("#gridlist").jqGrid({
            colModel: [
-        	   { label: 'mNum', name:'mNum',key: true, hidden:true},
+        	   { label: 'cnt', name:'cnt', key:true, hidden:true},
+        	   { label: 'mNum', name:'mNum', hidden:true},
                { label: '메뉴명', name: 'mName',  width: 130 },
                { label: '옵션', name: 'opName', width: 150  },
                { label: '금액', name: 'Price', width: 75 ,formatter:'integer' },
@@ -60,14 +61,21 @@ var qty = 1;
            scrollrows : true, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
            gridview : true,
            footerrow:true,
-           userDataOnFooter:true
+           userDataOnFooter:true,
+           
+           cmTemplate: {sortable: false},
+           hoverrows: false,
+           autoencode: true,
+           ignoreCase: true,
+           beforeSelectRow: function () {
+               return false;
+           }
        });
 	   
    });
   
 
 
-출처: https://nabaro.tistory.com/37 [nabaro story]
 
 /*  $("#firstTable").jqGrid("setCell",rowid,"status","normal"); // 셀에 지정한 컬럼에 지정한 값 집어넣을수있음
 var buffdata = $('#testGrid').jqGrid('getDataIDs'); // 테이블에 있는 모든 데이터를 수집한다.
@@ -84,8 +92,10 @@ footerrow : true});
  
  //메뉴탭에서 매장메뉴 나오기
 
- $(document).ready(function getStoreMenuList(){
-		$.ajax({
+ $(document).ready(function(){
+	 $("#cusSearchModal").modal('hide');
+		//메뉴로드
+	 $.ajax({
 			url:'pos/'+sId,
 			type:'GET',
 			//contentType:'application/json;charset=utf-8',
@@ -95,8 +105,25 @@ footerrow : true});
 			},
 			success: posMenuListResult
 		});
+	//고객검색이벤트로드
+		$("#customerserch").on("keyup", function() {
+	 		var value = $(this).val().toLowerCase();
+	 		if (value.length>=3){
+	 		$.ajax({
+				url:'searchcuslist/',
+				data:{sId:sId,cTel:value},
+				type:'GET',
+				dataType:'json',
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success: getCus
+			});
+			
+	 		}
+	 	});
 	});	
-	
+//매장별 메뉴출력
  function posMenuListResult(data) {
 		console.log(sId);
 		console.log(data);
@@ -144,28 +171,27 @@ footerrow : true});
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
-			success: getOptionList
+			success:getOptionList
 		});
 	 jQuery("#gridlist").jqGrid('addRow', {
-
 	       rowID : mNum,          //중복되지 않게 rowid설정
-
-	       initdata : { mNum, mName, Price, qty },
-
+	       initdata : {mNum, mName, Price, qty},
 	       position :"last",           //first, last
-
 	       useDefValues : false,
-
 	       useFormatter : false,
-
-	       addRowParams : {extraparam:{}}
-
+	       addRowParams : {extraparam:{}},
+	       sortname: 'mName',
+	      	grouping:true,
+	      	groupingView : {
+	       		groupField : ['mName'],
+	       		groupColumnShow : [false],
+	       		groupText : ['<b>{0} - {1} '+mName+'</b>']
+	       	}
+	       
 	});
-
-	 
 	});
  
- //커피 옵션 나타내기
+ //메뉴 옵션 나타내기
  	function getOptionList(data){
 	 
  		var mNum = $('#hidden_mNum').val();
@@ -194,13 +220,28 @@ footerrow : true});
 	       addRowParams : {extraparam:{}}
 
 	});
- 	})
+ 	});
+ 	
+ 	
  	 
  
- 	//회원 검색
+ 	//회원검색창 띄우기
  	$(document).on("click","#customersearch", function(){
- 		
+ 		$("#cusSearchModal").modal('show');
  	});
+ 	//회원검색후 나오는 값
+ 	function getCus(data){ 
+ 		$("#customertable tbody").empty();
+ 		$.each(data, function(idx,item){
+	    	 $('<tr>')
+	          .append($('<td>').html(item.cName))
+	          .append($('<td>').html(item.cTel))
+	          .append($('<td>').html(item.mileage))
+	          .appendTo('#customertable tbody');
+	    });    
+ 	}
+ 	
+	
  	
 </script>
 <br><br>
@@ -274,42 +315,35 @@ footerrow : true});
 			<div style="text-align:right">
 			<button id="customersearch">회원검색</button>
 		<!-- 고객 검색 모달창 -->	
-			<div class="modal fade" id="cusSearchModal" role="dialog">
-		<div class="modal-dialog">
-		
+	<div class="modal fade" id="cusSearchModal" role="dialog">
+		<div class="modal-dialog">		
 			<div class="modal-content">
 				<div class="modal-header">
+					<h5 class="modal-title">CUSTOMER SEARCH</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-				<form class="form-borizontal" id="menudetailForm" >
 				<div class="modal-body">
-						<h3 id="sName" align="center"></h3>
-						<table class="table">
-							<tr>
-								<th>이름</th>
-								<td id="sadd">
-								
+					<form class="form-borizontal" action="#" method="POST">
+						<input class="form-control" id="customerserch" type="text" placeholder="Search..">
+						<div class="table-responsive">
+						<table id="customertable" class="table">
+							<thead>
+							<tr> 
+								<th>NAME</th>
+								<th>TEL</th>
+								<th>MILEAGE</th>
 							</tr>
-							<tr>
-								<th>전화번호</th>
-								<td id="stel">
-							</tr>
-							<tr>
-								<th>등급</th>
-								<td id="deliservice">
-								</td>
-							</tr>
-							<tr>
-								<th>마일리지</th>
-								<td id="open" >
-							</tr>
+							</thead>
+							<tbody id="searchTable">
+							</tbody>
 						</table>
+						</div>
+					</form>
+				
 				</div>
-				<div class="modal-footer">	
-		
+				<div class="modal-footer">		
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
-				</form>
 			</div>
 		</div>
 	</div>
