@@ -108,12 +108,13 @@
 		
 		 // 옵션 선택시
 	  	$(".checkoption").change(function(){
-	  		console.log("option in");
-	  		var v_totalprice = $("input:text[name='total']").val();
+	  		var optionprice = $("#price"+$(this).val()).val();
+	  		
+	  		var v_totalprice =  $("input:text[name='total']").val();
 	  		if($(this).is(":checked")){
-					v_totalprice = Number(v_totalprice)+500;
+					v_totalprice = Number(v_totalprice)+Number(optionprice);
 			}else{
-				v_totalprice = Number(v_totalprice)-500;
+				v_totalprice = Number(v_totalprice)-Number(optionprice);
 			}
 	  		 $("input:text[name='total']").val(v_totalprice);
 
@@ -131,10 +132,10 @@
 			<input id="storeid" value="${selectmenu.sId}" style="display: none" >
 			<table class="table">
 			
-				<tr>
+<!-- 				<tr>
 					<th>주 문 번 호</th>
 					<td>(주문코드)OR20190617001)</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<th>주 문 날 짜</th>
 					<td><%= today %></td>
@@ -154,40 +155,29 @@
 							( ICE )
 						</c:if>
 					</td>
-					<%-- <c:if test="${selectmenu.hotice eq 'CAIC'}">
-						<td>${selectmenu.mName} ( ICE )</td>
-					</c:if>
-					<c:if test="${selectmenu.hotice eq 'CAHT'}">
-						<td>${selectmenu.mName} ( HOT )</td>
-					</c:if> --%>
+
 				</tr>
 				<tr>
 					<th>옵션</th>
 					<td>				
-						<c:forEach items="${selectmenu.cuoptionlist}" var="option"> 
-							<input type="text" value="${option}">
-						
+						<c:forEach items="${option}" var="option"> 
+							<c:forEach items="${selectmenu.cuoptionlist}" var="select">
+								<c:if test="${option.stNum eq select}">
+									<c:set var="check" value="O"></c:set>
+									<input type="checkbox" class="checkoption" id="${option.recipeno}" name="optionlist" value="${option.recipeno}" checked="checked">
+									<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label><br>
+									<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}">
+								</c:if>
+								
+							</c:forEach>
+							<c:if test="${check ne 'O'}">
+								<input type="checkbox" class="checkoption" id="${option.recipeno}" name="optionlist" value="${option.recipeno}" >
+								<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label><br>
+								<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}">
+							</c:if>
+							
 						</c:forEach>
-<%-- 						<c:if test="${selectmenu.whipping eq 'Y'}">
-							<input type="checkbox" class="checkoption" name="whipping" value="Y" checked="checked">휘핑크림 추가(+500)<br>
-						</c:if>
-						<c:if test="${selectmenu.whipping ne 'Y'}">
-							<input type="checkbox" class="checkoption" name="whipping" value="Y" >휘핑크림 추가(+500)<br>
-						</c:if>
-						
-						<c:if test="${selectmenu.syrup eq 'Y'}">
-							<input type="checkbox" class="checkoption" name="syrup" value="Y" checked="checked">시럽 추가(+500)<br>
-						</c:if>
-						<c:if test="${selectmenu.syrup ne 'Y'}">
-							<input type="checkbox" class="checkoption" name="syrup" value="Y" >시럽 추가(+500)<br>
-						</c:if>
-						
-						<c:if test="${selectmenu.shot eq 'Y'}">
-							<input type="checkbox" class="checkoption" name="shot" value="Y" checked="checked">샷 추가(+500)
-						</c:if>
-						<c:if test="${selectmenu.shot ne 'Y'}">
-							<input type="checkbox" class="checkoption" name="shot" value="Y" >샷 추가(+500)
-						</c:if> --%>
+
 					 </td>
 				</tr>
 				<tr>

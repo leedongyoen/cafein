@@ -170,7 +170,22 @@
 	
 	</delete>
 		
-	
+	<select id="getorderrecipeno" resultType="recipe">
+		SELECT RECIPENO
+				, ST_NUM
+				, CA_NUM
+				, OP_NAME
+				, OP_PRICE
+		FROM RECIPE
+		WHERE M_NUM =#{mNum}
+				AND CA_NUM = 'CAOP'
+<!-- 		     	AND ST_NUM IN 
+		     	<foreach collection="cuoptionlist" open="(" close=")" separator=","
+		     				item="item">
+		     		#{item}		     	
+		     	</foreach> -->
+
+	</select>
 	
 
 </mapper>

@@ -269,6 +269,7 @@
 				.appendTo('#bakerytable tbody');
 			}
 		});
+		
 	}
 	
     // 거리 계산을 위하여
@@ -704,17 +705,22 @@ $(function(){
 		var local_cart = localStorage.getItem("cartlist");
 		if(local_cart == null){
 			local_cart = new Array();
+		}else {
+			
+			local_cart = JSON.parse(local_cart);
+			
 		}
 		
 		console.log(local_cart);
 		
-		var insert_session = new Array();
-		insert_session.push(local_cart);
-		insert_session.push(JSON.stringify(list));
+//		var insert_session = new Array();
+//		insert_session.push(local_cart);
+//		insert_session.push(JSON.stringify(list));
+		local_cart.push(list);
+//	console.log("insert_session : "+insert_session);
 		
-		console.log("insert_session : "+insert_session);
-		
-		localStorage.setItem("cartlist",insert_session);
+//localStorage.setItem("cartlist",insert_session);
+		localStorage.setItem("cartlist",JSON.stringify(local_cart));
 		console.log("localStorage : "+localStorage.getItem("cartlist"));
 
 	});

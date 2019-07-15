@@ -110,12 +110,14 @@ public class MenuController {
 	public ModelAndView boardInsert(MenuVO vo, HttpServletRequest request)
 			throws IllegalStateException, IOException {
 		// 첨부파일 업로드 처리
-			
+		
+		System.out.println(request.getSession().getServletContext().getRealPath("/"));
+		
 		MultipartFile uploadFile = vo.getUploadFile();
 		String fileName = null;
 		if (uploadFile != null && !uploadFile.isEmpty() && uploadFile.getSize() > 0) {
 			fileName = uploadFile.getOriginalFilename();
-			uploadFile.transferTo(new File(request.getSession().getServletContext().getRealPath("/") + fileName));
+			uploadFile.transferTo(new File(request.getSession().getServletContext().getRealPath("/")+"image/" + fileName));
 		}
 		// 첨부파일명 VO에 지정
 		vo.setUploadFileName(fileName);
