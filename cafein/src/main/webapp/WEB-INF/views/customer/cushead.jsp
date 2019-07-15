@@ -12,6 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="./js/json.min.js"></script>
 <script>
 	$(function(){
 		var id = "<%= (String)session.getAttribute("cId") %>";
@@ -31,16 +32,16 @@
 </script>
 <style>
 body {
-
-	padding-top: 0px;
+	
+	padding-top: 70px;
 	padding-bottom: 30px;
 }
 </style>
 </head>
-<body>
+
 <!--메뉴바 추가 부분-->
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+<nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
   <a class="navbar-brand" href="${pageContext.request.contextPath}/customermainform.do">Home</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -52,7 +53,7 @@ body {
 	  <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/customerstorelist.do">주문</a>
 
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User Name</a>
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" style="display: none;" aria-haspopup="true" aria-expanded="false">User Name</a>
         <div class="dropdown-menu" aria-labelledby="dropdown01">
         	<a class="dropdown-item" href="${pageContext.request.contextPath}/customerinfoedit.do">내 정보</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/mymenu.do">나만의 메뉴</a>
@@ -65,17 +66,17 @@ body {
         		 <li class="nav-item">
                 	<a class="nav-link" href="${pageContext.request.contextPath}/allstorelist.do">매장</a>
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogin.do" id="loginbtn">Login</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogin.do" id="loginbtn" style="display: none;">Login</a>
                 </li>                
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogout.do" id="logoutbtn">Logout</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogout.do" id="logoutbtn" style="display: none;">Logout</a>
                 </li>                
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/cartmng.do">장바구니</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/cartmng">장바구니</a>
                 </li>
         </ul>
     </div>
   </div>
 </nav>
-</body>
+
 </html>

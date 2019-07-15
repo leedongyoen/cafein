@@ -25,6 +25,7 @@
 				, ST_DELI_SERVICE
 		FROM STORE
 		WHERE ST_APP_STAT = 'Y'
+			AND TO_CHAR(SYSDATE,'HH24:MI') BETWEEN ST_OPEN_TIME AND ST_CLOSE_TIME
 		<if test="sadd != null and sadd !='' ">
 			AND S_ADD like #{sadd} || '%'
 		</if>
@@ -33,7 +34,6 @@
 	
 	<select id="getSearchStore" resultType="store" resultMap="storeMap">
 		SELECT S_ID
-				,S_PW
 				,S_NAME
 				,S_ADD
 				,S_TEL
@@ -74,6 +74,33 @@
 			FROM RESERVE
 			WHERE C_ID = #{cId}
 			      AND S_ID = #{sId}
+	
+	</select>
+	
+	<select id="getmenuoptionlist" parameterType="recipe" resultType="recipe" >
+		SELECT 	M_NUM
+				, OP_NAME
+				, ST_NUM
+				,OP_PRICE
+				, CA_NUM
+		FROM RECIPE
+		WHERE M_NUM=#{mNum} 
+				AND CA_NUM IN ('CAOP','CAIC','CAHT') 
+				AND S_ID= #{sId}
+	</select>
+	
+	<select id="getmenudetail" parameterType="menu" resultType="menu" >
+		SELECT M_NUM
+		      , M_NAME
+		      , M_PRICE
+		      , S_ID
+		      , CA_NUM
+		      , M_STAT
+		      , MENUSALE
+		      , UPLOADFILE
+		FROM MENU
+		WHERE M_NUM= #{mNum}
+		      AND S_ID= #{sId}
 	
 	</select>
 

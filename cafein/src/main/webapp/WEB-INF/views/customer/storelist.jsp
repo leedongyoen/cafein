@@ -8,7 +8,7 @@
 <%@ include file="cushead.jsp" %>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
-<script src="./js/json.min.js"></script>
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -85,11 +85,9 @@
 				</div>
 				<form class="form-borizontal" id="menudetailForm" action="${pageContext.request.contextPath}/customerorder" method="POST">
 				<div class="modal-body">
-					
+						<input type="text" name="mNum" style="display: none;" >
 						<input type="text" name="sId" style="display: none;" >
-						<input type="text" name="cAdd" style="display: none;" >
-						<input type="text" name="stDeliService" style="display: none;" >
-						<input type="text" name="qty" value="1" style="display: none;">
+						<input type="text" name="cId" style="display: none;" >
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
@@ -102,22 +100,22 @@
 							</tr>
 							<tr>
 								<th>PRICE</th>
-								<td><input type="text" id="price" name="price" readonly="readonly">&nbsp;&nbsp;
+								<td><input type="text" id="price" name="mPrice" readonly="readonly">&nbsp;&nbsp;
 									<button type="button" onclick="add(1)">+</button> <span id="ordernum">1</span>
 									<button type="button" onclick="add(-1)">-</button>
 								</td>
 								
 							</tr>
-							<tr>
+							<tr id="hoticetr">
 								<th>HOT/ICE</th>
-								<td><input type="radio" name="hotice" value="hot" checked="checked">hot
-									<input type="radio" name="hotice" value="ice">ice</td>
+								<td id="menudetailhotice"></td>
 							</tr>
-							<tr>
+							<tr id="optiontr">
 								<th>OPTION</th>
-								<td><input type="checkbox" class="checkoption" name="whipping" value="Y">휘핑크림 추가(+500)<br>
+								<td id="menudetailoption">
+									<!-- <input type="checkbox" class="checkoption" name="whipping" value="Y">휘핑크림 추가(+500)<br>
 									<input type="checkbox" class="checkoption" name="syrup" value="Y">시럽 추가(+500)<br>
-									<input type="checkbox" class="checkoption" name="shot" value="Y">샷 추가(+500)
+									<input type="checkbox" class="checkoption" name="shot" value="Y">샷 추가(+500) -->
 								</td>
 							</tr>
 							<tr>
@@ -129,9 +127,9 @@
 				
 				</div>
 				<div class="modal-footer">	
-					<button type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" >나만의 메뉴 등록</button>	
+					<input type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" value="나만의 메뉴 등록" >
 					<button type="submit"  class="btn btn-outline-primary" >주문</button>	
-					<button type="button" class="btn btn-outline-primary" >담기</button>			
+					<button type="button" id="cartbtn" class="btn btn-outline-primary" >담기</button>			
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 				</form>
@@ -213,6 +211,9 @@
 	
 	// 선택한 매장의 배달 서비스 여부
 	var storedeliservice;
+	
+	// 나만의 메뉴 등록 가능 여부를 위한 로그인 체크
+	var mymenu_login_check;
 	
 	//주소-좌표 변환 객체를 생성
     var geocoder = new daum.maps.services.Geocoder();
@@ -444,12 +445,6 @@
 		});
 	}
 	
-/* 	<th>PRICE</th>
-	<td><input type="text" id="price" name="price" readonly="readonly">&nbsp;&nbsp;
-		<button type="button" onclick="add(1)">+</button> <span id="ordernum">1개 </span>
-		<button type="button" onclick="add(-1)">-</button>
-	</td> */
-		
 	function add(num) {
 		var price = $('#price').val();
 		var v_totalprice = $('#totalPrice').val();
@@ -471,63 +466,145 @@
 		$("#ordernum").html(no);
 		$('input:text[name="qty"]').val(no);
 	}
+	
+	
+	
+	// 상세 조회 후 해당 메뉴 옵션 조회
+	function getmenuoptionlist(sid, mnum){
+		var hoticelist = [];
+		$.ajax({
+			url:'getmenuoptionlist',
+			type:'GET',
+			dataType:'json',
+			data:{ sId: sid , mNum: mnum },
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ 
+				console.log(data);
+				$("#menudetailoption").empty();
+				$("#menudetailhotice").empty();
+				if(data.length > 0){
+					$.each(data,function(idx,item){
+						
+						if( item.caNum == "CAOP" ){
+							$("<input>").attr({ 
+							     type: "checkbox",
+							     name: "cuoptionlist", 
+							     id: item.stNum,
+							     value: item.stNum,
+							   	})
+							   	.attr("class","checkoption")
+							   	.appendTo("#menudetailoption");			
+							$("<label>").attr("for",item.stNum)
+										.append(item.opName+"("+item.opPrice+"원 추가)")
+										.appendTo("#menudetailoption");
+							$("<input>").attr({
+								type:'hidden',
+								id : 'option'+item.stNum,
+								value: item.opPrice
+							}).appendTo("#menudetailoption");
+							$("<br>").appendTo("#menudetailoption");
+						}else{
+							
+							console.log(item.caNum);
+							$("<input>").attr({ 
+							     type: "radio",
+							     name: "hotice_option", 
+							     id: item.caNum,
+							     value: item.caNum,
+							     checked: true
+							   	})
+							   	.appendTo("#menudetailhotice");			
+							$("<label>").attr("for",item.caNum)
+										.append(item.opName)
+										.appendTo("#menudetailhotice");
+							/* $("<input>").attr({
+								type:'hidden',
+								id : 'option'+item.caNum,
+								value: item.opPrice
+							}).appendTo("#menudetailhotice"); */
+						}
+					});
+					
+				}else{
+					$("#hoticetr").hide();
+					$("#optiontr").hide();
+				}
+				
+				
+			}
+		});
+	}
+	
+	// 선택한 메뉴 상세 조회
+	function getmenudetail(sid,mnum){
+		$.ajax({
+			url:'getmenudetail',
+			type:'GET',
+			dataType:'json',
+			data:{ sId: sid , mNum: mnum },
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ 
+				$('input:text[name="sId"]').val(data.sId);
+				$('input:text[name="cId"]').val(mymenu_login_check);
+				$('#mName').val(data.mName);
+				$('#price').val(data.mPrice);
+				$('#totalPrice').val(data.mPrice);
+				$('#sName').val(storename);
+				$('#ordernum').text('1');
+				$('input:text[name="mNum"]').val(data.mNum);
+				getmenuoptionlist(data.sId,data.mNum);
+			}
+		});
+	}
 
 $(function(){
-/* 	//openmodal123
-	$("#openmodal123").on("click",function(){
-		$('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		console.log("in");
-		$('#menudetailModal').modal('show');
-	}); */
-	
+
+	// 로그인시에만 나만의 메뉴 등록 가능하게 
+	mymenu_login_check = "<%= (String)session.getAttribute("cId") %>";
+	if(mymenu_login_check == "null" || mymenu_login_check == ""){
+		$("#mymenuInsertbtn").hide();
+		$("#cartbtn").hide();
+	}else{
+		$("#mymenuInsertbtn").show();
+		$("#cartbtn").show();
+	}
 	
 	// 커피 메뉴 선택시 모달창
 	 $(document).on("click","#coffeetable tbody tr",function(event){
-		 $('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		$('#totalPrice').val($(this).children().eq(2).text());
-		$('#sName').val(storename);
-		$('input:text[name="sId"]').val(selectstoreid);
-		$('input:text[name="cAdd"]').val(standardsearchAddress);
-		$('input:text[name="stDeliService"]').val(storedeliservice);
+		$("#menudetailhotice").show();
+		$("#hoticetr").show();
+		$("#optiontr").show();
+		// 선택한 메뉴 상세조회 + 옵션
+		getmenudetail(selectstoreid,$(this).children().eq(3).val());
+		
 		console.log(selectstoreid);
 		 $('#menudetailModal').modal('show');
      });
 	
 	// 음료 메뉴 선택시 모달창
 	$(document).on("click","#beveragetable tbody tr",function(event){
-		 $('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		$('#totalPrice').val($(this).children().eq(2).text());
-		$('#sName').val(storename);
-		$('input:text[name="sId"]').val(selectstoreid);
-		$('input:text[name="cAdd"]').val(standardsearchAddress);
-		$('input:text[name="stDeliService"]').val(storedeliservice);
+		$("#menudetailhotice").show();
+		$("#hoticetr").show();
+		$("#optiontr").show();
+		// 선택한 메뉴 상세조회 + 옵션
+		getmenudetail(selectstoreid,$(this).children().eq(3).val());
 		 $('#menudetailModal').modal('show');
     });
 	
 	// 빵 메뉴 선택시 모달창
 	$(document).on("click","#bakerytable tbody tr",function(event){
-		 $('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		$('#totalPrice').val($(this).children().eq(2).text());
-		$('#sName').val(storename);
-		$('input:text[name="sId"]').val(selectstoreid);
-		$('input:text[name="cAdd"]').val(standardsearchAddress);
-		$('input:text[name="stDeliService"]').val(storedeliservice);
+		$("#menudetailhotice").show();
+		$("#hoticetr").show();
+		$("#optiontr").show();
+		// 선택한 메뉴 상세조회 + 옵션
+		getmenudetail(selectstoreid,$(this).children().eq(3).val());
 		 $('#menudetailModal').modal('show');
     });
 
-/* 	
-	
-	// 한 행 클릭시
-	$("#coffeetable tbody tr").on("click",function(){
-		$('#mName').val($(this).children().eq(1).text());
-		$('#price').val($(this).children().eq(2).text());
-		console.log("in");
-		$('#menudetailModal').modal('show');
-	}); */
 	
 	// 매장 선택시
 	$("#selectStore").on("click",function(){
@@ -556,23 +633,91 @@ $(function(){
 		});
 	});
 
- 	
-	 // 옵션 선택시
-  	$(".checkoption").change(function(){
+	 
+ 	// 옵션 선택시
+  	$(document).on("change",".checkoption",function(){
+  		
   		var v_totalprice = $('#totalPrice').val();
+  		var option_price = $('#option'+$(this).val()).val();
+  
   		if($(this).is(":checked")){
-				v_totalprice = Number(v_totalprice)+500;
+				v_totalprice = Number(v_totalprice)+Number(option_price);
 		}else{
-			v_totalprice = Number(v_totalprice)-500;
+			v_totalprice = Number(v_totalprice)-Number(option_price);
 		}
   		$('#totalPrice').val(v_totalprice);
   	});
-  
+ 	
 	// 나만의 메뉴 등록 시
 	$("#mymenuInsertbtn").on("click",function(){
+		var list =  $("#menudetailForm").serializeObject();
+		var selectop = [];
+		var selectoptionck=false;
+		$('[name=cuoptionlist]:checked').each(function(){
+			selectop.push($(this).val());
+			selectoptionck=true;
+		});
+		if(selectoptionck){
+			
+			list.cuNumList = selectop;
+		}else{
+			list.cuNumList = null;
+		}
 		
+		
+		$.ajax({
+			url : 'insertmymenu',
+			type : 'PUT',
+			contentType : 'application/json;charrset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify(list),
+			success : function(data) {
+				console.log(data);
+
+			},
+			error : function(request,status,error) {
+				alert(JSON.stringify(request,status,error));
+			}
+		});
 		
 	});
+	
+	$("#cartbtn").on("click",function(){
+		var list =  $("#menudetailForm").serializeObject();
+		var selectop = [];
+		var selectoptionck=false;
+		$('[name=cuoptionlist]:checked').each(function(){
+			selectop.push($(this).val());
+			selectoptionck=true;
+		});
+		if(selectoptionck){
+			
+			list.cuNumList = selectop;
+		}else{
+			list.cuNumList = null;
+		}
+		list.qty = $('#ordernum').html();
+		
+
+		var local_cart = localStorage.getItem("cartlist");
+		if(local_cart == null){
+			local_cart = new Array();
+		}
+		
+		console.log(local_cart);
+		
+		var insert_session = new Array();
+		insert_session.push(local_cart);
+		insert_session.push(JSON.stringify(list));
+		
+		console.log("insert_session : "+insert_session);
+		
+		localStorage.setItem("cartlist",insert_session);
+		console.log("localStorage : "+localStorage.getItem("cartlist"));
+
+	});
+	
+	
 });
 </script>
 

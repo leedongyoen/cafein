@@ -163,7 +163,7 @@ to {
 <body>
 	<h1 align="center">나만의 메뉴</h1>
 	<hr>
-	<br>
+	<br>	
 	<div class="container">
 		<div id="play" align="right">
 
@@ -174,11 +174,7 @@ to {
 			<div id="somediv" title="" style="display: none;">
 				<div id="thedialog"></div>
 			</div>
-			
-			
-			
 
-			
 		</div>
 		<table class="table text-center">
 

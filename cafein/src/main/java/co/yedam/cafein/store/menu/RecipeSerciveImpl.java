@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import co.yedam.cafein.store.stock.StoreStockDAO;
 import co.yedam.cafein.viewvo.ViewStockCheckVO;
 import co.yedam.cafein.vo.RecipeVO;
 import co.yedam.cafein.vo.StockVO;
@@ -24,6 +25,11 @@ public class RecipeSerciveImpl {
 		return recipeDao.getRecipeStockList(vo);
 	}
 	
+	public List<RecipeVO> getRecipeDetailList(RecipeVO vo){
+		System.out.println("=========================="+vo.getsId());
+		return recipeDao.getRecipeDetailList(vo);
+	}
+	
 	public int insertRecipe(RecipeVO vo) {
 		return recipeDao.insertRecipe(vo);
 	}
@@ -35,4 +41,14 @@ public class RecipeSerciveImpl {
 	public int insertOption(RecipeVO vo) {
 		return recipeDao.insertOption(vo);
 	}
+	
+	public int deleteOption(RecipeVO vo) {
+		return recipeDao.deleteOption(vo);
+	}
+
+	public int updateStockAqty(StockVO vo) {
+		return recipeDao.updateAqty(vo);
+		
+	}
+	
 }

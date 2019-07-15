@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.yedam.cafein.viewvo.ViewMymenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
+import co.yedam.cafein.vo.RecipeVO;
 
 public interface CusMyService {
 	
@@ -15,5 +16,9 @@ public interface CusMyService {
 	 
 	 void deleteMymenu(MyMenuVO vo);
 	 
-
+	 String getcunum();
+	 
+	 public List<MyMenuVO> getrecipelist(MyMenuVO vo);
+	 
+	 public int insertmymenu(MyMenuVO vo);
 }

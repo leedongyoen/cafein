@@ -15,7 +15,27 @@
 			  W.S_ID = #{sId}
 			  AND 
 			  TO_CHAR(W.WARE_DATE,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
-			  AND W.WARE_QTY > 0 
-			  AND W.WARE_PRICE > 0
+			  AND 
+			  W.WARE_QTY > 0 
+			  AND 
+			  W.WARE_PRICE > 0
+	</select>
+	
+	<!-- 매장 마감 시재 정산 조회 -->
+	<select id="getChasAdvance" resultType="order">
+		SELECT  S_ID
+				, TOTAL
+				, RECEIPT
+				, PAY_METHOD
+				, MILEAGE
+				, TO_CHAR(O_DATE,'YYYY-MM-DD')
+		FROM 
+			ORDERS
+		WHERE 
+			TO_CHAR(O_DATE,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+			AND 
+			S_ID = #{sId}
+			AND 
+			PAY_METHOD = 'CASH'
 	</select>
 </mapper>

@@ -6,10 +6,10 @@ public class StockVO {
 	private String sId;
 	private String stName;
 	private int stQty;
-	private int stAqty;
+	private double stAqty;
 	private int stPrice;
 	private String caNum;
-	private int stanUnit;
+	private double stanUnit;
 	private String stStatus;
 	private int truthQty;
 	
@@ -19,6 +19,18 @@ public class StockVO {
 	
 	
 	
+	public double getStAqty() {
+		return stAqty;
+	}
+	public void setStAqty(double stAqty) {
+		this.stAqty = stAqty;
+	}
+	public double getStanUnit() {
+		return stanUnit;
+	}
+	public void setStanUnit(double stanUnit) {
+		this.stanUnit = stanUnit;
+	}
 	public String getStNum() {
 		return stNum;
 	}
@@ -43,12 +55,7 @@ public class StockVO {
 	public void setStQty(int stQty) {
 		this.stQty = stQty;
 	}
-	public int getStAqty() {
-		return stAqty;
-	}
-	public void setStAqty(int stAqty) {
-		this.stAqty = stAqty;
-	}
+	
 	public int getStPrice() {
 		return stPrice;
 	}
@@ -61,12 +68,7 @@ public class StockVO {
 	public void setCaNum(String caNum) {
 		this.caNum = caNum;
 	}
-	public int getStanUnit() {
-		return stanUnit;
-	}
-	public void setStanUnit(int stanUnit) {
-		this.stanUnit = stanUnit;
-	}
+	
 	public String getStStatus() {
 		return stStatus;
 	}
