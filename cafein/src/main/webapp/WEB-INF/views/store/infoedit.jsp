@@ -190,7 +190,7 @@ function checkpwbtn(){
 	function readstoreinfo(){
 		
 		$.ajax({
-        	url : 'storeinfo/' + 'SH001',
+        	url : 'storeinfo/' + '<%=(String)session.getAttribute("sid")%>',
         	type : 'GET',
         	dataType : 'json',
         	error : function(xhr, status, msg){

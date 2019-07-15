@@ -16,6 +16,8 @@
     <script type="text/javascript">
 	$(function(){
 		warehousingList();
+		enteredList();
+		releasedList();
 	});
 	
       google.charts.load('current', {packages:['corechart','table','bar']});
@@ -68,8 +70,30 @@
 
       
 
-  
-
+		//재고 출고 리스트 요청
+	      function releasedList(){
+	    	  $.ajax({
+	    		  url:'released',
+	    		  type:'GET',
+	    		  dataType:'json',
+	    		  error:function(status,msg){
+	    			  alert(status+"메세지"+msg);
+	    		  },
+	    		  success:warehousingListResult
+	    	  });
+	    	}
+	    //재고 입고 리스트 요청
+	      function enteredList(){
+	    	  $.ajax({
+	    		  url:'entered',
+	    		  type:'GET',
+	    		  dataType:'json',
+	    		  error:function(status,msg){
+	    			  alert(status+"메세지"+msg);
+	    		  },
+	    		  success:warehousingListResult
+	    	  });
+	    	}
       //재고 입/출고 리스트 요청
       function warehousingList(){
     	  $.ajax({
@@ -85,7 +109,7 @@
       
       //입출고 리스트 뿌리기
       function warehousingListResult(data){
-    	  $("tbody").empty();
+    	  $("thead").empty();
     	  $("tbody").empty();
     	  $('<tr>')
     			.append($('<th>').html('재고 명'))
@@ -103,21 +127,46 @@
     	  })
       }
       
+	//날짜 데이터 보내기
+	function dateSearch(){    	  													
+		var startDate = jQuery('#startDate').val();
+		var endDate = jQuery('#endDate').val();
+			
+		if(startDate == '' || endDate == ''){
+			alert('날짜를 선택해 주세요.');
+			return;
+		}
+		
+		//alert(jQuery('#startDate').val());
+		//alert(jQuery('#endDate').val());
+		
+		$.ajax({
+  		  url:'dateSearch',
+  		  type:'POST',
+  		  dataType:'json',
+  		data : {startDate : startDate,
+  				endDate : endDate},
+  		  error:function(status,msg){
+  			  alert(status+"메세지"+msg);
+  		  },
+  		  success:warehousingListResult
+  	  });
+	}
     </script>
     <div id="chart_div" style="width: 900px; height: 500px;" ></div>
 	<div align="center" id="test_dataview"></div><br>
 	     <div class="btn-group">
-		<input type="button" value="입고 통계" class="btn btn-primary" id="btnEnterd">
-		<input type="button" value="출고 통계" class="btn btn-primary" id="btnReleased">
-		<input type="button" value="전체 통계" class="btn btn-primary" id="btnwarehousing">
+		<input type="button" value="입고 통계" class="btn btn-primary" id="btnEnterd" onclick="enteredList()">
+		<input type="button" value="출고 통계" class="btn btn-primary" id="btnReleased" onclick="releasedList()">
+		<input type="button" value="전체 통계" class="btn btn-primary" id="btnwarehousing" onclick="warehousingList()">
 	</div>
 	<hr>
 	<div class="btn-group">
-		<input type="date" class="btn btn-primary" id="btnStartDate">
-		<input type="date" class="btn btn-primary" id="btnEndDate">
-		<input type="button" value="검색" class="btn btn-primary" id="btnSearch">
+		<input type="date" class="btn btn-primary" id="startDate" name="startDate">
+		<input type="date" class="btn btn-primary" id="endDate" name="endDate">
+		<input type="button" value="검색" class="btn btn-primary" id="btnSearch" onclick="dateSearch()">
 	</div>
-	
+		
 </div>
 	<br>
 	<hr>
