@@ -605,8 +605,7 @@ function optionDelete(){
 				id="insertMenuFormTable">
 				<h3>[메뉴 추가]</h3>
 
-				<form id="insertmenudetail" enctype="multipart/form-data"
-					method="post">
+				<form id="insertmenudetail" encType="multipart/form-data" method="post">
 					<table border="1" class = "table">
 
 
@@ -632,7 +631,7 @@ function optionDelete(){
 						<tr>
 							<th>메뉴 사진</th>
 
-							<td><input type="file" value="사진 선택" name="uploadFile" />
+							<td>
 						</tr>
 						
 					</table>
@@ -641,6 +640,9 @@ function optionDelete(){
 					<input type="hidden" id="sId" name="sId" value="SH001"> <input
 						type="button" value="등록" id="btnInsert">
 				</form>
+				
+				
+				
 			</div>
 <!-- 메뉴 상세조회&수정 -->
 			<div style="width: 100%;" id="toggleTable">
@@ -690,14 +692,18 @@ function optionDelete(){
 						</tr>
 						<tr>
 							<th>메뉴 사진</th>
-							<td><form id="fileForm" action="/imgUpload.do"
+							<td>
+							
+							<!-- <form id="fileForm" action="/imgUpload.do"
 									enctype="multipart/form-data">
 
-									<!-- form에 두껍게 처리 된 부분은 ajaxForm에서 설정해주어도 괜찮지만 여기에 이렇게 명시해주어도 괜찮다 -->
+									form에 두껍게 처리 된 부분은 ajaxForm에서 설정해주어도 괜찮지만 여기에 이렇게 명시해주어도 괜찮다
 
 									<input type="file" name="testFile" id="testFile" />
 
-								</form></td>
+								</form>
+ -->								
+								</td>
 						</tr>
 					</table>
 					<!-- hidden 으로 sId 넘기기 -->
@@ -707,6 +713,14 @@ function optionDelete(){
 						type="button" value="삭제" id="btnMenuDelete" onclick="menuDelete()">
 					<input type="button" value="취소" id="btnCancle">
 				</form>
+				
+				<form action="imgUpdate.do" encType="multipart/form-data" method="post">
+				<h4>file 따로 테스트중</h4>
+				<input type="text" name="mNum">
+				<input type="file" name="uploadFile" />
+				<input type="submit" value="사진제출">
+				</form>
+				
 			</div>
 			<!-- 레시피 CRUD-->
 		<div style="float: left;width: 100%;" >
