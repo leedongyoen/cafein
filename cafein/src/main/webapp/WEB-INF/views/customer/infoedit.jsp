@@ -211,15 +211,18 @@ function chkPwContinuity(paramObj) {
 	}
 	
 	function readcustomerinfo(){
+		console.log('<%=(String) session.getAttribute("cJoin")%>');
+		var v_cjoin = '<%=(String) session.getAttribute("cJoin")%>';
 		$.ajax({
-			url : 'customerinfo/' + '<%=(String) session.getAttribute("cId")%>',
+			url : 'customerinfo/',
 			type : 'GET',
 			dataType : 'json',
+			data:{ cJoin: v_cjoin , cId:'<%=(String) session.getAttribute("cId")%>'},
 			error : function(xhr, status, msg) {
 				alert("상태값 :" + status + " Http에러메시지 :" + msg);
 			},
 			success : function(data) {
-				
+				console.log(data);
 				$('input:text[name="cId"]').val(data.cId);
 				$('input:text[name="cNick"]').val(data.cNick);
 				//$('input:text[name="cPw"]').val (data.cPw);

@@ -82,7 +82,7 @@ $(function(){
 				
 				$("#cmNum").val(mNum);
 				$("#cmName").val(mName);
-				
+				$("#omNum").val(mNum);
 				
 				
 				if(data.length==0){
@@ -117,6 +117,7 @@ $(function(){
 								.append($('<td>').html(data[i].opName))
 								.append($('<td>').html(data[i].consum))
 								.append($('<td>').html(data[i].opPrice))
+								.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
 								.appendTo("#optionTable tbody");
 							}
 							
@@ -144,15 +145,10 @@ $(function(){
 				
 				$("#reciSelect").empty();
 				$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#reciSelect');
-
-				$('<option value="{\'foo\':\'bar\',\'one\':\'two\'}">' + '2개 value' + '</option>').appendTo('#reciSelect');
-				
-				//=====================================================================================select 한후 stNum, caNum 둘다 넘겨야하는데.......
-				
 				
 				for(var i = 0;i<data.length;i++){
 
-					
+					var json='{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}';
 					if(data[i].caNum=='CACP' || data[i].caNum=='CACM')
 					{
 						console.log(data[i].caNum);
@@ -161,8 +157,8 @@ $(function(){
 						/* var option = $("<option>"+data[i].caNum+"</option>");
 		                $('#opSelct').append(option);
  */
-						
-						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
+ 						
+ 						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
 						
  
  
@@ -171,45 +167,47 @@ $(function(){
 						console.log(data[i].caNum);
 						//data[i].caNum
 						//옵션에 caNum이 CACM과 CAJP를 추가
-						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#reciSelect');
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
 						
 					}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
 						console.log(data[i].caNum);
 						//data[i].caNum
 						//옵션에 caNum이 CACM과 CADP를 추가
-						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#reciSelect');
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
 						
 						}
 					}
 				
 				
 				$("#opSelct").empty();
+				$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#opSelct');
+				
 				for(var i = 0;i<data.length;i++){
 					//console.log('hello: '+data[i].caNum);
 					if(mCate=='CACO' && (data[i].caNum=='CACP' || data[i].caNum=='CACM'))
 					{
-						console.log(data[i].caNum);
+						//console.log(data[i].caNum);
 						//data[i].caNum
 						//옵션에 caNum이 CACM과 CACP를 추가
 						/* var option = $("<option>"+data[i].caNum+"</option>");
 		                $('#opSelct').append(option);
  */
 						
- 					$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#opSelct');
-					
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
+						
  
  							
 					}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM')){
 						console.log(data[i].caNum);
 						//data[i].caNum
 						//옵션에 caNum이 CACM과 CAJP를 추가
-						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#opSelct');
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
 						
 					}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
 						console.log(data[i].caNum);
 						//data[i].caNum
 						//옵션에 caNum이 CACM과 CADP를 추가
-						$('<option value="'+ data[i].stNum +'">' + data[i].stName +" : "+mCate+" : "+data[i].caNum+ '</option>').appendTo('#opSelct');
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
 						
 						}
 					}
@@ -265,19 +263,39 @@ $(function(){
 		var tr = $(this);
 		var td = tr.children();
 		
+		selRecinum = td.eq(3).text();
+		console.log(selRecinum);
+		
 		 });
 	
 	
 	
 	$(document).on("change","#reciSelect",function(){
 		
-		console.log($(this).val());
-		console.log($(this));
-		
-		$("#recicaNum").val("");
+		var json = $(this).val();
+		var obj=JSON.parse(json);
+        console.log(obj.value1+" : "+obj.value2);
+        $("#recistNum").val(obj.value1);
+		$("#recicaNum").val(obj.value2);
 		
 		
 	});
+	
+	$(document).on("change","#opSelct",function(){
+		
+		var json = $(this).val();
+		var obj=JSON.parse(json);
+        console.log(obj.value1+" : "+obj.value2);
+        $("#opstNum").val(obj.value1);
+		//$("#opcaNum").val(obj.value2);
+		
+		
+	});
+	
+	
+	
+	
+	
 	 
 });
 
@@ -412,16 +430,52 @@ function recipeDelete(){
 
 
 
+function optionInsert(){
+	
+ 	alert(JSON.stringify($("#optionTableForm").serializeObject()));
+	
+ 	$.ajax({
+		url: "options",
+		type: 'POST',
+		dataType: 'json',
+		data: JSON.stringify($("#optionTableForm").serializeObject()),
+		contentType: 'application/json',
+		success: function(data) {
+			if(data.result == true) {
+				console.log(data);
+				window.location.reload();
+	    	}
+			
+		}
+		
+	});  
+}
+
+function optionDelete(){
+	console.log(selRecinum);
+	 $.ajax({
+		url:'options/'+selRecinum,  
+		type:'DELETE',
+		contentType:'application/json',
+		dataType:'json',
+		error:function(xhr,status,msg){
+			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
+		}, success:function(xhr) {
+			console.log(xhr.result);
+			window.location.reload();
+		}
+	});
+	 
+}
+
+
 </script>
 </head>
 <body>
 
-<div style="width:100%">
-        <div class="left">
-        <!-- 메뉴 CRUD -->
-		<div style="float: left; width: 50%; border: 1px solid pink;">
-
-			<!-- 메뉴 List-->
+<div style="position: absolute; border: 1px solid orange; padding: 3px; width:100%">
+<div style="float: left; width: 50%; height:300px; border: 1px solid pink; padding: 3px;">
+<!-- 메뉴 List-->
 			<div class = "container">
 				<h3>[메뉴 목록]</h3>
 				<form action="#">
@@ -463,25 +517,16 @@ function recipeDelete(){
 
 				</form>
 			</div>
-
-
-        </div>
-        </div>
-        
-        
-        
-        
-        
-        <div class="right">
-        
-        			<!-- 등록폼 사진 추가 작업-->
-			<div style="border: 1px solid orange; margin: 3px"
+</div>
+<div style="float: right; width: 50%; border: 1px solid blue; padding: 3px;">
+		<!-- 등록폼 사진 추가 작업-->
+			<div style="border: 1px solid orange; padding: 3px; width: 100%;"
 				id="insertMenuFormTable">
 				<h3>[메뉴 추가]</h3>
 
 				<form id="insertmenudetail" enctype="multipart/form-data"
 					method="post">
-					<table border="1" >
+					<table border="1" class = "table table-hover">
 
 
 						<tr>
@@ -516,15 +561,12 @@ function recipeDelete(){
 						type="button" value="등록" id="btnInsert">
 				</form>
 			</div>
-
-
-
-			<!-- 메뉴 상세조회&수정 -->
-			<div style="border: 1px solid orange; margin: 3px" id="toggleTable">
+<!-- 메뉴 상세조회&수정 -->
+			<div style="border: 1px solid orange; padding: 3px; width: 100%;" id="toggleTable">
 				<h3>[메뉴 상세 조회/수정]</h3>
 
 				<form id="menudetail">
-					<table border="1" >
+					<table border="1" class = "table table-hover">
 
 
 						<tr>
@@ -576,10 +618,8 @@ function recipeDelete(){
 					<input type="button" value="취소" id="btnCancle">
 				</form>
 			</div>
-
-		
-		<!-- 레시피 CRUD-->
-		<div style="float: left; border: 1px solid pink;" >
+<!-- 레시피 CRUD-->
+		<div style="float: left; border: 1px solid pink; padding: 3px; width: 100%;" >
 		
 			<!-- 레시피 등록, 메뉴 하나 Select된 상태에서 레시피 레시피 조회가능, 등록 버튼 활성화 -->
 
@@ -598,25 +638,33 @@ function recipeDelete(){
 						<td><input type="text" id="cmName" readonly></td>
 					</tr>
 				</table>
-
-				<h4>재료 추가</h4>
-				<select id="reciSelect" name="stNum">
 					
-					
-				<%-- 
-					<c:forEach items="${recistock}" var="stock">
-						<option value="${stock.stNum}">${stock.stName} & ${stock.caNum }</option>
-					</c:forEach>
-				 --%>
-				</select> <input type="text" value="0" id="consum" name="consum">
-				
-				<input type="hidden" id="recicaNum" name="caNum">
+						<h4>재료 추가</h4>
+						<table border="1" class = "table">
+							<tr>
+								<th>카테고리 선택</th>
+								<td><select id="reciSelect">
 
-				
-			<input type="button" value=" + " onclick="recipeInsert()">
-			<input type="button" value=" - " onclick="recipeDelete()">
+								</select></td>
+							</tr>
+							<tr>
+								<th>소모량</th>
+								<td><input type="text" value="0" id="consum" name="consum"></td>
+							</tr>
+							<tr>
+								<td><input type="button" value=" + "
+									onclick="recipeInsert()"></td>
+								<td><input type="button" value=" - "
+									onclick="recipeDelete()"></td>
+							</tr>
+						</table>
 
+
+						<input type="hidden" id="recicaNum" name="caNum">
+						<input type="hidden" id="recistNum" name="stNum">
+				
 			
+				<br>
 				<table border="1"  id="recipeTable" class = "table table-hover">
 					<thead>
 					<tr>
@@ -634,42 +682,48 @@ function recipeDelete(){
 			
         </form>
 
+
+
+
 		</div>
-		
-		
-		
 		<!-- 메뉴 옵션 추가 CRUD -->
-		<div style="float: left; border: 1px solid blue; margin: 3px" id="optionDiv">
+		<div style="float: left; border: 1px solid blue; padding: 3px; width: 100%;" id="optionDiv">
 
 
 				<h4>옵션 추가</h4>
-
-				<table border="1">
+			<form id="optionTableForm">
+				<table border="1" class = "table">
 					<tr>
 						<th>재고 이름</th>
-						<td><select id="opSelct" name="">
+						<td><select id="opSelct">
 						</select></td>
 					</tr>
 					<tr>
 						<th>옵션 이름</th>
-						<td><input type="text" value="휘핑 추가"></td>
+						<td><input type="text" name="opName"></td>
 					</tr>
 					<tr>
 						<th>소모량</th>
-						<td><input type="text" value="0.3"></td>
+						<td><input type="text" name="consum"></td>
 					</tr>
 					<tr>
 						<th>옵션 가격</th>
-						<td><input type="text" value="500">원</td>
+						<td><input type="text" name="opPrice">원</td>
 					</tr>
 					<tr>
-						<td><button>+</button></td>
-						<td><button>-</button></td>
+
+					<tr>
+						<td><input type="button" value=" + " onclick="optionInsert()"></td>
+						<td><input type="button" value=" - " onclick="optionDelete()"></td>
 					</tr>
 
 				</table>
+						<input type="hidden" id="sId" name="sId" value="SH001">
+						<input type="hidden" id="omNum" name="mNum">
+						<input type="hidden" id="opcaNum" value="CAOP" name="caNum">
+						<input type="hidden" id="opstNum" name="stNum">
 
-
+			</form>
 
 
 
@@ -685,21 +739,8 @@ function recipeDelete(){
 				</table>
 		
 		</div>
-		</div>
-        
-        </div>
-    
-
-
-
-<form name="frm" id="frm" method="post" enctype="multipart/form-data">
-	<input type="file" name="upfile" id="upfile">
-</form>
-
-
-<a href="javascript:upload();">등록</a>
-
-
+</div>
+</div>
 
 
 </body>

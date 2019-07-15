@@ -9,8 +9,16 @@
 	<select id="getCustomer" parameterType="customer" resultType="customer">
 		SELECT C_ID, C_NICK, C_NAME, C_TEL, C_PW, C_ADD, DOB, C_JOIN
 		FROM CUSTOMER
-	
-		WHERE C_ID = #{cId}
+		
+		<if test="cJoin == 'naver' ">
+			WHERE C_ID like #{cId} || '%'
+		</if>
+		<if test="cJoin != 'naver' ">
+			WHERE C_ID = #{cId}
+		</if>
+		
+		
+		
 	</select>
 
 	

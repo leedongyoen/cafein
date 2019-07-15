@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.MenuVO;
+import co.yedam.cafein.vo.RecipeVO;
 import co.yedam.cafein.vo.ReserveVO;
 import co.yedam.cafein.vo.StoreVO;
 
@@ -75,6 +76,18 @@ public class StoreListMenuController {
 	  public ReserveVO customerorder(ReserveVO vo){ 
 
 		  return service.getReserve(vo);
+	  }
+	  
+	  // 선택한 메뉴의 옵션 가져오기
+	  @RequestMapping(value="/getmenuoptionlist", method=RequestMethod.GET)
+	  public List<RecipeVO> getmenuoptionlist(RecipeVO vo) {
+		  return service.getmenuoptionlist(vo);
+	  }
+	  
+	  // 선택한 메뉴 상세조회
+	  @RequestMapping(value="/getmenudetail", method=RequestMethod.GET)
+	  public MenuVO getmenudetail(MenuVO vo){
+			return service.getmenudetail(vo);
 	  }
 	
 	/*

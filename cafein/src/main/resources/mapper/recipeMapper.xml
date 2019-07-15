@@ -18,14 +18,14 @@
       <result column="STAN_UNIT" property="stanUnit"/>
    </resultMap>
       
-	<resultMap type="co.yedam.cafein.vo.StockVO" id="recistockMap">
+	<resultMap type="stock" id="recistockMap">
       <id column="ST_NUM" property="stNum"></id>
       <result column="S_ID" property="sId"/>
       <result column="ST_NAME" property="stName"/>
       <result column="CA_NUM" property="caNum"/>
    </resultMap>      
 
-	<resultMap type="co.yedam.cafein.vo.RecipeVO" id="reciDetailMap">
+	<resultMap type="recipe" id="reciDetailMap">
       <id column="RECIPENO" property="recipeno"></id>
       <result column="S_ID" property="sId"/>
       <result column="CONSUM" property="consum"/>
@@ -39,7 +39,7 @@
  
      
 
-<select id="getReciDetailList" resultMap="reciDetailMap" parameterType="co.yedam.cafein.vo.RecipeVO">
+<select id="getReciDetailList" resultMap="reciDetailMap" parameterType="recipe">
 
 			select RECIPENO
 					, S_ID
@@ -83,7 +83,7 @@
 	
 	
 	
-	<select id="getRecipeStockList"  resultMap="recistockMap"  parameterType="co.yedam.cafein.vo.StockVO">
+	<select id="getRecipeStockList"  resultMap="recistockMap"  parameterType="stock">
 	
 		select ST_NUM 
 				,S_ID 
@@ -95,7 +95,7 @@
 
 
 
-	<insert id="insertRecipe" parameterType="co.yedam.cafein.vo.RecipeVO">
+	<insert id="insertRecipe" parameterType="recipe">
 	INSERT INTO RECIPE (  RECIPENO
 						, S_ID
 						, CONSUM
@@ -106,7 +106,7 @@
 			 	
 			 	VALUES ( 'RE'||lpad(RECIPE_SEQ.nextval,3,0)
 			 			, #{sId}
-			 			, #{consum}
+			 			, #{consum}/1000
 			 			, #{stNum}
 			 			, #{mNum}
 			 			, #{caNum}
@@ -115,10 +115,46 @@
 	</insert>
 	
 	
-	<delete id="deleteRecipe" parameterType="co.yedam.cafein.vo.RecipeVO">
+	<delete id="deleteRecipe" parameterType="recipe">
 	DELETE FROM RECIPE WHERE RECIPENO = #{recipeno}
 	
 	</delete>
+	
+	
+	
+	
+	
+	
+	<!-- option CRUD -->
+	<insert id="insertOption" parameterType="recipe">
+	
+		INSERT INTO RECIPE (RECIPENO
+							, S_ID
+							, CONSUM
+							, ST_NUM
+							, M_NUM
+							, CA_NUM
+							, OP_NAME
+							, OP_PRICE) 
+					
+					VALUES ( 'ME'||lpad(RECIPE_SEQ.nextval,3,0)
+							, #{sId}
+							, #{consum}/1000
+							, #{stNum}
+							, #{mNum}
+							, #{caNum}
+							, #{opName}
+							, #{opPrice}
+						)
+	
+	
+	</insert>
+	<delete id="deleteOption" parameterType="recipe">
+		DELETE FROM RECIPE WHERE RECIPENO = #{recipeno}
+	
+	</delete>
+		
+	
 	
 
 </mapper>
