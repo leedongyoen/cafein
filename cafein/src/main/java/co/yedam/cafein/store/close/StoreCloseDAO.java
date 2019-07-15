@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
+import co.yedam.cafein.vo.StockVO;
 
 @Repository
 public class StoreCloseDAO {
@@ -24,5 +25,10 @@ public class StoreCloseDAO {
 	// 마감 시재 정산 목록 조회
 	public List<OrdersVO> getCashAdvance(OrdersVO vo) {
 		return mybatis.selectList("storeCloseDAO.getChasAdvance", vo);
+	}
+	
+	// 마감 재고 수량 조회
+	public List<StockVO> getStockTruthList(StockVO vo) {
+		return mybatis.selectList("storeCloseDAO.getStockTruthList", vo);
 	}
 }
