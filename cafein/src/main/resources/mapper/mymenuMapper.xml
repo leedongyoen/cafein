@@ -33,4 +33,48 @@ DELETE MY_MENU
 </where>  
 </delete>
 
+	
+	<!-- 커스텀 번호 +1해서 가져오기 -->
+	<select id="getcunum" resultType="string">
+		SELECT 'CU'||LPAD(MAX(NVL(SUBSTR(CU_NUM,3),0))+1,5,'0')
+		FROM MY_MENU
+	</select>
+	
+	<!-- Recipe 번호 가져오기 -->
+	<select id="getrecipelist" parameterType="mymenu" resultType="mymenu">
+		SELECT RECIPENO
+				, CA_NUM
+				, S_ID
+				, M_NUM
+				, ST_NUM
+		FROM RECIPE
+		WHERE M_NUM = #{mNum}
+      			AND S_ID = #{sId}
+      			<!-- AND CA_NUM = #{caNum} -->
+	</select>
+	
+	<insert id="insertmymenu" parameterType="mymenu">
+		<selectKey keyProperty="myNum" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(NVL(MY_NUM,0)),0)+1
+			FROM MY_MENU
+		</selectKey>
+		
+			INSERT INTO MY_MENU ( MY_NUM
+								, C_ID
+								, M_NUM
+								, CU_NUM
+								, RECIPENO
+								, CA_NUM
+								)
+			VALUES( #{myNum}
+					, #{cId}
+					, #{mNum}
+					, #{cuNum}
+					, #{recipeno}
+					, #{caNum}
+			)
+	
+	</insert>
+
+
 </mapper>

@@ -47,7 +47,8 @@ public class CustomerController {
 	
 	@Autowired CustomerInfoService customService;
 	
-	@Autowired CustomerJoinService customerjoinService;
+	@Autowired 
+	CustomerJoinService customerjoinService;
 
 	private void setNaverLoginVO(NaverLoginVO naverLoginVO) {
 		this.naverLoginVO = naverLoginVO;
@@ -138,21 +139,24 @@ public class CustomerController {
 		return "customer/logout";
 	}
 	
-	//고객 회원가입
-	@RequestMapping("customerjoin.do" )
-	public ModelAndView insertJoin(CustomerVO vo) {
+	//고객 회원가입 페이지
+	@RequestMapping("customerjoinForm.do")
+	public String insertJoinForm() {
+		return "customer/join";
+	}
+	
+	//고객 회원가입  insert
+	@RequestMapping(value="/customerjoin.do", method=RequestMethod.POST)
+	public String insertJoin(CustomerVO vo) {
+		System.out.println(vo);
 		int n = customerjoinService.insertJoin(vo);
-		
 		ModelAndView mv = new ModelAndView();
-		if(n == 1) {
-			
-			mv.setViewName("customer/login");
-			
+		if(n == 1) {		
+			return("customer/login");	
 		}else {
-			mv.setViewName("customer/join");
+			return("customer/join");
 		}
-		
-		return mv;
+		//return mv;
 		
 	}
 	

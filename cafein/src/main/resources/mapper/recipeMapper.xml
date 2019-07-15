@@ -48,9 +48,9 @@
 					, M_NUM
 					, CA_NUM
 					, OP_NAME 
-		
+					, OP_PRICE
 			from recipe 
-			where s_id=#{sId} and CA_NUM= #{caNum} and m_num=#{mNum}
+			where s_id=#{sId} and m_num=#{mNum}
 
 </select>
 
@@ -89,6 +89,7 @@
 				,S_ID 
 				,ST_NAME
 				,CA_NUM 
+				 ,ST_AQTY*1000 "stAqty"
 			from stock
 			where s_id=#{sId}
 	</select>
@@ -120,7 +121,11 @@
 	
 	</delete>
 	
+	<update id="stockAqtyUpdate" parameterType="stock">
 	
+		UPDATE STOCK SET ST_AQTY = #{stAqty} 
+						WHERE ST_NUM=#{stNum}
+	</update>
 	
 	
 	
@@ -137,7 +142,7 @@
 							, OP_NAME
 							, OP_PRICE) 
 					
-					VALUES ( 'ME'||lpad(RECIPE_SEQ.nextval,3,0)
+					VALUES ( 'RE'||lpad(RECIPE_SEQ.nextval,3,0)
 							, #{sId}
 							, #{consum}/1000
 							, #{stNum}

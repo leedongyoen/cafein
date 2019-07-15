@@ -42,7 +42,7 @@
       
       <!-- 카카오로 로그인 시 이 로그아웃 버큰 사용하기 <a href="#"><img src="${pageContext.request.contextPath}/image/naverlogin.PNG" style = "width:222px;hieth:50px;"></a>-->
 	  <a href="http://developers.kakao.com/logout"></a><br>
-      <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerjoin.do'" value = "회원가입">
+      <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerjoinForm.do'" value = "회원가입">
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerfindidpw.do'" value = "ID/PW 찾기">
   </form>
   </div>

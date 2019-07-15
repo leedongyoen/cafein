@@ -33,7 +33,6 @@
 	
 	<select id="getSearchStore" resultType="store" resultMap="storeMap">
 		SELECT S_ID
-				,S_PW
 				,S_NAME
 				,S_ADD
 				,S_TEL
@@ -82,9 +81,10 @@
 				, OP_NAME
 				, ST_NUM
 				,OP_PRICE
+				, CA_NUM
 		FROM RECIPE
 		WHERE M_NUM=#{mNum} 
-				AND CA_NUM = 'CAOP' 
+				AND CA_NUM IN ('CAOP','CAIC','CAHT') 
 				AND S_ID= #{sId}
 	</select>
 	

@@ -29,9 +29,7 @@ public class StoreListMenuServiceImpl {
 		return dao.getSearchStoreList(vo);
 	}
 	
-	public StoreVO getgetSearchStore(StoreVO vo) {
-		return dao.getSearchStore(vo);
-	}
+
 	
 	public ReserveVO getReserve(ReserveVO vo) {
 		return dao.getReserve(vo);

@@ -22,7 +22,7 @@
 	
 	var customerAdd;
 	
-
+	getCostomerInfo();
 	
 	function add(num) {
 		var price = $("input:text[name='price']").val();
@@ -53,6 +53,7 @@
 			alert('로그인이 필요합니다.');
 		}else{
 			var v_storeId = $("#storeid").val();
+			console.log(v_storeId);
 			$.ajax({
 				url:'customerinfo/'+checklogin,
 				type:'GET',
@@ -63,7 +64,6 @@
 				},
 				success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 					customerAdd= data.cAdd;
-					$('input:text[name="cAdd"]').val(customerAdd);
 					$('input:text[name="cAdd"]').val(customerAdd);
 				}
 			});
@@ -127,7 +127,7 @@
 </head>
 	<body>
 		<h1 align="center">주 문</h1>
-		<div class="container" style="width: 100%">
+		<div class="container" >
 			<input id="storeid" value="${store.sid}" style="display: none" >
 			<table class="table">
 			
@@ -182,7 +182,7 @@
 				
 				
 				
-				<tr>
+				<tr id="reservetr">
 					<th>적립금</th>
 					<td><input type="text" name="mileage" size="10"
 						placeholder="###원">

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.cafein.viewvo.ViewPosVO;
 import co.yedam.cafein.vo.MenuVO;
+import co.yedam.cafein.vo.RecipeVO;
 
 @Controller
 public class PosController {
@@ -19,9 +21,17 @@ public class PosController {
 	
 	@ResponseBody
 	@RequestMapping(value="/pos/{sId}", method=RequestMethod.GET)
-	public List<MenuVO> getStoreMenuList(MenuVO vo, @PathVariable("sId") String sId){
+	public List<ViewPosVO> getStoreMenuList(ViewPosVO vo, @PathVariable("sId") String sId){
 		vo.setsId(sId);
-		System.out.println("컨트롤러나와라");
+		System.out.println("dd");
 		return posService.getStoreMenuList(vo);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/pos", method=RequestMethod.GET)
+	public List<RecipeVO> getOptionList(RecipeVO vo){
+		
+		System.out.println("rr");
+		return posService.getOptionList(vo);
 	}
 }

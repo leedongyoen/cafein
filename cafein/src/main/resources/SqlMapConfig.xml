@@ -23,6 +23,7 @@
 		
 		<typeAlias type="co.yedam.cafein.viewvo.ViewMymenuVO" alias="viewmymenu"/>
 		<typeAlias type="co.yedam.cafein.viewvo.ViewWarehousingVO" alias="viewwarehousing"/>
+		<typeAlias type="co.yedam.cafein.viewvo.ViewPosVO" alias="viewpos"/>
 	</typeAliases>
 	
 
