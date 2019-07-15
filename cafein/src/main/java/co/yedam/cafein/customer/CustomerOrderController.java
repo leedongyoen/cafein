@@ -44,6 +44,14 @@ public class CustomerOrderController {
 		  return mv;
 	  }
 	  
+	// 배달서비스 여부
+	@ResponseBody
+	@RequestMapping(value="/getstoredeliverservice", method=RequestMethod.GET)
+	public int getstoredeliverservice(String sId) {
+		
+		return service.getstoredeliverservice(sId);
+	}
+	  
 	
 	//고객 주문 페이지로 이동.
 	@RequestMapping("orderlist.do")
@@ -61,6 +69,16 @@ public class CustomerOrderController {
 		return service.getOrderList(vo);
 	}
 	
+	// 주문 넣기
+	@RequestMapping(value="/insertcustomerorder", method=RequestMethod.POST) 
+	public ModelAndView insertorder(OrdersVO vo) {
+		System.out.println("============주문 :"+vo);
+		ModelAndView mv = new ModelAndView();
+		System.out.println("============"+service.getordernumber(vo.getsId()));
+		
+		mv.setViewName("ccustomer/delivery");
+		return mv;
+	}
 	
 	//고객 주문배달 조회
 	@RequestMapping("delivery.do")

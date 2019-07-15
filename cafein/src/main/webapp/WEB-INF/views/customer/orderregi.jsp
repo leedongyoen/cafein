@@ -62,14 +62,20 @@ input {
 	function getStoreDetail(){
 		var v_storeId = $("#storeid").val();
 		$.ajax({
-			url:'getstoredetail/'+v_storeId,
+			url:'getstoredeliverservice',
 			type:'GET',
-			dataType:'json',
+			data: {sId: v_storeId},
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
 				console.log(data);
+				if(data == 1){
+					$('.deliverY').show();
+				}else{
+					$('.deliverN').show();
+				}
 				
 					
 			}
@@ -121,26 +127,28 @@ input {
 	
 	$(function(){
 		// 배달선택시 배달주소가 보이게, 미선택시 안보이게
-		$("input:radio[name=receipt]").click(function(){
+		/* $("input:radio[name=receipt]").click(function(){
 		       console.log("in");
 		    if($("input:radio[name=receipt]:checked").val()=='delivery'){
-		    	$("#deliveryaddress").show();
-		        //$("#deliveryaddress").attr("style","display: inline;");
+		    	$('.deliverY').hide();
+		    	$('.deliverN').show();
 		    }else if($("input:radio[name=receipt]:checked").val()=='takeout'){
-		    	$("#deliveryaddress").hide();
+		    	$('.deliverY').show();
+		    	$('.deliverN').hide();
 		    	//$("#deliveryaddress").attr("style","display: none;");
 		    }
-		});
+		}); */
 		
 		 // 옵션 선택시
 	  	$(".checkoption").change(function(){
 	  		var optionprice = $("#price"+$(this).val()).val();
-	  		
+	  		console.log($(this).val());
+	  		console.log(optionprice);
 	  		var v_totalprice =  $("input:text[name='total']").val();
 	  		if($(this).is(":checked")){
 					v_totalprice = Number(v_totalprice)+Number(optionprice);
 			}else{
-				v_totalprice = Number(v_totalprice)-Number(optionprice);
+				v_totalprice = Number(v_totalprice) - Number(optionprice);
 			}
 	  		 $("input:text[name='total']").val(v_totalprice);
 
@@ -158,9 +166,14 @@ input {
 			    }).open();
 		});
 		
+		/*  $("#orderbtn").on("click",function(){
+			document.orderform.submit();
+		});  */
+		
+		
 	});
 	
-	
+	//getordernumber
 
 	
 </script>
@@ -168,7 +181,8 @@ input {
 	<body>
 		<h1 align="center">주 문</h1>
 		<div class="container" >
-			<input id="storeid" value="${selectmenu.sId}" style="display: none" >
+		<form class="form-borizontal" id="orderform" name="orderform" action="insertcustomerorder" method="POST" >
+			<input id="storeid" value="${selectmenu.sId}" name="sId" style="display: none" >
 			<table class="table">
 			
 <!-- 				<tr>
@@ -177,7 +191,7 @@ input {
 				</tr> -->
 				<tr>
 					<th>주 문 날 짜</th>
-					<td><%= today %></td>
+					<td><input name="oDate" value="<%= today %>"></td>
 				</tr>
 	
 				<tr>
@@ -186,12 +200,15 @@ input {
 				</tr>
 				<tr>
 					<th>메 뉴 명</th>
-					<td>${selectmenu.mName}
+					<td><input type="hidden" name="mNum" value="${selectmenu.mNum}">
+						${selectmenu.mName}
 						<c:if test="${selectmenu.hotice_option eq 'CAHT'}">
 							( HOT )
+						<input type="hidden" name=hotice_option value="CAHT">
 						</c:if>
 						<c:if test="${selectmenu.hotice_option eq 'CAIC'}">
 							( ICE )
+						<input type="hidden" name=hotice_option value="CAIC">
 						</c:if>
 					</td>
 
@@ -202,27 +219,29 @@ input {
 						<c:forEach items="${option}" var="option"> 
 							<c:forEach items="${selectmenu.cuoptionlist}" var="select">
 								<c:if test="${option.stNum eq select}">
-									<c:set var="check" value="O"></c:set>
+									
 									<input type="checkbox" class="checkoption" id="${option.recipeno}" name="optionlist" value="${option.recipeno}" checked="checked">
-									<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label><br>
-									<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}">
+									<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label>
+									<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}"><br>
+									<c:set var="check" value="O"/>
 								</c:if>
 								
 							</c:forEach>
-							<c:if test="${check ne 'O'}">
-								<input type="checkbox" class="checkoption" id="${option.recipeno}" name="optionlist" value="${option.recipeno}" >
-								<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label><br>
-								<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}">
+							<c:if test="${check != 'O'}">
+								
+									<input type="checkbox" class="checkoption" id="${option.recipeno}" name="optionlist" value="${option.recipeno}">
+									<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label>
+									<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}"><br>
 							</c:if>
-							
+							<c:remove var="check"/>
 						</c:forEach>
 
 					 </td>
 				</tr>
 				<tr>
 					<th>금 액</th>
-					<td><input name="price" value="${selectmenu.mPrice}" size="2" readonly> &nbsp;&nbsp;
-						<button onclick="add(1)">+</button> <input name="qty" size="1" value="${selectmenu.orderqty}" readonly>
+					<td><input value="${selectmenu.mPrice}" size="2" readonly> &nbsp;&nbsp;
+						<button onclick="add(1)">+</button> <input name="oQty" size="1" value="${selectmenu.orderqty}" readonly>
 						<button onclick="add(-1)">-</button></td>
 				</tr>
 				
@@ -237,21 +256,28 @@ input {
 					</td>
 				</tr>
 				
-					<tr>
+					<tr class="deliverY" style="display: none;">
 						<th>수 령 방 식</th>
 						<td>
-							<input type="radio" name="receipt" value="delivery" id="delivery" checked> 
+							<input type="radio" name="receipt" value="delivery" id="delivery"> 
 							<label for="delivery">배달로하기</label> 
 							
 							<input type="radio" name="receipt" value="takeout" id="takeout"> 
 							<label for="takeout">직접받아가기</label>
 						</td>
 					</tr>
+					<tr class="deliverN" style="display: none;">
+						<th>수 령 방 식</th>
+						<td>					
+							<input type="radio" name="receipt" value="takeout" id="takeout" checked="checked"> 
+							<label for="takeout">직접 수령</label>
+						</td>
+					</tr>
 				
-					<tr id="deliveryaddress">
+					<tr class="deliverY" style="display: none;">
 						<th>배 달 주 소</th>
 						<td>
-							<input type="text" name="cAdd2" placeholder="우편번호" readonly="readonly" > <br>
+							<input type="text" placeholder="우편번호" readonly="readonly" > <br>
 							<input type="text" name="cAdd" style="width: 500px;" placeholder="주소" readonly="readonly">	<br>
 							<input type="text" name="cAdd3" style="width: 500px;" placeholder="상세 주소 입력"> <br>					
 							<button type="button" onclick="getCostomerInfo()">현 주소로하기</button>
@@ -261,7 +287,7 @@ input {
 				
 				<tr>
 					<th>결 제 방 식</th>
-					<td><input type="radio" name="payplan" value="card" id="card"
+					<td><input type="radio" name="payMethod" value="card" id="card"
 						checked> <label for="card">카드 결제</label></td>
 				</tr>
 				<tr>
@@ -273,12 +299,13 @@ input {
 			<br>
 			<div>
 				<div align="right">
-					<button onclick="location='deliveryForm.do'" class="btn btn-default ">주문하기</button>
+					<button type="submit" id="orderbtn" class="btn btn-default ">주문하기</button>
 					&nbsp;&nbsp; <a href="javascript:history.go(-1)"
 						class="btn btn-default ">돌아가기</a>
 				</div>
+				
 			</div>
-
+			</form>
 		</div>
 
 

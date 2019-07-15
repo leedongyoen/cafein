@@ -106,12 +106,13 @@
 	
 	</select>
 	
-	<select id="getstoredetail" resultType="int">
+	<select id="getstoredeliverservice" parameterType="string" resultType="int">
 	
 		SELECT count(*)
 		FROM STORE
-		WHERE S_ID='SH001'
-   			 AND TO_CHAR(SYSDATE,'HH24') BETWEEN TO_NUMBER(SUBSTR(ST_OPEN_TIME,1,2))+1 AND TO_NUMBER(SUBSTR(ST_CLOSE_TIME,1,2))-1
+		WHERE S_ID= #{sId}
+   			 AND TO_CHAR(SYSDATE,'HH24') BETWEEN SUBSTR(ST_OPEN_TIME,1,2)+1 
+   			 								AND SUBSTR(ST_CLOSE_TIME,1,2)-2
 	
 	</select>
 
