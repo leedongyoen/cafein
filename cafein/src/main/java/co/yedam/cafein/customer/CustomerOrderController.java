@@ -38,15 +38,13 @@ public class CustomerOrderController {
 
 	
 	// 주문으로 넘어가는 부분
+	
 	  @RequestMapping(value="/customerorder",method=RequestMethod.POST) 
 	  public ModelAndView customerorder(MenuOrderVO vo){ 
 		  ModelAndView mv = new ModelAndView();
 		  mv.addObject("selectmenu",vo );
-
-		  StoreVO stvo = new StoreVO();
-		  stvo.setSid(vo.getsId());
-		  System.out.println(stvo.getSid());
-		  mv.addObject("store",service.getSearchStore(stvo));
+		  System.out.println("================== 주문 내역 :"+vo);
+		  
 		  mv.setViewName("customer/orderregi");
 		  return mv;
 	  }
