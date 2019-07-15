@@ -27,4 +27,7 @@ public class MenuServiceImpl{
 		return menuDao.deleteMenu(vo);
 	}
 
+	public int updateFile(MenuVO vo) {
+		return menuDao.updateFile(vo);
+	}
 }

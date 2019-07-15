@@ -11,6 +11,7 @@
       <result column="m_stat" property="mStat"/>
       <result column="s_id" property="sId"/>
       <result column="menusale" property="menuSale"/>
+      <result column="UPLOADFILE" property="uploadFileName"/>
    </resultMap>
 	<select id="getMenuList" resultMap="menuMap" parameterType="menu">
 		select
@@ -21,6 +22,7 @@
 		,CA_NUM
 		,M_STAT
 		,MENUSALE
+		,UPLOADFILE
 		from menu
  		order by m_num
 	</select>
@@ -36,6 +38,10 @@
 	
 	</update>
 	
+	<update id="updateFile" parameterType="menu">
+		UPDATE MENU SET UPLOADFILE = #{uploadFileName} WHERE m_num = #{mNum}
+	</update>
+	
 	<insert id="insertMenu" parameterType="menu">
 		INSERT INTO MENU (M_NUM
 					, M_NAME
@@ -43,14 +49,23 @@
 				 	, S_ID 
 					, CA_NUM
 					, M_STAT
-					, MENUSALE) 
+					, MENUSALE
+					<if test="uploadFileName != null and uploadFileName != ''">
+					,UPLOADFILE
+					</if>
+					) 
 			VALUES (	'ME'||lpad(MENU_SEQ.nextval,3,0)
 					, #{mName}
 					, #{mPrice}
 				    , #{sId}  	
 					, #{caNum}
 					, 'A2'
-					, 'N')
+					, 'N'
+					<if test="uploadFileName != null and uploadFileName != ''">
+					, #{uploadFileName}
+					</if>
+					)
+					
 	
 	</insert>
 	<delete id = "deleteMenu" parameterType="menu">

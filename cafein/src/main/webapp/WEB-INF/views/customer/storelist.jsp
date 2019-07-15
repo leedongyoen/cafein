@@ -83,11 +83,13 @@
 					<h5 class="modal-title">메뉴</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-				<form class="form-borizontal" id="menudetailForm" action="${pageContext.request.contextPath}/customerorder" method="POST">
+				<form class="form-borizontal" id="menudetailForm" name="menudetailForm" action="customerorder" method="POST">
 				<div class="modal-body">
 						<input type="text" name="mNum" style="display: none;" >
 						<input type="text" name="sId" style="display: none;" >
 						<input type="text" name="cId" style="display: none;" >
+						<input type="text" name="orderqty" style="display: none;">
+						
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
@@ -128,7 +130,7 @@
 				</div>
 				<div class="modal-footer">	
 					<input type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" value="나만의 메뉴 등록" >
-					<button type="submit"  class="btn btn-outline-primary" >주문</button>	
+					<button type="button" id="cu_orderbtn"  class="btn btn-outline-primary" >주문</button>	
 					<button type="button" id="cartbtn" class="btn btn-outline-primary" >담기</button>			
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
@@ -267,6 +269,7 @@
 				.appendTo('#bakerytable tbody');
 			}
 		});
+		
 	}
 	
     // 거리 계산을 위하여
@@ -702,19 +705,61 @@ $(function(){
 		var local_cart = localStorage.getItem("cartlist");
 		if(local_cart == null){
 			local_cart = new Array();
+		}else {
+			
+			local_cart = JSON.parse(local_cart);
+			
 		}
 		
 		console.log(local_cart);
 		
-		var insert_session = new Array();
-		insert_session.push(local_cart);
-		insert_session.push(JSON.stringify(list));
+//		var insert_session = new Array();
+//		insert_session.push(local_cart);
+//		insert_session.push(JSON.stringify(list));
+		local_cart.push(list);
+//	console.log("insert_session : "+insert_session);
 		
-		console.log("insert_session : "+insert_session);
-		
-		localStorage.setItem("cartlist",insert_session);
+//localStorage.setItem("cartlist",insert_session);
+		localStorage.setItem("cartlist",JSON.stringify(local_cart));
 		console.log("localStorage : "+localStorage.getItem("cartlist"));
 
+	});
+	
+	$("#cu_orderbtn").on("click",function(){
+		var list =  $("#menudetailForm").serializeObject();
+		var selectop = [];
+		var selectoptionck=false;
+		$('[name=cuoptionlist]:checked').each(function(){
+			selectop.push($(this).val());
+			selectoptionck=true;
+		});
+		if(selectoptionck){
+			
+			list.cuNumList = selectop;
+		}else{
+			list.cuNumList = null;
+		}
+		
+		$('[name=orderqty]').val($('#ordernum').html());
+		console.log(JSON.stringify(list));
+		
+		document.menudetailForm.submit();
+		
+		/* 
+		$.ajax({
+			url : 'customerorder',
+			type : 'POST',
+			contentType : 'application/json;charrset=utf-8',
+			data : JSON.stringify(list),
+			success : function(data) {
+				console.log(data);
+
+			},
+			error : function(request,status,error) {
+				alert(JSON.stringify(request,status,error));
+			}
+		}); */
+		
 	});
 	
 	

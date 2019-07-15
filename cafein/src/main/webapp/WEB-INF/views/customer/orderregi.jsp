@@ -15,14 +15,20 @@
  SimpleDateFormat sf = new SimpleDateFormat("yyyy년 MM월 dd일 E요일");
  
  String today = sf.format(now);
+ 
+
 %>
 <script type="text/javascript">
 	var price = 4100;
 	var no = 1;
 	
 	var customerAdd;
+	var checklogin = "<%=(String) session.getAttribute("cId")%>";
 	
-	getCostomerInfo();
+	$(function(){
+		getCostomerInfo();
+	});
+	
 	
 	function add(num) {
 		var price = $("input:text[name='price']").val();
@@ -47,41 +53,35 @@
 	// 고객 주소 가져오기 위한 함수
 	function getCostomerInfo(){
 		
-		var checklogin = "<%=(String) session.getAttribute("cId")%>";
-		console.log(checklogin);
-		if(checklogin == null || checklogin =="null"){
-			alert('로그인이 필요합니다.');
-		}else{
-			var v_storeId = $("#storeid").val();
-			console.log(v_storeId);
-			$.ajax({
-				url:'customerinfo/'+checklogin,
-				type:'GET',
-				//contentType:'application/json;charset=utf-8',
-				dataType:'json',
-				error:function(xhr,status,msg){
-					alert("상태값 :" + status + " Http에러메시지 :"+msg);
-				},
-				success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-					customerAdd= data.cAdd;
-					$('input:text[name="cAdd"]').val(customerAdd);
-				}
-			});
-			// 고객 마일리지 가져오기.
-			$.ajax({
-				url:'customerreserve',
-				type:'GET',
-				dataType:'json',
-				data: {cId: checklogin, sId: v_storeId},
-				error:function(xhr,status,msg){
-					alert("상태값 :" + status + " Http에러메시지 :"+msg);
-				},
-				success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-					
-					$('input:text[name="mileage"]').attr("placeholder",data.mileAge);
-				}
-			});
-		}
+		var v_storeId = $("#storeid").val();
+		console.log(v_storeId);
+/* 		$.ajax({
+			url:'customerinfo/'+checklogin,
+			type:'GET',
+			contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				customerAdd= data.cAdd;
+				$('input:text[name="cAdd"]').val(customerAdd);
+			}
+		}); */
+		// 고객 마일리지 가져오기.
+		$.ajax({
+			url:'customerreserve',
+			type:'GET',
+			dataType:'json',
+			data: {cId: checklogin, sId: v_storeId},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
+				$('input:text[name="mileage"]').attr("placeholder",data.mileAge);
+			}
+		});
 		
 		
 	}
@@ -108,12 +108,13 @@
 		
 		 // 옵션 선택시
 	  	$(".checkoption").change(function(){
-	  		console.log("option in");
-	  		var v_totalprice = $("input:text[name='total']").val();
+	  		var optionprice = $("#price"+$(this).val()).val();
+	  		
+	  		var v_totalprice =  $("input:text[name='total']").val();
 	  		if($(this).is(":checked")){
-					v_totalprice = Number(v_totalprice)+500;
+					v_totalprice = Number(v_totalprice)+Number(optionprice);
 			}else{
-				v_totalprice = Number(v_totalprice)-500;
+				v_totalprice = Number(v_totalprice)-Number(optionprice);
 			}
 	  		 $("input:text[name='total']").val(v_totalprice);
 
@@ -128,13 +129,13 @@
 	<body>
 		<h1 align="center">주 문</h1>
 		<div class="container" >
-			<input id="storeid" value="${store.sid}" style="display: none" >
+			<input id="storeid" value="${selectmenu.sId}" style="display: none" >
 			<table class="table">
 			
-				<tr>
+<!-- 				<tr>
 					<th>주 문 번 호</th>
 					<td>(주문코드)OR20190617001)</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<th>주 문 날 짜</th>
 					<td><%= today %></td>
@@ -146,37 +147,43 @@
 				</tr>
 				<tr>
 					<th>메 뉴 명</th>
-					<td>${selectmenu.mName} ( ${selectmenu.hotice} )</td>
+					<td>${selectmenu.mName}
+						<c:if test="${selectmenu.hotice_option eq 'CAHT'}">
+							( HOT )
+						</c:if>
+						<c:if test="${selectmenu.hotice_option eq 'CAIC'}">
+							( ICE )
+						</c:if>
+					</td>
+
 				</tr>
 				<tr>
 					<th>옵션</th>
 					<td>				
-						<c:if test="${selectmenu.whipping eq 'Y'}">
-							<input type="checkbox" class="checkoption" name="whipping" value="Y" checked="checked">휘핑크림 추가(+500)<br>
-						</c:if>
-						<c:if test="${selectmenu.whipping ne 'Y'}">
-							<input type="checkbox" class="checkoption" name="whipping" value="Y" >휘핑크림 추가(+500)<br>
-						</c:if>
-						
-						<c:if test="${selectmenu.syrup eq 'Y'}">
-							<input type="checkbox" class="checkoption" name="syrup" value="Y" checked="checked">시럽 추가(+500)<br>
-						</c:if>
-						<c:if test="${selectmenu.syrup ne 'Y'}">
-							<input type="checkbox" class="checkoption" name="syrup" value="Y" >시럽 추가(+500)<br>
-						</c:if>
-						
-						<c:if test="${selectmenu.shot eq 'Y'}">
-							<input type="checkbox" class="checkoption" name="shot" value="Y" checked="checked">샷 추가(+500)
-						</c:if>
-						<c:if test="${selectmenu.shot ne 'Y'}">
-							<input type="checkbox" class="checkoption" name="shot" value="Y" >샷 추가(+500)
-						</c:if>
+						<c:forEach items="${option}" var="option"> 
+							<c:forEach items="${selectmenu.cuoptionlist}" var="select">
+								<c:if test="${option.stNum eq select}">
+									<c:set var="check" value="O"></c:set>
+									<input type="checkbox" class="checkoption" id="${option.recipeno}" name="optionlist" value="${option.recipeno}" checked="checked">
+									<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label><br>
+									<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}">
+								</c:if>
+								
+							</c:forEach>
+							<c:if test="${check ne 'O'}">
+								<input type="checkbox" class="checkoption" id="${option.recipeno}" name="optionlist" value="${option.recipeno}" >
+								<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label><br>
+								<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}">
+							</c:if>
+							
+						</c:forEach>
+
 					 </td>
 				</tr>
 				<tr>
 					<th>금 액</th>
-					<td><input name="price" value="${selectmenu.price}" size="2" readonly> &nbsp;&nbsp;
-						<button onclick="add(1)">+</button> <input name="qty" size="1" value="${selectmenu.qty}" readonly>
+					<td><input name="price" value="${selectmenu.mPrice}" size="2" readonly> &nbsp;&nbsp;
+						<button onclick="add(1)">+</button> <input name="qty" size="1" value="${selectmenu.orderqty}" readonly>
 						<button onclick="add(-1)">-</button></td>
 				</tr>
 				
@@ -190,7 +197,7 @@
 
 					</td>
 				</tr>
-				<c:if test="${store.stdeliservice eq 'Y'}">
+				
 					<tr>
 						<th>수 령 방 식</th>
 						<td>
@@ -205,31 +212,14 @@
 					<tr id="deliveryaddress">
 						<th>배 달 주 소</th>
 						<td>
-						<c:if test="${selectmenu.cAdd !='' }">
-							<input type="text" name="cAdd" value="${selectmenu.cAdd}" style="width: 500px;">
-						</c:if>
-						<c:if test="${selectmenu.cAdd =='' }">
-							<script>
-								getCostomerInfo();
-							</script>
-							<input type="text" name="cAdd" style="width: 500px;">
-						</c:if>
+							<input type="text" name="cAdd2" > <br>
+							<input type="text" name="cAdd" style="width: 500px;">						
 							<button type="button" onclick="getCostomerInfo()">현 주소로하기</button>
 							<button type="button" id="changeAdd" onclick="alert('새 주소로 변경되었습니다.')">새
 								주소로하기</button>
 						</td>
-					</tr>
-				</c:if>
-				<c:if test="${store.stdeliservice eq 'N'} ">
-					<tr>
-						<th>수 령 방 식</th>
-						<td>
-							<input type="radio" name="receipt" value="takeout" id="takeout" checked="checked"> 
-							<label for="takeout">직접받아가기</label>
-							</td>
-					</tr>
+					</tr>				
 				
-				</c:if>
 				<tr>
 					<th>결 제 방 식</th>
 					<td><input type="radio" name="payplan" value="card" id="card"
