@@ -25,6 +25,7 @@
 				, ST_DELI_SERVICE
 		FROM STORE
 		WHERE ST_APP_STAT = 'Y'
+			AND TO_CHAR(SYSDATE,'HH24:MI') BETWEEN ST_OPEN_TIME AND ST_CLOSE_TIME
 		<if test="sadd != null and sadd !='' ">
 			AND S_ADD like #{sadd} || '%'
 		</if>
