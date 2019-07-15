@@ -721,7 +721,7 @@ function optionDelete(){
 							
 							<form action="imgUpdate.do" encType="multipart/form-data" method="post">
 							<td>
-							<input id = "fileupdateName" type="text" name="mNum">
+							<input id = "fileupdateName" type="hidden" name="mNum">
 								<input type="file" name="uploadFile" />
 								<input type="submit" value="사진제출">
 							</td>
