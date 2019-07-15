@@ -37,6 +37,17 @@
    </resultMap>
 
  
+     <select id="getOptionName" resultMap="reciDetailMap" parameterType="recipe">
+     
+     select S_ID
+     		, ST_NUM
+     		, M_NUM
+     		, CA_NUM
+     		, OP_NAME 
+     		
+     	from recipe where ca_num='CAOP'
+     </select>
+     
      
 
 <select id="getReciDetailList" resultMap="reciDetailMap" parameterType="recipe">
