@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.yedam.cafein.store.close.StoreCloseService;
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
+import co.yedam.cafein.vo.StockVO;
 
 @Controller
 public class StoreCloseController {
@@ -51,6 +52,13 @@ public class StoreCloseController {
 	}
 	
 	//----------------------------------------------------------------------------
+	// 마감 재고 업데이트
+	@ResponseBody
+	@RequestMapping(value="/stocktruthlist", method=RequestMethod.GET)
+	public List<StockVO> getStockTruthList(StockVO vo) {
+		return service.getStockTruthList(vo);
+	}
+	
 	// 재고 실수량 입력
 	@RequestMapping("stocktruthlist.do")
 	public String stocktruthlist() {

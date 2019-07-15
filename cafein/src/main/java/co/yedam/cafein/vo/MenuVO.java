@@ -11,10 +11,19 @@ public class MenuVO {
 	private String	caNum;
 	private String	mStat;
 	private String menuSale;
+	
+	//file upload 위한 변수 두개
+	private String uploadFileName;
 	private MultipartFile uploadFile;
 	
 	   
 	
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
 	public MultipartFile getUploadFile() {
 		return uploadFile;
 	}

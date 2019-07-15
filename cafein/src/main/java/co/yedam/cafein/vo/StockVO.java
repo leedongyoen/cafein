@@ -11,9 +11,11 @@ public class StockVO {
 	private String caNum;
 	private double stanUnit;
 	private String stStatus;
-	private int truthQty;
 	
 	private String[] stNumList;
+	private String stStatusNm;
+	private String caNm;
+	
 	
 	
 	public double getStAqty() {
@@ -72,12 +74,7 @@ public class StockVO {
 	public void setStStatus(String stStatus) {
 		this.stStatus = stStatus;
 	}
-	public int getTruthQty() {
-		return truthQty;
-	}
-	public void setTruthQty(int truthQty) {
-		this.truthQty = truthQty;
-	}
+
 	
 	
 	public String[] getStNumList() {
@@ -86,11 +83,25 @@ public class StockVO {
 	public void setStNumList(String[] stNumList) {
 		this.stNumList = stNumList;
 	}
+	
+	
+	public String getStStatusNm() {
+		return stStatusNm;
+	}
+	public void setStStatusNm(String stStatusNm) {
+		this.stStatusNm = stStatusNm;
+	}
+	public String getCaNm() {
+		return caNm;
+	}
+	public void setCaNm(String caNm) {
+		this.caNm = caNm;
+	}
 	@Override
 	public String toString() {
 		return "StockVO [stNum=" + stNum + ", sId=" + sId + ", stName=" + stName + ", stQty=" + stQty + ", stAqty="
 				+ stAqty + ", stPrice=" + stPrice + ", caNum=" + caNum + ", stanUnit=" + stanUnit + ", stStatus="
-				+ stStatus + ", truthQty=" + truthQty + "]";
+				+ stStatus + "]";
 	}
 	
 }
