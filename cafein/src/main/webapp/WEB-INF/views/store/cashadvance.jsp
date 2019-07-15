@@ -7,7 +7,7 @@
 <title>마감 시재 정산</title>
 <script>
 
-	var totalcashSum;		// 총 현금 시재
+	var totalcashSum, minusCash;		// 총 현금 시재, 차액
 	
 	console.log('operatingreserveSum (cashadvance.jsp) : ' +operatingreserveSum)
 	$('#orSum').text(addCommas(operatingreserveSum)+'원');
@@ -65,7 +65,9 @@
 					c5000:$('#cash5000').val(),
 					c1000:$('#cash1000').val(),
 					c500:$('#cash500').val(),
-					c100:$('#cash100').val()
+					c100:$('#cash100').val(),
+					total:totalcashSum,
+					mcash:minusCash
 			};
 			// 배열에 넣기
 			cashDataList.push(cashList);
@@ -75,15 +77,51 @@
 			sessionStorage.setItem("jsonCashList",jsonCashList);
 		}
 		
-		// 타입 수정 필요
-		totalcashSum = Number($('#totalcash50000').val()) + Number($('#totalcash10000').val()) + Number($('#totalcash5000').val()) 
-					+ Number($('#totalcash1000').val()) + Number($('#totalcash500').val()) + Number($('#totalcash100').val());
 		
-		console.log('totalcashSum : ' + totalcashSum);
+		if($('#cash50000').val() == "") {
+			alert("5만원 권수를 입력해 주세요.");
+			$('#cash50000').focus();
+			return;
+		} else if($('#cash10000').val() == "") {
+			alert("1만원 권수를 입력해 주세요.");
+			$('#cash10000').focus();
+			return;
+		} else if($('#cash5000').val() == "") {
+			alert("5천원 권수를 입력해 주세요.");
+			$('#cash5000').focus();
+			return;
+		} else if($('#cash1000').val() == "") {
+			alert("1천원 권수를 입력해 주세요.");
+			$('#cash1000').focus();
+			return;
+		} else if($('#cash500').val() == "") {
+			alert("5백원 권수를 입력해 주세요.");
+			$('#cash500').focus();
+			return;
+		} else if($('#cash100').val() == "") {
+			alert("1백원 권수를 입력해 주세요.");
+			$('#cash100').focus();
+			return;
+		}
 		
+		// 총 현금 시재
+		totalcashSum = Number(removeCommas($('#totalcash50000').val())) + Number(removeCommas($('#totalcash10000').val())) + Number(removeCommas($('#totalcash5000').val())) 
+					+ Number(removeCommas($('#totalcash1000').val())) + Number(removeCommas($('#totalcash500').val())) + Number(removeCommas($('#totalcash100').val()));
+		
+		console.log('totalcashSum : ' + addCommas(totalcashSum));
+		
+		$('#totalCash').text(addCommas(totalcashSum)+'원');
+		
+		
+		console.log('operatingreserveSum 저장 시 (cashadvance.jsp) : ' +operatingreserveSum)
+		
+		minusCash = totalcashSum - totalcashsales;		// 차액 = 총 현금 시재 - 총 현금 매출액
+		
+		$('#difference').text(addCommas(minusCash)+'원');
+
 		//console.log('input val(class) : '+$('.cash').val()+', input text(class) : '+$('.cash').text())
 		//console.log('input val(id) : '+$('#cash50000').val()+', input text(id) : '+$('#cash50000').text())
-		$('#resultTable').css('visibility','visible');
+		//$('#resultTable').css('visibility','visible');
 		$('#cashadvanceSave').text('수정 완료');
 		$('#cashInsert').attr('disabled',true);
 		$('#cashBack').attr('disabled',true);
@@ -102,18 +140,14 @@
 	// 시재 재등록 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	// 저장 후 데이터 변경 못하게 할지 생각해보기
 	$('#cashEdit').on("click",function(){
-		$('#resultTable').css('visibility','hidden');
+		//$('#resultTable').css('visibility','hidden');
 		$('#cashadvanceSave').text('수정 전');
 		$('#cashInsert').attr('disabled',false);
 		$('#cashBack').attr('disabled',false);
 		$('.cash').attr('readonly',false);
 	
 	})
-	
-	
-	
-	
-	
+
 </script>
 </head>
 <body>
@@ -176,14 +210,14 @@
 			</table>
 		</div>
 		<div class="col-6">
-			<table id="resultTable" style="visibility:hidden;">	<!-- 시재 등록 버튼 클릭 시 보이게 visible (수정 누르면 다시 안보이게) -->
-				<tr>
-					<th>총 현금 매출액</th>
-					<td><p id="totalCashSales"></p></td>
-				</tr>
+			<table id="resultTable" >	<!-- style="visibility:hidden;" 시재 등록 버튼 클릭 시 보이게 visible (수정 누르면 다시 안보이게) -->
 				<tr>
 					<th>총 현금 시재</th>
 					<td><p id="totalCash"></p></td>
+				</tr>
+				<tr>
+					<th>총 현금 매출액</th>
+					<td><p id="totalCashSales"></p></td>
 				</tr>
 				<tr>
 					<th>차액</th>

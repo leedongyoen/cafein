@@ -709,7 +709,10 @@ $(function(){
 			
 			local_cart = JSON.parse(local_cart);
 			
-
+		}
+		
+		console.log(local_cart);
+		
 //		var insert_session = new Array();
 //		insert_session.push(local_cart);
 //		insert_session.push(JSON.stringify(list));

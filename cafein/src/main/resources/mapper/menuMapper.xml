@@ -22,6 +22,7 @@
 		,CA_NUM
 		,M_STAT
 		,MENUSALE
+		,UPLOADFILE
 		from menu
  		order by m_num
 	</select>
