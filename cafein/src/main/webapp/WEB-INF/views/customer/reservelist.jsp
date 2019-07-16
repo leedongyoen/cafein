@@ -69,7 +69,7 @@
 			}
 		})
 	};
-	
+	//객체를 호출하는 부분.
 	$(function(){
 		getListReserve();
 		

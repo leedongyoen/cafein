@@ -5,9 +5,32 @@
 <head>
 <meta charset="utf-8">
 <%@ include file="cushead.jsp" %>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
- 
+ 	<script type="text/javascript">
+	//객체 호출
+ 	$(function(){
+ 		mainTotalReserve();
+		
+	});
+ 	//메인에서 총적립금 보여주는 테이블
+ 	function mainTotalReserve() {
+		$.ajax({
+			url : "mainTotalReserve.do",
+			data : {cId : "ju123"},
+			type : "GET",
+			datatype : "json",
+			success : function(data) {
+				console.log(data);
+				$("#totalreserve tbody").empty();
+				$.each(data,function(idx,item){
+					$('<tr>')
+					.append($('<td>').html(item.totalre))
+					.appendTo('#totalreserve tbody');
+				});
+			}
+		})
+	};
+ 	</script>
 <title>Customer Main Page</title>
 
 <style>
@@ -73,13 +96,15 @@ table {
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='${pageContext.request.contextPath}/reservelist.do'">
+  <table border = "1" id ="totalreserve" 
+  onclick = "location.href='${pageContext.request.contextPath}/reservelist.do'">
+	<thead>
 	<tr>
 		<th><label>총 적립금</label></th>
 	</tr>
-	<tr>
-		<th><label>12,750원</label></th>
-	</tr>
+	</thead>
+	<tbody>
+	</tbody>
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">

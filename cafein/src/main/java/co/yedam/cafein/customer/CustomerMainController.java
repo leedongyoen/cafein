@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.cafein.customer.join.CustomerJoinDAO;
 import co.yedam.cafein.customer.reserve.ReserveService;
+import co.yedam.cafein.google.MailService;
 import co.yedam.cafein.vo.ReserveVO;
 
 @Controller
@@ -42,6 +44,8 @@ public class CustomerMainController {
 		return "customer/reservelist";
 	}  
 	
+	
+	
 	//적립금 리스트를 뿌릴 컨트롤러
 	@RequestMapping(value="getListReserve.do", method=RequestMethod.GET)
 	@ResponseBody
@@ -57,13 +61,14 @@ public class CustomerMainController {
 		return reserveService.getTotalReserve(vo);
 	}
 	
-//	//사용한 적립금 리스트를 뿌릴 컨트롤러
-//	@RequestMapping(value="getUseReserve.do", method=RequestMethod.GET)
-//	@ResponseBody
-//	public ReserveVO getReserveUse(ReserveVO vo) {
-//		System.out.println(vo);
-//		return reserveService.getUseReserve(vo);
-//	}
+	//메인에서   총 적립금을 보여줄 컨트롤러
+	@RequestMapping(value="mainTotalReserve.do", method=RequestMethod.GET)
+	@ResponseBody
+	public List<ReserveVO> mainReserveTotal(ReserveVO vo) {
+		System.out.println(vo);
+		return reserveService.mainTotalReserve(vo);
+	}
+	
 	
 	
 }

@@ -17,11 +17,18 @@ public class CustomerVO {
 	private String cAdd2;
 	private String cAdd3;
 	private int stmp;
+	private String email;
+	
+	
 
 	
 	
-	
-
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	@JsonFormat(pattern = "yyyy-MM-dd")			//날짜형식 포맷
 	private Date dob;
 	private String cJoin;
@@ -109,5 +116,6 @@ public class CustomerVO {
 				+ ", pPoint=" + pPoint + ", grade=" + grade + ", cAdd=" + cAdd + ", stmp=" + stmp + ", dob=" + dob
 				+ ", cJoin=" + cJoin + "]";
 	}
+	
 
 }
