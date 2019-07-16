@@ -31,4 +31,6 @@ public class StoreCloseDAO {
 	public List<StockVO> getStockTruthList(StockVO vo) {
 		return mybatis.selectList("storeCloseDAO.getStockTruthList", vo);
 	}
+	
+	
 }
