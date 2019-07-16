@@ -7,7 +7,11 @@
 
 <%@ include file="storehead.jsp" %>
 <title>Store Closing Page</title>
-
+<style>
+.truthlist {
+	background-color:white;
+}
+</style>
 <script>
 
 
@@ -25,10 +29,12 @@
 		});
 	});
 
-	var sId = 'SH001';			// 로그인 한 매장 아이디(세션값 받아와야함)
+	var sId = "<%= (String)session.getAttribute("sid") %>";			// 로그인 한 매장 아이디(세션값 받아와야함) 
 	var sum, listSum=0, totalSum=0, addTotalSum=0,i;	// 합계(row별), session의 합계(row별 총 합계), db의 총 합계, operatingreserve.jsp에서 추가하는 항목의 합계
-	var addDataList, cashDataList, stockTruthList;			// sessionStorage 가 담길 배열 x 3
+	var addDataList, cashDataList, stockTruthList = new Array(), jsonStockList;			// sessionStorage 가 담길 배열 x 3
+	var stockList = new Array(), truthQty; 		// 재고수량과 실수량이 들어갈 list, list 내의 실수량
 	var operatingreserveSum=0, orSum=0;		// 영업 준비금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
+
 	
 	function getoperatingreserve(){
 		
@@ -218,8 +224,8 @@
 		var len = cashDataList.length-1;	// 입력한 현금 배열의 길이 -1
 		console.log(cashDataList)
 		// 배열의 마지막 값을 value에 담아준다
-		$('#totalCash').text(addCommas(cashDataList[len].total)+'원');
-		$('#difference').text(addCommas(cashDataList[len].mcash)+'원');
+		$('#totalCash').text(addCommas(cashDataList[len].cash)+'원');
+		$('#difference').text(addCommas(cashDataList[len].difference)+'원');
 		$('#cash50000').val(cashDataList[len].c50000);
 		$('#totalcash50000').val(addCommas($('#cash50000').val()*50000));
 		$('#cash10000').val(cashDataList[len].c10000);
@@ -274,26 +280,48 @@
 					
 					$('<tr>')
 					.append($('<td>').html(idx+1))
-					.append($('<td>').html(item.stName))
+					.append($('<td>').html(item.stNum))
 					.append($('<td>').html(item.stQty))
 					.append($('<td>').append($('<input>').attr({
 						type:'text',
 						'class':'truthQty',
+						name:'truthQtyName',
 						onKeyup:"this.value=this.value.replace(/[^0-9]/g,'')",
-						//onchange:"addClass(this)"
 					})))
 					.appendTo('#stocktruthlistTable tbody');
-					
 				});
+				
+				stockTruthList = sessionStorage.getItem("jsonStockList");
+				
+				if(stockTruthList == null) {
+					// 추가버튼 클릭시 데이터 저장하는 배열
+					stockTruthList = new Array();	
+					
+				} else {
+					
+					stockTruthList = JSON.parse(stockTruthList);
+					// 함수 생성해서 배열에 있는 값을 뿌려줘야함
+					//console.log('cashDataList : ' + cashDataList);
+					getstockTruthList();	
+					
+				} 
+				
 			}
 		});
 	}
-	
-	function addClass(obj) {
-		$(this).removeClass('truthQty');
-		obj.style.backgroundColor = 'skyblue';
+
+	function getstockTruthList() {
+		var len = stockTruthList.length;
+		
+		for(i=0;i<len;i++) {
+			$('#inputId tr').eq(i).find('input').val(stockTruthList[i].truthQty);
+		}
+		
+		if($('#stocktruthlistSave').text() == '수정 완료') {
+			$('#truthbackbtn').attr('disabled',true);
+			$('.truthQty').attr('readonly',true);
+		}
 	}
-	
 	
 	// 재고 실수량 확인
 	function stocktruthlist() {
@@ -320,6 +348,27 @@
 	    if(!x || x.length == 0) return "";
 	    else return x.split(",").join("");
 	}
+	
+//---------------------------------------------------------------------------------------------------------------------
+	// 마감 정산 버튼 클릭 시
+	function closeCheck(){
+		if($('#operatingreserveSave').text() == '수정 전') {
+			alert('영업 준비금 마감을 완료해주세요.');
+		} else if($('#cashadvanceSave').text() == '수정 전') {
+			alert('시재 정산 마감을 완료해주세요.');
+		} else if($('#stocktruthlistSave').text() == '수정 전') {
+			alert('재고 수량 마감을 완료해주세요.');
+		}
+		
+		var closeSign = confirm('마감을 완료 하시겠습니까?');
+		if(closeSign) {
+			location.href="dateInsertUpdate.do";
+		} else {
+			return;
+		}
+
+	}
+
 
 </script>
 </head>
@@ -358,8 +407,8 @@
 			<div class="col-7" id="content" style="border:1px dotted;height:680px;overflow:auto;">
 			</div><br><br>
 			<div class="col-4">
-				<button type="button" onclick="">마감정산</button>
-				<button type="button">PDF저장</button>
+				<button type="button" onclick = "closeCheck()">마감정산</button>
+				<button type="button" >PDF저장</button>
 			</div>
 			<div class="col-7">
 				<!-- <table>

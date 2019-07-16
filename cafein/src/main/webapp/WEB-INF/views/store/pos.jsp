@@ -33,11 +33,9 @@
 var sId="SH001"; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
 var qty = 1;
-var cnt =0;
    $(document).ready(function() {
 	   $("#gridlist").jqGrid({
            colModel: [
-        	   { label: 'cnt', name:'cnt', key:true, hidden:true},
         	   { label: 'mNum', name:'mNum', hidden:true},
                { label: '메뉴명', name: 'mName',  width: 130 },
                { label: '옵션', name: 'opName', width: 150  },
@@ -62,14 +60,17 @@ var cnt =0;
            gridview : true,
            footerrow:true,
            userDataOnFooter:true,
-           
            cmTemplate: {sortable: false},
            hoverrows: false,
            autoencode: true,
            ignoreCase: true,
-           beforeSelectRow: function () {
-               return false;
-           }
+           grouping:true,
+	      	groupingView : {
+	       		groupField : ['mName','opName'],
+	       		groupColumnShow : [true,true],
+	       		groupText : ["{0}"]
+	       	},
+	       	
        });
 	   
    });
@@ -119,7 +120,6 @@ footerrow : true});
 				},
 				success: getCus
 			});
-			
 	 		}
 	 	});
 	});	
@@ -172,23 +172,20 @@ footerrow : true});
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:getOptionList
-		});
+		}); 
 	 jQuery("#gridlist").jqGrid('addRow', {
-	       rowID : mNum,          //중복되지 않게 rowid설정
-	       initdata : {mNum, mName, Price, qty},
-	       position :"last",           //first, last
-	       useDefValues : false,
-	       useFormatter : false,
-	       addRowParams : {extraparam:{}},
-	       sortname: 'mName',
-	      	grouping:true,
-	      	groupingView : {
-	       		groupField : ['mName'],
-	       		groupColumnShow : [false],
-	       		groupText : ['<b>{0} - {1} '+mName+'</b>']
-	       	}
-	       
-	});
+//       rowID : mNum,          //중복되지 않게 rowid설정
+       initdata : {mNum, mName, Price, qty},
+       position :"last",           //first, last
+       useDefValues : false,
+       useFormatter : false,
+       addRowParams : {extraparam:{}},
+       sortname: 'mName',     
+});
+
+	 
+	 
+	 
 	});
  
  //메뉴 옵션 나타내기
@@ -210,9 +207,10 @@ footerrow : true});
  		var opName = $(this).val();
 		var mNum = $(this).next().val();
 		var Price = $(this).next().next().val();
+		
+		
  	 jQuery("#gridlist").jqGrid('addRow', {
-
-	       rowID : mNum,          //중복되지 않게 rowid설정
+//	       rowID : mNum,          //중복되지 않게 rowid설정
 	       initdata : {opName, Price, qty},
 	       position :"last",           //first, last
 	       useDefValues : false,
@@ -220,6 +218,7 @@ footerrow : true});
 	       addRowParams : {extraparam:{}}
 
 	});
+ 	 
  	});
  	
  	
@@ -241,7 +240,21 @@ footerrow : true});
 	    });    
  	}
  	
-	
+	$(document).on("click","#deleteRow",function(){
+		console.log("in");
+		jQuery("#gridlist").jqGrid('navButtonAdd', "#pager",{
+		    caption : "",
+		    buttonicon: "ui-icon-trash",
+		    title : "행 삭제",
+		    onClickButton : function (){
+		          var recs =  $("{#gridlist}").jqGrid('getGridParam', 'selarrrow');
+		          var rows = recs.length;
+		          for (var i = rows - 1; i >= 0; i--) {
+		                $('#gridlist').jqGrid('delRowData', recs[i]);
+		            }
+		    }
+		});
+	});
  	
 </script>
 <br><br>
@@ -304,7 +317,7 @@ footerrow : true});
 <p></p>
 	<div style="text-align:left">
 	<button>전체취소</button>
-	<button>선택취소</button>
+	<input type="button" id="deleteRow" value="선택취소">
 	<button>수량변경</button>
 	<button>-</button>
 	<button>+</button>
