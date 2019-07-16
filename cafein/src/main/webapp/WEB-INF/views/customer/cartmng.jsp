@@ -17,7 +17,8 @@
 
 $(function(){
 		
-
+var sumtotalPrice = 0;
+var state = "";
 
 	$("#CartList table tbody").empty();
 	var local_cart = JSON.parse(localStorage.getItem("cartlist"));
@@ -30,13 +31,22 @@ $(function(){
 		console.log(local_cart.length);
 		for(var i = 0;i<local_cart.length;i++){
 
+			sumtotalPrice = (local_cart[i].totalPrice*1) + sumtotalPrice;
+			if(local_cart[i].hotice_option=="CAIC"){
+					state="ICE";
+				}
+			else if(local_cart[i].hotice_option=="CAHT"){
+				state="HOT";
+			}
 			
+			
+			$("#CartList div a").html(local_cart[i].sId);
 			$('<tr>')
 			.append($('<td rowspan="2">').append($('<input>').attr({type: "checkbox"})))
 			.append($('<td rowspan="2">').html(local_cart[i].sId))
 			.append($('<td rowspan="2">').html("Photo"))
 			.append($('<td>').html(local_cart[i].mName))
-			.append($('<td rowspan="2">').html(local_cart[i].hotice_option))
+			.append($('<td rowspan="2">').html(state))
 			.append($('<td rowspan="2">').html(local_cart[i].qty).append($('<input>').attr({type: "button",value:"변경"})).append($('<input style="text-align:center; width:40px;">').val("")))
 			.append($('<td rowspan="2">').html(local_cart[i].totalPrice))
 			.append($('<td style="visibility:hidden;>').html(local_cart[i].mNum))
@@ -59,7 +69,10 @@ $(function(){
 						//console.log($test);
 						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
 					
-
+				//totalPrice 합계 넣기
+				
+				$("#CartList div p span strong").html(sumtotalPrice);
+				
 		}
 		
 	}
@@ -81,7 +94,7 @@ function getOptionNaming(mnumber, stnumber){
 	<div
 		style="width: 100%; text-align: center; padding: 3px; border: 1px solid pink;"
 		id="CartListWrapper">
-		<h3 align="center">장e바see구니</h3>
+		<h3 align="center">장e바 see구니</h3>
 		<c:forEach var="cart" items="${optionname}">
 			<li>${cart.mNum} ${cart.stNum} ${cart.opName}</li>
 
@@ -116,7 +129,7 @@ function getOptionNaming(mnumber, stnumber){
 
 			<div style="background: orange; padding: 3px;">
 				<p>
-					<span> 주문합계<strong>12700</strong>원
+					<span> 주문합계  <strong></strong>원
 
 					</span>
 				</p>
