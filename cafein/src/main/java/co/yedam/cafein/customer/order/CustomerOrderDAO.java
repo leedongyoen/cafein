@@ -20,6 +20,11 @@ public class CustomerOrderDAO {
 		return dao.selectList("CustomerOrderDAO.getOrderlist",vo);
 	}
 	
+	//메인에서 가져올 총주문금액 리스트
+	public List<OrdersVO> mainOrderList(OrdersVO vo) {
+		return dao.selectList("CustomerOrderDAO.mainOrderList", vo);
+	}
+	
 	
 	public StoreVO getSearchStore(StoreVO vo){
 		return dao.selectOne("StoremenuDAO.getSearchStore",vo);

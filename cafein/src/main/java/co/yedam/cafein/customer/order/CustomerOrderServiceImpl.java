@@ -20,6 +20,10 @@ public class CustomerOrderServiceImpl {
 		return dao.getOrderlist(vo);
 	}
 	
+	public List<OrdersVO> mainOrderList(OrdersVO vo) {
+		return dao.mainOrderList(vo);
+	}
+	
 	public StoreVO getSearchStore(StoreVO vo) {
 		return dao.getSearchStore(vo);
 	}

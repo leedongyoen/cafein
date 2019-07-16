@@ -11,12 +11,20 @@
  	$(function(){
  		mainTotalReserve();
 		
-	});
+ 		mainLikeStoreList();
+ 		
+ 		mainLikeMenuList();
+		
+ 		mainOrderList();
+ 	});
+	
+	var cId = '<%= session.getAttribute("cId") %>';
+
  	//메인에서 총적립금 보여주는 테이블
  	function mainTotalReserve() {
 		$.ajax({
 			url : "mainTotalReserve.do",
-			data : {cId : "ju123"},
+			data : {cId : cId},
 			type : "GET",
 			datatype : "json",
 			success : function(data) {
@@ -30,6 +38,62 @@
 			}
 		})
 	};
+	//메인에서 보여줄 자주사용하는 매장 순위리스트를 보여줌
+	function mainLikeStoreList() {
+		$.ajax({
+			url : "mainLikeStoreList.do",
+			data : {cId : cId},
+			type : "GET",
+			datatype : "json",
+			success : function(data) {
+				console.log(data);
+				$("#mainlikestorelist tbody").empty();
+				$.each(data,function(idx,item){
+					$('<tr>')
+					.append($('<td>').html(item.rank))
+					.append($('<td>').html(item.sName))
+					.appendTo('#mainlikestorelist tbody');
+				});
+			}
+		})
+	};
+	//메인에서 보여줄 메뉴 리스트
+	function mainLikeMenuList() {
+		$.ajax({
+			url : "mainLikeMenuList.do",
+			data : {cId : cId},
+			type : "GET",
+			datatype : "json",
+			success : function(data) {
+				console.log(data);
+				$("#mainlikemenulist tbody").empty();
+				$.each(data,function(idx,item){
+					$('<tr>')
+					.append($('<td>').html(item.rank))
+					.append($('<td>').html(item.mName))
+					.appendTo('#mainlikemenulist tbody');
+				});
+			}
+		})
+	};
+	//메인에서 보여줄 총주문금액 리스트
+	function mainOrderList(){
+		$.ajax({
+			url:"mainorderlist.do",
+			data : {cId : cId},
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				$("#mainorderlist tbody").empty();			
+				$.each(data,function(idx,item){
+					$('<tr>')
+					.append($('<td>').html(item.totals))
+					.appendTo('#mainorderlist tbody');
+				});
+			} 
+		});
+	}
  	</script>
 <title>Customer Main Page</title>
 
@@ -76,23 +140,29 @@ table {
 <br><br>
 
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='${pageContext.request.contextPath}/likestorelist.do'">
-	<tr>
-		<th><label>자주 이용한 매장</label></th>
-	</tr>
-	<tr>
-		<th><label>매장상호</label></th>
-	</tr>
+  <table border = "1" id="mainlikestorelist"
+  	onclick = "location.href='${pageContext.request.contextPath}/likestorelist.do'">
+	<thead>
+		<tr>
+			<th><label>-</label></th>
+			<th><label>자주 이용한 매장</label></th>
+		</tr>
+	</thead>
+		<tbody>
+		</tbody>
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='${pageContext.request.contextPath}/likemenulist.do'">
-	<tr>
-		<th><label>많이 주문한 메뉴</label></th>
-	</tr>
-	<tr>
-		<th><label>메뉴명</label></th>
-	</tr>
+  <table border = "1" id="mainlikemenulist"
+  onclick = "location.href='${pageContext.request.contextPath}/likemenulist.do'">
+	<thead>
+		<tr>
+			<th><label>-</label></th>
+			<th><label>많이 주문한 메뉴</label></th>
+		</tr>
+	</thead>
+		<tbody>
+		</tbody>
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
@@ -108,13 +178,15 @@ table {
   </table>
 </div>
 <div style = "float:left;margin-right:10px;">
-  <table border = "1" onclick = "location.href='${pageContext.request.contextPath}/orderlist.do'">
-	<tr >
-		<th><label>총 사용 금액</label></th>
-	</tr>
-	<tr>
-		<th><label>347,000원</label></th>
-	</tr>
+  <table border = "1" id="mainorderlist"
+  onclick = "location.href='${pageContext.request.contextPath}/orderlist.do'">
+	<thead>
+		<tr >
+			<th><label>총 사용 금액</label></th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
   </table>
 </div>
 

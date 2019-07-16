@@ -27,12 +27,15 @@
 // 			}
 // 		})
 // 	};
+		var cId = '<%= session.getAttribute("cId") %>';
+		
+		var sId = '<%= session.getAttribute("sId")%>';
 
-	//총적립금 리스트
+	//총적립금 리스트와 사용한 리스트
 	function getTotalReserve() {
 		$.ajax({
 			url : "getTotalReserve.do",
-			data : {cId : "ju123", sId : "SH001"},
+			data : {cId : cId, sId : sId},
 			type : "GET",
 			datatype : "json",
 			success : function(data) {
@@ -51,7 +54,7 @@
 	function getListReserve() {
 		$.ajax({
 			url : "getListReserve.do",
-			data : {cId: "ju123"},
+			data : {cId: cId},
 			type : "GET",
 			datatype : "json",
 			success : function(data) {

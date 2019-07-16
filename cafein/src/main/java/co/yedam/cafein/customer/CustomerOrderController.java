@@ -69,6 +69,14 @@ public class CustomerOrderController {
 		return service.getOrderList(vo);
 	}
 	
+	//메인에서 고객 총주문금액 리스트 
+	@RequestMapping(value="mainorderlist.do", method=RequestMethod.GET)
+	@ResponseBody
+	public List<OrdersVO> mainOrderList(OrdersVO vo) {
+		System.out.println(vo);
+		return service.mainOrderList(vo);
+	}
+	
 	// 주문 넣기
 	@RequestMapping(value="/insertcustomerorder", method=RequestMethod.POST) 
 	public ModelAndView insertorder(OrdersVO vo) {

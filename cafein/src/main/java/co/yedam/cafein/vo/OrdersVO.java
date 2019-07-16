@@ -15,6 +15,7 @@ public class OrdersVO {
 	private int mileage;
 	private String cAdd;
 	private String cAdd3;
+	private String totals;
 	
 	// store name을 가져오기 위해서
 	private String oDnum;
@@ -142,6 +143,13 @@ public class OrdersVO {
 	}
 	public void setMileage(int mileage) {
 		this.mileage = mileage;
+	}
+	
+	public String getTotals() {
+		return totals;
+	}
+	public void setTotals(String totals) {
+		this.totals = totals;
 	}
 	@Override
 	public String toString() {

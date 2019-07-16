@@ -29,6 +29,11 @@
 	
 	</select>
 
-
+	<select id="mainOrderList"  resultType="order">
+		SELECT SUM(O.TOTAL) TOTALS
+		FROM ORDERS O JOIN STORE S
+		ON O.S_ID = S.S_ID
+		WHERE O.C_ID= #{cId}
+	</select>
 
 </mapper>
