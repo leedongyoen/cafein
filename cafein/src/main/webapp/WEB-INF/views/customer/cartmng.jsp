@@ -19,78 +19,126 @@ $(function(){
 		
 
 
-	$("#cartTable tbody").empty();
+	$("#CartList table tbody").empty();
 	var local_cart = JSON.parse(localStorage.getItem("cartlist"));
 	if (local_cart == null) {
 		local_cart = new Array();
-		$("#cartTableForm").hide();
+		$("#CartListWrapper").hide();
 	}else {
 		
 		
 		console.log(local_cart.length);
 		for(var i = 0;i<local_cart.length;i++){
+
 			
 			$('<tr>')
-			.append($('<td>').html(local_cart[i].sId))
+			.append($('<td rowspan="2">').append($('<input>').attr({type: "checkbox"})))
+			.append($('<td rowspan="2">').html(local_cart[i].sId))
+			.append($('<td rowspan="2">').html("Photo"))
 			.append($('<td>').html(local_cart[i].mName))
-			.append($('<td>').html(local_cart[i].hotice_option))
-			.append($('<td>').html(local_cart[i].mPrice))
-			.append($('<td>').html(local_cart[i].qty))
-			.append($('<td>').html(local_cart[i].cuNumList.toString()))
-			.append($('<td>').html(local_cart[i].totalPrice))
-			.append($('<td>').html(local_cart[i].mNum))
-			.appendTo("#cartTable tbody");
+			.append($('<td rowspan="2">').html(local_cart[i].hotice_option))
+			.append($('<td rowspan="2">').html(local_cart[i].qty).append($('<input>').attr({type: "button",value:"변경"})).append($('<input style="text-align:center; width:40px;">').val("")))
+			.append($('<td rowspan="2">').html(local_cart[i].totalPrice))
+			.append($('<td style="visibility:hidden;>').html(local_cart[i].mNum))
+			.appendTo("#CartList table tbody");
+			
+			$('<tr>').append($('<td>').append($('<ul>'))).appendTo("#CartList table tbody");
+			
+			
+			for(var j = 0;j<local_cart[i].cuNumList.length;j++){
+				//function(mNum,local_cart[i].cuNumList[j])
+				
+				var detail = getOptionNaming("ME008", "ST042");
+				console.log("detail: "+detail);
+				
+				$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
+				
+		
+			}		
+						//$('<li>').html(local_cart[i].cuNumList[j]);
+						//console.log($test);
+						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
+					
+
 		}
 		
 	}
 		console.log(local_cart);
 	
+
 });
 	
+	
+function getOptionNaming(mnumber, stnumber){
+	console.log(mnumber+" : "+stnumber);
+	return "helloe";
+}
 </script>
+
+
 </head>
 <body>
+	<div
+		style="width: 100%; text-align: center; padding: 3px; border: 1px solid pink;"
+		id="CartListWrapper">
+		<h3 align="center">장e바see구니</h3>
+		<c:forEach var="cart" items="${optionname}">
+			<li>${cart.mNum} ${cart.stNum} ${cart.opName}</li>
 
-<h3 align="center">장바구니!</h3>
-<div class = "container" align="center">
-<div id="cartTableForm">
-
-	<c:forEach var="cart" items="${optionname}">
-		<li> ${cart.mNum} ${cart.stNum} ${cart.opName}</li>
-
-	</c:forEach>
-
+		</c:forEach>
 
 
+		<div
+			style="padding: 3px; border: 1px solid orange; display: inline-block; text-align: center;"
+			id="CartList">
+			<!-- display: inline-block; -->
+			<div style="background: gray;">
+				<label><input type="checkbox"></label> <a href="#"></a>
+			</div>
+			<div style="text-align: center;">
+				<table border="1">
 
- <table class = "table" id="cartTable">
- <thead>
- 	<tr>
- 		<th>매장 이름</th>
- 		<th>메뉴 이름</th>
- 		<th>ICE/HOT</th>
- 		<th>메뉴 가격</th>
- 		<th>수량</th>
- 		<th>옵션</th>
- 		<th>총 가1격</th>
- 	</tr>
- </thead>
- 
- 	<th rowspan="7"><input type="checkbox">
- 	
 
-    </table>
-    </div>
-   <div align="right" >   
-	    총가격 : 18400원
+					<thead>
+						<tr><th rowspan="1"></th>
+							<th rowspan="1">매2장 명</th>
+							<th colspan="2">상품/옵션정보</th>
+							<th rowspan="1">ICE/HOT</th>
+							<th rowspan="1">수e량</th>
+							<th rowspan="1">구매 금액</th>
+
+						</tr>
+					</thead>
+
+					<tbody></tbody>
+				</table>
+			</div>
+
+			<div style="background: orange; padding: 3px;">
+				<p>
+					<span> 주문합계<strong>12700</strong>원
+
+					</span>
+				</p>
+			</div>
+
+		</div>
+
+
+
+		<div align="right">총가격 : 1840d0원</div>
+		<br>
+		<br>
+		<br>
+		<div align="right">
+			<button class="btn btn-default ">삭제</button>
+			<button class="btn btn-default ">주문하기</button>
+			<a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
+		</div>
 	</div>
-	<br><br><br>
-	<div align="right" >
-		<button class="btn btn-default " >삭제</button>
-	    <button class="btn btn-default " >주문하기</button>
-	    <a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
-	</div>
-</div>
+
+
+
 
 </body>
 </html>
