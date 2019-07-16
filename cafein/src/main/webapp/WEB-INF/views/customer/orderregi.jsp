@@ -114,8 +114,7 @@ input {
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				
-				$('input:text[name="mileage"]').attr("placeholder",data.mileAge);
+				$('#usermileage').html(data.mileAge+"원이 있습니다.");
 			}
 		});
 		
@@ -250,8 +249,8 @@ input {
 				
 				<tr id="reservetr">
 					<th>적립금</th>
-					<td><input type="text" name="mileage" size="10" 
-						placeholder="###원">
+					<td><input type="text" name="mileage" size="10" value="0">
+						<br><p id="usermileage"></p>
 						<button type="button" onclick="alert('###원 만큼 사용하였습니다.')">사용</button>
 
 					</td>

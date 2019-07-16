@@ -1,6 +1,7 @@
 package co.yedam.cafein.customer.order;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,21 @@ public class CustomerOrderServiceImpl {
 	// 주문번호 가져오기
 	public String getordernumber(String sId) {
 		return dao.getordernumber(sId);
+	}
+	
+	// orders 테이블에 데이터 넣기
+	public int insertorder(OrdersVO vo) {
+		return dao.insertorder(vo);
+	}
+	
+	// 해당 메뉴의 기본 레시피 번호 가져오기
+	public List<RecipeVO> getorderrecipenolist(RecipeVO vo) {
+		return dao.getorderrecipenolist(vo);
+	}
+	
+	
+	// order details 테이블에 넣기
+	public int insertorderdetails(Map<String, Object> map) {
+		return dao.insertorderdetails(map);
 	}
 }
