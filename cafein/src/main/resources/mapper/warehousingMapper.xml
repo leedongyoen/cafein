@@ -23,7 +23,12 @@
 	      sum(w.ware_qty) "wareQty"
 		FROM warehousing w left outer join stock s
 		ON w.st_num = s.st_num
-		WHERE w.ware_qty <![CDATA[ > ]]> 0
+		<where>
+			<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
+				 ware_date between #{startDate} and #{endDate}
+			</if>
+			and w.ware_qty <![CDATA[ > ]]> 0
+		</where>
 		GROUP BY w.ST_NUM, s.st_name
 	</select>		
 	 

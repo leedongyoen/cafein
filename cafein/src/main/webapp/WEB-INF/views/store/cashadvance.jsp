@@ -80,6 +80,7 @@
 		if($('.cash').val() != '') {
 
 			// input 태그에 입력한 값을 sessionStorage에 담기 위한 배열
+			// cash : 현금시재, defference : 차액, orCash : 영업준비금, netIncome : 순수익
 			var cashList = {
 					c50000:$('#cash50000').val(),
 					c10000:$('#cash10000').val(),
@@ -87,9 +88,12 @@
 					c1000:$('#cash1000').val(),
 					c500:$('#cash500').val(),
 					c100:$('#cash100').val(),
-					total:totalcashSum,
-					mcash:minusCash
+					cash:totalcashSum,
+					difference:minusCash,
+					orCash:operatingreserveSum,
+					netIncome:totalcashsales
 			};
+			
 			// 배열에 넣기
 			cashDataList.push(cashList);
 			// json stringify 타입으로 변환
@@ -171,7 +175,7 @@
 					<td><p id="defaultCash">50,000원</p></td>
 				</tr>
 				<tr>
-					<th>영업 준비금(현금 결제건)</th>
+					<th>영업 지출금(현금 결제건)</th>
 					<td><p id="orSum"></p></td>
 				</tr>
 				<tr>
@@ -226,7 +230,7 @@
 					<td><p id="totalCash"></p></td>
 				</tr>
 				<tr>
-					<th>총 현금 매출액</th>
+					<th>순 현금 매출액</th>
 					<td><p id="totalCashSales"></p></td>
 				</tr>
 				<tr>

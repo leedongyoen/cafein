@@ -1,5 +1,7 @@
 package co.yedam.cafein.vo;
 
+import java.util.Arrays;
+
 public class StockVO {
 
 	private String stNum;
@@ -15,6 +17,7 @@ public class StockVO {
 	private String[] stNumList;
 	private String stStatusNm;
 	private String caNm;
+	private int truthQty;		// 입력받은 실수량이 담길 변수(테이블 컬럼은 없어졌지만 변수는 필요함)
 	
 	
 	
@@ -97,11 +100,20 @@ public class StockVO {
 	public void setCaNm(String caNm) {
 		this.caNm = caNm;
 	}
+	
+	public int getTruthQty() {
+		return truthQty;
+	}
+	public void setTruthQty(int truthQty) {
+		this.truthQty = truthQty;
+	}
+	
 	@Override
 	public String toString() {
 		return "StockVO [stNum=" + stNum + ", sId=" + sId + ", stName=" + stName + ", stQty=" + stQty + ", stAqty="
 				+ stAqty + ", stPrice=" + stPrice + ", caNum=" + caNum + ", stanUnit=" + stanUnit + ", stStatus="
-				+ stStatus + "]";
+				+ stStatus + ", stNumList=" + Arrays.toString(stNumList) + ", stStatusNm=" + stStatusNm + ", caNm="
+				+ caNm + ", truthQty=" + truthQty + "]";
 	}
-	
+
 }
