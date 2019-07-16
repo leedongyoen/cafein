@@ -7,8 +7,6 @@
 <title>실수량 확인</title>
 <script>
 
-	
-	
 	// 취소 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#truthbackbtn').on("click",function(){
 		$('.truthQty').val('');
@@ -25,7 +23,7 @@
 	
 	// 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#truthsavebtn').on("click",function(){
-
+		/* 
 		if($('.truthQty').not('.truthlist').length > 0) {
 			console.log('if문 in')
 			console.log($('.truthQty.truthlist'))
@@ -34,13 +32,15 @@
 			return;
 		}
 
-		// 실수량 sessionStorage에 담기 ---------------
+		 */
+		// 실수량 sessionStorage에 담기 ---------------------------------------------
 		var len = $('#inputId tr').length;
 		
 		for(i=0;i<len;i++) {
 			
 			stockList = {
-					stNum:$('#inputId tr').eq(i).find('td').eq(1).text(),
+					stName:$('#inputId tr').eq(i).find('td').eq(1).text(),
+					stNum:$('#inputId tr').eq(i).find('td').eq(4).text(),
 					stQty:$('#inputId tr').eq(i).find('td').eq(2).text(),
 					truthQty:$('#inputId tr').eq(i).find('input').val(),
 					stLoss:($('#inputId tr').eq(i).find('td').eq(2).text()) - ($('#inputId tr').eq(i).find('input').val())

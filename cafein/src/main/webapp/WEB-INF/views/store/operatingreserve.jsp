@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>매장 영업 준비금</title>
+<title>매장 영업 지출금</title>
 
 <script>
 
@@ -187,7 +187,7 @@
 </script>
 </head>
 <body>
-<h3 align = "center">매장 영업 준비금</h3><br>
+<h3 align = "center">매장 영업 지출금</h3><br>
 <div class="container">
 	<div class="row">
 		<div class="col-12" style="height:350px;width:550px;overflow:auto;">

@@ -175,7 +175,7 @@
 					<td><p id="defaultCash">50,000원</p></td>
 				</tr>
 				<tr>
-					<th>영업 준비금(현금 결제건)</th>
+					<th>영업 지출금(현금 결제건)</th>
 					<td><p id="orSum"></p></td>
 				</tr>
 				<tr>
