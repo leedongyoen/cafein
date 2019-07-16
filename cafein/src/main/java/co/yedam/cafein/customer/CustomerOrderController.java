@@ -74,9 +74,12 @@ public class CustomerOrderController {
 	public ModelAndView insertorder(OrdersVO vo) {
 		System.out.println("============주문 :"+vo);
 		ModelAndView mv = new ModelAndView();
-		System.out.println("============"+service.getordernumber(vo.getsId()));
+		String oNum = service.getordernumber(vo.getsId());
+		vo.setoNum(oNum);
 		
-		mv.setViewName("ccustomer/delivery");
+		
+		
+		mv.setViewName("customer/delivery");
 		return mv;
 	}
 	
