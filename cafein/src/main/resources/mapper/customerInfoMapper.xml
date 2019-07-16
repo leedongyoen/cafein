@@ -7,7 +7,7 @@
 
 <!-- 	단건 회원조회 -->
 	<select id="getCustomer" parameterType="customer" resultType="customer">
-		SELECT C_ID, C_NICK, C_NAME, C_TEL, C_PW, C_ADD, DOB, C_JOIN
+		SELECT C_ID, C_NICK, C_NAME, C_TEL, C_PW, C_ADD, DOB, C_JOIN, C_ADD2, C_ADD3
 		FROM CUSTOMER
 		
 		<if test="cJoin == 'naver' ">

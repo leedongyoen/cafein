@@ -21,6 +21,42 @@
 	</select>
 
 
+	<select id="getordernumber" parameterType="string" resultType="string">
+		SELECT 'OR'||TO_CHAR(SYSDATE,'yymmdd')||LPAD(NVL(MAX(SUBSTR(O_NUM,9)),0)+1,4,0)
+		FROM ORDERS
+		WHERE S_ID = #{sId}
+		      AND O_NUM LIKE '%'||TO_CHAR(SYSDATE,'yymmdd')||'%'
+	
+	</select>
+	
+	<insert id="insertorder">
+	
+		INSERT INTO ORDERS (	O_NUM
+								, C_ID
+								, O_DATE
+								, TOTAL
+								, RECEIPT
+								, S_ID
+								, PAY_METHOD
+								, MILEAGE
+								, C_ADD
+								, C_ADD3
+							)
+		VALUES (
+				#{oNum}
+				, #{cId}
+				, systimestamp
+				, #{total}
+				, #{receipt}
+				, #{sId}
+				, #{payMethod}
+				, #{mileage}
+				, #{cAdd}
+				, #{cAdd3}
+				)
+	
+	</insert>
+
 
 
 </mapper>

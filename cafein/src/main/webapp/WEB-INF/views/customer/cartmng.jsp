@@ -1,5 +1,10 @@
+<%@page import="co.yedam.cafein.vo.RecipeVO"%>
+<%@page import="co.yedam.cafein.vo.CartVO"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,98 +15,82 @@
 <title>Insert title here</title>
 <script>
 
-//test로 넘어오는값 임시로 넣은 json문장,
-var jsonString='[{"sId":"SH001","mNum":"ME001","qty":"1","hotice_option":"CAIC","mPrice":"4000","caNumList":"[{"":"","":""}]"},{"sId":"SH001","mNum":"ME002","qty":"2","hotice_option":"CAHT","mPrice":"4500","caNumList":"[{"":"","":""}]"}]';
+$(function(){
+		
 
 
+	$("#cartTable tbody").empty();
+	var local_cart = JSON.parse(localStorage.getItem("cartlist"));
+	if (local_cart == null) {
+		local_cart = new Array();
+		$("#cartTableForm").hide();
+	}else {
+		
+		
+		console.log(local_cart.length);
+		for(var i = 0;i<local_cart.length;i++){
+			
+			$('<tr>')
+			.append($('<td>').html(local_cart[i].sId))
+			.append($('<td>').html(local_cart[i].mName))
+			.append($('<td>').html(local_cart[i].hotice_option))
+			.append($('<td>').html(local_cart[i].mPrice))
+			.append($('<td>').html(local_cart[i].qty))
+			.append($('<td>').html(local_cart[i].cuNumList.toString()))
+			.append($('<td>').html(local_cart[i].totalPrice))
+			.append($('<td>').html(local_cart[i].mNum))
+			.appendTo("#cartTable tbody");
+		}
+		
+	}
+		console.log(local_cart);
+	
+});
+	
 </script>
 </head>
 <body>
 
-<h3 align="center">장바구니</h3>
+<h3 align="center">장바구니!</h3>
 <div class = "container" align="center">
- <table class = "table">
- 	<tr>
- 		<th rowspan="7"><input type="checkbox"></th>
- 		<th>매장 번호</th><td>SH001</td>
- 	</tr>
- 	<tr>
- 		<th>메뉴 번호</th><td>ME001</td>
- 	</tr>
- 	<tr>
- 		<th>ICE/HOT</th><td>CAIC</td>
- 	</tr>
- 	<tr>
- 		<th>메뉴 가격</th><td>4000</td>
- 	</tr>
- 	<tr>
- 		<th>담은 수량</th><td>1</td>
- 	</tr>
- 	<tr>
- 		<th>옵션</th><td>...</td>
- 	</tr>
- 	<tr>
- 		<th>총가격</th><td>4000*1</td>
- 	</tr>
+<div id="cartTableForm">
+
+	<c:forEach var="cart" items="${optionname}">
+		<li> ${cart.mNum} ${cart.stNum} ${cart.opName}</li>
+
+	</c:forEach>
 
 
 
+
+ <table class = "table" id="cartTable">
+ <thead>
  	<tr>
- 		<th rowspan="7"><input type="checkbox"></th>
- 		<th>매장 번호</th><td>SH001</td>
+ 		<th>매장 이름</th>
+ 		<th>메뉴 이름</th>
+ 		<th>ICE/HOT</th>
+ 		<th>메뉴 가격</th>
+ 		<th>수량</th>
+ 		<th>옵션</th>
+ 		<th>총 가1격</th>
  	</tr>
- 	<tr>
- 		<th>메뉴 번호</th><td>ME001</td>
- 	</tr>
- 	<tr>
- 		<th>ICE/HOT</th><td>CAIC</td>
- 	</tr>
- 	<tr>
- 		<th>메뉴 가격</th><td>4000</td>
- 	</tr>
- 	<tr>
- 		<th>담은 수량</th><td>1</td>
- 	</tr>
- 	<tr>
- 		<th>옵션</th><td>...</td>
- 	</tr>
- 	<tr>
- 		<th>총가격</th><td>4000*1</td>
- 	</tr>
+ </thead>
+ 
+ 	<th rowspan="7"><input type="checkbox">
  	
- 	
- 	 	<tr>
- 		<th rowspan="7"><input type="checkbox"></th>
- 		<th>매장 번호</th><td>SH001</td>
- 	</tr>
- 	<tr>
- 		<th>메뉴 번호</th><td>ME001</td>
- 	</tr>
- 	<tr>
- 		<th>ICE/HOT</th><td>CAIC</td>
- 	</tr>
- 	<tr>
- 		<th>메뉴 가격</th><td>4000</td>
- 	</tr>
- 	<tr>
- 		<th>담은 수량</th><td>1</td>
- 	</tr>
- 	<tr>
- 		<th>옵션</th><td>...</td>
- 	</tr>
- 	<tr>
- 		<th>총가격</th><td>4000*1</td>
- 	</tr>
+
     </table>
+    </div>
    <div align="right" >   
 	    총가격 : 18400원
 	</div>
 	<br><br><br>
 	<div align="right" >
-		<button class="btn btn-default " onclick="#">삭제</button>
-	    <button class="btn btn-default " onclick="#">주문하기</button>
+		<button class="btn btn-default " >삭제</button>
+	    <button class="btn btn-default " >주문하기</button>
 	    <a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
 	</div>
 </div>
+
 </body>
 </html>
