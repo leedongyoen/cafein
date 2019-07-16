@@ -5,15 +5,19 @@
 
 <select id="getMymenu" resultType="viewmymenu">
 SELECT
-	  C_ID "cId"
-	, S_NAME "sName"
+	S_NAME "sName"
 	, M_NAME "mName"
 	, M_PRICE "mPrice"
-	, CA_NUM "caNum"
+	, OP_NAME "opName"
+	, OP_PRICE "opPrice"
+	, C_ID "cId"
+	, M_NUM "mNum"
 	, CU_NUM "cuNum"
-	, OP_NUM "opNum"
+	, CA_NUM "caNum"
+	, UPLOADFILE "uploadFileName"
 FROM MYMENU_VIEW
 WHERE C_ID=#{cId}
+
 </select>
 <delete id="deleteMymenu" parameterType="mymenu">
 DELETE MY_MENU 
