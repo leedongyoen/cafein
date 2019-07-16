@@ -31,25 +31,27 @@ public class CustomerOrderController {
 	
 	@Autowired
 	CustomerOrderServiceImpl service;
-	@Autowired
-	MenuServiceImpl service2;
-	@Autowired
-	RecipeSerciveImpl service3;
-
 	
 	// 주문으로 넘어가는 부분
+	
 	  @RequestMapping(value="/customerorder",method=RequestMethod.POST) 
 	  public ModelAndView customerorder(MenuOrderVO vo){ 
 		  ModelAndView mv = new ModelAndView();
 		  mv.addObject("selectmenu",vo );
-
-		  StoreVO stvo = new StoreVO();
-		  stvo.setSid(vo.getsId());
-		  System.out.println(stvo.getSid());
-		  mv.addObject("store",service.getSearchStore(stvo));
+		  System.out.println("================== 주문 내역 :"+vo);
+		  mv.addObject("option",service.getorderrecipeno(vo));
 		  mv.setViewName("customer/orderregi");
 		  return mv;
 	  }
+	  
+	// 배달서비스 여부
+	@ResponseBody
+	@RequestMapping(value="/getstoredeliverservice", method=RequestMethod.GET)
+	public int getstoredeliverservice(String sId) {
+		
+		return service.getstoredeliverservice(sId);
+	}
+	  
 	
 	//고객 주문 페이지로 이동.
 	@RequestMapping("orderlist.do")
@@ -67,6 +69,16 @@ public class CustomerOrderController {
 		return service.getOrderList(vo);
 	}
 	
+	// 주문 넣기
+	@RequestMapping(value="/insertcustomerorder", method=RequestMethod.POST) 
+	public ModelAndView insertorder(OrdersVO vo) {
+		System.out.println("============주문 :"+vo);
+		ModelAndView mv = new ModelAndView();
+		System.out.println("============"+service.getordernumber(vo.getsId()));
+		
+		mv.setViewName("ccustomer/delivery");
+		return mv;
+	}
 	
 	//고객 주문배달 조회
 	@RequestMapping("delivery.do")
@@ -79,11 +91,49 @@ public class CustomerOrderController {
 		return "customer/orderdetails";
 	}
 	//고객장바구니 관리
+
+	  @RequestMapping(value="cartmng",method=RequestMethod.GET) public ModelAndView
+	  cartmng(ModelAndView mv, HttpSession session) {
+	  
+	 // ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
+	 // for(int i = 0;i<list.size();i++) {
+	 // System.out.println(list.get(i).toString()); }
+	  
+	  
+	  RecipeVO vo = new RecipeVO();
+	  mv.addObject("optionname",service.getOptionName(vo));
+	  
+	  
+	  
+	  
+	  
+		/*
+		 * ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
+		 * 
+		 * if(list == null) { list = new ArrayList<CartVO>(); list.add(vo); }else{
+		 * list.add(vo); }
+		 * 
+		 * session.setAttribute("cartlist", list);
+		 * System.out.println("session : "+session.getAttribute("cartlist"));
+		 * 
+		 */
+	  
+	  
+	  
+	  ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
+	  if(list != null) {
+		  for(int i = 0;i<list.size();i++) {
+				System.out.println("-----------------------------------"+list.get(i).toString());
+			}  
+	  }else if(list == null) {
+		  System.out.println("없음");
+	  }
+	  
+	  mv.setViewName("customer/cartmng"); return mv; }
+	 
+	  
+	  
 	/*
-	 * @RequestMapping(cartmng.do) 
-	 * public String cartmng() { return "customer/cartmng"; }
-	 */
-	
 	@RequestMapping(value="cartmng",method=RequestMethod.GET)
 	public ModelAndView cartmng(ModelAndView mv, HttpSession session) {
 		//getSession CartVO를 꺼내고 
@@ -91,8 +141,7 @@ public class CustomerOrderController {
 		MenuVO vo = new MenuVO();
 		RecipeVO vo2 = new RecipeVO();
 		
-		mv.addObject("storemenu",service2.getMenuList(vo));
-		mv.addObject("storerecipe",service3.getRecipeDetailList(vo2));
+		
 		ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
 		for(int i = 0;i<list.size();i++) {
 			System.out.println(list.get(i).toString());
@@ -101,8 +150,8 @@ public class CustomerOrderController {
 		mv.setViewName("customer/cartmng");
 		return mv;
 	}
-	// 
 	
+	*/
 	
 
 }

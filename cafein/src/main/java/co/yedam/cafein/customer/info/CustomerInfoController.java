@@ -25,10 +25,29 @@ public class CustomerInfoController {
 	
 	// 회원 단건 조회
 	@ResponseBody
-	@RequestMapping(value = "/customerinfo/{cId}", method = RequestMethod.GET)
-	public CustomerVO getCustomer(@PathVariable("cId") String id, CustomerVO vo, Model model) {
-		vo.setcId(id);
-		return customService.getCustomer(vo);
+	@RequestMapping(value = "/customerinfo", method = RequestMethod.GET)
+	public CustomerVO getCustomer( CustomerVO vo, Model model) {
+
+		
+		CustomerVO resultvo = new CustomerVO();
+		
+		resultvo = customService.getCustomer(vo);
+		/*
+		 * if(resultvo.getcJoin().equals("naver")) {
+		 * 
+		 * String cname = resultvo.getcId(); // 먼저 @ 의 인덱스를 찾는다 - 인덱스 값: 5 int idx =
+		 * cname.indexOf("@");
+		 * 
+		 * // @ 앞부분을 추출 // substring은 첫번째 지정한 인덱스는 포함하지 않는다. // 아래의 경우는 첫번째 문자열인 a 부터
+		 * 추출된다. String changename = cname.substring(0, idx);
+		 * resultvo.setcId(changename); resultvo.setcNick(""); resultvo.setcTel("");
+		 * resultvo.setcPw("");
+		 * 
+		 * }
+		 */
+
+		System.out.println(resultvo);
+		return resultvo;
 	}
 	
 	//수정

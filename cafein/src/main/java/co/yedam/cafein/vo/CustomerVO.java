@@ -19,10 +19,10 @@ public class CustomerVO {
 	private int stmp;
 	private String email;
 	
-	
+	// 마일리지 조인
+	private String mileage;
+	private String sId;
 
-	
-	
 	public String getEmail() {
 		return email;
 	}
@@ -32,6 +32,21 @@ public class CustomerVO {
 	@JsonFormat(pattern = "yyyy-MM-dd")			//날짜형식 포맷
 	private Date dob;
 	private String cJoin;
+	
+	
+	
+	public String getsId() {
+		return sId;
+	}
+	public void setsId(String sId) {
+		this.sId = sId;
+	}
+	public String getMileage() {
+		return mileage;
+	}
+	public void setMileage(String mileage) {
+		this.mileage = mileage;
+	}
 	public String getcId() {
 		return cId;
 	}
@@ -113,9 +128,10 @@ public class CustomerVO {
 	@Override
 	public String toString() {
 		return "CustomerVO [cId=" + cId + ", cNick=" + cNick + ", cTel=" + cTel + ", cName=" + cName + ", cPw=" + cPw
-				+ ", pPoint=" + pPoint + ", grade=" + grade + ", cAdd=" + cAdd + ", stmp=" + stmp + ", dob=" + dob
-				+ ", cJoin=" + cJoin + "]";
+				+ ", pPoint=" + pPoint + ", grade=" + grade + ", cAdd=" + cAdd + ", cAdd2=" + cAdd2 + ", cAdd3=" + cAdd3
+				+ ", stmp=" + stmp + ", mileage=" + mileage + ", sId=" + sId + ", dob=" + dob + ", cJoin=" + cJoin
+				+ "]";
 	}
 	
-
+	
 }

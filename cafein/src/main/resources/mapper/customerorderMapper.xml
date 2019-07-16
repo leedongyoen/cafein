@@ -21,6 +21,14 @@
 	</select>
 
 
+	<select id="getordernumber" parameterType="string" resultType="string">
+		SELECT 'OR'||TO_CHAR(SYSDATE,'yymmdd')||LPAD(NVL(MAX(SUBSTR(O_NUM,9)),0)+1,4,0)
+		FROM ORDERS
+		WHERE S_ID = #{sId}
+		      AND O_NUM LIKE '%'||TO_CHAR(SYSDATE,'yymmdd')||'%'
+	
+	</select>
+
 
 
 </mapper>

@@ -4,21 +4,21 @@
 	<!-- 매장 영업 준비금 조회 -->
 	<select id="getWarehousing" resultType="viewwarehousing">
 		SELECT W.WARE_DATE "wareDate"
-			 , W.WARE_QTY "wareQty"
-			 , W.WARE_PRICE "warePrice"
-			 , W.S_ID "sId"
-			 , UPPER(W.ST_PAY_METHOD) "stPayMethod"
-			 , S.ST_NAME "stName"
-		FROM WAREHOUSING W, STOCK S
-		WHERE W.ST_NUM = S.ST_NUM 
-			  AND 
-			  W.S_ID = #{sId}
-			  AND 
-			  TO_CHAR(W.WARE_DATE,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
-			  AND 
-			  W.WARE_QTY > 0 
-			  AND 
-			  W.WARE_PRICE > 0
+          , W.WARE_QTY "wareQty"
+          , W.WARE_PRICE "warePrice"
+          , W.S_ID "sId"
+          , UPPER(W.ST_PAY_METHOD) "stPayMethod"
+          , S.ST_NAME "stName"
+      	FROM WAREHOUSING W, STOCK S
+     	WHERE W.ST_NUM = S.ST_NUM 
+           AND 
+           W.S_ID = #{sId}
+           AND 
+           TO_CHAR(W.WARE_DATE,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+           AND 
+           W.WARE_QTY > 0 
+           AND 
+           W.WARE_PRICE > 0
 	</select>
 	
 	<!-- 매장 마감 시재 정산 조회 -->
@@ -38,4 +38,40 @@
 			AND 
 			PAY_METHOD = 'CASH'
 	</select>
+	
+	<!-- 매장 재고 수량 조회 -->
+	<select id="getStockTruthList" resultType="stock">
+		SELECT ST_NUM
+			 , S_ID
+			 , ST_NAME
+			 , ST_QTY
+			 , ST_AQTY
+			 , CA_NUM
+			 , ST_STATUS
+		FROM STOCK
+		WHERE S_ID = #{sId}
+	</select>
+	
+	<!-- 재고입고 테이블에 insert -->
+	<insert id="warehousingInsert">
+		INSERT INTO WAREHOUSING 
+		VALUES(WARE_SEQ.NEXTVAL
+			  ,SYSDATE
+			  ,0
+			  ,0
+			  ,#{stNum}
+			  ,#{sId}
+			  ,NULL
+			  ,#{stLoss}
+			  ,NULL)
+	</insert>
+	
+	<!-- 재고 테이블에 수량 update -->
+	<update id="stockUpdate">
+		UPDATE STOCK SET 
+			  ST_QTY = #{stQty}
+			, ST_STATUS = #{stStatus}
+		WHERE ST_NUM = #{stNum}
+	</update>
+	
 </mapper>
