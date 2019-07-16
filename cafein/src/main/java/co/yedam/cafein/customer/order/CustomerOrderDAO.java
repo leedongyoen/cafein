@@ -6,7 +6,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.OrdersVO;
+import co.yedam.cafein.vo.RecipeVO;
 import co.yedam.cafein.vo.StoreVO;
 
 @Repository
@@ -21,5 +23,24 @@ public class CustomerOrderDAO {
 	
 	public StoreVO getSearchStore(StoreVO vo){
 		return dao.selectOne("StoremenuDAO.getSearchStore",vo);
+	}
+	
+	
+	public List<RecipeVO> getOptionName(RecipeVO vo){
+		return dao.selectList("RecipeDAO.getOptionName",vo);
+	}
+	
+	public List<RecipeVO> getorderrecipeno(MenuOrderVO vo){
+		return dao.selectList("RecipeDAO.getorderrecipeno",vo);
+	}
+	
+	// 배달서비스 여부
+	public int getstoredeliverservice(String sId){
+		return dao.selectOne("StoremenuDAO.getstoredeliverservice",sId);
+	}
+	
+	// 주문번호 가져오기
+	public String getordernumber(String sId) {
+		return dao.selectOne("CustomerOrderDAO.getordernumber",sId);
 	}
 }

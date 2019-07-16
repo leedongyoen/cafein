@@ -29,6 +29,11 @@ public class MenuDAO {
 		return mybatis.delete("MenuDAO.deleteMenu",vo);
 	}
 	
+	public int updateFile(MenuVO vo) {
+		System.out.println("-> update file");
+		return mybatis.update("MenuDAO.updateFile",vo);
+	}
+	
 	public List<MenuVO> getMenuList(MenuVO vo) {
 		System.out.println("-> mybatis insertBoard procedure 을 이용함");
 		return mybatis.selectList("MenuDAO.getMenuList", vo);

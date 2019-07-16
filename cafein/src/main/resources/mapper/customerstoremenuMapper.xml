@@ -54,6 +54,7 @@
 		<result column="m_stat" property="mStat"/>
 		<result column="s_id" property="sId"/>
 		<result column="menusale" property="menuSale"/>
+		<result column="UPLOADFILE" property="uploadFileName" />
 	</resultMap>
 	
 	<select id="getMenuList" parameterType="menu" resultType="menu" resultMap="menuMap">
@@ -63,6 +64,7 @@
 				, CA_NUM
 				, M_STAT
 				, MENUSALE
+				, UPLOADFILE
 		FROM MENU
 		WHERE S_ID = #{sId}
 				AND MENUSALE = 'Y'
@@ -101,6 +103,16 @@
 		FROM MENU
 		WHERE M_NUM= #{mNum}
 		      AND S_ID= #{sId}
+	
+	</select>
+	
+	<select id="getstoredeliverservice" parameterType="string" resultType="int">
+	
+		SELECT count(*)
+		FROM STORE
+		WHERE S_ID= #{sId}
+   			 AND TO_CHAR(SYSDATE,'HH24') BETWEEN SUBSTR(ST_OPEN_TIME,1,2)+1 
+   			 								AND SUBSTR(ST_CLOSE_TIME,1,2)-2
 	
 	</select>
 

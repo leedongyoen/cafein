@@ -69,13 +69,32 @@ public class MenuController {
 	}
 	
 	
+	
+	//메뉴 등록 맞음
 	@ResponseBody
 	@RequestMapping(value="/menues"
 	,method=RequestMethod.POST
 //		,produces="application/json"     
 //		,consumes="application/json"
-   ,headers = {"Content-type=application/json" }
-			)public Map<String,Boolean> insertUser(@RequestBody MenuVO vo, Model model) {
+   ,headers = {"Content-type=application/json" })
+	public Map<String,Boolean> insertUser(@RequestBody MenuVO vo, Model model) throws IllegalStateException, IOException {
+		
+		
+		/*
+		System.out.println("t사진 업로드 테스ㅡ 중: "+vo.getUploadFileName());
+		
+		//첨부파일 업로드 처리
+		MultipartFile uploadFile = vo.getUploadFile();
+		String fileName = null;
+		if(uploadFile !=null && !uploadFile.isEmpty() && uploadFile.getSize()>0) {
+		fileName = uploadFile.getOriginalFilename();
+		uploadFile.transferTo(new File("C:\\upload/"+fileName));
+		}
+		//첨부파일명 VO에 지정
+		vo.setUploadFileName(fileName);
+		*/
+		
+		
 		service.insertUser(vo);
 		Map<String, Boolean> map = new HashMap<String, Boolean>();
 		map.put("result", true);
@@ -83,26 +102,71 @@ public class MenuController {
 	}
 	
 	
-	@Value("${file.path}") private String up_dir;
-
-	//ajax 이미지 업로드
-	@RequestMapping(value = "/imgUpload.do")
-	@ResponseBody
-	public Map imgUpload(@RequestParam("upload") MultipartFile uploadFile, 
-			             HttpServletRequest request) throws IllegalStateException, IOException {
-		String contextPath = request.getContextPath();		
-		String filename = uploadFile.getOriginalFilename();	//업로드 파일명
-		String url = contextPath+"/"+ up_dir+"/"+filename; //src 경로 만들어줌
+	
+	
+	
+	
+	@RequestMapping(value = "/imgUpdate.do", method = RequestMethod.POST)
+	public ModelAndView boardInsert(MenuVO vo, HttpServletRequest request)
+			throws IllegalStateException, IOException {
+		// 첨부파일 업로드 처리
 		
-		String path = request.getSession().getServletContext().getRealPath(up_dir);
-		System.out.println("path: "+path);
-		uploadFile.transferTo(new File(path, filename));
+		System.out.println(request.getSession().getServletContext().getRealPath("/"));
 		
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("uploaded","1");
-		map.put("fileName",filename);
-		map.put("url", url);
-		return map;
+		MultipartFile uploadFile = vo.getUploadFile();
+		String fileName = null;
+		if (uploadFile != null && !uploadFile.isEmpty() && uploadFile.getSize() > 0) {
+			fileName = uploadFile.getOriginalFilename();
+			uploadFile.transferTo(new File(request.getSession().getServletContext().getRealPath("/")+"image/" + fileName));
+		}
+		// 첨부파일명 VO에 지정
+		vo.setUploadFileName(fileName);
+		service.updateFile(vo);
+		ModelAndView mv = new ModelAndView();
+		mv = getMenuList(mv);
+		return mv;
 	}
+	
+	
+	
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping("") public MenuVO updateImg(@RequestBody MenuVO vo, Model
+	 * model) throws IllegalStateException, IOException {
+	 * 
+	 * System.out.println("t사진 업로드 테스ㅡ 중: "+vo.toString());
+	 * 
+	 * //첨부파일 업로드 처리 MultipartFile uploadFile = vo.getUploadFile(); String fileName
+	 * = null; if(uploadFile !=null && !uploadFile.isEmpty() &&
+	 * uploadFile.getSize()>0) { fileName = uploadFile.getOriginalFilename();
+	 * uploadFile.transferTo(new File("C:\\upload/"+fileName)); } //첨부파일명 VO에 지정
+	 * vo.setUploadFileName(fileName);
+	 * 
+	 * return null; }
+	 * 
+	 */
+	
+	/*
+	 * @Value("${file.path}") private String up_dir;
+	 * 
+	 * //ajax 이미지 업로드
+	 * 
+	 * @RequestMapping(value = "/imgUpload.do")
+	 * 
+	 * @ResponseBody public Map imgUpload(@RequestParam("upload") MultipartFile
+	 * uploadFile, HttpServletRequest request) throws IllegalStateException,
+	 * IOException { String contextPath = request.getContextPath(); String filename
+	 * = uploadFile.getOriginalFilename(); //업로드 파일명 String url = contextPath+"/"+
+	 * up_dir+"/"+filename; //src 경로 만들어줌
+	 * 
+	 * String path = request.getSession().getServletContext().getRealPath(up_dir);
+	 * System.out.println("path: "+path); uploadFile.transferTo(new File(path,
+	 * filename));
+	 * 
+	 * Map<String, String> map = new HashMap<String, String>();
+	 * map.put("uploaded","1"); map.put("fileName",filename); map.put("url", url);
+	 * return map; }
+	 */
 	
 }
