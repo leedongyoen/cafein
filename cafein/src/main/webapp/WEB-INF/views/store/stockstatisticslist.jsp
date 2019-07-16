@@ -16,23 +16,21 @@
     <script type="text/javascript">
 	$(function(){
 		warehousingList();
-		enteredList();
-		releasedList();
+// 		enteredList();
+// 		releasedList();
 	});
 	
-      google.charts.load('current', {packages:['corechart','table','bar']});
+      google.charts.load('current', {packages:['corechart','bar']});
       google.charts.setOnLoadCallback(drawChart);
       
-      var wareData;
-      
-      function drawChart() {
+       function drawChart() {
 			$.ajax({
 				url:'warehousing',
 				type:'GET',
 				datatype: 'json',
 // 				data : JSON.stringify({ stName : stName, wareQty : wareQty, warePrice : warePrice, stLoss : stLoss}),
 				success: function(data){
-					var chartData = [];
+				 var chartData = [];
 					chartData.push(['재고명','수량'])
 					for(i=0; i<data.length; i++){
 						var datas = [data[i].stName, data[i].wareQty];
@@ -49,17 +47,15 @@
 						}
 					};
 
-					var table = new google.visualization.Table(document
-								.getElementById('test_dataview')) // table 만들 id 값
+					var barChart = new google.visualization.BarChart(document
+								.getElementById('barChart_div')) // table 만들 id 값
 
-					table.draw(wareData, { 
-						 width: '30%', height: '30%'
-					});
+					barChart.draw(wareData, options);
 
-					var chart = new google.visualization.PieChart(document
-								.getElementById('chart_div'));
+					var pieChart = new google.visualization.PieChart(document
+								.getElementById('pieChart_div'));
 
-					chart.draw(wareData, options); // draw에 담길  메소드값와 옵션값을 넣어줌
+					pieChart.draw(wareData, options); // draw에 담길  메소드값와 옵션값을 넣어줌 
 				}
 			});
 		};
@@ -107,8 +103,35 @@
     	  });
     	}
       
+    //날짜 데이터 보내기
+  	function dateSearch(){    	  													
+  		var startDate = jQuery('#startDate').val();
+  		var endDate = jQuery('#endDate').val();
+  			
+  		if(startDate == '' || endDate == ''){
+  			alert('날짜를 선택해 주세요.');
+  			return;
+  		}
+  		
+  		//alert(jQuery('#startDate').val());
+  		//alert(jQuery('#endDate').val());
+  		
+  		$.ajax({
+    		  url:'dateSearch',
+    		  type:'POST',
+    		  dataType:'json',
+    		data : {startDate : startDate,
+    				endDate : endDate},
+    		  error:function(status,msg){
+    			  alert(status+"메세지"+msg);
+    		  },
+    		  success:warehousingListResult
+    	  });
+  	}
+    
       //입출고 리스트 뿌리기
       function warehousingListResult(data){
+    	 
     	  $("thead").empty();
     	  $("tbody").empty();
     	  $('<tr>')
@@ -124,59 +147,40 @@
     		  	.append($('<td>').html(item.wareQty))
     		  	.append($('<td>').html(item.stLoss))
     		  	.appendTo('tbody');
-    	  })
+    	  });
       }
       
-	//날짜 데이터 보내기
-	function dateSearch(){    	  													
-		var startDate = jQuery('#startDate').val();
-		var endDate = jQuery('#endDate').val();
-			
-		if(startDate == '' || endDate == ''){
-			alert('날짜를 선택해 주세요.');
-			return;
-		}
-		
-		//alert(jQuery('#startDate').val());
-		//alert(jQuery('#endDate').val());
-		
-		$.ajax({
-  		  url:'dateSearch',
-  		  type:'POST',
-  		  dataType:'json',
-  		data : {startDate : startDate,
-  				endDate : endDate},
-  		  error:function(status,msg){
-  			  alert(status+"메세지"+msg);
-  		  },
-  		  success:warehousingListResult
-  	  });
-	}
+//       style="width: 700px; height: 400px;" 
     </script>
-    <div id="chart_div" style="width: 900px; height: 500px;" ></div>
-	<div align="center" id="test_dataview"></div><br>
-	     <div class="btn-group">
-		<input type="button" value="입고 통계" class="btn btn-primary" id="btnEnterd" onclick="enteredList()">
-		<input type="button" value="출고 통계" class="btn btn-primary" id="btnReleased" onclick="releasedList()">
-		<input type="button" value="전체 통계" class="btn btn-primary" id="btnwarehousing" onclick="warehousingList()">
-	</div>
+    <div class="row"> 
+    <div id="pieChart_div"  class="col-xs-12 col-md-8" style="width: 600px; height: 400px;"></div>
+	<div id="barChart_div" class="col-xs-6 col-md-4"></div>
+      
+     </div> 
+	<br>
+	    
 	<hr>
 	<div class="btn-group">
-		<input type="date" class="btn btn-primary" id="startDate" name="startDate">
-		<input type="date" class="btn btn-primary" id="endDate" name="endDate">
-		<input type="button" value="검색" class="btn btn-primary" id="btnSearch" onclick="dateSearch()">
+		<input type="date" class="btn btn-secondary" id="startDate" name="startDate">&nbsp;
+		<input type="date" class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
+		<input type="button" value="검색" class="btn btn-success" id="btnSearch" onclick="dateSearch()">
+	</div>
+	<div class="btn-group">	
+		<input type="button" value="입고 통계" class="btn btn-primary" id="btnEnterd" onclick="enteredList()">&nbsp;
+		<input type="button" value="출고 통계" class="btn btn-primary" id="btnReleased" onclick="releasedList()">&nbsp;
+		<input type="button" value="전체 통계" class="btn btn-primary" id="btnwarehousing" onclick="warehousingList()">
 	</div>
 		
 </div>
 	<br>
-	<hr>
 	
 <div class="container">
 	<table class="table text-center">
 		<thead></thead>
 		<tbody></tbody>
 	</table>
-
+<hr>
+ 
 </div>
 </body>
 </html>
