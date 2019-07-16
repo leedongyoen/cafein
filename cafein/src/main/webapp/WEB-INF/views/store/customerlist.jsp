@@ -16,6 +16,10 @@
 
 	$(function(){
 		customerList();
+		
+		$("#customerTable tbody tr").click(function(){
+			
+		})
 	});
 	
 	
@@ -43,12 +47,12 @@
 		$.each(data,function(idx, user){
 				$('<tr>')
 						.append($('<td>').html(user.cId))
-						.append($('<td>').html(user.cNick))
+// 						.append($('<td>').html(user.cNick))
 						.append($('<td>').html(user.cName))
-						.append($('<td>').html(user.cTel))
-						.append($('<td>').html(user.mileage))
-						.append($('<td>').html('<button type=\'button\' class=\'btn btn-primary\' data-toggle=\'modal\' data-target=\'#modalView\' class=\'btn btn-primary\' name=\'Selectbtn\' onclick=\'modalshow("'+user.cId+'");\'>조회</button>'))
-						.append($('<td>').html('<button type=\'button\' class=\'btn btn-primary\' data-toggle=\'modal\' data-target=\'#modalView\' class=\'btn btn-primary\' name=\'orderlistbtn\' onclick=\'modalordershow("'+user.cId+'");\'>구매이력</button>'))
+// 						.append($('<td>').html(user.cTel))
+// 						.append($('<td>').html(user.mileage))
+// 						.append($('<td>').html('<button type=\'button\' class=\'btn btn-primary\' data-toggle=\'modal\' data-target=\'#modalView\' class=\'btn btn-primary\' name=\'Selectbtn\' onclick=\'modalshow("'+user.cId+'");\'>조회</button>'))
+// 						.append($('<td>').html('<button type=\'button\' class=\'btn btn-primary\' data-toggle=\'modal\' data-target=\'#modalView\' class=\'btn btn-primary\' name=\'orderlistbtn\' onclick=\'modalordershow("'+user.cId+'");\'>구매이력</button>'))
 						.append($('<td>').val(user.cId))
 						.appendTo('#customerTbody');
 					
@@ -93,35 +97,27 @@
 
 </head>
 <body>
+
+<div style="position: absolute; width:100%">
+<div style="overflow:scroll; height:800px;float: left; width: 30%;">
 	<div class="container">
 		<h2 align="center">우리 매장 고객 조회</h2>
 		<hr>
 	</div>
 	<div class="container" align="center">
-	
-
-			<div align="right">
-				날짜 입력: <input type="date" id="userdate" name="userdate" value="">~
-				<input type="date" id="userdate" name="userdate" value=""> <input
-					type="submit" value="조회">
-			</div>
-
-	
 
 
-	
-
-			<table class="table table-hover">
+			<table class="table table-hover" id="customerTable">
 
 				<thead>
 					<tr>
 						<th>고객ID</th>
-						<th>닉네임</th>
+<!-- 						<th>닉네임</th> -->
 						<th>이름</th>
-						<th>연락처</th>
-						<th>마일리지</th>
-						<th>고객조회</th>
-						<th>이력</th>
+<!-- 						<th>연락처</th> -->
+<!-- 						<th>마일리지</th> -->
+<!-- 						<th>고객조회</th> -->
+<!-- 						<th>이력</th> -->
 
 					</tr>
 				</thead>
@@ -131,6 +127,7 @@
 
 	
 	</div>
+</div>
 	
 	<!-- Modal -->
 <div class="modal fade" id="modalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -180,6 +177,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 </body>

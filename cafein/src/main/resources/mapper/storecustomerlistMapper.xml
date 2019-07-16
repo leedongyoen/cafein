@@ -6,15 +6,9 @@
 	<select id="getCustomerList" resultType="customer">
 		SELECT 
 			c.c_id,
-			c.c_nick, 
 			c.c_name, 
-			c.c_tel, 
-			r.MILEAGE
 		FROM 
 			customer 
-				c LEFT OUTER JOIN reserve r
-		ON (c.c_id = r.c_id)
-		WHERE r.s_id = #{sId}
 	</select>
 	
 	<select id="getCustomer" resultType="customer">
@@ -25,8 +19,11 @@
 		c_tel,
 		c_add,
 		c_join
+		r.MILEAGE
 	FROM customer
-	WHERE c_id = #{cId}
+		c LEFT OUTER JOIN reserve r
+		ON (c.c_id = r.c_id)
+		WHERE r.s_id = #{sId}
 	</select>
 	
 	<select id="getCustomerhistory" resultType="customer">

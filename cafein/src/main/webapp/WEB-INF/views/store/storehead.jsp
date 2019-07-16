@@ -107,9 +107,8 @@ body {
 
         <div class="dropdown-menu" aria-labelledby="dropdown02">
          <a class="dropdown-item" href="${pageContext.request.contextPath}/stocklist.do">재고 목록</a>
+		  <a class="dropdown-item" href="${pageContext.request.contextPath}/stockwarehousing.do">재고 통계</a>
           <a class="dropdown-item" href="${pageContext.request.contextPath}/warehousingregi.do">재고 입고</a>
-		  <a class="dropdown-item" href="${pageContext.request.contextPath}/stockstatisticslist.do">재고 통계</a>
-          <a class="dropdown-item" href="${pageContext.request.contextPath}/stocklist.do">재고 목록</a>
 
         </div>
 

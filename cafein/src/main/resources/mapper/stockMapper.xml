@@ -14,7 +14,6 @@
 	     <result column="CA_NUM" property="caNum" />
 	     <result column="STAN_UNIT" property="stanUnit" />
 	     <result column="ST_STATUS" property="stStatus" />
-	     <result column="TRUTH_QTY" property="truthQty" />
 	</resultMap>
    
    
@@ -30,7 +29,6 @@
 		,stan_unit
 		,st_status
 		,FIND_CODENM(st_status) as stStatusNm
-		,truth_qty
 	FROM STOCK
   </select>	
   
@@ -44,8 +42,7 @@
 		st_price,
 		ca_num,
 		stan_unit,
-		st_status,
-		truth_qty
+		st_status
 	FROM STOCK
 	WHERE st_num = #{stNum}
   
@@ -61,8 +58,7 @@
 					st_price,
 					ca_num,
 					stan_unit,
-					st_status,
-					truth_qty
+					st_status
 					)
 					
 				VALUES (
@@ -74,8 +70,7 @@
 					#{stPrice},
 					#{caNum},
 					#{stanUnit},
-					#{stStatus},
-					#{truthQty}
+					#{stStatus}
 				)
   	</insert>
    
@@ -90,7 +85,7 @@
          <if test="caNum != null and caNum != ''">ca_num = #{caNum},</if>
          <if test="stanUnit != null and stanUnit != ''">stan_unit = #{stanUnit},</if>
          <if test="stStatus != null and stStatus != ''">st_status = #{stStatus},</if>
-         <if test="truthQty != null and truthQty != ''">truth_qty = #{truthQty},</if>
+       
             </set>
       WHERE st_num = #{stNum}
    </update>
