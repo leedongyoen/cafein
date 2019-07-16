@@ -12,7 +12,7 @@ public class OrdersVO {
 	private String receipt;
 	private String sId;
 	private String payMethod;
-	private int mileage;
+	private Integer mileage;
 	private String cAdd;
 	private String cAdd3;
 	
@@ -137,10 +137,10 @@ public class OrdersVO {
 	public void setPayMethod(String payMethod) {
 		this.payMethod = payMethod;
 	}
-	public int getMileage() {
+	public Integer getMileage() {
 		return mileage;
 	}
-	public void setMileage(int mileage) {
+	public void setMileage(Integer mileage) {
 		this.mileage = mileage;
 	}
 	@Override

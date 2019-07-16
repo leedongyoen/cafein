@@ -183,16 +183,17 @@ input {
 		<div class="container" >
 		<form class="form-borizontal" id="orderform" name="orderform" action="insertcustomerorder" method="POST" >
 			<input id="storeid" value="${selectmenu.sId}" name="sId" style="display: none" >
+			<input id="storeid" value="${selectmenu.cId}" name="cId" style="display: none" >
 			<table class="table">
 			
 <!-- 				<tr>
 					<th>주 문 번 호</th>
 					<td>(주문코드)OR20190617001)</td>
 				</tr> -->
-				<tr>
+<%-- 				<tr>
 					<th>주 문 날 짜</th>
-					<td><input name="oDate" value="<%= today %>"></td>
-				</tr>
+					<td><%= today %></td>
+				</tr> --%>
 	
 				<tr>
 					<th>매 장 명</th>
@@ -249,7 +250,7 @@ input {
 				
 				<tr id="reservetr">
 					<th>적립금</th>
-					<td><input type="text" name="mileage" size="10"
+					<td><input type="text" name="mileage" size="10" 
 						placeholder="###원">
 						<button type="button" onclick="alert('###원 만큼 사용하였습니다.')">사용</button>
 
@@ -259,7 +260,7 @@ input {
 					<tr class="deliverY" style="display: none;">
 						<th>수 령 방 식</th>
 						<td>
-							<input type="radio" name="receipt" value="delivery" id="delivery"> 
+							<input type="radio" name="receipt" value="delivery" id="delivery" checked="checked"> 
 							<label for="delivery">배달로하기</label> 
 							
 							<input type="radio" name="receipt" value="takeout" id="takeout"> 
