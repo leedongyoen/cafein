@@ -10,6 +10,11 @@
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
 
 <title>Insert title here</title>
+<style type="text/css">
+input {
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
+}
+</style>
 </head>
 <body>
 <br>
@@ -239,15 +244,17 @@
 	}	
 	
 	function menuListResult(data) {
+		//var imgurl ="${pageContext.request.contextPath}/image/";
 		$('#storelistmodal').modal('hide');
 		$("#coffeetable tbody").empty();
 		$("#beveragetable tbody").empty();
 		$("#bakerytable tbody").empty();
 		$.each(data,function(idx,item){
+			
 			// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
 			if(item.caNum == "CACO" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")//.addClass("openmodal")
-				.append($('<td>').html(""))
+				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
 				.append($('<td>').html(item.mName))
 				.append($('<td>').html(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
@@ -255,14 +262,14 @@
 			}
 			else if(item.caNum == "CADR" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")
-				.append($('<td>').html(""))
+				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
 				.append($('<td>').html(item.mName))
 				.append($('<td>').html(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#beveragetable tbody');
 			}else if(item.caNum == "CADE" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")
-				.append($('<td>').html(""))
+				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
 				.append($('<td>').html(item.mName))
 				.append($('<td>').html(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))

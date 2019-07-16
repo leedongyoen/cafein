@@ -32,4 +32,13 @@ public class CustomerOrderServiceImpl {
 		return dao.getorderrecipeno(vo);
 	}
 	
+	// 배달서비스 여부
+	public int getstoredeliverservice(String sId){
+		return dao.getstoredeliverservice(sId);
+	}
+	
+	// 주문번호 가져오기
+	public String getordernumber(String sId) {
+		return dao.getordernumber(sId);
+	}
 }

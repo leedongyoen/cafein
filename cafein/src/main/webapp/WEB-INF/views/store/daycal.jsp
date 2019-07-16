@@ -27,7 +27,7 @@
 
 	var sId = 'SH001';			// 로그인 한 매장 아이디(세션값 받아와야함)
 	var sum, listSum=0, totalSum=0, addTotalSum=0,i;	// 합계(row별), session의 합계(row별 총 합계), db의 총 합계, operatingreserve.jsp에서 추가하는 항목의 합계
-	var addDataList, cashDataList;			// sessionStorage 가 담길 배열 x 3
+	var addDataList, cashDataList, stockTruthList;			// sessionStorage 가 담길 배열 x 3
 	var operatingreserveSum=0, orSum=0;		// 영업 준비금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
 	
 	function getoperatingreserve(){
@@ -218,6 +218,8 @@
 		var len = cashDataList.length-1;	// 입력한 현금 배열의 길이 -1
 		console.log(cashDataList)
 		// 배열의 마지막 값을 value에 담아준다
+		$('#totalCash').text(addCommas(cashDataList[len].total)+'원');
+		$('#difference').text(addCommas(cashDataList[len].mcash)+'원');
 		$('#cash50000').val(cashDataList[len].c50000);
 		$('#totalcash50000').val(addCommas($('#cash50000').val()*50000));
 		$('#cash10000').val(cashDataList[len].c10000);
@@ -230,8 +232,9 @@
 		$('#totalcash500').val(addCommas($('#cash500').val()*500));
 		$('#cash100').val(cashDataList[len].c100);
 		$('#totalcash100').val(addCommas($('#cash100').val()*100));
-		$('#totalCash').text(addCommas(cashDataList[len].total)+'원');
-		$('#difference').text(addCommas(cashDataList[len].mcash)+'원');
+		
+		
+		
 		
 		if($('#cashadvanceSave').text() == '수정 완료') {
 			$('#cashInsert').attr('disabled',true);
@@ -257,6 +260,42 @@
 	}
 //---------------------------------------------------------------------------------------------------------------------
 	// 재고 실수량 확인
+	function getStockTruthList() {
+		$.ajax({
+			url:"stocktruthlist",		
+			type:'GET',			
+			data:{sId:sId},				
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				$('#stocktruthlistTable tbody').empty();
+				$.each(data,function(idx,item){		// idx : length 와 비슷한 느낌, item : data
+					
+					$('<tr>')
+					.append($('<td>').html(idx+1))
+					.append($('<td>').html(item.stName))
+					.append($('<td>').html(item.stQty))
+					.append($('<td>').append($('<input>').attr({
+						type:'text',
+						'class':'truthQty',
+						onKeyup:"this.value=this.value.replace(/[^0-9]/g,'')",
+						//onchange:"addClass(this)"
+					})))
+					.appendTo('#stocktruthlistTable tbody');
+					
+				});
+			}
+		});
+	}
+	
+	function addClass(obj) {
+		$(this).removeClass('truthQty');
+		obj.style.backgroundColor = 'skyblue';
+	}
+	
+	
+	// 재고 실수량 확인
 	function stocktruthlist() {
 		$.ajax({
 			url:"stocktruthlist.do",		// request 보낼 서버경로
@@ -265,6 +304,7 @@
 				alert('통신 실패');
 			},
 			success:function(data){
+				getStockTruthList();
 				$('#content').html(data);
 			}
 		});
@@ -311,16 +351,15 @@
 					<tr onclick="stocktruthlist()">
 						<td>재고</td>
 						<td>마감 재고</td>
-						<td>수정 전</td>
+						<td id = "stocktruthlistSave">수정 전</td>
 					</tr>
 				</table>
 			</div>
 			<div class="col-7" id="content" style="border:1px dotted;height:680px;overflow:auto;">
 			</div><br><br>
 			<div class="col-4">
-				<button>마감정산</button>
-				<button>PDF저장</button>
-				<button>종료</button>
+				<button type="button" onclick="">마감정산</button>
+				<button type="button">PDF저장</button>
 			</div>
 			<div class="col-7">
 				<!-- <table>

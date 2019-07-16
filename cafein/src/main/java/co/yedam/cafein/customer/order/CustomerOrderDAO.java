@@ -33,4 +33,14 @@ public class CustomerOrderDAO {
 	public List<RecipeVO> getorderrecipeno(MenuOrderVO vo){
 		return dao.selectList("RecipeDAO.getorderrecipeno",vo);
 	}
+	
+	// 배달서비스 여부
+	public int getstoredeliverservice(String sId){
+		return dao.selectOne("StoremenuDAO.getstoredeliverservice",sId);
+	}
+	
+	// 주문번호 가져오기
+	public String getordernumber(String sId) {
+		return dao.selectOne("CustomerOrderDAO.getordernumber",sId);
+	}
 }
