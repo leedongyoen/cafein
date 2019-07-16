@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,17 +24,35 @@ public class StoreMainController {
 	public String storemainform() {
 		return "store/main";
 	}
+	
 	//매장 우리매장 고객 조회
 	@RequestMapping("customerlist.do")
 	public String customerlist() {
 		return "store/customerlist";
 	}
+	
 	//매장 우리매장 고객 조회
 	@ResponseBody
 	@RequestMapping(value="/allcustomerlist", method = RequestMethod.GET)
 	public List<CustomerVO> getCustomerList( CustomerVO vo){
 		System.out.println(vo.getsId());
 		return storeCustomerListService.getCustomerList(vo);
+	}
+	
+	//매장 우리매장 고객 단건조회
+	@ResponseBody
+	@RequestMapping(value = "customer/{cId}", method = RequestMethod.GET)
+	public CustomerVO getcustomer(@PathVariable String cId, CustomerVO vo, Model model) {
+		vo.setcId(cId);
+		return storeCustomerListService.getCustomer(vo);
+	}
+	
+	//매장 우리매장 고객 구매이력조회
+	@ResponseBody
+	@RequestMapping(value = "customerhistory/{cId}", method = RequestMethod.GET)
+	public CustomerVO getcustomerhistory(@PathVariable String cId, CustomerVO vo, Model model) {
+		vo.setcId(cId);
+		return storeCustomerListService.getCustomerhistory(vo);
 	}
 	
 	//매장 주문내역 조회

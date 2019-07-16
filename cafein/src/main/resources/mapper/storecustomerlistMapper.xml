@@ -16,6 +16,30 @@
 		ON (c.c_id = r.c_id)
 		WHERE r.s_id = #{sId}
 	</select>
+	
+	<select id="getCustomer" resultType="customer">
+	SELECT
+		c_id,
+		c_nick,
+		c_name,
+		c_tel,
+		c_add,
+		c_join
+	FROM customer
+	WHERE c_id = #{cId}
+	</select>
+	
+	<select id="getCustomerhistory" resultType="customer">
+	SELECT DISTINCT c_name, o_num
+	FROM customer c JOIN orders o
+	ON o.C_ID = c.C_ID   
+	WHERE c.c_id = #{cId};
+	
+	
+	
+	</select>
+	
+	
 
 
 
