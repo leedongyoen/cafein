@@ -22,14 +22,18 @@
 
 
 	<select id="getordernumber" parameterType="string" resultType="string">
-		SELECT 'OR'||TO_CHAR(SYSDATE,'yymmdd')||LPAD(NVL(MAX(SUBSTR(O_NUM,9)),0)+1,4,0)
+		SELECT 'OR'||TO_CHAR(SYSDATE,'yymmdd')||LPAD(NVL(MAX(SUBSTR(O_NUM,9)),0)+1,3,0)
 		FROM ORDERS
-		WHERE S_ID = #{sId}
-		      AND O_NUM LIKE '%'||TO_CHAR(SYSDATE,'yymmdd')||'%'
+		WHERE O_NUM LIKE '%'||TO_CHAR(SYSDATE,'yymmdd')||'%'
 	
 	</select>
 	
 	<insert id="insertorder">
+		<selectKey keyProperty="oNum" resultType="string" order="BEFORE">
+				SELECT 'OR'||TO_CHAR(SYSDATE,'yymmdd')||LPAD(NVL(MAX(SUBSTR(O_NUM,9))+1,0),3,0)
+				FROM ORDERS
+				WHERE O_NUM LIKE '%'||TO_CHAR(SYSDATE,'yymmdd')||'%'
+		</selectKey>
 	
 		INSERT INTO ORDERS (	O_NUM
 								, C_ID
@@ -56,6 +60,15 @@
 				)
 	
 	</insert>
+	
+	<select id="getorderrecipenolist" resultType="recipe">
+	
+		SELECT RECIPENO, CA_NUM
+		FROM RECIPE
+		WHERE M_NUM = #{mNum}
+		    AND CA_NUM NOT IN ('CAOP')
+	
+	</select>
 
 	<select id="mainOrderList"  resultType="order">
 		SELECT SUM(O.TOTAL) TOTALS
@@ -63,5 +76,29 @@
 		ON O.S_ID = S.S_ID
 		WHERE O.C_ID= #{cId}
 	</select>
-
+	
+	<insert id="insertorderdetails" >
+		INSERT INTO INTO ORDER_DETAILS (
+									O_DNUM
+									, O_NUM
+									, M_NUM
+									, O_QTY
+									, OP_DNUM
+									, RECIPENO
+									, CA_NUM
+			
+			)
+			SELECT ORDER_D_SEQ.NEXTVAL, A.* FROM(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL " >
+			 SELECT 				
+				 #{item.oNum} AS O_NUM
+				, #{item.mNum} AS M_NUM
+				, #{item.oQty} AS O_QTY
+				, 0 AS OP_DNUM
+				, #{item.receipno} AS RECIPENO
+				, #{item.caNum} AS CA_NUM
+			FROM DUAL
+			
+		</foreach>) A
+	</insert>
 </mapper>

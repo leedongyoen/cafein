@@ -1,7 +1,9 @@
 package co.yedam.cafein.customer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -82,11 +84,62 @@ public class CustomerOrderController {
 	public ModelAndView insertorder(OrdersVO vo) {
 		System.out.println("============주문 :"+vo);
 		ModelAndView mv = new ModelAndView();
-		String oNum = service.getordernumber(vo.getsId());
-		vo.setoNum(oNum);
+		/*
+		 * String oNum = service.getordernumber(vo.getsId()); vo.setoNum(oNum);
+		 */
+		OrdersVO info = new OrdersVO();
+		info = vo;
+		service.insertorder(vo);
+		List<OrdersVO> orderlist = new ArrayList<OrdersVO>();
+		RecipeVO recipevo = new RecipeVO();
+		recipevo.setmNum(vo.getmNum());
+		List<RecipeVO> recipelist = service.getorderrecipenolist(recipevo);
 		
+		OrdersVO insertvo;
 		
+		// 해당 메뉴의 기본 레시피 넣기
+		for(int n=0; n<recipelist.size();n++) {
+			insertvo = new OrdersVO();
+			insertvo.setoNum(vo.getoNum());
+			insertvo.setmNum(info.getmNum());
+			
+			if(recipelist.get(n).getCaNum().equals("CAHT") && recipelist.get(n).getCaNum().equals(info.getHotice_option())) {
+				insertvo.setoQty("0");
+				insertvo.setReceipno(recipelist.get(n).getRecipeno());
+				insertvo.setCaNum(recipelist.get(n).getCaNum());
+			}else if(recipelist.get(n).getCaNum().equals("CAIC") && recipelist.get(n).getCaNum().equals(info.getHotice_option())) {
+				insertvo.setoQty("0");
+				insertvo.setReceipno(recipelist.get(n).getRecipeno());
+				insertvo.setCaNum(recipelist.get(n).getCaNum());
+			}else {
+				insertvo.setoQty(info.getoQty());
+				insertvo.setReceipno(recipelist.get(n).getRecipeno());
+				insertvo.setCaNum(recipelist.get(n).getCaNum());
+			}
+			
+			orderlist.add(insertvo);
+		}
 		
+		// 해당 메뉴의 옵션처리
+		String[] optionlist = info.getOptionlist();
+		for(int n=0; n<optionlist.length;n++) {
+			
+			insertvo = new OrdersVO();
+			insertvo.setoNum(vo.getoNum());
+			insertvo.setmNum(info.getmNum());
+			insertvo.setoQty(info.getoQty());
+			insertvo.setReceipno(optionlist[n]);
+			insertvo.setCaNum("CAOP");
+			orderlist.add(insertvo);
+		}
+		
+		System.out.println("======== 완성"+orderlist);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", orderlist);
+		
+		int n = service.insertorderdetails(map);
+		System.out.println("===========결과 : "+n);
+
 		mv.setViewName("customer/delivery");
 		return mv;
 	}

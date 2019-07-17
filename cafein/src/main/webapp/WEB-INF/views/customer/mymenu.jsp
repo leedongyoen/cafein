@@ -11,7 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-<style type="text/css">  
+<style type="text/css">
 body {
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -138,6 +138,7 @@ to {
 	transform: scale(1)
 }
 
+}
 
 /* The Close Button */
 .close {
@@ -264,12 +265,14 @@ to {
 				alert("상태값 :" + status + " Http에러메시지 :" + msg);
 			},
 			success : function myMenuListResult(data){
+				console.log("in");
 				datas=data;
+				var imgurl = "${pageContext.request.contextPath}/image/"+itme.uploadFileName;
 				$("#GoToDetail").empty();
 				$.each(data, function(idx, item) {
-				$("#GoToDetail").append("<td onclick=detailmyMenuListResult"+"('"+item.cuNum+"'"+")><div class='container'>"
-									+"<img class=\"myImg\" id=\""
-									+item.cuNum+"\" src=\"image/coffee1.jpg\" width=\"200\" heigh=\"200\">"+"</div><div class='container'>"
+
+				$("#GoToDetail").append("<td onclick=detailmyMenuListResult"+"('"+item.cuNum+"'"
+									+")><div class='container'><img id=\"imgurl\" style=\"width:200px; height:200px;\"></div><div class='container'>"
 									+item.mName+"</div><div class='container'>"+item.sName
 									+"</div></td><td><div class=\"deleteCheck\"><input type='checkbox' name=\"checkDel\" id='hidden_cuNum"+idx+"'value='"
 									+item.cuNum+"'></div></td>");
