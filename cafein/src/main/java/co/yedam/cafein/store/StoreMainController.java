@@ -41,10 +41,14 @@ public class StoreMainController {
 	
 	//매장 우리매장 고객 단건조회
 	@ResponseBody
-	@RequestMapping(value = "customer/{cId}", method = RequestMethod.GET)
-	public CustomerVO getcustomer(@PathVariable String cId, CustomerVO vo, Model model) {
+	@RequestMapping(value = "getcustomerdetail/{cId}/{sid}", method = RequestMethod.GET)
+	public CustomerVO getcustomer(@PathVariable("cId") String cId, @PathVariable("sid") String sid,CustomerVO vo) {
 		vo.setcId(cId);
-		return storeCustomerListService.getCustomer(vo);
+		vo.setsId(sid);
+		vo = storeCustomerListService.getCustomer(vo);
+		System.out.println(vo);
+		
+		return vo;
 	}
 	
 	//매장 우리매장 고객 구매이력조회

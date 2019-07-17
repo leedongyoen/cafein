@@ -4,26 +4,26 @@
 
 
 	<select id="getCustomerList" resultType="customer">
-		SELECT 
-			c.c_id,
-			c.c_name, 
-		FROM 
-			customer 
+		SELECT DISTINCT O.C_ID, C.C_NAME
+		FROM ORDERS O JOIN CUSTOMER C
+		ON O.C_ID = C.C_ID
+		WHERE S_ID= #{sId}
 	</select>
 	
 	<select id="getCustomer" resultType="customer">
 	SELECT
-		c_id,
-		c_nick,
-		c_name,
-		c_tel,
-		c_add,
-		c_join
+		c.c_id,
+		c.c_nick,
+		c.c_name,
+		c.c_tel,
+		c.c_add,
+		c.c_join,
 		r.MILEAGE
 	FROM customer
 		c LEFT OUTER JOIN reserve r
 		ON (c.c_id = r.c_id)
 		WHERE r.s_id = #{sId}
+		AND c.c_id = #{cId}
 	</select>
 	
 	<select id="getCustomerhistory" resultType="customer">

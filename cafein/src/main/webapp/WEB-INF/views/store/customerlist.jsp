@@ -8,11 +8,9 @@
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
 
-<title>우리 매장 고객 조회</title>
+<title>우리매장 고객조회</title>
 
 <script>
-
-
 
 	$(function(){
 		customerList();
@@ -45,7 +43,7 @@
 		$("#customerTbody").empty();
 		console.log(data);
 		$.each(data,function(idx, user){
-				$('<tr>')
+				$('<tr>').attr("onclick","modalshow('"+user.cId+"')")
 						.append($('<td>').html(user.cId))
 // 						.append($('<td>').html(user.cNick))
 						.append($('<td>').html(user.cName))
@@ -60,12 +58,12 @@
 					
 	}
 	function modalshow(cId){
+		var storelogin = '<%= session.getAttribute("sid") %>';
 		$('#modalView').modal('show');
 		console.log(cId);
 		$.ajax({
-			url : 'customer/' + cId ,
+			url : 'getcustomerdetail/' + cId+'/'+storelogin ,
 			type : 'GET',
-			contentType : 'application/json;charset=utf-8',
 			dataType : 'json',
 			error : function(xhr, status, msg) {
 				alert("상태값 :" + status + " Http에러메시지 :" + msg);
@@ -76,13 +74,16 @@
 	
 
 	function customerSelectResult(data) {
-
+		
 		$('input:text[name="cId" ]').val(data.cId);
 		$('input:text[name="cNick"]').val(data.cNick);
 		$('input:text[name="cName"]').val(data.cName);
 		$('input:text[name="cTel"]').val(data.cTel);
 		$('input:text[name="cAdd"]').val(data.cAdd);
 		$('input:text[name="cJoin"]').val(data.cJoin);
+			
+		
+		
 	}//stockSelectResult
 	
 	
