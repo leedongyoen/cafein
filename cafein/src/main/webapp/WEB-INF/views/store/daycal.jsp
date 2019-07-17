@@ -15,7 +15,7 @@
 <script>
 
 
-	//영업 준비금 페이지 호출
+	//영업 지출금 페이지 호출
 	$(function startOperatingReserve() {
 		$.ajax({
 			url:"operatingreserve.do",		// request 보낼 서버경로
@@ -33,7 +33,7 @@
 	var sum, listSum=0, totalSum=0, addTotalSum=0,i;	// 합계(row별), session의 합계(row별 총 합계), db의 총 합계, operatingreserve.jsp에서 추가하는 항목의 합계
 	var addDataList, cashDataList, stockTruthList = new Array(), jsonStockList;			// sessionStorage 가 담길 배열 x 3
 	var stockList = new Array(), truthQty; 		// 재고수량과 실수량이 들어갈 list, list 내의 실수량
-	var operatingreserveSum=0, orSum=0;		// 영업 준비금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
+	var operatingreserveSum=0, orSum=0;		// 영업 지출금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
 
 	
 	function getoperatingreserve(){
@@ -115,7 +115,7 @@
 				addTotalSum = totalSum;
 				operatingreserveSum = orSum;
 				
-				console.log('영업 준비금 총 현금 지출액 : ' + operatingreserveSum)
+				console.log('영업 지출금 총 현금 지출액 : ' + operatingreserveSum)
 				orSum=0;
 				totalSum=0;
 				listSum=0;
@@ -152,7 +152,7 @@
 	}
 	
 	
-	// 영업 준비금 (재고 입고, 인건비 등) 페이지 호출
+	// 영업 지출금 (재고 입고, 인건비 등) 페이지 호출
 	function operatingreserve() {
 		$.ajax({
 			url:"operatingreserve.do",		// request 보낼 서버경로
@@ -280,14 +280,16 @@
 					
 					$('<tr>')
 					.append($('<td>').html(idx+1))
-					.append($('<td>').html(item.stNum))
+					.append($('<td>').html(item.stName))
 					.append($('<td>').html(item.stQty))
 					.append($('<td>').append($('<input>').attr({
 						type:'text',
 						'class':'truthQty',
 						name:'truthQtyName',
 						onKeyup:"this.value=this.value.replace(/[^0-9]/g,'')",
+						value:item.stQty
 					})))
+					.append($('<td>').html(item.stNum).attr('hidden','hidden'))
 					.appendTo('#stocktruthlistTable tbody');
 				});
 				
@@ -353,11 +355,14 @@
 	// 마감 정산 버튼 클릭 시
 	function closeCheck(){
 		if($('#operatingreserveSave').text() == '수정 전') {
-			alert('영업 준비금 마감을 완료해주세요.');
+			alert('영업 지출금 마감을 완료해주세요.');
+			return;
 		} else if($('#cashadvanceSave').text() == '수정 전') {
 			alert('시재 정산 마감을 완료해주세요.');
+			return;
 		} else if($('#stocktruthlistSave').text() == '수정 전') {
 			alert('재고 수량 마감을 완료해주세요.');
+			return;
 		}
 		
 		var closeSign = confirm('마감을 완료 하시겠습니까?');
@@ -389,7 +394,7 @@
 					</tr>
 					<tr onclick="operatingreserve()">
 						<td>지출</td>
-						<td>영업 준비금</td>
+						<td>영업 지출금</td>
 						<td id = "operatingreserveSave">수정 전</td>
 					</tr>
 					<tr onclick="cashadvance()">

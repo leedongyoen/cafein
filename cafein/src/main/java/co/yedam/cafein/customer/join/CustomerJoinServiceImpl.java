@@ -1,10 +1,8 @@
 package co.yedam.cafein.customer.join;
 
 
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.vo.CustomerVO;
@@ -24,5 +22,7 @@ public class CustomerJoinServiceImpl implements CustomerJoinService {
 	public int idCheck(CustomerVO cId) {
 		return customerjoinDAO.idCheck(cId);
 	}
+	
+	
 
 }

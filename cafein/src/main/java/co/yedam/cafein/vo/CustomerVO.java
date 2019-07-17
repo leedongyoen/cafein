@@ -17,13 +17,18 @@ public class CustomerVO {
 	private String cAdd2;
 	private String cAdd3;
 	private int stmp;
+	private String email;
 	
 	// 마일리지 조인
 	private String mileage;
 	private String sId;
-	
-	
 
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	@JsonFormat(pattern = "yyyy-MM-dd")			//날짜형식 포맷
 	private Date dob;
 	private String cJoin;
@@ -127,5 +132,6 @@ public class CustomerVO {
 				+ ", stmp=" + stmp + ", mileage=" + mileage + ", sId=" + sId + ", dob=" + dob + ", cJoin=" + cJoin
 				+ "]";
 	}
+	
 	
 }
