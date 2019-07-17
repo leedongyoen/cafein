@@ -1,5 +1,7 @@
 package co.yedam.cafein.store.info;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,12 @@ public class StoreInfoServiceImpl implements StoreInfoService{
 	@Override
 	public int checkpw(StoreVO vo) {
 		return StoreDAO.checkpw(vo);
+	}
+	//매장 전체조회
+	@Override
+	public List<StoreVO> getStoreList(StoreVO vo) {
+		// TODO Auto-generated method stub
+		return StoreDAO.getStoreList(vo);
 	} 
 
 }
