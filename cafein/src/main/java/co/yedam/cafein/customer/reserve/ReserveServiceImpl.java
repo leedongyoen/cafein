@@ -18,13 +18,13 @@ public class ReserveServiceImpl implements ReserveService {
 		return dao.getTotalReserve(vo);
 	}
 
-//	@Override
-//	public ReserveVO getUseReserve(ReserveVO vo) {		
-//		return dao.getUseReserve(vo);
-//	}
-
 	@Override
 	public List<ReserveVO> getListReserve(ReserveVO vo) {
 		return dao.getListReserve(vo);
+	}
+
+	@Override
+	public List<ReserveVO> mainTotalReserve(ReserveVO vo) {
+		return dao.mainTotalReserve(vo);
 	}
 }

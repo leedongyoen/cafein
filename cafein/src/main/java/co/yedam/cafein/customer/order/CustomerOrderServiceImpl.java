@@ -21,6 +21,10 @@ public class CustomerOrderServiceImpl {
 		return dao.getOrderlist(vo);
 	}
 	
+	public List<OrdersVO> mainOrderList(OrdersVO vo) {
+		return dao.mainOrderList(vo);
+	}
+	
 	public StoreVO getSearchStore(StoreVO vo) {
 		return dao.getSearchStore(vo);
 	}
@@ -59,9 +63,9 @@ public class CustomerOrderServiceImpl {
 		return dao.insertorderdetails(map);
 	}
 	
-	//매장 이름 전부 가져오는
-	
-	
-	
-	
+
+	// order details op_dnum 업데이트
+	public int getodnum(OrdersVO vo) {
+		return dao.getodnum(vo);
+	}
 }

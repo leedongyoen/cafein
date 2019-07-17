@@ -121,13 +121,29 @@
 	          //      $("[name=addr1]").val(data.zonecode);
 	          //     $("[name=addr2]").val(fullRoadAddr);
 	                
-	                document.getElementById('cAdd').value = data.zonecode; //5자리 새우편번호 사용
-	                document.getElementById('cAdd2').value = fullRoadAddr;
-	                document.getElementById('cAdd3').value = data.jibunAddress; 
+	                document.getElementById('cAdd2').value = data.zonecode; //5자리 새우편번호 사용
+	                document.getElementById('cAdd').value = fullRoadAddr;
+	            //    document.getElementById('cAdd3').value = data.jibunAddress; 
 	            }
 	         }).open();
 	     }
-
+		
+		
+		function sendMail(email) {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (xhttp.readyState == 4) {
+					if(xhttp.status == 200)
+						alert("메일을 정상적으로 보냈습니다.");
+					else
+						alert("올바른메일 형식이 아닙니다.");
+				}
+			};
+			xhttp.open("post", 'sendMail', true);
+			xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			xhttp.send('email=' + email);
+			return false;
+		}
 </script>
 </head>
 <body>
@@ -167,15 +183,27 @@
         <tr>
           <th>주소</th>
           <td>
-          <input type = "text" name="cAdd" id = "cAdd" placeholder="우편번호">
+          <input type = "text" name="cAdd2" id = "cAdd2" placeholder="우편번호">
           <button type = "button" onclick="execPostCode()">우편번호 찾기</button><br>
-          <input type = "text" name = "cAdd2" id="cAdd2" placeholder="주소">
+          <input type = "text" name = "cAdd" id="cAdd" placeholder="주소">
           <input type = "text" name = "cAdd3" id="cAdd3" placeholder="상세주소">
           </td>
         </tr>
         <tr>
           <th>생년월일</th>
           <td><input type = "text" name="dob"></td>
+        </tr>
+        <tr>
+        	<th>이메일</th>
+        	<td><input type="email" name="email">
+        		<button type="button" onclick="sendMail()">인증</button>
+        	</td>
+        </tr>
+        <tr id="joincode">
+        	<th>인증번호</th>
+        	<td><input type="number">
+        		<input type="button" value="확인">
+        	</td> 	
         </tr>
       </table>
       <button type ="button" class="btn btn-default"

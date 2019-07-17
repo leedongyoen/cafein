@@ -42,7 +42,7 @@
 				ON R.S_ID = S.S_ID
 			WHERE O.C_ID = #{cId}
 	</select>
-	
+	<!-- 총 적립금과 사용한 적립금을 보여주는 리스트 쿼리 -->
 	<select id="getTotalReserve" resultType="reserve">
 		SELECT NVL(SUM(RE.MILEAGE)+OR1.MILEAGE ,0) TOTALRE,
 			   NVL(SUM(RE.MILEAGE)-OR1.MILEAGE,0) USERE
@@ -58,5 +58,13 @@
 				 		  C_ID) OR1
 		WHERE RE.C_ID= #{cId}
 		GROUP BY OR1.MILEAGE
+	</select>
+	<!-- 메인에서 보여줄 총 적립금 쿼리  -->
+	<select id="mainTotalReserve" resultType="reserve">
+		SELECT NVL(SUM(O.MILEAGE)+R.MILEAGE,0) TOTALRE
+			FROM RESERVE R JOIN ORDERS O
+			ON R.C_ID = O.C_ID
+			WHERE O.C_ID = #{cId}
+		GROUP BY R.MILEAGE
 	</select>
 </mapper>

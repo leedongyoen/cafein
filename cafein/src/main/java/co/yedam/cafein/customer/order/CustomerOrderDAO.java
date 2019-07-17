@@ -21,6 +21,11 @@ public class CustomerOrderDAO {
 		return dao.selectList("CustomerOrderDAO.getOrderlist",vo);
 	}
 	
+	//메인에서 가져올 총주문금액 리스트
+	public List<OrdersVO> mainOrderList(OrdersVO vo) {
+		return dao.selectList("CustomerOrderDAO.mainOrderList", vo);
+	}
+	
 	
 	public StoreVO getSearchStore(StoreVO vo){
 		return dao.selectOne("StoremenuDAO.getSearchStore",vo);
@@ -58,5 +63,10 @@ public class CustomerOrderDAO {
 	// order details 테이블에 넣기
 	public int insertorderdetails(Map<String, Object> map) {
 		return dao.insert("CustomerOrderDAO.insertorderdetails",map);
+	}
+	
+	// order details op_dnum 업데이트
+	public int getodnum(OrdersVO vo) {
+		return dao.update("CustomerOrderDAO.getodnum",vo);
 	}
 }
