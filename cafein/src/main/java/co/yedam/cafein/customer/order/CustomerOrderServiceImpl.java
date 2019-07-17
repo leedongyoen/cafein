@@ -58,4 +58,10 @@ public class CustomerOrderServiceImpl {
 	public int insertorderdetails(Map<String, Object> map) {
 		return dao.insertorderdetails(map);
 	}
+	
+	//매장 이름 전부 가져오는
+	
+	
+	
+	
 }
