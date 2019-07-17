@@ -62,4 +62,10 @@ public class CustomerOrderServiceImpl {
 	public int insertorderdetails(Map<String, Object> map) {
 		return dao.insertorderdetails(map);
 	}
+	
+
+	// order details op_dnum 업데이트
+	public int getodnum(OrdersVO vo) {
+		return dao.getodnum(vo);
+	}
 }

@@ -1,5 +1,7 @@
 package co.yedam.cafein.store.info;
 
+import java.util.List;
+
 import co.yedam.cafein.vo.StoreVO;
 
 public interface StoreInfoService {
@@ -11,6 +13,6 @@ public interface StoreInfoService {
 
 	public int checkpw(StoreVO vo);
 	
-
+	public List<StoreVO> getStoreList(StoreVO vo);
 }
 

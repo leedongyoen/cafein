@@ -95,11 +95,19 @@ function getOptionNaming(mnumber, stnumber){
 		style="width: 100%; text-align: center; padding: 3px; border: 1px solid pink;"
 		id="CartListWrapper">
 		<h3 align="center">장e바 see구니</h3>
+		
 		<c:forEach var="cart" items="${optionname}">
 			<li>${cart.mNum} ${cart.stNum} ${cart.opName}</li>
 
 		</c:forEach>
+		<c:forEach var="stoname" items="${storename}">
+			<li>${stoname.sid} ${stoname.sname}</li>
 
+		</c:forEach>
+		<c:forEach var="mimg" items="${menuimg}">
+			<li>${mimg.uploadFileName} ${mimg.mNum}</li>
+
+		</c:forEach>
 
 		<div
 			style="padding: 3px; border: 1px solid orange; display: inline-block; text-align: center;"
