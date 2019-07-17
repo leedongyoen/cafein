@@ -57,13 +57,12 @@
 		INSERT INTO WAREHOUSING 
 		VALUES(WARE_SEQ.NEXTVAL
 			  ,SYSDATE
-			  ,0
-			  ,0
-			  ,#{stNum}
+			  ,#{wareQty}
+			  ,#{sum}
+			  ,#{stName}
 			  ,#{sId}
-			  ,NULL
-			  ,#{stLoss}
-			  ,NULL)
+			  ,#{stPayMethod}
+			  ,0)
 	</insert>
 	
 	<!-- 재고 테이블에 수량 update -->

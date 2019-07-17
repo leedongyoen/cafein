@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
+import co.yedam.cafein.vo.WarehousingVO;
 
 @Repository
 public class StoreCloseDAO {
@@ -17,7 +18,7 @@ public class StoreCloseDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 	
-	// 영업 준비금 목록 조회
+	// 영업 지출금 목록 조회
 	public List<ViewWarehousingVO> getWarehousing(ViewWarehousingVO vo) {
 		return mybatis.selectList("storeCloseDAO.getWarehousing", vo);
 	}
@@ -32,5 +33,8 @@ public class StoreCloseDAO {
 		return mybatis.selectList("storeCloseDAO.getStockTruthList", vo);
 	}
 	
-	
+	// 영업 지출금 
+	public int insertWarehousing(WarehousingVO vo) {
+		return mybatis.insert("storeCloseDAO.warehousingInsert", vo);
+	}
 }

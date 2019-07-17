@@ -70,6 +70,8 @@ public class StoreController {
 		if(id != null) {
 			System.out.println("매장 로그아웃");
 			session.removeAttribute("sid");
+			session.removeAttribute("sName");
+			
 		}
 		
 		return "store/logout";

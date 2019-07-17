@@ -24,6 +24,7 @@ public class StoreOpenController {
 	public String getStoreOpenListForm() {
 		return "store/storeopen"; 
 	}
+	
 	@ResponseBody
 	@RequestMapping(value="/insertstoreopen.do",  method = RequestMethod.POST, consumes = "application/json")
 	public Map<String,Object> insertStoreOpen(Model model,@RequestBody StoreOpenVO vo) {
