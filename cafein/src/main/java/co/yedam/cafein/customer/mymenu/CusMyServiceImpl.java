@@ -21,8 +21,8 @@ public class CusMyServiceImpl implements CusMyService{
 		return DAO.getMymenu(vo);
 	}
 	
-	public void updateMymenu(MyMenuVO vo) {
-		//DAO.updateMymenu(vo);
+	public List<ViewMymenuVO> getMymenuDetail(ViewMymenuVO vo) {
+		return DAO.getMymenuDetail(vo);
 	}
 	
 	public void insertMymenu(MyMenuVO vo) {
@@ -49,6 +49,7 @@ public class CusMyServiceImpl implements CusMyService{
 	public int insertmymenu(MyMenuVO vo) {
 		return DAO.insertmymenu(vo);
 	}
+
 	
 	
 	

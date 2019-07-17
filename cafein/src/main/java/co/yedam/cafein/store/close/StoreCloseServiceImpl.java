@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
+import co.yedam.cafein.vo.WarehousingVO;
 @Service
 public class StoreCloseServiceImpl implements StoreCloseService {
 	
@@ -27,6 +28,11 @@ public class StoreCloseServiceImpl implements StoreCloseService {
 	@Override
 	public List<StockVO> getStockTruthList(StockVO vo) {
 		return dao.getStockTruthList(vo);
+	}
+
+	@Override
+	public int insertWarehousing(WarehousingVO vo) {
+		return dao.insertWarehousing(vo);
 	}
 
 }

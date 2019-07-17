@@ -21,11 +21,14 @@ public class CusMyDAO {
 		System.out.println("===> Mybatis getMymenu()");
 		return mybatis.selectList("MymenuDAO.getMymenu", vo);
 	}
+	public List<ViewMymenuVO> getMymenuDetail(ViewMymenuVO vo) {
+		System.out.println("===> Mybatis getMymenuDetail()");
+		return mybatis.selectList("MymenuDAO.getMymenuDetail", vo);
+	}
 	
 	public void deleteMymenu(MyMenuVO vo) {
 		  System.out.println("===> Mybatis deleteMymenu()");
-		  mybatis.update("MymenuDAO.deleteMymenu", vo); }
-	  
+		  mybatis.update("MymenuDAO.deleteMymenu", vo); } 
 	
 	// 커스텀 번호 가져오기
 	public String getcunum() {

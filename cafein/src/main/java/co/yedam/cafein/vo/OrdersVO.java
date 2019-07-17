@@ -16,6 +16,10 @@ public class OrdersVO {
 	private String cAdd;
 	private String cAdd3;
 	private String totals;
+	private String deliveryStatus;
+	private String refuseReason;
+	private String takeTime;
+
 	
 	// store name을 가져오기 위해서
 	private String oDnum; // 주문상세 테이블 pk
@@ -28,10 +32,35 @@ public class OrdersVO {
 	private String[] optionlist; // 해당 메뉴의 옵션 리스트
 	private String hotice_option; // 해당 메뉴의 hot ice 
 	private int addmileage; // 적립된 마일리지
+	private String mName;
 	
 	
 	
 	
+	public String getmName() {
+		return mName;
+	}
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+	public String getDeliveryStatus() {
+		return deliveryStatus;
+	}
+	public void setDeliveryStatus(String deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+	public String getRefuseReason() {
+		return refuseReason;
+	}
+	public void setRefuseReason(String refuseReason) {
+		this.refuseReason = refuseReason;
+	}
+	public String getTakeTime() {
+		return takeTime;
+	}
+	public void setTakeTime(String takeTime) {
+		this.takeTime = takeTime;
+	}
 	public int getAddmileage() {
 		return addmileage;
 	}
@@ -163,12 +192,12 @@ public class OrdersVO {
 	public String toString() {
 		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
 				+ receipt + ", sId=" + sId + ", payMethod=" + payMethod + ", mileage=" + mileage + ", cAdd=" + cAdd
-				+ ", cAdd3=" + cAdd3 + ", totals=" + totals + ", oDnum=" + oDnum + ", sName=" + sName + ", mNum=" + mNum
+				+ ", cAdd3=" + cAdd3 + ", totals=" + totals + ", deliveryStatus=" + deliveryStatus + ", refuseReason="
+				+ refuseReason + ", takeTime=" + takeTime + ", oDnum=" + oDnum + ", sName=" + sName + ", mNum=" + mNum
 				+ ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno=" + receipno + ", caNum=" + caNum
 				+ ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option=" + hotice_option + ", addmileage="
-				+ addmileage + "]";
+				+ addmileage + ", mName=" + mName + "]";
 	}
-
 
 
 }
