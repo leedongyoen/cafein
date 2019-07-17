@@ -20,7 +20,8 @@
 
 $(function(){
 	var id = "<%= (String)session.getAttribute("sid") %>";
-	console.log("store id = " + id);
+	var sName = "<%= (String)session.getAttribute("sName") %>";
+	console.log("store id = " + id + "store name = " + sName);
 	
 	if(id == "null") {
 		$("#loginbtn").css('display', 'inline');

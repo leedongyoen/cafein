@@ -8,7 +8,7 @@
 
 	</resultMap>
 <select id="getStore" resultMap="storeMap">
-	SELECT S_ID, S_PW
+	SELECT S_ID, S_PW, S_NAME
 	FROM STORE
 	WHERE S_ID = #{sid} AND S_PW = #{spw}
 </select>

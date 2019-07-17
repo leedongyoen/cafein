@@ -72,7 +72,7 @@ public class StoreCloseController {
 	@RequestMapping("dateInsertUpdate.do")
 	public String dateInsertUpdate(WarehousingVO wvo, StockVO svo, StoreCloseVO cvo) {
 		
-		return "store/main";
+		return "store/closedreceipt";
 	}
 
 }
