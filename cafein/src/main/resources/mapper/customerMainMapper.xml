@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CustomerMainDAO">
+	<!-- 고객이 자주사용한 매장 리스트를 순위별로 나열 -->
+	<select id="getLikeStoreList" resultType="mains">
+		SELECT ROW_NUMBER() OVER ( ORDER BY COUNT(O.O_NUM) DESC) RANK,
+			S.S_NAME, 
+			S.S_ADD ,
+			COUNT(O.O_NUM) CNT
+		FROM ORDERS O JOIN ORDER_DETAILS ORD
+			ON O.O_NUM = ORD.O_NUM
+			JOIN STORE S
+			ON O.S_ID = S.S_ID
+		WHERE O.C_ID = #{cId}
+		GROUP BY S.S_NAME, S.S_ADD
+	</select>
+
+	 	<!-- 메인에서 고객이 자주사용한 매장 1순위  --> 
+	<select id="mainLikeStoreList" resultType="mains">
+		SELECT
+			RANK() OVER ( ORDER BY COUNT(O.O_NUM) DESC) RANK,
+			S.S_NAME
+		FROM 
+			ORDERS O JOIN ORDER_DETAILS ORD
+			ON O.O_NUM = ORD.O_NUM
+			JOIN STORE S
+			ON O.S_ID = S.S_ID
+		WHERE O.C_ID = #{cId}
+		GROUP BY S.S_NAME
+	</select>
+	<!-- 고객이 자주 찾은 메뉴별 리스트 -->
+	<select id="getLikeMenuList" resultType="mains">
+		SELECT ROW_NUMBER() OVER ( ORDER BY SUM(ORD.O_QTY) DESC) RANK,
+			M.M_NAME, 
+			S.S_NAME,
+			SUM(ORD.O_QTY) CNT
+		FROM ORDERS O JOIN ORDER_DETAILS ORD
+			ON O.O_NUM = ORD.O_NUM
+			JOIN STORE S
+			ON O.S_ID = S.S_ID
+			JOIN MENU M
+			ON ORD.M_NUM = M.M_NUM
+		WHERE O.C_ID = #{cId}
+			AND ORD.O_DNUM = ORD.OP_DNUM
+		GROUP BY M.M_NAME, S.S_NAME
+	</select>
+	
+	<!-- 메인에서 고객이 자주 사용한 메뉴리스트 -->
+	<select id="mainLikeMenuList" resultType="mains">
+		SELECT ROW_NUMBER() OVER ( ORDER BY SUM(ORD.O_QTY) DESC) RANK,
+				M.M_NAME
+		FROM ORDERS O JOIN ORDER_DETAILS ORD
+			ON O.O_NUM = ORD.O_NUM
+			JOIN STORE S
+			ON O.S_ID = S.S_ID
+			JOIN MENU M
+			ON ORD.M_NUM = M.M_NUM
+		WHERE O.C_ID = #{cId}
+			AND ORD.O_DNUM = ORD.OP_DNUM
+		GROUP BY M.M_NAME, S.S_NAME
+	</select>
+</mapper>

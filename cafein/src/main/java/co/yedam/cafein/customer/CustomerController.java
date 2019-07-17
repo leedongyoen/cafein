@@ -7,11 +7,14 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +30,15 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import co.yedam.cafein.customer.login.CustomerLoginService;
 import co.yedam.cafein.customer.info.CustomerInfoService;
+import co.yedam.cafein.customer.join.CustomerJoinDAO;
 import co.yedam.cafein.customer.join.CustomerJoinService;
 import co.yedam.cafein.customer.login.KakaoRestAPI;
+import co.yedam.cafein.google.MailService;
 import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.NaverLoginVO;
 
@@ -39,9 +46,11 @@ import co.yedam.cafein.vo.NaverLoginVO;
 @Controller
 public class CustomerController {
 	
+	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+	
 	private NaverLoginVO naverLoginVO;
 	private String apiResult = null;
-
+	private CustomerJoinDAO customerJoinDAO;
 
 	@Autowired	CustomerLoginService customerLoginService;
 	
@@ -49,6 +58,13 @@ public class CustomerController {
 	
 	@Autowired 
 	CustomerJoinService customerjoinService;
+	
+	@Autowired
+	MailService mailservice;
+	
+	
+	
+	
 
 	private void setNaverLoginVO(NaverLoginVO naverLoginVO) {
 		this.naverLoginVO = naverLoginVO;
@@ -171,8 +187,23 @@ public class CustomerController {
 		Map<Object, Object>	map = new HashMap<Object, Object>();
 		map.put("cnt", n);
 		return map;
-		
 	}
+	
+    // 회원가입 이메일 인증
+    @RequestMapping(value = "sendMail", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public boolean sendMailAuth(HttpSession session, @RequestParam String email) {
+        int ran = new Random().nextInt(100000) + 10000; // 10000 ~ 99999
+        String joinCode = String.valueOf(ran);
+        session.setAttribute("joinCode", joinCode);
+ 
+        String subject = "회원가입 인증 코드 발급 안내 입니다.";
+        StringBuilder sb = new StringBuilder();
+        sb.append("귀하의 인증 코드는 " + joinCode + " 입니다.");
+        return mailservice.send(subject, sb.toString(), "bnghty5798@naver.com", email, null);
+    }
+
+    
 	
 	//ID/PW 찾기
 	@RequestMapping("customerfindidpw.do")

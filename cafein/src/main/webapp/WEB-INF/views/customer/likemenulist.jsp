@@ -6,35 +6,52 @@
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp" %>
 <title>Like Menu List</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		getLikeMenuList();
+		
+	});
+	
+	var cId = '<%= session.getAttribute("cId") %>';
+	
+	function getLikeMenuList() {
+		$.ajax({
+			url : "getLikeMenuList.do",
+			data : {cId : cId},
+			type : "GET",
+			datatype : "json",
+			success : function(data) {
+				console.log(data);
+				$("#likemenulist tbody").empty();
+				$.each(data,function(idx,item){
+					$('<tr>')
+					.append($('<td>').html(item.rank))
+					.append($('<td>').html(item.mName))
+					.append($('<td>').html(item.sName))
+					.append($('<td>').html(item.cnt))
+					.appendTo('#likemenulist tbody');
+				});
+			}
+		})
+	};
+	
+</script>
 </head>
 <body>
 <h3 align="center">선호 메뉴 목록</h3>
 <div class="container" align="center">
-<table class ="table">
-	<tr onclick = "location.href='Order.jsp'">
-		<th>주문순위</th>
-		<th>메뉴명</th>
-		<th>매장상호</th>
-		<th>주문횟수</th>
-	</tr>
-	<tr onclick = "location.href='Order.jsp'">
-		<th>1</th>
-		<th>아메리카노</th>
-		<th>카페 린</th>
-		<th>21</th>
-	</tr>
-	<tr onclick = "location.href='Order.jsp'">
-		<th>2</th>
-		<th>바닐라라떼</th>
-		<th>카페 예시</th>
-		<th>4</th>
-	</tr>
-	<tr onclick = "location.href='Order.jsp'">
-		<th>3</th>
-		<th>자몽에이드</th>
-		<th>카페 린</th>
-		<th>2</th>
-	</tr>
+<table class ="table" id="likemenulist">
+	<thead>
+		<tr onclick = "location.href='Order.jsp'">
+			<th>주문순위</th>
+			<th>메뉴명</th>
+			<th>매장상호</th>
+			<th>주문횟수</th>
+		</tr>
+	</thead>
+		<tbody>
+		</tbody>
 </table>
 <div style="text-align:right" >
 <button onclick = "location.href='customermainform.do'">돌아가기</button>

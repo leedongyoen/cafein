@@ -102,6 +102,7 @@
 		</foreach>) A
 	</insert>
 
+
 	<update id="getodnum">
 		<selectKey keyProperty="opDnum" resultType="string" order="BEFORE">
 			SELECT MIN(O_DNUM) OP_DNUM
