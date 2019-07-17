@@ -10,5 +10,5 @@ public interface StoreCustomerListService {
 
 	public CustomerVO getCustomer(CustomerVO vo);
 	
-	public CustomerVO getCustomerhistory(CustomerVO vo);
+	public List<CustomerVO> getCustomerhistory(CustomerVO vo);
 }

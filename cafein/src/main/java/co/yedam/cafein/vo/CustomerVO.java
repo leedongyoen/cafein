@@ -22,7 +22,54 @@ public class CustomerVO {
 	// 마일리지 조인
 	private String mileage;
 	private String sId;
+	
+	// 매장 - 고객조회
+	private String oNum;
+	private String gd;
+	private String mName;
+	private int total;
+	private String payMethod;
+	private String receipt;
+	
+	
+	
 
+	public String getoNum() {
+		return oNum;
+	}
+	public void setoNum(String oNum) {
+		this.oNum = oNum;
+	}
+	public String getGd() {
+		return gd;
+	}
+	public void setGd(String gd) {
+		this.gd = gd;
+	}
+	public String getmName() {
+		return mName;
+	}
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	public String getPayMethod() {
+		return payMethod;
+	}
+	public void setPayMethod(String payMethod) {
+		this.payMethod = payMethod;
+	}
+	public String getReceipt() {
+		return receipt;
+	}
+	public void setReceipt(String receipt) {
+		this.receipt = receipt;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -129,9 +176,11 @@ public class CustomerVO {
 	public String toString() {
 		return "CustomerVO [cId=" + cId + ", cNick=" + cNick + ", cTel=" + cTel + ", cName=" + cName + ", cPw=" + cPw
 				+ ", pPoint=" + pPoint + ", grade=" + grade + ", cAdd=" + cAdd + ", cAdd2=" + cAdd2 + ", cAdd3=" + cAdd3
-				+ ", stmp=" + stmp + ", mileage=" + mileage + ", sId=" + sId + ", dob=" + dob + ", cJoin=" + cJoin
-				+ "]";
+				+ ", stmp=" + stmp + ", email=" + email + ", mileage=" + mileage + ", sId=" + sId + ", oNum=" + oNum
+				+ ", gd=" + gd + ", mName=" + mName + ", total=" + total + ", payMethod=" + payMethod + ", receipt="
+				+ receipt + ", dob=" + dob + ", cJoin=" + cJoin + "]";
 	}
+	
 	
 	
 }

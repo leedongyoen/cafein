@@ -27,12 +27,18 @@
 	</select>
 	
 	<select id="getCustomerhistory" resultType="customer">
-	SELECT DISTINCT c_name, o_num
-	FROM customer c JOIN orders o
-	ON o.C_ID = c.C_ID   
-	WHERE c.c_id = #{cId};
-	
-	
+	SELECT 
+	o.c_id, o.o_num,
+	CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+	'OP' else 'MN'END gd,
+	CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+	r.OP_NAME ELSE m.m_name END m_name, o.total, o.pay_method, o.receipt
+	FROM
+	ORDERS o JOIN order_details od ON od.o_num = o.o_num
+	JOIN MENU m on od.M_NUM = m.M_NUM
+	JOIN recipe r on od.RECIPENO = r.RECIPENO
+	WHERE o.c_id = #{cId} AND o.S_ID=#{sId}
+	ORDER by o.O_NUM, od.O_DNUM
 	
 	</select>
 	

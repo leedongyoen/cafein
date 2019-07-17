@@ -28,8 +28,8 @@ public class StoreCustomerDAO {
 	}
 	
 	//구매이력
-	public CustomerVO getCustomerhistory(CustomerVO vo) {
-		return mybatis.selectOne("CustomerlistDAO.getCustomerhistory",vo);
+	public List<CustomerVO> getCustomerhistory(CustomerVO vo) {
+		return mybatis.selectList("CustomerlistDAO.getCustomerhistory",vo);
 	}
 	
 	

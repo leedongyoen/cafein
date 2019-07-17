@@ -53,9 +53,10 @@ public class StoreMainController {
 	
 	//매장 우리매장 고객 구매이력조회
 	@ResponseBody
-	@RequestMapping(value = "customerhistory/{cId}", method = RequestMethod.GET)
-	public CustomerVO getcustomerhistory(@PathVariable String cId, CustomerVO vo, Model model) {
+	@RequestMapping(value = "customerhistory/{cId}/{sid}", method = RequestMethod.GET)
+	public List<CustomerVO> getcustomerhistory(@PathVariable("cId") String cId, @PathVariable("sid") String sid ,CustomerVO vo) {
 		vo.setcId(cId);
+		vo.setsId(sid);
 		return storeCustomerListService.getCustomerhistory(vo);
 	}
 	
