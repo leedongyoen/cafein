@@ -71,6 +71,14 @@ public class CustomerOrderController {
 		return service.getOrderList(vo);
 	}
 	
+	//메인에서 고객 총주문금액 리스트 
+	@RequestMapping(value="mainorderlist.do", method=RequestMethod.GET)
+	@ResponseBody
+	public List<OrdersVO> mainOrderList(OrdersVO vo) {
+		System.out.println(vo);
+		return service.mainOrderList(vo);
+	}
+	
 	// 주문 넣기
 	@RequestMapping(value="/insertcustomerorder", method=RequestMethod.POST) 
 	public ModelAndView insertorder(OrdersVO vo) {
@@ -99,17 +107,20 @@ public class CustomerOrderController {
 				insertvo.setoQty("0");
 				insertvo.setReceipno(recipelist.get(n).getRecipeno());
 				insertvo.setCaNum(recipelist.get(n).getCaNum());
+				orderlist.add(insertvo);
 			}else if(recipelist.get(n).getCaNum().equals("CAIC") && recipelist.get(n).getCaNum().equals(info.getHotice_option())) {
 				insertvo.setoQty("0");
 				insertvo.setReceipno(recipelist.get(n).getRecipeno());
 				insertvo.setCaNum(recipelist.get(n).getCaNum());
+				orderlist.add(insertvo);
 			}else {
 				insertvo.setoQty(info.getoQty());
 				insertvo.setReceipno(recipelist.get(n).getRecipeno());
 				insertvo.setCaNum(recipelist.get(n).getCaNum());
+				orderlist.add(insertvo);
 			}
 			
-			orderlist.add(insertvo);
+			
 		}
 		
 		// 해당 메뉴의 옵션처리
@@ -131,7 +142,10 @@ public class CustomerOrderController {
 		
 		int n = service.insertorderdetails(map);
 		System.out.println("===========결과 : "+n);
-
+		
+		
+		n = service.getodnum(info);
+		
 		mv.setViewName("customer/delivery");
 		return mv;
 	}
