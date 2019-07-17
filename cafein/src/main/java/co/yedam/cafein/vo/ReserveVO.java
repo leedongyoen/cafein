@@ -14,6 +14,35 @@ public class ReserveVO {
 	private String dates;
 	private String totalre;
 	private String usere;
+	private String toto;
+	private String uuu;
+	private String rere;
+	
+	
+	
+	public String getRere() {
+		return rere;
+	}
+
+	public void setRere(String rere) {
+		this.rere = rere;
+	}
+
+	public String getToto() {
+		return toto;
+	}
+
+	public void setToto(String toto) {
+		this.toto = toto;
+	}
+
+	public String getUuu() {
+		return uuu;
+	}
+
+	public void setUuu(String uuu) {
+		this.uuu = uuu;
+	}
 
 	public String getTotalre() {
 		return totalre;

@@ -1,5 +1,7 @@
 package co.yedam.cafein.store.info;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,6 +27,10 @@ public class StoreInfoDAO {
 	public int checkpw(StoreVO vo) {
 		System.out.println("mybatis 매장정보비밀번호수정");
 		return mybatis.update("storeinfoDAO.checkpw", vo);
+	}
+	
+	public List<StoreVO> getStoreList(StoreVO vo){
+		return mybatis.selectList("storeinfoDAO.getStoreList",vo);
 	}
 
 }
