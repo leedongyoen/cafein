@@ -42,6 +42,11 @@ public class CustomerOrderServiceImpl {
 		return dao.getstoredeliverservice(sId);
 	}
 	
+	// 마일리지 서비스 여부
+	public String getstoremileageservice(String sId) {
+		return dao.getstoremileageservice(sId);
+	}
+	
 	// 주문번호 가져오기
 	public String getordernumber(String sId) {
 		return dao.getordernumber(sId);
@@ -67,5 +72,15 @@ public class CustomerOrderServiceImpl {
 	// order details op_dnum 업데이트
 	public int getodnum(OrdersVO vo) {
 		return dao.getodnum(vo);
+	}
+	
+	// 주문 끝나고 마일리지 업데이트
+	public int updatemileage(OrdersVO vo) {
+		return dao.updatemileage(vo);
+	}
+	
+	// 만약 해당 매장의 마일리지가 없을 경우
+	public int insertmileage(OrdersVO vo) {
+		return dao.insertmileage(vo);
 	}
 }
