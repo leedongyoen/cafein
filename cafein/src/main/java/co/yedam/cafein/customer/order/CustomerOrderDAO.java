@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Repository;
 
 import co.yedam.cafein.vo.MenuOrderVO;
@@ -45,6 +45,12 @@ public class CustomerOrderDAO {
 		return dao.selectOne("StoremenuDAO.getstoredeliverservice",sId);
 	}
 	
+	// 마일리지 서비스 여부
+	public String getstoremileageservice(String sId) {
+		return dao.selectOne("StoremenuDAO.getstoremileageservice",sId);
+	}
+	
+	
 	// 주문번호 가져오기
 	public String getordernumber(String sId) {
 		return dao.selectOne("CustomerOrderDAO.getordernumber",sId);
@@ -63,5 +69,20 @@ public class CustomerOrderDAO {
 	// order details 테이블에 넣기
 	public int insertorderdetails(Map<String, Object> map) {
 		return dao.insert("CustomerOrderDAO.insertorderdetails",map);
+	}
+	
+	// order details op_dnum 업데이트
+	public int getodnum(OrdersVO vo) {
+		return dao.update("CustomerOrderDAO.getodnum",vo);
+	}
+	
+	// 주문 끝나고 마일리지 업데이트
+	public int updatemileage(OrdersVO vo) {
+		return dao.update("CustomerOrderDAO.updatemileage",vo);
+	}
+	
+	// 만약 해당 매장의 마일리지가 없을 경우
+	public int insertmileage(OrdersVO vo) {
+		return dao.insert("CustomerOrderDAO.insertmileage",vo);
 	}
 }

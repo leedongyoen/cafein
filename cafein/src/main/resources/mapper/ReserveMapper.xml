@@ -32,39 +32,51 @@
 <!-- 	</select> -->
 	<!-- 마일리지 리스트 쿼리 -->
 	<select id="getListReserve" resultType="reserve">
-		SELECT TO_CHAR(O_DATE, 'YYYY-MM-DD') DATES,
-				S.S_NAME,
-				O.MILEAGE
-			FROM 
-				RESERVE R JOIN ORDERS O
-				ON R.C_ID = O.C_ID 
-				JOIN STORE S
-				ON R.S_ID = S.S_ID
-			WHERE O.C_ID = #{cId}
+		SELECT DISTINCT TO_CHAR(O_DATE, 'YYYY-MM-DD') DATES , 
+			   S.S_NAME ,
+			   O.MILEAGE
+		FROM ORDERS O JOIN STORE S
+		     ON O.S_ID = S.S_ID
+		WHERE O.C_ID = #{cId}
+		ORDER BY DATES DESC
 	</select>
 	<!-- 총 적립금과 사용한 적립금을 보여주는 리스트 쿼리 -->
 	<select id="getTotalReserve" resultType="reserve">
-		SELECT NVL(SUM(RE.MILEAGE)+OR1.MILEAGE ,0) TOTALRE,
-			   NVL(SUM(RE.MILEAGE)-OR1.MILEAGE,0) USERE
-		FROM RESERVE RE ,
-				(SELECT S_ID,
-						C_ID, 
-						SUM(MILEAGE) MILEAGE
-				 FROM ORDERS
-				 WHERE C_ID= #{cId}
-					   AND 
-					   S_ID= #{sId}
-				 GROUP BY S_ID,
-				 		  C_ID) OR1
-		WHERE RE.C_ID= #{cId}
-		GROUP BY OR1.MILEAGE
+			SELECT SUM(ORL.TOTALRE) TOTO, 
+				   SUM(ORL.USERE) UUU,
+				   SUM(ORL.TOTALRE)-SUM(ORL.USERE) RERE
+			FROM
+				( SELECT NVL(SUM(RE.MILEAGE)+DD.MILEAGE ,0) TOTALRE,
+						 NVL(SUM(RE.MILEAGE),0) USERE
+					FROM RESERVE RE ,
+							(SELECT S_ID,
+									C_ID,
+									SUM(MILEAGE) MILEAGE
+						     FROM ORDERS
+							 WHERE C_ID= #{cId}
+							 GROUP BY S_ID,
+									  C_ID
+							) DD
+					WHERE RE.C_ID= #{cId}
+					GROUP BY DD.MILEAGE
+				) ORL 	    
 	</select>
 	<!-- 메인에서 보여줄 총 적립금 쿼리  -->
 	<select id="mainTotalReserve" resultType="reserve">
-		SELECT NVL(SUM(O.MILEAGE)+R.MILEAGE,0) TOTALRE
-			FROM RESERVE R JOIN ORDERS O
-			ON R.C_ID = O.C_ID
-			WHERE O.C_ID = #{cId}
-		GROUP BY R.MILEAGE
+		SELECT SUM(ORL.TOTALRE) TOTO
+		FROM
+			( SELECT NVL(SUM(RE.MILEAGE)+DD.MILEAGE ,0) TOTALRE
+			  FROM RESERVE RE ,
+					(SELECT S_ID,
+							C_ID,
+							SUM(MILEAGE) MILEAGE
+					FROM ORDERS
+					WHERE C_ID= #{cId}
+					GROUP BY S_ID,
+						     C_ID
+					) DD
+			  WHERE RE.C_ID= #{cId}
+		   	  GROUP BY DD.MILEAGE
+		) ORL 
 	</select>
 </mapper>

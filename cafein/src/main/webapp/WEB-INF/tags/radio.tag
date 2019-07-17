@@ -4,7 +4,7 @@
 <%@ attribute name="name" required="true" type="java.lang.String" %>
 <%@ attribute name="value" required="true" type="java.lang.String" %>
 
-<c:forEach items="${items}" var ="code">
+<c:forEach items="${items}" var ="code" >
 			<input type="radio" name ="${name}" value="${code.detailCd}" 
 			       <c:if test="${value eq code.detailCd}">checked</c:if>> ${code.detailNm}  
 </c:forEach>  

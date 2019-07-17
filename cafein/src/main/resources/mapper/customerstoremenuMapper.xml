@@ -115,5 +115,11 @@
    			 								AND SUBSTR(ST_CLOSE_TIME,1,2)-2
 	
 	</select>
+	
+	<select id="getstoremileageservice" parameterType="string" resultType="string">
+		SELECT ST_MILE_SERVICE
+		FROM STORE
+		WHERE S_ID=#{sId}
+	</select>
 
 </mapper>

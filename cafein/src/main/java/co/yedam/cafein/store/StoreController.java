@@ -53,7 +53,9 @@ public class StoreController {
 		} else {
 			System.out.println("not null");
 			session.setAttribute("sid", store.getSid());
+			session.setAttribute("sName", store.getSname());
 			System.out.println(session.getAttribute("sid"));
+			System.out.println("store name : " + store.getSname());
 			return "store/main";
 		}
 

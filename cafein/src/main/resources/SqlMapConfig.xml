@@ -22,11 +22,13 @@
 		<typeAlias type="co.yedam.cafein.vo.RecipeVO" alias="recipe"/>
 		<typeAlias type="co.yedam.cafein.vo.CustomerMainVO" alias="mains"/>
 		<typeAlias type="co.yedam.cafein.vo.MenuOrderVO" alias="menuorder"/>
+		<typeAlias type="co.yedam.cafein.vo.StoreOpenVO" alias="storeOpen"/>
 		
 		<typeAlias type="co.yedam.cafein.viewvo.ViewMymenuVO" alias="viewmymenu"/>
 		<typeAlias type="co.yedam.cafein.viewvo.ViewWarehousingVO" alias="viewwarehousing"/>
 		<typeAlias type="co.yedam.cafein.viewvo.ViewPosVO" alias="viewpos"/>
 		<typeAlias type="co.yedam.cafein.viewvo.ViewPosCusSearchVO" alias="viewposcussearch"/>
+		
 	</typeAliases>
 	
 

@@ -30,7 +30,7 @@
 	
 	<insert id="insertorder">
 		<selectKey keyProperty="oNum" resultType="string" order="BEFORE">
-				SELECT 'OR'||TO_CHAR(SYSDATE,'yymmdd')||LPAD(NVL(MAX(SUBSTR(O_NUM,9))+1,0),3,0)
+				SELECT 'OR'||TO_CHAR(SYSDATE,'yymmdd')||LPAD(NVL(MAX(SUBSTR(O_NUM,9)),0)+1,3,0)
 				FROM ORDERS
 				WHERE O_NUM LIKE '%'||TO_CHAR(SYSDATE,'yymmdd')||'%'
 		</selectKey>
@@ -78,7 +78,7 @@
 	</select>
 	
 	<insert id="insertorderdetails" >
-		INSERT INTO INTO ORDER_DETAILS (
+		INSERT INTO ORDER_DETAILS (
 									O_DNUM
 									, O_NUM
 									, M_NUM
@@ -101,4 +101,57 @@
 			
 		</foreach>) A
 	</insert>
+
+
+	<update id="getodnum">
+		<selectKey keyProperty="opDnum" resultType="string" order="BEFORE">
+			SELECT MIN(O_DNUM) OP_DNUM
+			FROM ORDER_DETAILS
+			WHERE O_NUM =#{oNum}
+		</selectKey>
+		
+		UPDATE ORDER_DETAILS SET OP_DNUM=#{opDnum} 
+		WHERE O_NUM= #{oNum}
+	
+	</update>
+	
+	<insert id="insertmileage">
+		<selectKey keyProperty="addmileage" resultType="int" order="BEFORE">
+		
+			SELECT TOTAL*0.01
+			FROM ORDERS
+			WHERE O_NUM= #{oNum}
+		
+		</selectKey>
+		
+		INSERT INTO RESERVE(
+							MILENUM
+							, MILEAGE
+							, S_ID
+							, C_ID 
+					)
+		VALUES ( RESERVE_SEQ.NEXTVAL
+				, #{addmileage}
+				, #{sId}
+				, #{cId}
+				)
+	
+	</insert>
+	
+	
+	<update id="updatemileage">
+		<selectKey keyProperty="addmileage" resultType="int" order="BEFORE">
+		
+			SELECT TOTAL*0.01
+			FROM ORDERS
+			WHERE O_NUM= #{oNum}
+		
+		</selectKey>
+		
+		UPDATE RESERVE SET MILEAGE = MILEAGE + #{addmileage}
+		WHERE S_ID= #{sId} 
+				AND C_ID=#{cId}
+	
+	</update>
+
 </mapper>
