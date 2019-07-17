@@ -232,13 +232,27 @@ footerrow : true});
  	function getCus(data){ 
  		$("#customertable tbody").empty();
  		$.each(data, function(idx,item){
-	    	 $('<tr>')
+	    	 $("<tr onclick=aftersearch('"+item.cName+","+item.cTel+","+item.mileage+"')>")
 	          .append($('<td>').html(item.cName))
 	          .append($('<td>').html(item.cTel))
 	          .append($('<td>').html(item.mileage))
 	          .appendTo('#customertable tbody');
-	    });    
+	    }); 
+ 		
  	}
+ 	function aftersearch(data1,data2,data3){
+ 		$('#cusSearchModal').modal("hide");
+ 		console.log(data1,data2,data3);
+ 			$("#aftersearch tbody").empty();
+ 	 		$.each( function(idx,item){
+ 		    	 $('<tr>')
+ 		    	 $('<input type=\'button\' class=\'mbutton\' id=\'dessert\'>').val(item.mName)
+ 		          .append($('<td>').html(data1))
+ 		          .append($('<td>').html(data2))
+ 		          .append($('<td>').html(data3))
+ 		          .appendTo('#aftersearch tbody');
+ 		    });  
+ 		}
  	
 	$(document).on("click","#deleteRow",function(){
 		console.log("in");
@@ -256,6 +270,7 @@ footerrow : true});
 		});
 	});
  	
+	
 </script>
 <br><br>
 <br><br>
@@ -263,6 +278,17 @@ footerrow : true});
 <div class="left">
     <table id="gridlist"></table>
     <div id="pager"></div>
+</div>
+<div class="container">
+<table id="aftersearch">
+<tr>
+	<th>NAME</th>
+	<th>TEL</th>
+	<th>MILEAGE</th>
+</tr>
+<tbody>
+</tbody>
+</table>
 </div>
 <!-- 메뉴 선택 창 -->
   <div id="btn_group" class="content">

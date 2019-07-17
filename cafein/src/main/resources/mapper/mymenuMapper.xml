@@ -2,8 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MymenuDAO">
 <!-- 고객 나만의 메뉴 조회 -->
-
 <select id="getMymenu" resultType="viewmymenu">
+SELECT
+	S_NAME "sName"
+	, M_NAME "mName"
+	, M_PRICE "mPrice"
+	, C_ID "cId"
+	, CU_NUM "cuNum"
+	, CA_NUM "caNum"
+	, UPLOADFILE "uploadFileName"
+FROM MYMENU_VIEW
+WHERE C_ID=#{cId} 
+AND OP_NAME IS NULL
+<if test="sort == null or sort == '' ">
+ORDER BY CU_NUM
+</if>
+</select>
+<select id="getMymenuDetail" resultType="viewmymenu">
 SELECT
 	S_NAME "sName"
 	, M_NAME "mName"
@@ -14,10 +29,9 @@ SELECT
 	, M_NUM "mNum"
 	, CU_NUM "cuNum"
 	, CA_NUM "caNum"
-	, UPLOADFILE "uploadFileName"
 FROM MYMENU_VIEW
-WHERE C_ID=#{cId}
-
+WHERE CU_NUM=#{cuNum}
+AND CA_NUM IN ('CAOP','CAIC','CAHT')
 </select>
 <delete id="deleteMymenu" parameterType="mymenu">
 DELETE MY_MENU 

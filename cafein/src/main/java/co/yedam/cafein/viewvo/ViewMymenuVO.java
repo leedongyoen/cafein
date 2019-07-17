@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ViewMymenuVO {
 	
-	
+	  
 	private String sName;
 	private String mName;
 	private int mPrice;
@@ -15,6 +15,14 @@ public class ViewMymenuVO {
 	private String cuNum;
 	private String caNum;
 	private String uploadFileName;
+	private String sort;
+	
+	public String getSort() {
+		return sort;
+	}
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
 	public String getsName() {
 		return sName;
 	}
