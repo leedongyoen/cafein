@@ -200,7 +200,7 @@ public class CustomerController {
         String subject = "회원가입 인증 코드 발급 안내 입니다.";
         StringBuilder sb = new StringBuilder();
         sb.append("귀하의 인증 코드는 " + joinCode + " 입니다.");
-        return mailservice.send(subject, sb.toString(), "bnghty22@gmail.com", email, null);
+        return mailservice.send(subject, sb.toString(), "bnghty5798@naver.com", email, null);
     }
 
     
