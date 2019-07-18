@@ -83,20 +83,4 @@ public class StoreStockController {
 		storeStockService.updateStock(vo);
 		return vo;
 	}
-
-	@RequestMapping(value = "warehousingregi.do")
-	public String warehousingregi() {
-		return "store/warehousingregi";
-
-	}
-
-	@RequestMapping("stockstatisticslist.do")
-	public String stockstatisticslist() {
-		return "store/stockstatisticslist";
-	}
-
-	@RequestMapping("stockadd.do")
-	public String stockadd() {
-		return "store/stockadd";
-	}
 }
