@@ -88,7 +88,8 @@
 	}//stockSelectResult
 	
 	function history(cId){
-		var storelogin = '<%=session.getAttribute("sid")%>';
+		var storelogin = '<%=session.getAttribute("sid")%>
+	';
 		$('#c_history').show();
 		console.log(cId);
 		$.ajax({
@@ -101,8 +102,8 @@
 			success : historyResult
 		});
 	}
-	
-	function historyResult(data){
+
+	function historyResult(data) {
 		console.log(data);
 		$('input:text[name="cId" ]').val(data.cId);
 		$('input:text[name="oNum"]').val(data.oNum);
@@ -112,8 +113,6 @@
 		$('input:text[name="payMethod"]').val(data.payMethod);
 		$('input:text[name="receipt"]').val(data.receipt);
 	}
-	
-	
 </script>
 
 
@@ -145,7 +144,6 @@
 					<tbody id="customerTbody">
 					</tbody>
 				</table>
-
 
 			</div>
 		</div>
@@ -194,39 +192,43 @@
 				</form>
 			</div>
 			<div>
-				<form id="c_history">
-					<table border="1" class="table table-hover">
+				<table border="1" class="table table-hover" id="c_history">
+					<thead>
 						<tr>
 							<th>ID</th>
-							<td><input type="text" id="cId" name="cId" readonly></td>
-						</tr>
-						<tr>
 							<th>주문번호</th>
-							<td><input type="text" id="oNum" name="oNum" readonly></td>
-						</tr>
-						<tr>
 							<th>메뉴/옵션</th>
+							<th>TOTALS</th>
+							<th>결제방식</th>
+							<th>수령방식</th>
+							
+						</tr>
+						<tbody id="histomerTbody">
+						</tbody>
+						<tr>
+							<td><input type="text" id="oNum" name="oNum" readonly></td>
 							<td><input type="text" id="GD" name="GD" readonly></td>
 						</tr>
 						<tr>
-							<th>TOTALS</th>
+							
 							<td><input type="text" id="totals" name="totals" readonly></td>
 						</tr>
 						<tr>
-							<th>결제방식</th>
-							<td><input type="text" id="payMethod" name="payMethod" readonly></td>
+							
+							<td><input type="text" id="payMethod" name="payMethod"
+								readonly></td>
 						</tr>
 						<tr>
-							<th>수령방식</th>
+							
 							<td><input type="text" id="receipt" name="receipt" readonly></td>
 						</tr>
-					</table>
-				</form>
+					</thead>
+				</table>
 			</div>
-			
+
 		</div>
-		
-		
+
+
 
 	</div>
 
