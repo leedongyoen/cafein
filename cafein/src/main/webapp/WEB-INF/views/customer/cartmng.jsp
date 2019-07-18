@@ -44,18 +44,12 @@ $(function(){
 		var price = 0;
 		var id = "<%=(String) session.getAttribute("cId")%>";
 		
-		console.log("길이: "+local_cart.length);
-		
-		
 		
 		for(var i = 0;i<local_cart.length;i++){
-
+			console.log("이에요: "+local_cart.length);
 			//local_storage에 qty를 orderqty로 
 			local_cart[i].orderqty = local_cart[i].qty;
-			
-			console.log("길이3: "+local_cart[i].orderqty);
-			console.log("길이4: "+local_cart[i].qty);
-			
+
 			qty = (local_cart[i].qty*1);
 			price = (local_cart[i].totalPrice*1)/qty;
 			sumtotalPrice = (qty*price) + sumtotalPrice;
@@ -77,7 +71,7 @@ $(function(){
 			.append($('<td rowspan="2">'))
 			.append($('<td>').html(local_cart[i].mName))   //.html(local_cart[i].mName))
 			.append($('<td rowspan="2">').html(state))    //.html(state))
-			.append($('<td rowspan="2">').append($('<input>').attr({type: "text", name:"changeqty", value:local_cart[i].qty})))   //.append($('<button>').val("-")))      //.html(local_cart[i].qty).append($('<button>').val("-"))))
+			.append($('<td rowspan="2">').append($('<input>').attr({type: "text", name:"orderqty", value:local_cart[i].qty})))   //.append($('<button>').val("-")))      //.html(local_cart[i].qty).append($('<button>').val("-"))))
 			.append($('<td rowspan="2">').html(local_cart[i].totalPrice))
 			.appendTo("#CartList table tbody");
 			
@@ -106,19 +100,24 @@ $(function(){
 			$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
 			
 			//$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
-			
-			for(var j = 0;j<local_cart[i].cuNumList.length;j++){
-				var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuNumList[j]);
-			
-				$('<li>').html(detail).appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
 				
-			}		
+			
+			if(local_cart[i].cuNumList != null){
+				for(var j = 0;j<local_cart[i].cuNumList.length;j++){
+					var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuNumList[j]);
+				
+					$('<li>').html(detail).appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
+					
+				}
+			} 
+					
 						//$('<li>').html(local_cart[i].cuNumList[j]);
 						//console.log($test);
 						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
 					
-				$("#CartList div p span strong").html(sumtotalPrice);
+			$("#CartList div p span strong").html(sumtotalPrice);
 		}
+		
 	}
 	
 });
@@ -138,17 +137,10 @@ function orderBtnDelete(){
 }
 
 function orderBtnClick(){
-/* 	var selcheck = [];
-	$('[name=cartnumlist]:checked').each(function(){
-		selcheck.push($(this).val());
-	});
-	
-	for(var i = 0;i<selcheck.length;i++){
-		console.log(selcheck[i]);
-	} */
+
 	var ordercart = $("#orderCartForm").serializeObject();
 	var arr = [];
-	//ordercart.changeqty[0] 
+
 	
 	for(var k = 0;k<ordercart.cartnumlist.length;k++){
 		arr.push(local_cart[ordercart.cartnumlist[k]]);
@@ -244,7 +236,7 @@ function getOptionNaming(mnumber, stnumber){
 						<thead>
 							<tr>
 								<th rowspan="1"></th>
-								<th rowspan="1">매2장 명</th>
+								<th rowspan="1">z   2z2  장 명</th>
 								<th colspan="2">상e품/ 옵션정보</th>
 								<th rowspan="1">ICE/HOT</th>
 								<th rowspan="1">수e량</th>
