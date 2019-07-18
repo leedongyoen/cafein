@@ -3,14 +3,13 @@
 <mapper namespace="storeCloseDAO">
 	<!-- 매장 영업 준비금 조회 -->
 	<select id="getWarehousing" resultType="viewwarehousing">
-		SELECT W.WARE_DATE "wareDate"
-          , W.WARE_QTY "wareQty"
-          , W.WARE_PRICE "warePrice"
-          , W.S_ID "sId"
-          , UPPER(W.ST_PAY_METHOD) "stPayMethod"
-          , S.ST_NAME "stName"
-      	FROM WAREHOUSING W, STOCK S
-     	WHERE W.ST_NUM = S.ST_NUM 
+		SELECT SUM(W.WARE_QTY) "wareQty"
+          	 , SUM(W.WARE_PRICE) "warePrice"
+         	 , W.S_ID "sId"
+          	 , UPPER(W.ST_PAY_METHOD) "stPayMethod"
+         	 , S.ST_NAME "stName"
+		FROM WAREHOUSING W, STOCK S
+		WHERE W.ST_NUM = S.ST_NUM 
            AND 
            W.S_ID = #{sId}
            AND 
@@ -19,6 +18,7 @@
            W.WARE_QTY > 0 
            AND 
            W.WARE_PRICE > 0
+		GROUP BY W.S_ID, W.ST_PAY_METHOD ,S.ST_NAME
 	</select>
 	
 	<!-- 매장 마감 시재 정산 조회 -->
@@ -36,7 +36,17 @@
 			AND 
 			S_ID = #{sId}
 			AND 
-			PAY_METHOD = 'CASH'
+			UPPER(PAY_METHOD) = 'CASH'
+	</select>
+	
+	<!-- 매장 기본 준비금, 오픈시간 조회 -->
+	<select id="getStoreOpen" resultType="storeOpen">
+		SELECT S_ID
+			 , DEFAULT_CASH
+			 , OPENTIME
+		FROM STOREOPEN
+		WHERE S_ID = #{sId}
+		AND TO_CHAR(OPENTIME,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
 	</select>
 	
 	<!-- 매장 재고 수량 조회 -->
@@ -52,25 +62,64 @@
 		WHERE S_ID = #{sId}
 	</select>
 	
-	<!-- 재고입고 테이블에 insert -->
-	<insert id="warehousingInsert">
-		INSERT INTO WAREHOUSING 
-		VALUES(WARE_SEQ.NEXTVAL
-			  ,SYSDATE
-			  ,#{wareQty}
-			  ,#{sum}
-			  ,#{stName}
-			  ,#{sId}
-			  ,#{stPayMethod}
-			  ,0)
+	<!-- 재고입고 테이블에 추가 재고 입고 내역 insert -->
+	<insert id="warehousingInsertAddStock">
+		INSERT INTO WAREHOUSING (
+  									WARE_NUM
+  									, WARE_DATE
+  									, WARE_QTY
+  									, WARE_PRICE
+  									, ST_NUM
+  									, S_ID
+  									, ST_PAY_METHOD
+  									, ST_LOSS
+		)
+		SELECT 'WH'||LPAD(WARE_SEQ.NEXTVAL,4,0), A.* FROM(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT 
+					  SYSDATE
+					  ,#{item.wareQty} AS WARE_QTY
+					  ,#{item.warePrice} AS WARE_PRICE
+					  ,#{item.stName} AS ST_NUM
+					  ,#{item.sId} AS S_ID
+					  ,#{item.stPayMethod} AS ST_PAY_METHOD
+					  ,0 AS ST_LOSS
+			FROM DUAL
+		</foreach>) A
+	</insert>
+	
+	<!-- 재고입고 테이블에 손실된 재고량 insert -->
+	<insert id="warehousingInsertLoss">
+		INSERT INTO WAREHOUSING (
+  									WARE_NUM
+  									, WARE_DATE
+  									, WARE_QTY
+  									, WARE_PRICE
+  									, ST_NUM
+  									, S_ID
+  									, ST_LOSS
+		)
+		SELECT 'WH'||LPAD(WARE_SEQ.NEXTVAL,4,0), A.* FROM(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT 
+					  SYSDATE
+					  ,0 AS WARE_QTY
+					  ,0 AS WARE_PRICE
+					  ,#{item.stNum} AS ST_NUM
+					  ,#{item.sId} AS S_ID
+					  ,#{item.stLoss} AS ST_LOSS
+			FROM DUAL
+		</foreach>) A
 	</insert>
 	
 	<!-- 재고 테이블에 수량 update -->
 	<update id="stockUpdate">
-		UPDATE STOCK SET 
-			  ST_QTY = #{stQty}
-			, ST_STATUS = #{stStatus}
-		WHERE ST_NUM = #{stNum}
+		<foreach collection="list" item="item" index="index" separator=";">
+			UPDATE STOCK SET 
+				  	  ST_QTY = #{item.stQty}
+					, ST_STATUS = #{item.stStatus}
+			WHERE ST_NUM = #{item.stNum}
+		</foreach>
 	</update>
 	
 </mapper>

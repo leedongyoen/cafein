@@ -1,13 +1,17 @@
 package co.yedam.cafein.vo;
 
-import java.sql.Date;
 
+import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreOpenVO {
 	private String sId;
-	private Date openTime;
-	private Date closeTime;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone ="Asia/Seoul")
+	private Timestamp openTime;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone ="Asia/Seoul")
+	private Timestamp closeTime;
 	private int cash;
 	private int defaultCash;
 	private int orCash;
@@ -19,16 +23,16 @@ public class StoreOpenVO {
 	public void setsId(String sId) {
 		this.sId = sId;
 	}
-	public Date getOpenTime() {
+	public Timestamp getOpenTime() {
 		return openTime;
 	}
-	public void setOpenTime(Date openTime) {
+	public void setOpenTime(Timestamp openTime) {
 		this.openTime = openTime;
 	}
-	public Date getCloseTime() {
+	public Timestamp getCloseTime() {
 		return closeTime;
 	}
-	public void setCloseTime(Date closeTime) {
+	public void setCloseTime(Timestamp closeTime) {
 		this.closeTime = closeTime;
 	}
 	public int getCash() {

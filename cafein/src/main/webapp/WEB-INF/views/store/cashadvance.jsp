@@ -52,6 +52,7 @@
 		
 	}
 	
+	// input 태그에 숫자만 입력받기 위한 함수
 	function inNumber(){
         if(event.keyCode<48 || event.keyCode>57){
            event.returnValue=false;
@@ -82,6 +83,7 @@
 			// input 태그에 입력한 값을 sessionStorage에 담기 위한 배열
 			// cash : 현금시재, defference : 차액, orCash : 영업준비금, netIncome : 순수익
 			var cashList = {
+					sId:sId,
 					c50000:$('#cash50000').val(),
 					c10000:$('#cash10000').val(),
 					c5000:$('#cash5000').val(),
@@ -105,6 +107,8 @@
 		}
 		console.log('jsonCashList : ' + jsonCashList)
 		
+		
+		// input 태그에 값이 없으면 저장이 되지 않도록 하기 위함
 		if($('#cash50000').val() == "") {
 			alert("5만원 권수를 입력해 주세요.");
 			$('#cash50000').focus();
@@ -172,7 +176,7 @@
 			<table class="table table-striped">
 				<tr>
 					<th>기본 준비금</th>
-					<td><p id="defaultCash">50,000원</p></td>
+					<td><p id="defaultCash"></p></td>
 				</tr>
 				<tr>
 					<th>영업 지출금(현금 결제건)</th>

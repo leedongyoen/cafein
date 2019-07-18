@@ -2,6 +2,8 @@ package co.yedam.cafein.vo;
 
 import java.util.Arrays;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StockVO {
 
 	private String stNum;

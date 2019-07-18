@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
-import co.yedam.cafein.vo.StoreCloseVO;
 import co.yedam.cafein.vo.StoreOpenVO;
 import co.yedam.cafein.vo.WarehousingVO;
 
@@ -55,6 +54,13 @@ public class StoreCloseController {
 	public List<OrdersVO> getCashadvance(OrdersVO vo) {
 		return service.getCashAdvance(vo);
 	}
+	
+	// storeopen 테이블에서 기본준비금, 오픈시간을 읽어와야한다
+	@ResponseBody
+	@RequestMapping(value="/storeopen", method=RequestMethod.GET)
+	public StoreOpenVO getStoreOpen(StoreOpenVO vo) {
+		return service.getStoreOpen(vo);
+	}
 
 	// 마감 시재 정산
 	@RequestMapping("cashadvance.do")
@@ -80,12 +86,61 @@ public class StoreCloseController {
 	// 마감 정산 버튼 클릭 시 모든 데이터 insert 및 update
 	@SuppressWarnings("unchecked")
 	@RequestMapping("dateInsertUpdate.do")
-	public String dateInsertUpdate(@RequestParam String cashadvanceInsert, StockVO svo, StoreOpenVO cvo) throws JsonParseException, JsonMappingException, IOException {
+	public String dateInsertUpdate( @RequestParam String cashadvanceInsert, 
+									@RequestParam String stocktruthInsert, 
+									@RequestParam String operationreservInsert) throws JsonParseException, JsonMappingException, IOException {
 		
 		ObjectMapper mapper = new ObjectMapper();
-		List<StoreOpenVO> ovo = (List<StoreOpenVO>) mapper.readValue(cashadvanceInsert, new TypeReference<List<StoreOpenVO>>(){});
-		System.out.println("wvo : " + ovo);
 		
+		// storeopen 테이블에 data를 update하기 위한 list
+		List<StoreOpenVO> storeVO = (List<StoreOpenVO>) mapper.readValue(cashadvanceInsert, new TypeReference<List<StoreOpenVO>>(){});
+		// 재고수량의 변경이 있을 때 stock 테이블에 재고수량과 재고상태를 update하기 위한 list
+		List<StockVO> stockVO = (List<StockVO>) mapper.readValue(stocktruthInsert, new TypeReference<List<StockVO>>(){});
+		// 재고수량의 변경으로 손실이 발생한 경우 warehousing 테이블에 손실량을 insert하기 위한 list
+		List<WarehousingVO> warehousingLossVO = (List<WarehousingVO>) mapper.readValue(stocktruthInsert, new TypeReference<List<WarehousingVO>>(){});
+		// 추가로 입고한 물품이나 재고가 있을 때 warehousing 테이블에 data를 insert하기 위한 list
+		List<WarehousingVO> warehousingAddStockVO = (List<WarehousingVO>) mapper.readValue(operationreservInsert, new TypeReference<List<WarehousingVO>>(){});
+		
+		System.out.println("storeopen table update : " + storeVO);
+		System.out.println("stock table update : " + stockVO);
+		System.out.println("warehousing table insert(손실량) : " + warehousingLossVO);
+		System.out.println("warehousing table insert(추가입고) : " + warehousingAddStockVO);
+		
+		/*
+		if(storeVO != null) {
+			service.storeUpdate(storeVO);
+		}
+		if(stockVO != null) {
+			service.stockUpdate(stockVO);
+		}
+		 */
+		
+		// 0이 아닌 데이터를 담기위한 빈 list
+		List<WarehousingVO> plusList = new ArrayList<WarehousingVO>();
+		
+		// warehousing insert (손실량)
+		if(warehousingLossVO != null) {
+			for(int i=0;i<warehousingLossVO.size();i++) {
+				if(warehousingLossVO.get(i).getStLoss() != 0) {
+					plusList.add(warehousingLossVO.get(i));
+					System.out.println("warehousingLossVO : " + warehousingLossVO.get(i).getStLoss());
+				}
+			}
+			service.warehousingInsertLoss(plusList);
+		}
+		
+		// warehousing insert (추가재고)
+		if(warehousingAddStockVO != null) {
+			for(int i=0;i<warehousingAddStockVO.size();i++) {
+				if(warehousingAddStockVO.get(i).getStPayMethod().equals("현금")) {
+					warehousingAddStockVO.get(i).setStPayMethod("cash");
+				} else if(warehousingAddStockVO.get(i).getStPayMethod().equals("카드")) {
+					warehousingAddStockVO.get(i).setStPayMethod("card");
+				}
+			}
+			service.warehousingInsertAddStock(warehousingAddStockVO);
+		}
+
 		return "store/closedreceipt";
 	}
 
