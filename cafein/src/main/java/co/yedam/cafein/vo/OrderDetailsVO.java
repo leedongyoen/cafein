@@ -10,9 +10,17 @@ public class OrderDetailsVO {
 	private String opName;
 	private String opDnum;
 	private String mName;
+	private String sId;
 	
 	
 	
+	
+	public String getsId() {
+		return sId;
+	}
+	public void setsId(String sId) {
+		this.sId = sId;
+	}
 	public String getmName() {
 		return mName;
 	}
@@ -58,7 +66,8 @@ public class OrderDetailsVO {
 	@Override
 	public String toString() {
 		return "OrderDetailsVO [oDnum=" + oDnum + ", oNum=" + oNum + ", mNum=" + mNum + ", oQty=" + oQty + ", opName="
-				+ opName + ", opDnum=" + opDnum + ", mName=" + mName + "]";
+				+ opName + ", opDnum=" + opDnum + ", mName=" + mName + ", sId=" + sId + "]";
 	}
-	
+
+
 }

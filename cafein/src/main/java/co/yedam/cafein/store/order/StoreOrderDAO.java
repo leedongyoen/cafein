@@ -25,6 +25,18 @@ public class StoreOrderDAO {
 		return template.selectList("getStoreOrderListDAO.getstoreorderdetails",vo);
 	}
 	
+
+	// 해당 매장의 주문메뉴들의 옵션들만 출력
+	public List<OrderDetailsVO> getmenuoptionlist(OrderDetailsVO vo){
+		return template.selectList("getStoreOrderListDAO.getmenuoptionlist",vo);
+	}
+
+	// 주문 취소 ( 매장 에서 ) 
+	public int updateordercancel(OrdersVO vo){
+		return template.update("getStoreOrderListDAO.updateordercancel",vo);
+	}
+	
+	// 사용 미정
 	// 해당 매장의 주문메뉴의 옵션을 묶기 위해
 	public OrderDetailsVO getmenunumber(OrderDetailsVO vo){
 		return template.selectOne("getStoreOrderListDAO.getmenunumber",vo);
