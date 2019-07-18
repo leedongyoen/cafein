@@ -102,9 +102,9 @@ $(function(){
 			//$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
 				
 			
-			if(local_cart[i].cuNumList != null){
-				for(var j = 0;j<local_cart[i].cuNumList.length;j++){
-					var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuNumList[j]);
+			if(local_cart[i].cuoptionlist != null){
+				for(var j = 0;j<local_cart[i].cuoptionlist.length;j++){
+					var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuoptionlist[j]);
 				
 					$('<li>').html(detail).appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
 					

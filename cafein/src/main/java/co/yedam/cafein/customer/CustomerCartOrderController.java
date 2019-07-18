@@ -1,7 +1,10 @@
 package co.yedam.cafein.customer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -90,10 +93,23 @@ public class CustomerCartOrderController {
 	        
 	        if(meorvo.size()==1) {
 	        	mv.addObject("selectmenu",meorvo.get(0));
-	        	mv.addObject("option", service.getorderrecipeno(meorvo.get(0)));
+	        	mv.addObject("option", service.getorderrecipeno(meorvo.get(0)));	//메뉴번호로 CAOP들 받아옴
 	        	mv.setViewName("customer/orderregi");
 	        }else if(meorvo.size()>1) {
 	        	mv.addObject("cartLists",meorvo);
+	        	//해당 메뉴별 모든 옵션을 map에다가 넣고map(string,Object)
+	        	//mv addObject에 map 넣고 같이 보내기
+	        	
+	        	Map<String, Object> map  = new HashMap<String, Object>();
+	        	
+	        	
+	        	for(int v = 0;v < meorvo.size();v++) {
+	        		map.put(meorvo.get(v).getmNum(), service.getorderrecipeno(meorvo.get(v)));
+	        		
+	        		//maplist.add(map);
+	        	}
+
+	        	mv.addObject("menumap",map);
 	        	mv.setViewName("customer/orderregimany");
 	        }
 	        
