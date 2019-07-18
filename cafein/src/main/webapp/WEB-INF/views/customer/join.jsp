@@ -127,23 +127,68 @@
 	            }
 	         }).open();
 	     }
+// 		function checkMail() {
+// 			var email = document.getElementById("email").value;
+			
+// 			if(email == "") {
+// 				alert ("메일을 입력해주세요.")
+// 				return false;
+// 			}
 		
+// 			var xhttp = new XMLHttpRequest();
+// 			xhttp.onreadystatechange = function () {
+// 				if(xhttp.readyState == 4) {
+// 					var data = JSON.parse(xhttp.responseText);
+// 					if(data != null) {
+// 						alert("이미 가입한 메일입니다.");
+// 						$("#joincode").css("display", "none");
+// 					} else {
+// 						sendMail(email);
+// 						$("#joincode").css("display", "");
+// 					}
+// 				}
+// 			};
+// 			xhttp.open("post", 'checkMail', true);
+// 			xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charse=-utf-8");
+// 			xhttp.send('email=' + email);
+// 			return false;
+// 		}
 		
-		function sendMail(email) {
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function () {
-				if (xhttp.readyState == 4) {
-					if(xhttp.status == 200)
-						alert("메일을 정상적으로 보냈습니다.");
-					else
-						alert("올바른메일 형식이 아닙니다.");
-				}
-			};
-			xhttp.open("post", 'sendMail', true);
-			xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-			xhttp.send('email=' + email);
-			return false;
-		}
+// 		function sendMail(email) {
+// 			var xhttp = new XMLHttpRequest();
+// 			xhttp.onreadystatechange = function () {
+// 				if (xhttp.readyState == 4) {
+// 					if(xhttp.status == 200)
+// 						alert("메일을 정상적으로 보냈습니다.");
+// 					else
+// 						alert("올바른메일 형식이 아닙니다.");
+// 				}
+// 			};
+// 			xhttp.open("post", 'sendMail', true);
+// 			xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+// 			xhttp.send('email=' + email);
+// 			return false;
+// 		}
+
+	 function check() {
+		 var form = document.customerjoinForm;
+		 var authNum = ${authNum};
+		 
+		 if(!form.authnum.value) {
+			 alert("인증번호를 입력하세요.");
+			 return false;
+		 }
+		 if(form.authnum.value != authNum) {
+			 alert("틀린 인증번호입니다. 인증번호를 다시 입력해 주세요");
+			 form.authnum.value="";
+			 return false;
+		 }
+		 if(form.authnum.value == authNum) {
+			 alert("인증완료");
+			 opner.document.userinput.mailCheck.value="인증완료";
+			 self.close();
+		 }
+	 }
 </script>
 </head>
 <body>
@@ -195,13 +240,13 @@
         </tr>
         <tr>
         	<th>이메일</th>
-        	<td><input type="email" name="email">
-        		<button type="button" onclick="sendMail()">인증</button>
+        	<td><input type="email" name="email" id="email">
+        		<button type="button"name="authnum" onclick="">인증</button>
         	</td>
         </tr>
         <tr id="joincode">
         	<th>인증번호</th>
-        	<td><input type="number">
+        	<td><input type="number" name="inputcode">
         		<input type="button" value="확인">
         	</td> 	
         </tr>

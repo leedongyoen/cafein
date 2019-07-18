@@ -1,15 +1,15 @@
 package co.yedam.cafein.customer.join;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
 
 import co.yedam.cafein.vo.CustomerVO;
 
 @Service
 public class CustomerJoinServiceImpl implements CustomerJoinService {
 
+	
 	@Autowired
 	CustomerJoinDAO customerjoinDAO;
 	

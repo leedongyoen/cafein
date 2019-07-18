@@ -19,7 +19,7 @@ public class MailServiceImpl implements MailService {
     }
     
 	@Override
-	public boolean send(String subject, String text, String from, String to, Object object) {
+	public boolean send(String subject, String text, String from, String to) {
 		MimeMessage message = mailSender.createMimeMessage();
 		try {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");

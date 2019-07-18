@@ -18,6 +18,7 @@ public class CustomerVO {
 	private String cAdd3;
 	private int stmp;
 	private String email;
+	private int authNum;
 	
 	// 마일리지 조인
 	private String mileage;
@@ -29,12 +30,23 @@ public class CustomerVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public int getAuthNum() {
+		return authNum;
+	}
+	public void setAuthNum(int authNum) {
+		this.authNum = authNum;
+	}
+
+
+
+
+
+
 	@JsonFormat(pattern = "yyyy-MM-dd")			//날짜형식 포맷
 	private Date dob;
 	private String cJoin;
 	
-	
-	
+
 	public String getsId() {
 		return sId;
 	}
