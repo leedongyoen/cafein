@@ -24,7 +24,8 @@ public class StoreStockController {
 	StoreStockServiceImpl storeStockService;
 	@Autowired
 	ConditionServiceImpl conditionService;
-
+	
+	//재고목록 페이지 이동
 	@RequestMapping(value = "/stocklist.do")
 	public String getStockListForm(Model model, ConditionVO vo) {
 		
@@ -34,7 +35,17 @@ public class StoreStockController {
 		model.addAttribute("CA", conditionService.getConditionDetailList(vo));
 		return "store/stocklist";
 	}
-
+	//입고 목록
+	@RequestMapping(value = "/warehousingregi.do")
+	public String getEnteredStockListForm(Model model, ConditionVO vo) {
+		
+		vo.setMasterCd("B");
+		model.addAttribute("B", conditionService.getConditionDetailList(vo));
+		vo.setMasterCd("CA");
+		model.addAttribute("CA", conditionService.getConditionDetailList(vo));
+		return "store/warehousingregi";
+	}
+	
 	// 전체조회
 	@ResponseBody
 	@RequestMapping(value = "/stocks", method = RequestMethod.GET)
