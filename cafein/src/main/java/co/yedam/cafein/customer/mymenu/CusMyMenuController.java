@@ -15,16 +15,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
 import co.yedam.cafein.viewvo.ViewMymenuVO;
+import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.MyMenuVO;
 
 @RestController
 public class CusMyMenuController {
 	@Autowired
 	CusMyServiceImpl cusmyService;
+	CustomerOrderServiceImpl service;
 	
-	//怨좉컼 �굹留뚯쓽 硫붾돱 議고쉶
+	//나만의 메뉴 가져오기
 			@ResponseBody
 			@RequestMapping(value="/customer",  method=RequestMethod.GET)
 			public List<ViewMymenuVO> getMymenu(ViewMymenuVO vo, HttpSession session) {
@@ -33,7 +37,8 @@ public class CusMyMenuController {
 				return cusmyService.getMymenu(vo);
 			}
 			
-			
+	
+	//나만의 메뉴 상세 옵션
 			@RequestMapping(value="/mymenuop/{cuNum}",  method=RequestMethod.GET)
 			public List<ViewMymenuVO> getMymenuDetail( ViewMymenuVO vo, @PathVariable("cuNum") String cuNum) {
 				vo.setCuNum(cuNum);
@@ -43,7 +48,7 @@ public class CusMyMenuController {
 			
 			
 			
-			
+	//나만의 메뉴 삭제		
 			@ResponseBody
 			@RequestMapping(value="/customer",  method=RequestMethod.DELETE, consumes="application/json")
 			public Map<String, String> deleteMymenu(@RequestBody MyMenuVO vo) {
@@ -51,6 +56,15 @@ public class CusMyMenuController {
 				return Collections.singletonMap("result", "ok");
 			}
 			
+	//주문으로 넘어가기	
+	/*
+	 * @RequestMapping(value = "/customerorder", method = RequestMethod.POST) public
+	 * ModelAndView customerorder(MenuOrderVO vo) { ModelAndView mv = new
+	 * ModelAndView(); mv.addObject("selectmenu", vo);
+	 * System.out.println("================== 주문 내역 :" + vo); mv.addObject("option",
+	 * service.getorderrecipeno(vo)); mv.setViewName("customer/orderregi"); return
+	 * mv; }
+	 */
 			//getcunum
 			@ResponseBody
 			@RequestMapping(value="/insertmymenu",  method=RequestMethod.PUT, consumes="application/json")

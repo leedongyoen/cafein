@@ -33,14 +33,18 @@
 var sId="SH001"; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
 var qty = 1;
+var currNo;
+
    $(document).ready(function() {
+
 	   $("#gridlist").jqGrid({
            colModel: [
-        	   { label: 'mNum', name:'mNum', hidden:true},
-               { label: '메뉴명', name: 'mName',  width: 130 },
-               { label: '옵션', name: 'opName', width: 150  },
-               { label: '금액', name: 'Price', width: 75 ,formatter:'integer' },
-               {label: '수량', name: 'qty', width: 75, editable:true}
+        	   { label: 'mNum',  name:'mNum',   hidden:true},
+               { label: '메뉴명',  name: 'mName',  width: 130 },
+               { label: '옵션',   name: 'opName', width: 150  },
+               { label: '금액',   name: 'Price', width: 75 , formatter:'integer' },
+               { label: '수량',   name: 'qty', width: 75, editable:true},
+               { label: 'parentMNum', name:'parentMNum', hidden:true}
            ],
            formatter:{
         	   integer:{thousandsSeparator:",",defaultValue:'0'}
@@ -66,24 +70,49 @@ var qty = 1;
            ignoreCase: true,
            grouping:true,
 	      	groupingView : {
-	       		groupField : ['mName','opName'],
-	       		groupColumnShow : [true,true],
-	       		groupText : ["{0}"]
+	       		groupField : ['parentMNum'],
+	       		groupColumnShow : [false],
+	       		groupText : ["{0}"],
+	       		groupcheckbox: true
 	       	},
 	       	
        });
+	    var total = $("#gridlist").jqGrid('getCol', 'qty', false, 'sum');
+	   $("#gridlist").jqGrid("footerData", "set", {
+	       Rate:'total',
+	   });
+	   /* $("#gridlist").navGrid('#pager', { edit: false, add: false, del: false, search: false });
+	   $("#gridlist").navButtonAdd('#pager', {
+	       caption: "Delete",
+	       buttonicon: "ui-icon-del",
+	       position: "last",
+	       onClickButton: function() {
+	           alert("Deleting Row");
+	           row_ids = $grid.getGridParam('selarrrow');
+	           jQuery("#gridlist").delGridRow(row_ids)
+	       }
+	   }); */
+	  
+	   $("#deleteRow").on("click",function(){
+			var grid = $("#gridlist");
+			var rowKey = grid.getGridParam("selrow")
+			if(rowKey){
+				$("#gridlist").jqGrid('delRowData',rowKey);
+			}else alert("Please Select Row to delete!");
+
+		}); 
+	 
 	   
    });
   
 
 
 
-/*  $("#firstTable").jqGrid("setCell",rowid,"status","normal"); // 셀에 지정한 컬럼에 지정한 값 집어넣을수있음
+
+/* 
 var buffdata = $('#testGrid').jqGrid('getDataIDs'); // 테이블에 있는 모든 데이터를 수집한다.
-$('#testGrid').jqGrid('addRowData',로우넘,localdata[i]); // 테이블에 데이터를 넣는다.
 $('#testGrid').jqGrid('getGridParam','selarrrow') // 체크한줄 불러옴 배열로 가져옴
-$("#testGrid").jqGrid('editRow', 로우넘,true,'clientArray'); // 동적으로 선택한애의 셀을 수정가능하게 변경
-$("#testGrid").jqGrid('setRowData', 로우넘, {id:'changed', name:'changed', memo:'changed'}, {color:'red'}) // 선택한 로우의 데이터를 다 바꿀수있다
+
 $("#testGrid").jqGrid('delRowData', rowids[i]); // 로우 삭제
 $("#jourTable").getDataIDs(); // 모든 로우 ids 가져옴
 var updateList = $("#schoolGrid").getChangedCells('all'); //<--셀에값이 변한 줄 불러옴
@@ -122,38 +151,40 @@ footerrow : true});
 			});
 	 		}
 	 	});
+	 	//그리드에 행 삭제
+	 	
 	});	
 //매장별 메뉴출력
  function posMenuListResult(data) {
 		console.log(sId);
 		console.log(data);
-		$("#coffeetable tbody").empty();
-		$("#beveragetable tbody").empty();
-		$("#desserttable tbody").empty();
+		$("#coffeetable tbody tr").empty();
+		$("#beveragetable tbody tr").empty();
+		$("#desserttable tbody tr").empty();
 		$.each(data,function(idx,item){
 			// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
 			if(item.caNum == "CACO" && item.opName == null){
-				$('<tr>')
+				$('<td>')
 				.append($('<br>'))
 				.append($('<input type=\'button\'class=\'mbutton\'  id=\'coffee\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_mNum\'>').val(item.mNum))
 				.append($('<input type=\'hidden\' id=\'hidden_mPrice}\'>').val(item.mPrice))
-				.appendTo('#coffeetable tbody');
+				.appendTo('#coffeetable tbody tr');
 			}
 			else if(item.caNum == "CADR" && item.opName == null){
-				$('<tr>')
+				$('<td>')
 				.append($('<br>'))
 				.append($('<input type=\'button\' class=\'mbutton\' id=\'beverage\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId2\'>').val(item.mNum))
 				.append($('<input type=\'hidden\' id=\'hidden_mPrice2}\'>').val(item.mPrice))
-				.appendTo('#beveragetable tbody');
+				.appendTo('#beveragetable tbody tr');
 			}else if(item.caNum == "CADE" && item.opName == null){
-				$('<tr>')
+				$('<td>')
 				.append($('<br>'))
 				.append($('<input type=\'button\' class=\'mbutton\' id=\'dessert\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId3\'>').val(item.mNum))
 				.append($('<input type=\'hidden\' id=\'hidden_mPrice3}\'>').val(item.mPrice))
-				.appendTo('#desserttable tbody');
+				.appendTo('#desserttable tbody tr');
 			}
 		});
 	}
@@ -173,21 +204,18 @@ footerrow : true});
 			},
 			success:getOptionList
 		}); 
+	 currNo=mNum;
 	 jQuery("#gridlist").jqGrid('addRow', {
 //       rowID : mNum,          //중복되지 않게 rowid설정
-       initdata : {mNum, mName, Price, qty},
+       initdata : {mNum, mName, Price, qty, mNum},
        position :"last",           //first, last
        useDefValues : false,
        useFormatter : false,
-       addRowParams : {extraparam:{}},
-       sortname: 'mName',     
-});
-
-	 
-	 
-	 
+       addRowParams : {extraparam:{}}    
+}); 
 	});
  
+
  //메뉴 옵션 나타내기
  	function getOptionList(data){
 	 
@@ -196,7 +224,7 @@ footerrow : true});
 	    $.each(data, function(idx,item){
 	    	 $('<tr>')
 	          .append($('<br>'))
-	          .append($('<input type=\'button\'class=\'opbutton\' id=\'cooption\'>').val(item.opName))
+	          .append($('<input type=\'button\'class=\'opbutton\' id=\''+item.opName+'\'>').val(item.opName))
 	          .append($('<input type=\'hidden\' id=\'hidden_menuId4\'>').val(item.mNum))
 	          .append($('<input type=\'hidden\' id=\'hidden_menuId5\'>').val(item.opPrice))
 	          .appendTo('#coffeetableoption tbody');
@@ -209,9 +237,17 @@ footerrow : true});
 		var Price = $(this).next().next().val();
 		
 		
+		if(opName == 'HOT'){
+			$("#ICE").hide();
+			$("#HOT").hide();
+		}else if(opName == 'ICE'){
+			$("#HOT").hide();
+			$("#ICE").hide();
+		}
+			
  	 jQuery("#gridlist").jqGrid('addRow', {
 //	       rowID : mNum,          //중복되지 않게 rowid설정
-	       initdata : {opName, Price, qty},
+	       initdata : {opName, Price, qty, currNo},
 	       position :"last",           //first, last
 	       useDefValues : false,
 	       useFormatter : false,
@@ -220,6 +256,9 @@ footerrow : true});
 	});
  	 
  	});
+
+ 	
+
  	
  	
  	 
@@ -232,7 +271,7 @@ footerrow : true});
  	function getCus(data){ 
  		$("#customertable tbody").empty();
  		$.each(data, function(idx,item){
-	    	 $("<tr onclick=aftersearch('"+item.cName+","+item.cTel+","+item.mileage+"')>")
+	    	 $("<tr onclick=aftersearch('"+item.cName+"','"+item.cTel+"','"+item.mileage+"')>")
 	          .append($('<td>').html(item.cName))
 	          .append($('<td>').html(item.cTel))
 	          .append($('<td>').html(item.mileage))
@@ -244,31 +283,13 @@ footerrow : true});
  		$('#cusSearchModal').modal("hide");
  		console.log(data1,data2,data3);
  			$("#aftersearch tbody").empty();
- 	 		$.each( function(idx,item){
  		    	 $('<tr>')
- 		    	 $('<input type=\'button\' class=\'mbutton\' id=\'dessert\'>').val(item.mName)
- 		          .append($('<td>').html(data1))
- 		          .append($('<td>').html(data2))
- 		          .append($('<td>').html(data3))
+ 		          .append($('<td><input type=\'text\' class=\'data1\' id=\'data1\' value=\''+data1+'\'>'))
+ 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'data2\' value=\''+data2+'\'>'))
+ 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'data3\' value=\''+data3+'\'>'))
  		          .appendTo('#aftersearch tbody');
- 		    });  
+ 		      
  		}
- 	
-	$(document).on("click","#deleteRow",function(){
-		console.log("in");
-		jQuery("#gridlist").jqGrid('navButtonAdd', "#pager",{
-		    caption : "",
-		    buttonicon: "ui-icon-trash",
-		    title : "행 삭제",
-		    onClickButton : function (){
-		          var recs =  $("{#gridlist}").jqGrid('getGridParam', 'selarrrow');
-		          var rows = recs.length;
-		          for (var i = rows - 1; i >= 0; i--) {
-		                $('#gridlist').jqGrid('delRowData', recs[i]);
-		            }
-		    }
-		});
-	});
  	
 	
 </script>
@@ -279,17 +300,7 @@ footerrow : true});
     <table id="gridlist"></table>
     <div id="pager"></div>
 </div>
-<div class="container">
-<table id="aftersearch">
-<tr>
-	<th>NAME</th>
-	<th>TEL</th>
-	<th>MILEAGE</th>
-</tr>
-<tbody>
-</tbody>
-</table>
-</div>
+
 <!-- 메뉴 선택 창 -->
   <div id="btn_group" class="content">
 	<ul id="topclick" class="nav nav-tabs">
@@ -309,14 +320,15 @@ footerrow : true});
 		<div id="coffee" class="container tab-pane active"><br>
 			<div class="table-responsive">
 			<table id="coffeetable" class="table">
-			<thead></thead>
 				<tbody>
+				<tr></tr>
 			</tbody>
 			
 			</table>
 			<table id="coffeetableoption" class="table">
 			<thead></thead>
 				<tbody>
+				
 				</tbody>
 				
 			</table>
@@ -324,15 +336,15 @@ footerrow : true});
   		</div>
    		<div id="beverage" class="container tab-pane fade"><br>
     		<table id="beveragetable" class="table">
-    		<thead></thead>
 				<tbody>
+				<tr></tr>
 				</tbody>
 			</table>
    		</div>
    		<div id="dessert" class="container tab-pane fade"><br>
      		<table id="desserttable" class="table">
-     		<thead></thead>
 				<tbody>
+				<tr></tr>
 				</tbody>
 			</table>
    		</div>
@@ -340,6 +352,19 @@ footerrow : true});
   </div>
 
 <hr>
+<div>
+<table id="aftersearch">
+<thead>
+<tr>
+	<th>NAME</th>
+	<th>TEL</th>
+	<th>MILEAGE</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
 <p></p>
 	<div style="text-align:left">
 	<button>전체취소</button>
