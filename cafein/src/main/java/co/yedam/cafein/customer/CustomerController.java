@@ -203,8 +203,6 @@ public class CustomerController {
         return mailservice.send(subject, sb.toString(), "bnghty5798@naver.com", email, null);
     }
 
-    
-	
 	//ID/PW 찾기
 	@RequestMapping("customerfindidpw.do")
 	public String findidpw() {

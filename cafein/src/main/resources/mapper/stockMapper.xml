@@ -13,56 +13,65 @@
 	     <result column="ST_PRICE" property="stPrice" />
 	     <result column="CA_NUM" property="caNum" />
 	     <result column="STAN_UNIT" property="stanUnit" />
+	     <result column="ST_UNIT" property="stUnit" />
+	     <result column="LACK_QTY" property="lackQty" />
 	     <result column="ST_STATUS" property="stStatus" />
+	     
 	</resultMap>
    
    
   <select id="getStockList" resultMap="stockMap">
-  	SELECT st_num
-  		,s_id
-		,st_name
-		,st_qty
-		,st_aqty
-		,st_price
-		,ca_num
-		,FIND_CODENM(ca_num) as caNm 
-		,stan_unit
-		,st_status
-		,FIND_CODENM(st_status) as stStatusNm
+  	SELECT ST_NUM
+  		,S_ID
+		,ST_NAME
+		,ST_QTY
+		,ST_AQTY
+		,ST_PRICE
+		,CA_NUM
+		,FIND_CODENM(CA_NUM) AS CANM 
+		,STAN_UNIT
+		,ST_STATUS
+		,FIND_CODENM(ST_STATUS) AS STSTATUSNM
+		,ST_UNIT
+		,LACK_QTY
 	FROM STOCK
   </select>	
   
    <select id="getStock" resultMap="stockMap">
   	SELECT 
-		st_num,
-		s_id,
-		st_name,
-		st_qty,
-		st_aqty,
-		st_price,
-		ca_num,
-		stan_unit,
-		st_status
+		ST_NUM,
+		S_ID,
+		ST_NAME,
+		ST_QTY,
+		ST_AQTY,
+		ST_PRICE,
+		CA_NUM,
+		STAN_UNIT,
+		ST_UNIT,
+		LACK_QTY,
+		ST_STATUS
 	FROM STOCK
-	WHERE st_num = #{stNum}
+	WHERE ST_NUM = #{stNum}
   
   </select>
   
   <insert id="insertStock" parameterType="stock">
   
-  	INSERT INTO STOCK (st_num,
-					s_id,
-					st_name,
-					st_qty,
-					st_aqty,
-					st_price,
-					ca_num,
-					stan_unit,
-					st_status
+  	INSERT INTO STOCK (ST_NUM,
+					S_ID,
+					ST_NAME,
+					ST_QTY,
+					ST_AQTY,
+					ST_PRICE,
+					CA_NUM,
+					STAN_UNIT,
+					ST_UNIT,
+					LACK_QTY,
+					ST_STATUS
 					)
 					
 				VALUES (
-					'ST'||LPAD(stock_seq.nextval,3,0),
+					'ST'||LPAD(STOCK_SEQ.NEXTVAL,3,0),
 					#{sId},
 					#{stName},
 					#{stQty},
@@ -70,6 +79,8 @@
 					#{stPrice},
 					#{caNum},
 					#{stanUnit},
+					#{stUnit},
+					#{lackQty},
 					#{stStatus}
 				)
   	</insert>
@@ -84,8 +95,9 @@
          <if test="stPrice != null and stPrice != ''">st_price = #{stPrice},</if>
          <if test="caNum != null and caNum != ''">ca_num = #{caNum},</if>
          <if test="stanUnit != null and stanUnit != ''">stan_unit = #{stanUnit},</if>
+         <if test="stUnit != null and stUnit != ''">st_unit = #{stUnit},</if>
+         <if test="lackQty != null and lackQty != ''">lack_qty = #{lackQty},</if>
          <if test="stStatus != null and stStatus != ''">st_status = #{stStatus},</if>
-       
             </set>
       WHERE st_num = #{stNum}
    </update>

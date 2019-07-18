@@ -13,6 +13,8 @@ public class StockVO {
 	private String caNum;
 	private double stanUnit;
 	private String stStatus;
+	private String stUnit;
+	private int lackQty;
 	
 	private String[] stNumList;
 	private String stStatusNm;
@@ -108,6 +110,19 @@ public class StockVO {
 		this.truthQty = truthQty;
 	}
 	
+	
+	public String getStUnit() {
+		return stUnit;
+	}
+	public void setStUnit(String stUnit) {
+		this.stUnit = stUnit;
+	}
+	public int getLackQty() {
+		return lackQty;
+	}
+	public void setLackQty(int lackQty) {
+		this.lackQty = lackQty;
+	}
 	@Override
 	public String toString() {
 		return "StockVO [stNum=" + stNum + ", sId=" + sId + ", stName=" + stName + ", stQty=" + stQty + ", stAqty="

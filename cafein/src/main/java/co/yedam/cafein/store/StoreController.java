@@ -53,7 +53,9 @@ public class StoreController {
 		} else {
 			System.out.println("not null");
 			session.setAttribute("sid", store.getSid());
+			session.setAttribute("sName", store.getSname());
 			System.out.println(session.getAttribute("sid"));
+			System.out.println("store name : " + store.getSname());
 			return "store/main";
 		}
 
@@ -68,6 +70,8 @@ public class StoreController {
 		if(id != null) {
 			System.out.println("매장 로그아웃");
 			session.removeAttribute("sid");
+			session.removeAttribute("sName");
+			
 		}
 		
 		return "store/logout";

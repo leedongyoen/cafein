@@ -367,7 +367,10 @@
 		
 		var closeSign = confirm('마감을 완료 하시겠습니까?');
 		if(closeSign) {
-			location.href="dateInsertUpdate.do";
+			$('#cashadvanceInsert').val(JSON.stringify(cashDataList));
+			$('#stocktruthInsert').val(JSON.stringify(stockTruthList));
+			$('#operationreservInsert').val(JSON.stringify(addDataList));
+			document.dataInsertForm.submit();
 		} else {
 			return;
 		}
@@ -378,6 +381,11 @@
 </script>
 </head>
 <body>
+<form method="post" action="dateInsertUpdate.do" name="dataInsertForm">
+	<input type="hidden" name="cashadvanceInsert" id="cashadvanceInsert">
+	<input type="hidden" name="stocktruthInsert" id="stocktruthInsert">
+	<input type="hidden" name="operationreservInsert" id="operationreservInsert">
+</form>
 <br>
 <div class="container">
 	<div class="row border align-items-start" >

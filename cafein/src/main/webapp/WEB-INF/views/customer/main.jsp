@@ -32,7 +32,7 @@
 				$("#totalreserve tbody").empty();
 				$.each(data,function(idx,item){
 					$('<tr>')
-					.append($('<td>').html(item.totalre))
+					.append($('<td>').html(item.toto))
 					.appendTo('#totalreserve tbody');
 				});
 			}

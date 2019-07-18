@@ -12,24 +12,61 @@ public class OrdersVO {
 	private String receipt;
 	private String sId;
 	private String payMethod;
-	private Integer mileage;
+	private Integer mileage; // 사용할 마일리지
 	private String cAdd;
 	private String cAdd3;
 	private String totals;
+	private String deliveryStatus;
+	private String refuseReason;
+	private String takeTime;
+
 	
 	// store name을 가져오기 위해서
-	private String oDnum;
-	private String sName;
-	private String mNum;
-	private String oQty;
-	private String opDnum;
-	private String receipno;
-	private String caNum;
-	private String[] optionlist;
-	private String hotice_option;
+	private String oDnum; // 주문상세 테이블 pk
+	private String sName; // 매장이름
+	private String mNum; // 메뉴번호
+	private String oQty; // 주문 수량
+	private String opDnum; // 어떤 메뉴의 옵션인지 지정하기 위해서
+	private String receipno; // 해당 메뉴에 있는 레시피 번호
+	private String caNum;	// 해당 메뉴의 레시피에 속한 카테고리 번호
+	private String[] optionlist; // 해당 메뉴의 옵션 리스트
+	private String hotice_option; // 해당 메뉴의 hot ice 
+	private int addmileage; // 적립된 마일리지
+	private String mName;
 	
 	
 	
+	
+	public String getmName() {
+		return mName;
+	}
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+	public String getDeliveryStatus() {
+		return deliveryStatus;
+	}
+	public void setDeliveryStatus(String deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+	public String getRefuseReason() {
+		return refuseReason;
+	}
+	public void setRefuseReason(String refuseReason) {
+		this.refuseReason = refuseReason;
+	}
+	public String getTakeTime() {
+		return takeTime;
+	}
+	public void setTakeTime(String takeTime) {
+		this.takeTime = takeTime;
+	}
+	public int getAddmileage() {
+		return addmileage;
+	}
+	public void setAddmileage(int addmileage) {
+		this.addmileage = addmileage;
+	}
 	public String getHotice_option() {
 		return hotice_option;
 	}
@@ -155,9 +192,11 @@ public class OrdersVO {
 	public String toString() {
 		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
 				+ receipt + ", sId=" + sId + ", payMethod=" + payMethod + ", mileage=" + mileage + ", cAdd=" + cAdd
-				+ ", cAdd3=" + cAdd3 + ", oDnum=" + oDnum + ", sName=" + sName + ", mNum=" + mNum + ", oQty=" + oQty
-				+ ", opDnum=" + opDnum + ", receipno=" + receipno + ", caNum=" + caNum + ", optionlist="
-				+ Arrays.toString(optionlist) + ", hotice_option=" + hotice_option + "]";
+				+ ", cAdd3=" + cAdd3 + ", totals=" + totals + ", deliveryStatus=" + deliveryStatus + ", refuseReason="
+				+ refuseReason + ", takeTime=" + takeTime + ", oDnum=" + oDnum + ", sName=" + sName + ", mNum=" + mNum
+				+ ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno=" + receipno + ", caNum=" + caNum
+				+ ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option=" + hotice_option + ", addmileage="
+				+ addmileage + ", mName=" + mName + "]";
 	}
 
 

@@ -5,6 +5,7 @@ import java.util.List;
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
+import co.yedam.cafein.vo.WarehousingVO;
 
 public interface StoreCloseService {
 
@@ -13,4 +14,6 @@ public interface StoreCloseService {
 	public List<OrdersVO> getCashAdvance(OrdersVO vo);
 	
 	public List<StockVO> getStockTruthList(StockVO vo);
+	
+	public int insertWarehousing(WarehousingVO vo);
 }

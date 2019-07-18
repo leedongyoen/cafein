@@ -10,13 +10,16 @@ public interface CusMyService {
 	
 	 List<ViewMymenuVO> getMymenu(ViewMymenuVO vo);
 	 
-	 void insertMymenu(MyMenuVO vo);
+	 List<ViewMymenuVO> getMymenuDetail(ViewMymenuVO vo);
 	 
-	 void updateMymenu(MyMenuVO vo);
+	 void insertMymenu(MyMenuVO vo);
+	
 	 
 	 void deleteMymenu(MyMenuVO vo);
 	 
 	 String getcunum();
+	 
+	
 	 
 	 public List<MyMenuVO> getrecipelist(MyMenuVO vo);
 	 

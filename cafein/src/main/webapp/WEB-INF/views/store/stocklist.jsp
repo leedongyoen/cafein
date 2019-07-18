@@ -104,6 +104,8 @@
 		$('input:text[name="stPrice"]').val(stock.stPrice);
 		$('select[name="caNum"]').val(stock.caNum).attr("selected", "selected");
 		$('input:text[name="stanUnit"]').val(stock.stanUnit);
+		$('select[name="stUnit"]').val(stock.stUnit).attr("selected", "selected");
+		$('input:text[name="lackQty"]').val(stock.lackQty);
 		$('input:text[name="stStatus"]').val(stock.stStatus);
 		// 		$('input:text[name="truthQty"]').val(stock.truthQty);
 	}//stockSelectResult
@@ -121,6 +123,8 @@
 			var stPrice = $('input:text[name="stPrice"]').val();
 			var caNum = $('select[name="caNum"]').val();
 			var stanUnit = $('input:text[name="stanUnit"]').val();
+			var stUnit = $('select[name="stUnit"]').val();
+			var lackQty = $('input:text[name="lackQty"]').val();
 			var stStatus = $('input:text[name="stStatus"]').val();
 			// 			var truthQty = $('input:text[name="truthQty"]').val();
 			
@@ -138,6 +142,8 @@
 					stPrice : stPrice,
 					caNum : caNum,
 					stanUnit : stanUnit,
+					stUnit : stUnit,
+					lackQty : lackQty,
 					stStatus : stStatus
 				}),
 				contentType : 'application/json',
@@ -233,6 +239,8 @@
 									.append($('<td>').html(item.stPrice))
 									.append($('<td>').html(item.caNm))
 									.append($('<td>').html(item.stanUnit))
+									.append($('<td>').html(item.stUnit))
+									.append($('<td>').html(item.lackQty))
 									.append($('<td>').html(item.stStatusNm))
 									// 			.append($('<td>').html(item.truthQty))
 
@@ -262,6 +270,8 @@
 		$('input:text[name="stPrice"]').val('');
 		$('select[name="caNum"] option:eq(4)').attr('selected', 'true');
 		$('input:text[name="stanUnit"]').val('');
+		$('select[name="stUnit"] option:eq(0)').attr('selected', 'true');
+		$('input:text[name="lackQty"]').val('');
 		$('input:text[name="stStatus"]').val('');
 		//버튼 숨김
 		jQuery('#btnInsert').show();
@@ -291,7 +301,9 @@
 					<th class="text-center">적정 소모량</th>
 					<th class="text-center">재고 단가</th>
 					<th class="text-center">카테고리</th>
+					<th class="text-center">기준 단위</th>
 					<th class="text-center">단위</th>
+					<th class="text-center">부족 수량</th>
 					<th class="text-center">재고 상태</th>
 					<th class="text-center"> </th>
 					<!-- 					<th class="text-center">재고 실수량</th> -->
@@ -358,9 +370,22 @@
 	
 				</div>
 				<div class="form-group">
-					<label>재고 단위</label> <input type="text" class="form-control"
+					<label>기준 단위</label> <input type="text" class="form-control"
 						name="stanUnit">
 				</div>
+				<div class="form-group">
+					<label>단위</label> 
+						<select class="form-control" name="stUnit">
+							<option value="EA">EA</option>
+							<option value="g">g</option>
+							<option value="ml">ml</option>
+						</select>
+				</div>
+				<div class="form-group">
+					<label>부족수량</label> <input type="text" class="form-control"
+						name="lackQty">
+				</div>
+				
 				<div class="form-group">
 					<label>재고 상태</label> <input type="text" class="form-control"
 						name="stStatus" readonly>

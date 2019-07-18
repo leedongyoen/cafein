@@ -8,138 +8,8 @@
 <%@ include file="cushead.jsp"%>
 <title>Insert title here</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <style type="text/css">
-body {
-	font-family: Arial, Helvetica, sans-serif;
-}
-
-#myImg {
-	border-radius: 5px;
-	cursor: pointer;
-	transition: 0.3s;
-}
-
-#myImg:hover {
-	opacity: 0.7;
-}
-
-/* The Modal (background) */
-@media screen and (min-width: 768px) {
-	.modal {
-		top: 30%;
-		display: none;
-		height: 80%;
-		left: 425px;
-		width: 50%;
-		overflow: auto;
-		vertical-align: middle;
-	}
-	/* .modal {
-  display:  /* Hidden by default */
-	position
-	:
-	 
-	fixed
-	; /* Stay in place */
-	
-  
-	left
-	:
-	50%;
-	
-  
-	margin-left
-	:
-	 
-	-20%; /* half of width */
-	height
-	:
-	 
-	300
-	px
-	;
-	
-  
-	top
-	:
-	 
-	50%;
-	margin-top
-	:
-	 
-	-150
-	px
-	; /* half of height */
-	/*  padding-top: auto; /* Location of the box */
-	*
-	/
-	
-  
-	width
-	:
-	 
-	50%; /* Full width */
-	height
-	:
-	 
-	50%; /* Full height */
-	overflow
-	:
-	 
-	auto
-	; /* Enable scroll if needed */
-	
-  
-	background-color
-	:
-	 
-	#ffffff
-	; /* Fallback color */
-	
-
-}
-
-*/
-	/* Modal Content (image) */ 
-.modal-content {
-	margin: auto;
-	display: inline-block;
-	text-align: left;
-	vertical-align: middle;
-}
-
-/* Add Animation */
-.modal-content, #caption {
-	-webkit-animation-name: zoom;
-	-webkit-animation-duration: 0.6s;
-	animation-name: zoom;
-	animation-duration: 0.6s;
-}
-
-@
--webkit-keyframes zoom {
-	from {-webkit-transform: scale(0)
-}
-
-to {
-	-webkit-transform: scale(1)
-}
-
-}
-@
-keyframes zoom {
-	from {transform: scale(0)
-}
-
-to {
-	transform: scale(1)
-}
-
-}
-
 /* The Close Button */
 .close {
 	position: absolute;
@@ -166,7 +36,17 @@ to {
 	<br>	
 	<div class="container">
 		<div id="play" align="right">
-
+		<form name="searchFrm">
+		정렬기준<select name="sort">
+			<option value="sName">상호명
+			<option value="mName">메뉴명
+		</select>
+		</form>
+		<script type="text/javascript">
+		searchFrm.sort.value = "${ViewMymenuVO.sort}" == "" ? searchFrm.sort.options[0].value
+				: "${ViewMymenuVO.sort}";
+		</script>
+		<br>
 			<a href="${pageContext.request.contextPath}/customerstorelist.do"
 				class="test btn">추가</a>
 				<a class="test btn" href="javascript:deleteMymenu()" id="deletemymenu">삭제</a>
@@ -190,11 +70,17 @@ to {
 
 
 <!--모달 나만의 메뉴-->
-<div id="myModal" class="modal">
-<div class="modal-content">
-		<h1 align="center">나만의메뉴상세</h1>
-		<input type="text" name="qty" value="1" style="display: none;">
-		<table id="detailtable" class="table table-hover">
+<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">		
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">나만의메뉴상세</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form class="form-borizontal" action="#" method="POST">
+						<div class="table-responsive">
+						<table id="detailtable" class="table table-hover">
 		<tr>
 			<th>매 장 명</th>
 			<td><input type="text" id="sName" name="sName"
@@ -222,19 +108,14 @@ to {
 		</tr>
 		<tr>
 			<th>HOT/ICE</th>
-			<td><input type="radio" name="type" value="hot" id="hot" checked> 
-				<label for="hot">HOT</label> 
-				<input type="radio" name="type" value="ice" id="ice"> <label
-						for="ice">ICE</label>
+			<td>
+				<input type="radio" id="ice" name="hotice_option" value="ice">ice
+				<input type="radio"  id="hot" name="hotice_option" value="hot">hot
 			</td>
 		</tr>
 		<tr>
-			<th>옵  션</th>
-			<td>
-			<input type="checkbox" name="mNum" value="ME021" /> <label for="whipping">휘핑크림 추가(+500원)</label><br>
-			<input type="checkbox" name="mNum" value="ME022" />	 <label for="shot">1샷 추가(+500원)</label><br>
-			<input type="checkbox" name="mNum" value="ME023" /> <label for="syrup">시럽 추가(+0원)</label>
-			</td>
+			<th>OPTION</th>
+			<td id="option"></td>
 		</tr>
 		<tr>
 			<th>총 금 액</th>
@@ -242,21 +123,29 @@ to {
 						readonly="readonly"></td>
 		</tr>
 	</table>
-	<br>
-	<div align="right">
-	<button class="btn btn-default " onclick="location='Order.do'">주문</button>&nbsp;&nbsp;
-	<button class="btn btn-default " onclick="location='cusCart.do'">담기</button>&nbsp;&nbsp;
-	</div>
-	<span class="close">&times;</span>
-	</div>
+						</div>
+					</form>
+				
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default " onclick="location='Order.do'">주문</button>&nbsp;&nbsp;
+					<button class="btn btn-default " id="cartbtn">담기</button>&nbsp;&nbsp;		
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
 	</div>
 <script type="text/javascript">
 
 	var datas;
 	var totalcheckboxnum;
 	
+	$(function(){
+		myMenuList();
+	});
 	//화면에 뿌리기.
 	function myMenuList() {
+		$("#myModal").modal('hide');
 		$.ajax({
 			url : 'customer/',
 			type : 'GET',
@@ -265,14 +154,13 @@ to {
 				alert("상태값 :" + status + " Http에러메시지 :" + msg);
 			},
 			success : function myMenuListResult(data){
-				console.log("in");
+				
 				datas=data;
-				var imgurl = "${pageContext.request.contextPath}/image/"+itme.uploadFileName;
 				$("#GoToDetail").empty();
 				$.each(data, function(idx, item) {
-
-				$("#GoToDetail").append("<td onclick=detailmyMenuListResult"+"('"+item.cuNum+"'"
-									+")><div class='container'><img id=\"imgurl\" style=\"width:200px; height:200px;\"></div><div class='container'>"
+					console.log(item.cuNum);
+					var imgurl = "${pageContext.request.contextPath}/image/"+item.uploadFileName;
+				$("#GoToDetail").append("<td onclick=detailmyMenuList('"+item.cuNum+"')><div class='container'><img src='"+imgurl+"' style=\"width:200px; height:200px;\"></div><div class='container'>"
 									+item.mName+"</div><div class='container'>"+item.sName
 									+"</div></td><td><div class=\"deleteCheck\"><input type='checkbox' name=\"checkDel\" id='hidden_cuNum"+idx+"'value='"
 									+item.cuNum+"'></div></td>");
@@ -283,24 +171,50 @@ to {
 		});
 	}
 	// 세부화면 모달창
-	function detailmyMenuListResult(cuNum) {
+	function detailmyMenuList(cuNum) {
 		console.log(cuNum);
-		modal.style.display = "block";
+		$.ajax({
+			url : 'mymenuop/'+cuNum,
+			type : 'GET',
+			dataType : 'json',
+			error : function(xhr, status, msg) {
+				alert("상태값 :" + status + " Http에러메시지 :" + msg);
+			},
+			success : detailmyMenuListResult
+		});
+	}
+						
+		function detailmyMenuListResult(datas){
+			$("#myModal").modal('show');
+			
 		$("#detailtable table").empty();
+		$("#option").html("");
+		var pl = 0;
 		$.each(datas, function(data, item) {
-			if(item.cuNum == cuNum){
-				var opNum = item.opNum;
-				var s = opNum.split(",");
-					console.log(s);
+			console.log(item);
  				$("#cuNum").val(item.cuNum);
 				$("#sName").val(item.sName);
 				$("#mName").val(item.mName);
-				$("#mPrice").val(item.mPrice);
-				$("input:checkbox[name=mNum]").val(s);
-				$("#totalPrice").val(item.mPrice);
-			}
-		})
-	};
+				if(item.opName =="ICE"){
+
+					$("#ice").attr("checked","checked");
+					
+				}else if(item.opName =="HOT"){
+					$("#hot").attr("checked","checked");	
+				}
+				if(item.caNum =="CAOP"){
+					var option = $("#option").html();
+					option =option+'<br>'+item.opName+ '('+item.opPrice+')원';
+					$("#option").html(option);
+					pl +=item.opPrice;
+				}else{
+					$("#mPrice").val(item.mPrice);
+					pl += item.mPrice;
+				}
+		
+		});
+		$("#totalPrice").val(pl);
+	}; 
 	//삭제창
 	function deleteMymenu(cuNum) {
 		$(".deleteCheckon").show();
@@ -337,6 +251,7 @@ to {
 	
 	//수량
 	function add(num) {
+		$("#no").empty();
 		var price = $('#mPrice').val();
 		var v_totalprice = $('#totalPrice').val();
 
@@ -356,27 +271,11 @@ to {
 		$("#no").html(no);
 		$('input:text[name="qty"]').val(no);
 	}
-	//커스텀 수정
 	
 	
 	
+//장바구니
 	
-	//Get the modal
-	var modal = document.getElementById("myModal");
-
-	
-
-	//Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-
-	//When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-		modal.style.display = "none";
-	}
-
-	$(window).resize(function() {
-		modal;
-	});
 </script>
 </body>
 </html>

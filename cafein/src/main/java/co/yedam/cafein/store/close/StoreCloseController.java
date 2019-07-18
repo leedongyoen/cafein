@@ -1,17 +1,26 @@
-package co.yedam.cafein.store;
+package co.yedam.cafein.store.close;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import co.yedam.cafein.store.close.StoreCloseService;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
 import co.yedam.cafein.vo.StoreCloseVO;
+import co.yedam.cafein.vo.StoreOpenVO;
 import co.yedam.cafein.vo.WarehousingVO;
 
 @Controller
@@ -69,10 +78,15 @@ public class StoreCloseController {
 	
 	//----------------------------------------------------------------------------
 	// 마감 정산 버튼 클릭 시 모든 데이터 insert 및 update
+	@SuppressWarnings("unchecked")
 	@RequestMapping("dateInsertUpdate.do")
-	public String dateInsertUpdate(WarehousingVO wvo, StockVO svo, StoreCloseVO cvo) {
+	public String dateInsertUpdate(@RequestParam String cashadvanceInsert, StockVO svo, StoreOpenVO cvo) throws JsonParseException, JsonMappingException, IOException {
 		
-		return "store/main";
+		ObjectMapper mapper = new ObjectMapper();
+		List<StoreOpenVO> ovo = (List<StoreOpenVO>) mapper.readValue(cashadvanceInsert, new TypeReference<List<StoreOpenVO>>(){});
+		System.out.println("wvo : " + ovo);
+		
+		return "store/closedreceipt";
 	}
 
 }

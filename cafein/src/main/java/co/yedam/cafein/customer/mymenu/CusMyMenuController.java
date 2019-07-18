@@ -5,12 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.yedam.cafein.viewvo.ViewMymenuVO;
-import co.yedam.cafein.vo.MenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
-import co.yedam.cafein.vo.RecipeVO;
 
 @RestController
 public class CusMyMenuController {
 	@Autowired
-	CusMyService cusmyService;
+	CusMyServiceImpl cusmyService;
 	
 	//怨좉컼 �굹留뚯쓽 硫붾돱 議고쉶
 			@ResponseBody
@@ -37,6 +33,13 @@ public class CusMyMenuController {
 				return cusmyService.getMymenu(vo);
 			}
 			
+			
+			@RequestMapping(value="/mymenuop/{cuNum}",  method=RequestMethod.GET)
+			public List<ViewMymenuVO> getMymenuDetail( ViewMymenuVO vo, @PathVariable("cuNum") String cuNum) {
+				vo.setCuNum(cuNum);
+				System.out.println(cuNum);
+				return cusmyService.getMymenuDetail(vo);
+			}
 			
 			
 			
