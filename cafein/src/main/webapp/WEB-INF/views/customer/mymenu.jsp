@@ -313,28 +313,7 @@ $(function(){
 
 	});
 	//주문하기
-	$("#cu_orderbtn").on("click",function(){
-		var list =  $("#mymenudetailForm").serializeObject();
-		var selectop = [];
-		var selectoptionck=false;
-		$('[name=hotice_option]:checked').each(function(){
-			selectop.push($(this).val());
-			selectoptionck=true;
-		});
-		if(selectoptionck){
-			
-			list.cuNumList = selectop;
-		}else{
-			list.cuNumList = null;
-		}
-		
-		$('[name=qty]').val($('#ordernum').html());
-		console.log(JSON.stringify(list));
-		
-		document.menudetailForm.submit();
-
-		
-	});
+	
 	});
 </script>
 </body>
