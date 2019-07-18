@@ -8,4 +8,7 @@ public interface StoreCustomerListService {
 	
 	public List<CustomerVO> getCustomerList(CustomerVO vo);
 
+	public CustomerVO getCustomer(CustomerVO vo);
+	
+	public List<CustomerVO> getCustomerhistory(CustomerVO vo);
 }

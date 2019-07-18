@@ -4,18 +4,45 @@
 
 
 	<select id="getCustomerList" resultType="customer">
-		SELECT 
-			c.c_id,
-			c.c_nick, 
-			c.c_name, 
-			c.c_tel, 
-			r.MILEAGE
-		FROM 
-			customer 
-				c LEFT OUTER JOIN reserve r
+		SELECT DISTINCT O.C_ID, C.C_NAME
+		FROM ORDERS O JOIN CUSTOMER C
+		ON O.C_ID = C.C_ID
+		WHERE S_ID= #{sId}
+	</select>
+	
+	<select id="getCustomer" resultType="customer">
+	SELECT
+		c.c_id,
+		c.c_nick,
+		c.c_name,
+		c.c_tel,
+		c.c_add,
+		c.c_join,
+		r.MILEAGE
+	FROM customer
+		c LEFT OUTER JOIN reserve r
 		ON (c.c_id = r.c_id)
 		WHERE r.s_id = #{sId}
+		AND c.c_id = #{cId}
 	</select>
+	
+	<select id="getCustomerhistory" resultType="customer">
+	SELECT 
+	o.c_id, o.o_num,
+	CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+	'OP' else 'MN'END gd,
+	CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+	r.OP_NAME ELSE m.m_name END m_name, o.total, o.pay_method, o.receipt
+	FROM
+	ORDERS o JOIN order_details od ON od.o_num = o.o_num
+	JOIN MENU m on od.M_NUM = m.M_NUM
+	JOIN recipe r on od.RECIPENO = r.RECIPENO
+	WHERE o.c_id = #{cId} AND o.S_ID=#{sId}
+	ORDER by o.O_NUM, od.O_DNUM
+	
+	</select>
+	
+	
 
 
 

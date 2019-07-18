@@ -15,8 +15,15 @@ public class StoreCustomerListServiceImpl implements StoreCustomerListService{
 
 	@Override
 	public List<CustomerVO> getCustomerList(CustomerVO vo) {
-
 		return storecustomerDao.getCustomerList(vo);
+	}
+	
+	public CustomerVO getCustomer(CustomerVO vo) {
+		return storecustomerDao.getCustomer(vo);
+	}
+
+	public List<CustomerVO> getCustomerhistory(CustomerVO vo) {
+		return storecustomerDao.getCustomerhistory(vo);
 	}
 
 }

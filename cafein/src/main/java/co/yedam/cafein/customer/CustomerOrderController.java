@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.JsonObject;
+
 import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
 import co.yedam.cafein.store.info.StoreInfoServiceImpl;
 import co.yedam.cafein.store.menu.MenuServiceImpl;
@@ -58,6 +62,13 @@ public class CustomerOrderController {
 
 		return service.getstoredeliverservice(sId);
 	}
+	
+	// 마일리지 서비스 여부
+	@ResponseBody
+	@RequestMapping(value = "/getstoremileageservice", method = RequestMethod.GET)
+	public String getstoremileageservice(String sId) {
+		return service.getstoremileageservice(sId);
+	}
 
 	// 고객 주문 페이지로 이동.
 	@RequestMapping("orderlist.do")
@@ -95,10 +106,26 @@ public class CustomerOrderController {
 		 */
 		OrdersVO info = new OrdersVO();
 		info = vo;
+		
+		//orders 테이블에 넣기 
+		if(vo.getReceipt().equals("takeout")) {
+			vo.setcAdd("");
+			vo.setcAdd3("");
+			
+		}else if(vo.getReceipt().equals("delivery")){
+			vo.setDeliveryStatus("C0");
+		}
+		
+		// orders테이블에 넣기
 		service.insertorder(vo);
+		
+		// order details 테이블에 넣을 list
 		List<OrdersVO> orderlist = new ArrayList<OrdersVO>();
+		// order details 테이블에 넣을 vo
 		RecipeVO recipevo = new RecipeVO();
 		recipevo.setmNum(vo.getmNum());
+		
+		// 해당 메뉴의 기본 레시피 번호
 		List<RecipeVO> recipelist = service.getorderrecipenolist(recipevo);
 
 		OrdersVO insertvo;
@@ -109,20 +136,27 @@ public class CustomerOrderController {
 			insertvo.setoNum(vo.getoNum());
 			insertvo.setmNum(info.getmNum());
 
-			if (recipelist.get(n).getCaNum().equals("CAHT")
-					&& recipelist.get(n).getCaNum().equals(info.getHotice_option())) {
+			if ((recipelist.get(n).getCaNum().equals("CAIC") && recipelist.get(n).getCaNum().equals(info.getHotice_option()))) {
 				insertvo.setoQty("0");
 				insertvo.setReceipno(recipelist.get(n).getRecipeno());
 				insertvo.setCaNum(recipelist.get(n).getCaNum());
 
 				orderlist.add(insertvo);
-			}else if(recipelist.get(n).getCaNum().equals("CAIC") && recipelist.get(n).getCaNum().equals(info.getHotice_option())) {
+				
+			}else if((recipelist.get(n).getCaNum().equals("CAHT") && recipelist.get(n).getCaNum().equals(info.getHotice_option()))) {
 
 				insertvo.setoQty("0");
 				insertvo.setReceipno(recipelist.get(n).getRecipeno());
 				insertvo.setCaNum(recipelist.get(n).getCaNum());
+				orderlist.add(insertvo);
 
-			}else {
+			}else if((recipelist.get(n).getCaNum().equals("CAHT") && !(recipelist.get(n).getCaNum().equals(info.getHotice_option())))
+						|| (recipelist.get(n).getCaNum().equals("CAIC") && !(recipelist.get(n).getCaNum().equals(info.getHotice_option())))) {
+				System.out.println("================= not hot/ice :"+recipelist.get(n).getCaNum());
+				continue;
+				
+			}else{
+				// 나마지 공통
 				insertvo.setoQty(info.getoQty());
 				insertvo.setReceipno(recipelist.get(n).getRecipeno());
 				insertvo.setCaNum(recipelist.get(n).getCaNum());
@@ -132,29 +166,43 @@ public class CustomerOrderController {
 
 		}
 
+		
 		// 해당 메뉴의 옵션처리
-		String[] optionlist = info.getOptionlist();
-		for (int n = 0; n < optionlist.length; n++) {
-
-			insertvo = new OrdersVO();
-			insertvo.setoNum(vo.getoNum());
-			insertvo.setmNum(info.getmNum());
-			insertvo.setoQty(info.getoQty());
-			insertvo.setReceipno(optionlist[n]);
-			insertvo.setCaNum("CAOP");
-			orderlist.add(insertvo);
+		if( info.getOptionlist() != null) {
+			System.out.println(vo.getOptionlist());
+			
+			String[] optionlist = info.getOptionlist();
+			for (int n = 0; n < optionlist.length; n++) {
+				
+				insertvo = new OrdersVO();
+				insertvo.setoNum(vo.getoNum());
+				insertvo.setmNum(info.getmNum());
+				insertvo.setoQty(info.getoQty());
+				insertvo.setReceipno(optionlist[n]);
+				insertvo.setCaNum("CAOP");
+				orderlist.add(insertvo);
+			}
 		}
 
 		System.out.println("======== 완성" + orderlist);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", orderlist);
-
+		
+		// order details 테이블에 넣기
 		int n = service.insertorderdetails(map);
 
 		System.out.println("===========결과 : "+n);
 		
-		
+		// 해당 주문번호의 op_dnum수정
 		n = service.getodnum(info);
+		
+		// 마일리지 업데이트
+		n = service.updatemileage(info);
+		
+		// 해당 매장에 대한 마일리지가 없을 경우
+		if(n == 0) {
+			n = service.insertmileage(info);
+		}
 		
 		mv.setViewName("customer/delivery");
 		return mv;
@@ -172,38 +220,5 @@ public class CustomerOrderController {
 		return "customer/orderdetails";
 	}
 
-	// 고객장바구니 관리
-	@RequestMapping(value = "cartmng", method = RequestMethod.GET)
-	public ModelAndView cartmng(ModelAndView mv, HttpSession session) {
-
-		// ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
-		// for(int i = 0;i<list.size();i++) {
-		// System.out.println(list.get(i).toString()); }
-
-		RecipeVO vo = new RecipeVO();
-		StoreVO vo2 = new StoreVO();
-		MenuVO vo3 = new MenuVO();
-		mv.addObject("optionname", service.getOptionName(vo));
-		mv.addObject("storename", service2.getStoreList(vo2));
-		mv.addObject("menuimg", service3.getMenuList(vo3));
-		
-		mv.setViewName("customer/cartmng");
-		return mv;
-	}
-
-	/*
-	 * @RequestMapping(value="cartmng",method=RequestMethod.GET) public ModelAndView
-	 * cartmng(ModelAndView mv, HttpSession session) { //getSession CartVO를 꺼내고
-	 * //Mapper Query 돌아서 나머지 상세정보들을 들고와서 cartmng.jsp 보낸다 MenuVO vo = new MenuVO();
-	 * RecipeVO vo2 = new RecipeVO();
-	 * 
-	 * 
-	 * ArrayList<CartVO> list = (ArrayList<CartVO>)session.getAttribute("cartlist");
-	 * for(int i = 0;i<list.size();i++) {
-	 * System.out.println(list.get(i).toString()); }
-	 * 
-	 * mv.setViewName("customer/cartmng"); return mv; }
-	 * 
-	 */
 
 }

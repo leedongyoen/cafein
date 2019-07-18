@@ -114,5 +114,44 @@
 		WHERE O_NUM= #{oNum}
 	
 	</update>
+	
+	<insert id="insertmileage">
+		<selectKey keyProperty="addmileage" resultType="int" order="BEFORE">
+		
+			SELECT TOTAL*0.01
+			FROM ORDERS
+			WHERE O_NUM= #{oNum}
+		
+		</selectKey>
+		
+		INSERT INTO RESERVE(
+							MILENUM
+							, MILEAGE
+							, S_ID
+							, C_ID 
+					)
+		VALUES ( RESERVE_SEQ.NEXTVAL
+				, #{addmileage}
+				, #{sId}
+				, #{cId}
+				)
+	
+	</insert>
+	
+	
+	<update id="updatemileage">
+		<selectKey keyProperty="addmileage" resultType="int" order="BEFORE">
+		
+			SELECT TOTAL*0.01
+			FROM ORDERS
+			WHERE O_NUM= #{oNum}
+		
+		</selectKey>
+		
+		UPDATE RESERVE SET MILEAGE = MILEAGE + #{addmileage}
+		WHERE S_ID= #{sId} 
+				AND C_ID=#{cId}
+	
+	</update>
 
 </mapper>

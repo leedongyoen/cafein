@@ -13,13 +13,25 @@ import co.yedam.cafein.vo.CustomerVO;
 public class StoreCustomerDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
+	
 
+	//전체조회
 	public List<CustomerVO> getCustomerList(CustomerVO vo) {
 		
 		return mybatis.selectList("CustomerlistDAO.getCustomerList", vo);
 	}
 	
-	//매장고객조회
+	//단건조회
+	public CustomerVO getCustomer(CustomerVO vo) {
+	
+		return mybatis.selectOne("CustomerlistDAO.getCustomer",vo);
+	}
+	
+	//구매이력
+	public List<CustomerVO> getCustomerhistory(CustomerVO vo) {
+		return mybatis.selectList("CustomerlistDAO.getCustomerhistory",vo);
+	}
+	
 	
 
 }

@@ -24,6 +24,7 @@ public class PosDAO {
 		System.out.println("===> Mybatis getOptionList()");
 		return mybatis.selectList("PosDAO.getOptionList", vo);
 	}
+	//고객조회
 	public List<ViewPosCusSearchVO> getCusList(ViewPosCusSearchVO vo) {
 		System.out.println("===> Mybatis getCus()");
 		return mybatis.selectList("PosDAO.getCusList", vo);

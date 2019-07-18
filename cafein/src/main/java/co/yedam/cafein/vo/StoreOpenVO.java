@@ -2,6 +2,8 @@ package co.yedam.cafein.vo;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreOpenVO {
 	private String sId;
 	private Date openTime;
@@ -59,6 +61,11 @@ public class StoreOpenVO {
 	public void setNetIncome(int netIncome) {
 		this.netIncome = netIncome;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "StoreOpenVO [sId=" + sId + ", openTime=" + openTime + ", closeTime=" + closeTime + ", cash=" + cash
+				+ ", defaultCash=" + defaultCash + ", orCash=" + orCash + ", difference=" + difference + ", netIncome="
+				+ netIncome + "]";
+	}
+
 }
