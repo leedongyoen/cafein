@@ -194,6 +194,7 @@ public class CustomerController {
 		return map;
 	}
 
+<<<<<<< HEAD
 //	// 회원가입 이메일 인증1
 //
 //	 @RequestMapping(value = "sendMail", method = RequestMethod.POST, produces = "application/json")
@@ -273,6 +274,9 @@ public class CustomerController {
 	
 	
 	// ID/PW 찾기
+=======
+	//ID/PW 찾기
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 	@RequestMapping("customerfindidpw.do")
 	public String findidpw() {
 		return "customer/findidpw";

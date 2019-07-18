@@ -2,8 +2,10 @@ package co.yedam.cafein.vo;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WarehousingVO {
 
 	private String wareNum;
@@ -18,6 +20,7 @@ public class WarehousingVO {
 	
 	private String startDate;
 	private String endDate;
+	private int sum;
 	
 	public String getWareNum() {
 		return wareNum;
@@ -89,10 +92,18 @@ public class WarehousingVO {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	
+	public int getSum() {
+		return sum;
+	}
+	public void setSum(int sum) {
+		this.sum = sum;
+	}
 	@Override
 	public String toString() {
 		return "WarehousingVO [wareNum=" + wareNum + ", wareDate=" + wareDate + ", wareQty=" + wareQty + ", warePrice="
-				+ warePrice + ", stNum=" + stNum + ", sId=" + sId + ", stPayMethod=" + stPayMethod + "]";
+				+ warePrice + ", stNum=" + stNum + ", sId=" + sId + ", stPayMethod=" + stPayMethod + ", stName="
+				+ stName + ", stLoss=" + stLoss + ", startDate=" + startDate + ", endDate=" + endDate + ", sum=" + sum
+				+ "]";
 	}
+	
 }

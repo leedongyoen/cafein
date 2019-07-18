@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="getStoreOrderListDAO">
+
+	<select id="getstoreorderlist" parameterType="order"  resultType="order">
+	
+		SELECT DISTINCT O.O_NUM
+					, M.M_NUM 
+					, M.M_NAME 
+					, O.TOTAL
+					, O.RECEIPT
+					, O.PAY_METHOD
+					, O.C_ADD
+					, O.C_ADD3
+					, O.DELIVERY_STATUS 
+		FROM ORDERS O LEFT OUTER JOIN ORDER_DETAILS ORD
+		ON O.O_NUM = ORD.O_NUM
+		JOIN MENU M
+		ON ORD.M_NUM = M.M_NUM 
+		WHERE O.S_ID=#{sId}
+		ORDER BY O.O_NUM DESC
+	
+	</select>
+	
+	<select id="getstoreorderdetails" resultType="orderdt">
+	
+		SELECT QTY.QTY	"oQty" 
+				, ORD.O_NUM		"oNum"
+				, ORD.M_NUM		"mNum"
+				, R.OP_NAME		"opName"
+		FROM ORDER_DETAILS ORD JOIN RECIPE R
+		ON ORD.RECIPENO = R.RECIPENO
+		JOIN (
+		    SELECT M_NUM,MAX(O_QTY) "QTY"
+		  FROM ORDER_DETAILS
+		  WHERE O_NUM = #{oNum}
+		        AND M_NUM = #{mNum}
+		  GROUP BY M_NUM
+		)QTY
+		on QTY.M_NUM = ORD.M_NUM
+		WHERE ORD.O_NUM = #{oNum}
+		     AND ORD.M_NUM = #{mNum}
+		    AND ORD.CA_NUM IN ('CAIC','CAHT','CAOP')
+    
+
+	</select>
+	
+	<select id="getmenunumber" resultType="orderdt">
+
+		SELECT MAX(O_QTY) "oQty"
+		FROM ORDER_DETAILS
+		WHERE O_NUM =#{mNum}
+		      AND M_NUM =#{mNum}
+		GROUP BY M_NUM
+	
+	</select>
+
+</mapper>

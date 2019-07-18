@@ -34,15 +34,17 @@ input {
 	
 	$(function(){
 		getCostomerInfo();
-		getStoreDetail();
+		getstoremileageservice();
+		getstoredeliverservice();
+		
 	});
-	
-	
+
 	function add(num) {
-		var price = $("input:text[name='price']").val();
+		//var price = $("input:text[name='price']").val();
+		var price = $("#price").val();
 		var v_totalprice = $("input:text[name='total']").val();
 		
-		var no = $("input:text[name='qty']").val();
+		var no = $("input:text[name='oQty']").val();
 		if (num == -1) {
 			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
@@ -55,11 +57,11 @@ input {
 			v_totalprice = Number(v_totalprice) + Number(price);
 		}
 		$("input:text[name='total']").val(v_totalprice);
-		$("input:text[name='qty']").val(no);
+		$("input:text[name='oQty']").val(no);
 	}
 	
-	// 매장 정보 가져오기
-	function getStoreDetail(){
+	// 매장 배달 서비스 정보 가져오기
+	function getstoredeliverservice(){
 		var v_storeId = $("#storeid").val();
 		$.ajax({
 			url:'getstoredeliverservice',
@@ -73,14 +75,61 @@ input {
 				console.log(data);
 				if(data == 1){
 					$('.deliverY').show();
+					$('#delivery').attr("checked","checked");
+					
 				}else{
 					$('.deliverN').show();
+					$('#takeout').attr("checked","checked");
 				}
 				
 					
 			}
 		}); 
 		
+	}
+	
+	// 매장 마일리지 서비스 정보 가져오기
+	function getstoremileageservice(){
+		var v_storeId = $("#storeid").val();
+		$.ajax({
+			url:'getstoremileageservice',
+			type:'GET',
+			data: {sId: v_storeId},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
+				if(data == 'N'){
+					$('#reservetr').hide();
+				}else{
+					$('#reservetr').show();
+					getcustomermileage();
+				}
+				
+					
+			}
+		}); 
+		
+	}
+	
+	// 고객 마일리지 가져오기.
+	function getcustomermileage(){
+		var v_storeId = $("#storeid").val();
+		
+		$.ajax({
+			url:'customerreserve',
+			type:'GET',
+			dataType:'json',
+			data: {cId: checklogin, sId: v_storeId},
+			error:function(xhr,status,msg){
+				/* alert("상태값 :" + status + " Http에러메시지 :"+msg); */
+				$('#usermileage').html("0");
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				$('#usermileage').html(data.mileAge);
+			}
+		});
 	}
 	
 	
@@ -104,19 +153,7 @@ input {
 				$('input:text[name="cAdd3"]').val(data.cAdd3);
 			}
 		}); 
-		// 고객 마일리지 가져오기.
-		$.ajax({
-			url:'customerreserve',
-			type:'GET',
-			dataType:'json',
-			data: {cId: checklogin, sId: v_storeId},
-			error:function(xhr,status,msg){
-				alert("상태값 :" + status + " Http에러메시지 :"+msg);
-			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				$('#usermileage').html(data.mileAge+"원이 있습니다.");
-			}
-		});
+		
 		
 		
 	}
@@ -125,18 +162,7 @@ input {
 
 	
 	$(function(){
-		// 배달선택시 배달주소가 보이게, 미선택시 안보이게
-		/* $("input:radio[name=receipt]").click(function(){
-		       console.log("in");
-		    if($("input:radio[name=receipt]:checked").val()=='delivery'){
-		    	$('.deliverY').hide();
-		    	$('.deliverN').show();
-		    }else if($("input:radio[name=receipt]:checked").val()=='takeout'){
-		    	$('.deliverY').show();
-		    	$('.deliverN').hide();
-		    	//$("#deliveryaddress").attr("style","display: none;");
-		    }
-		}); */
+
 		
 		 // 옵션 선택시
 	  	$(".checkoption").change(function(){
@@ -165,10 +191,40 @@ input {
 			    }).open();
 		});
 		
-		/*  $("#orderbtn").on("click",function(){
-			document.orderform.submit();
-		});  */
 		
+		
+		// 적립금 사용하게 되면 100단위로만 사용가능하게
+		$('#reservebtn').on("click",function(){
+			var mileage = $('#insertmileage').val();
+			var totalmileage =$('#usermileage').text();
+			if( Number(mileage)%100 != 0 || Number(mileage) == 0){
+				alert("100원 단위로만 사용가능합니다.");
+				$('#insertmileage').val("0");				
+
+			}else if(Number(mileage) > Number(totalmileage)){
+				alert('사용가능한 적립금을 초과하였습니다.');
+				
+			}else{
+				var v_totalprice =  $("input:text[name='total']").val();
+				v_totalprice = Number(v_totalprice) - Number(mileage);
+				 $("input:text[name='total']").val(v_totalprice);
+			}
+		});
+
+		
+		// 적립금 사용 취소
+		$('#reservecancelbtn').on("click",function(){
+			// 사용자가 적은 적립금
+			var mileage = $('#insertmileage').val();
+			
+			// 총 가격
+			var v_totalprice =  $("input:text[name='total']").val();
+			v_totalprice = Number(v_totalprice) + Number(mileage);
+			 $("input:text[name='total']").val(v_totalprice);
+			 
+			$('#insertmileage').val("0");
+			
+		});
 		
 	});
 	
@@ -240,36 +296,37 @@ input {
 				</tr>
 				<tr>
 					<th>금 액</th>
-					<td><input value="${selectmenu.mPrice}" size="2" readonly> &nbsp;&nbsp;
-						<button onclick="add(1)">+</button> <input name="oQty" size="1" value="${selectmenu.orderqty}" readonly>
-						<button onclick="add(-1)">-</button></td>
+					<td><input id="price" value="${selectmenu.mPrice}" size="2" readonly> &nbsp;&nbsp;
+						<button type="button" onclick="add(1)">+</button> <input name="oQty" size="1" value="${selectmenu.orderqty}" readonly>
+						<button type="button" onclick="add(-1)">-</button></td>
 				</tr>
 				
 				
 				
-				<tr id="reservetr">
+				<tr id="reservetr" style="display: none;">
 					<th>적립금</th>
-					<td><input type="text" name="mileage" size="10" value="0">
-						<br><p id="usermileage"></p>
-						<button type="button" onclick="alert('###원 만큼 사용하였습니다.')">사용</button>
-
+					<td><input type="text" name="mileage" id="insertmileage" size="10" value="0">
+						<button type="button" id="reservebtn">사용</button>
+						<button type="button" id="reservecancelbtn">취소</button>
+						<br>현 적립금 : <span id="usermileage"></span>
+						<p id="usermileageinfo" style="color: blue;">100단위로 사용가능합니다</p>
 					</td>
 				</tr>
 				
 					<tr class="deliverY" style="display: none;">
 						<th>수 령 방 식</th>
 						<td>
-							<input type="radio" name="receipt" value="delivery" id="delivery" checked="checked"> 
+							<input type="radio" name="receipt" value="delivery" id="delivery" > 
 							<label for="delivery">배달로하기</label> 
 							
-							<input type="radio" name="receipt" value="takeout" id="takeout"> 
-							<label for="takeout">직접받아가기</label>
+							<input type="radio" name="receipt" value="takeout" id="dtakeout"> 
+							<label for="dtakeout">직접받아가기</label>
 						</td>
 					</tr>
 					<tr class="deliverN" style="display: none;">
 						<th>수 령 방 식</th>
 						<td>					
-							<input type="radio" name="receipt" value="takeout" id="takeout" checked="checked"> 
+							<input type="radio" name="receipt" value="takeout" id="takeout" > 
 							<label for="takeout">직접 수령</label>
 						</td>
 					</tr>
