@@ -2,14 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="storeOpenDAO">
 
+<resultMap type="storeOpen" id="openMap">
+	<id column="" property=""></id>
+	<result column="S_ID" property="sId"/>
+	<result column="CLOSETIME" property="closeTime"/>
+	<result column="CASH" property="cash"/>
+	<result column="DEFAULT_CASH" property="defaultCash"/>
+	<result column="OR_CASH" property="orCash"/>
+	<result column="DIFFERENCE" property="difference"/>
+	<result column="NET_INCOME" property="netIncome"/>
+	<result column="OPENTIME" property="openTime"/>
+</resultMap>
+
 <insert id="insertOpen" parameterType="storeOpen">
 	INSERT INTO STOREOPEN(S_ID
 						,OPENTIME
 						,DEFAULT_CASH) 
-				VALUES('SH001'
-						,TO_DATE('2019-07-15','YYYY-MM-DD'),
-						200000);
+				VALUES( #{sId},
+						TO_DATE( #{openTime} ,'YYYY-MM-DD'),
+						#{defaultCash}
+						)
 </insert>
 
+<select id="getOpenList" resultMap="openMap">
+	SELECT S_ID,
+			CLOSETIME,
+			CASH,
+			DEFAULT_CASH,
+			OR_CASH,
+			DIFFERENCE,
+			NET_INCOME,
+			OPENTIME
+	FROM STOREOPEN
 
+</select>
 </mapper>

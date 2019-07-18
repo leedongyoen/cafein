@@ -37,10 +37,11 @@
 	<div class="container">
 		<div id="play" align="right">
 		<form name="searchFrm">
-		정렬기준<select name="sort">
-			<option value="sName">상호명
-			<option value="mName">메뉴명
+		정렬기준<select name="sort" >
+			<option value="S_NAME">상호명
+			<option value="M_NAME">메뉴명
 		</select>
+		<input type="button" onclick="myMenuList()" id="search" value="정렬">
 		</form>
 		<script type="text/javascript">
 		searchFrm.sort.value = "${ViewMymenuVO.sort}" == "" ? searchFrm.sort.options[0].value
@@ -78,7 +79,7 @@
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
-					<form class="form-borizontal" action="#" method="POST">
+					<form class="form-borizontal" id="mymenudetailForm" action="#" method="POST">
 						<div class="table-responsive">
 						<table id="detailtable" class="table table-hover">
 		<tr>
@@ -128,8 +129,8 @@
 				
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-default " onclick="location='Order.do'">주문</button>&nbsp;&nbsp;
-					<button class="btn btn-default " id="cartbtn">담기</button>&nbsp;&nbsp;		
+					<button class="btn btn-outline-primary" id="cu_orderbtn">주문</button>&nbsp;&nbsp;
+					<button class="btn btn-outline-primary" id="cartbtn">담기</button>&nbsp;&nbsp;		
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -148,6 +149,7 @@
 		$("#myModal").modal('hide');
 		$.ajax({
 			url : 'customer/',
+			data :{sort:$('[name="sort"]').val()},
 			type : 'GET',
 			dataType : 'json',
 			error : function(xhr, status, msg) {
@@ -273,9 +275,46 @@
 	}
 	
 	
-	
+$(function(){
 //장바구니
+	$("#cartbtn").on("click",function(){
+		var list =  $("#mymenudetailForm").serializeObject();
+		var selectop = [];
+		var selectoptionck=false;
+		var option = $("#option").html();
+		$('[name=hotice_option]:checked').each(function(){
+			selectop.push($(this).val());
+			selectoptionck=true;
+		});
+		if(selectoptionck){
+			
+			list.cuNumList = selectop;
+		}else{
+			list.cuNumList = null;
+		}
+		list.qty = $('#no').html();
+		
+
+		var local_cart = localStorage.getItem("cartlist");
+		if(local_cart == null){
+			local_cart = new Array();
+		}else {
+			
+			local_cart = JSON.parse(local_cart);
+			
+		}
+		
+		console.log(local_cart);
+		
+		local_cart.push(list);
+
+		localStorage.setItem("cartlist",JSON.stringify(local_cart));
+		console.log("localStorage : "+localStorage.getItem("cartlist"));
+
+	});
+	//주문하기
 	
+	});
 </script>
 </body>
 </html>

@@ -19,6 +19,7 @@ public class CusMyDAO {
 
 	public List<ViewMymenuVO> getMymenu(ViewMymenuVO vo) {
 		System.out.println("===> Mybatis getMymenu()");
+		
 		return mybatis.selectList("MymenuDAO.getMymenu", vo);
 	}
 	public List<ViewMymenuVO> getMymenuDetail(ViewMymenuVO vo) {

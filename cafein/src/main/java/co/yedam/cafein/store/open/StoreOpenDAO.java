@@ -1,5 +1,7 @@
 package co.yedam.cafein.store.open;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,9 +13,9 @@ public class StoreOpenDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 
-	public StoreOpenVO getStoreOpen(StoreOpenVO vo) {
+	public List<StoreOpenVO> getStoreOpenList(StoreOpenVO vo) {
 		
-		return null;
+		return mybatis.selectList("storeOpenDAO.getOpenList", vo);
 	}
 	
 	public int insertOpen(StoreOpenVO vo) {

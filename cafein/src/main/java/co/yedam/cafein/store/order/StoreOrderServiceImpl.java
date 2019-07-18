@@ -26,6 +26,17 @@ public class StoreOrderServiceImpl {
 		return dao.getstoreorderdetails(vo);
 	}
 	
+	// 해당 매장의 주문메뉴들의 옵션들만 출력
+	public List<OrderDetailsVO> getmenuoptionlist(OrderDetailsVO vo){
+		return dao.getmenuoptionlist(vo);
+	}
+	
+	// 주문 취소 ( 매장 에서 ) 
+	public int updateordercancel(OrdersVO vo){
+		return dao.updateordercancel(vo);
+	}
+	
+		// 사용미정
 	// 해당 매장의 주문메뉴의 옵션을 묶기 위해
 	public OrderDetailsVO getmenunumber(OrderDetailsVO vo){
 		return dao.getmenunumber(vo);
