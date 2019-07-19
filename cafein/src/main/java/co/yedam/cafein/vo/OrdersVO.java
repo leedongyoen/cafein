@@ -205,22 +205,10 @@ public class OrdersVO {
 		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
 				+ receipt + ", sId=" + sId + ", payMethod=" + payMethod + ", mileage=" + mileage + ", cAdd=" + cAdd
 				+ ", cAdd3=" + cAdd3 + ", totals=" + totals + ", deliveryStatus=" + deliveryStatus + ", refuseReason="
-<<<<<<< HEAD
-				+ refuseReason + ", takeTime=" + takeTime + ", oDnum=" + oDnum + ", sName=" + sName + ", mNum=" + mNum
-				+ ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno=" + receipno + ", caNum=" + caNum
-				+ ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option=" + hotice_option + ", addmileage="
-				+ addmileage + ", mName=" + mName + ", cnt=" + cnt + "]";
-=======
 				+ refuseReason + ", takeTime=" + takeTime + ", deApplyTime=" + deApplyTime + ", oDnum=" + oDnum
 				+ ", sName=" + sName + ", mNum=" + mNum + ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno="
 				+ receipno + ", caNum=" + caNum + ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option="
-				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + "]";
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
+				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", cnt=" + cnt + "]";
 	}
 
-<<<<<<< HEAD
-=======
-
-	
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 }
