@@ -30,4 +30,8 @@ public class StoreStockDAO {
 	public int deleteStock(StockVO vo) {
 		return mybatis.delete("StockDAO.deleteStock",vo);
 	}
+	
+	public int updateEnterQty(StockVO vo) {
+		return mybatis.update("StockDAO.updateEnterQty",vo);
+	}
 }
