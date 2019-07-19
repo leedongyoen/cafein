@@ -4,9 +4,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ViewMymenuVO {
 	
-	  
+	private String stNum;
 	private String sName;
 	private String mName;
+	private String sId;
 	private int mPrice;
 	private String opName;
 	private int opPrice;
@@ -17,6 +18,20 @@ public class ViewMymenuVO {
 	private String uploadFileName;
 	private String sort;
 	
+	
+	
+	public String getStNum() {
+		return stNum;
+	}
+	public void setStNum(String stNum) {
+		this.stNum = stNum;
+	}
+	public String getsId() {
+		return sId;
+	}
+	public void setsId(String sId) {
+		this.sId = sId;
+	}
 	public String getSort() {
 		return sort;
 	}
@@ -85,11 +100,11 @@ public class ViewMymenuVO {
 	}
 	@Override
 	public String toString() {
-		return "ViewMymenuVO [sName=" + sName + ", mName=" + mName + ", mPrice=" + mPrice + ", opName=" + opName
-				+ ", opPrice=" + opPrice + ", cId=" + cId + ", mNum=" + mNum + ", cuNum=" + cuNum + ", caNum=" + caNum
-				+ ", uploadFileName=" + uploadFileName + "]";
+		return "ViewMymenuVO [stNum=" + stNum + ", sName=" + sName + ", mName=" + mName + ", sId=" + sId + ", mPrice="
+				+ mPrice + ", opName=" + opName + ", opPrice=" + opPrice + ", cId=" + cId + ", mNum=" + mNum
+				+ ", cuNum=" + cuNum + ", caNum=" + caNum + ", uploadFileName=" + uploadFileName + ", sort=" + sort
+				+ "]";
 	}
-	
 	
 	
 	

@@ -302,8 +302,13 @@
 					display:"inline"
 				});
 				 
-				
-					
+				$('.C4').css({
+					display:"none"
+				});
+				 
+				$('.C5').css({
+					display:"none"
+				});	
 			}
 		});
 	}

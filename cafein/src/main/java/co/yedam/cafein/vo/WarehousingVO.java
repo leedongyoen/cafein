@@ -18,6 +18,7 @@ public class WarehousingVO {
 	private String stName;
 	private int stLoss;
 	
+	private int enterQty;
 	private String startDate;
 	private String endDate;
 	private int sum;
@@ -97,6 +98,14 @@ public class WarehousingVO {
 	}
 	public void setSum(int sum) {
 		this.sum = sum;
+	}
+	
+	
+	public int getEnterQty() {
+		return enterQty;
+	}
+	public void setEnterQty(int enterQty) {
+		this.enterQty = enterQty;
 	}
 	@Override
 	public String toString() {
