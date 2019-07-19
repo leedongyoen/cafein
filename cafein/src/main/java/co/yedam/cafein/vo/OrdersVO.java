@@ -34,7 +34,7 @@ public class OrdersVO {
 	private int addmileage; // 적립된 마일리지
 	private String mName;
 	
-	
+	private int cnt;		// 주문 건수를 알기위함
 	
 	
 	public String getmName() {
@@ -188,6 +188,12 @@ public class OrdersVO {
 	public void setTotals(String totals) {
 		this.totals = totals;
 	}
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
 	@Override
 	public String toString() {
 		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
@@ -196,8 +202,7 @@ public class OrdersVO {
 				+ refuseReason + ", takeTime=" + takeTime + ", oDnum=" + oDnum + ", sName=" + sName + ", mNum=" + mNum
 				+ ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno=" + receipno + ", caNum=" + caNum
 				+ ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option=" + hotice_option + ", addmileage="
-				+ addmileage + ", mName=" + mName + "]";
+				+ addmileage + ", mName=" + mName + ", cnt=" + cnt + "]";
 	}
-
 
 }

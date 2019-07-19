@@ -34,8 +34,11 @@
 	var addDataList, cashDataList, stockTruthList = new Array(), jsonStockList;			// sessionStorage 가 담길 배열 x 3
 	var stockList = new Array(), truthQty; 		// 재고수량과 실수량이 들어갈 list, list 내의 실수량
 	var operatingreserveSum=0, orSum=0;		// 영업 지출금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
-	var jsonString, jsonData, DBdefaultCash, storeOpenTime;			// 매장의 기본 준비금을 알기위해 json으로 데이터를 변환할 때 사용하는 변수 2개, 기본준비금(db), 매장오픈시간
+	var jsonString, jsonData, DBdefaultCash, storeOpenTime, storeCloseTime;			// 매장의 기본 준비금을 알기위해 json으로 데이터를 변환할 때 사용하는 변수 2개, 기본준비금(db), 매장오픈시간, 매장마감시간
 	var lackQty; 			// 재고상태의 기준수량
+	var receiptCashList = new Array(), reaceiptMileageList = new Array();		// 영수증에 출력될 현금/카드 리스트, 영수증에 출력될 마일리지/총금액 리스트
+	
+	
 	
 	function getoperatingreserve(){
 		
@@ -183,13 +186,14 @@
 				alert('통신 실패');
 			},
 			success:function(data){
-				console.log('data : ' + data)
+				console.log(data)
 				jsonString = JSON.stringify(data);
 				jsonData = JSON.parse(jsonString);
 				console.log('store open data parse : ' + jsonData.defaultCash)
 				
 				DBdefaultCash = jsonData.defaultCash;
 				storeOpenTime = jsonData.openTime;
+				storeCloseTime= jsonData.closeTime;
 				
 				$('#defaultCash').val(DBdefaultCash);
 				$('#defaultCash').text(addCommas(DBdefaultCash)+'원');
@@ -369,6 +373,37 @@
 			}
 		});
 	}
+	
+	// 마감 영수증을 위한 결제내역(현금/카드) 조회
+	function getCloseReceiptCash() {
+		$.ajax({
+			url:"closereceiptcash",		// request 보낼 서버경로
+			type:'GET',			
+			data:{sId:sId},				// 보낼 데이터 (매장id 보내야함)
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				console.log(data)
+			}
+		});
+	}
+	
+	// 마감 영수증을 위한 결제내역(마일리지/총매출액) 조회
+	function getCloseReceiptMileage() {
+		$.ajax({
+			url:"closereceiptmileage",		// request 보낼 서버경로
+			type:'GET',			
+			data:{sId:sId},				// 보낼 데이터 (매장id 보내야함)
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				console.log(data)
+			}
+		});
+	}
+	
 //---------------------------------------------------------------------------------------------------------------------
 	// 숫자 3단위마다 콤마 생성
 	function addCommas(x) {
@@ -397,11 +432,27 @@
 		
 		var closeSign = confirm('마감을 완료 하시겠습니까?');
 		if(closeSign) {
-			
+			$.ajax({
+				url:"dateInsertUpdate.do",
+				data:JSON.stringify({store:cashDataList, stock:stockTruthList, warehousingLoss:stockTruthList, warehousingAddStock:addDataList}),
+				contentType:'application/json',
+				type:'POST',
+				error:function(){
+					alert('error');
+				},
+				success:function(data){
+					getCloseReceiptCash();
+					getCloseReceiptMileage();
+					console.log('store : '+data.store)
+					console.log('warehousing : '+data.warehousing)
+					console.log(data)
+				}
+			});
+			/* 
 			$('#cashadvanceInsert').val(JSON.stringify(cashDataList));
 			$('#stocktruthInsert').val(JSON.stringify(stockTruthList));
 			$('#operationreservInsert').val(JSON.stringify(addDataList));
-			document.dataInsertForm.submit();
+			document.dataInsertForm.submit(); */
 		} else {
 			return;
 		}
@@ -412,11 +463,11 @@
 </script>
 </head>
 <body>
-<form method="post" action="dateInsertUpdate.do" name="dataInsertForm">
+<!-- <form method="post" action="dateInsertUpdate.do" name="dataInsertForm">
 	<input type="hidden" name="cashadvanceInsert" id="cashadvanceInsert">
 	<input type="hidden" name="stocktruthInsert" id="stocktruthInsert">
 	<input type="hidden" name="operationreservInsert" id="operationreservInsert">
-</form>
+</form> -->
 <br>
 <div class="container">
 	<div class="row border align-items-start" >

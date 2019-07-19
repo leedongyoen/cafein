@@ -97,7 +97,9 @@
 					difference:minusCash,
 					orCash:operatingreserveSum,
 					netIncome:totalcashsales,
-					openTime:storeOpenTime
+					defaultCash:DBdefaultCash,
+					openTime:storeOpenTime,
+					closeTime:storeCloseTime
 			};
 			
 			// 배열에 넣기

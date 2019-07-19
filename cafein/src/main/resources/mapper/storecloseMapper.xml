@@ -8,12 +8,12 @@
          	 , W.S_ID "sId"
           	 , UPPER(W.ST_PAY_METHOD) "stPayMethod"
          	 , S.ST_NAME "stName"
-		FROM WAREHOUSING W, STOCK S
+		FROM WAREHOUSING W, STOCK S , STOREOPEN SOP
 		WHERE W.ST_NUM = S.ST_NUM 
            AND 
            W.S_ID = #{sId}
            AND 
-           TO_CHAR(W.WARE_DATE,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+           W.WARE_DATE BETWEEN SOP.OPENTIME AND SOP.CLOSETIME
            AND 
            W.WARE_QTY > 0 
            AND 
@@ -23,30 +23,35 @@
 	
 	<!-- 매장 마감 시재 정산 조회 -->
 	<select id="getChasAdvance" resultType="order">
-		SELECT  S_ID
+		SELECT  o.S_ID
 				, TOTAL
 				, RECEIPT
 				, PAY_METHOD
 				, MILEAGE
 				, TO_CHAR(O_DATE,'YYYY-MM-DD')
 		FROM 
-			ORDERS
+			ORDERS O JOIN STOREOPEN SOP
+            ON O.S_ID = SOP.S_ID
 		WHERE 
-			TO_CHAR(O_DATE,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+			O_DATE BETWEEN SOP.OPENTIME AND SOP.CLOSETIME
 			AND 
-			S_ID = #{sId}
+			o.S_ID = #{sId}
 			AND 
 			UPPER(PAY_METHOD) = 'CASH'
+            AND
+            O.DELIVERY_STATUS = 'C3'
 	</select>
 	
-	<!-- 매장 기본 준비금, 오픈시간 조회 -->
+	<!-- 매장 기본 준비금, 오픈시간, 마감시간 조회 -->
 	<select id="getStoreOpen" resultType="storeOpen">
 		SELECT S_ID
 			 , DEFAULT_CASH
 			 , OPENTIME
+			 , CLOSETIME
 		FROM STOREOPEN
 		WHERE S_ID = #{sId}
-		AND TO_CHAR(OPENTIME,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+		AND OPENTIME IN (SELECT MAX(OPENTIME) 
+						 FROM STOREOPEN)
 	</select>
 	
 	<!-- 매장 재고 수량 조회 -->
@@ -63,6 +68,34 @@
 		WHERE S_ID = #{sId}
 	</select>
 	
+	<!-- 마감 영수증을 위한 결제내역(현금/카드) 조회 -->
+	<select id="getCloseReceiptCash" resultType="order">
+		SELECT O.RECEIPT "receipt"
+			 , O.PAY_METHOD "payMethod"
+			 , SUM(O.TOTAL) "total"
+			 , count(*)  "cnt"
+		FROM ORDERS O JOIN STOREOPEN SOP
+		ON O.S_ID = SOP.S_ID
+		WHERE O.O_DATE BETWEEN SOP.OPENTIME AND SOP.CLOSETIME
+		        AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS ='C3') OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS = 'C3' ) )
+		AND O.S_ID = #{sId}
+		GROUP BY O.RECEIPT, O.PAY_METHOD  
+	</select>
+	
+	<!-- 마감 영수증을 위한 결제내역(마일리지 및 총금액) 조회 -->
+	<select id="getCloseReceiptMileage" resultType="order">
+		SELECT SUM(O.MILEAGE) "mileage"
+			 , SUM(O.TOTAL)*0.01 "addmileage"
+			 , SUM(O.TOTAL) "total"
+			 , COUNT(*) "cnt"
+		FROM ORDERS O JOIN STOREOPEN SOP
+		ON O.S_ID = SOP.S_ID
+		WHERE O.O_DATE BETWEEN SOP.OPENTIME AND SOP.CLOSETIME
+		        AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS ='C3') OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS = 'C3' ) )
+		AND O.S_ID = #{sId}
+	</select>
+	
+	  
 	<!-- 재고입고 테이블에 추가 재고 입고 내역 insert -->
 	<insert id="warehousingInsertAddStock">
 		INSERT INTO WAREHOUSING (
