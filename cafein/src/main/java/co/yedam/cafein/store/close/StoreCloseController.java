@@ -105,32 +105,28 @@ public class StoreCloseController {
 		System.out.println("stock table update : " + stockVO);
 		System.out.println("warehousing table insert(손실량) : " + warehousingLossVO);
 		System.out.println("warehousing table insert(추가입고) : " + warehousingAddStockVO);
-		
-		/*
-		if(storeVO != null) {
-			service.storeUpdate(storeVO);
-		}
-		if(stockVO != null) {
-			service.stockUpdate(stockVO);
-		}
-		 */
-		
+
 		// 0이 아닌 데이터를 담기위한 빈 list
 		List<WarehousingVO> plusList = new ArrayList<WarehousingVO>();
 		
 		// warehousing insert (손실량)
-		if(warehousingLossVO != null) {
+		if(warehousingLossVO.size() != 0) {
 			for(int i=0;i<warehousingLossVO.size();i++) {
 				if(warehousingLossVO.get(i).getStLoss() != 0) {
 					plusList.add(warehousingLossVO.get(i));
 					System.out.println("warehousingLossVO : " + warehousingLossVO.get(i).getStLoss());
 				}
 			}
-			service.warehousingInsertLoss(plusList);
+			if(plusList.size() != 0) {
+				service.warehousingInsertLoss(plusList);
+				System.out.println("warehousing table data insert seccess ! (Loss)");
+			}
+			
 		}
 		
 		// warehousing insert (추가재고)
-		if(warehousingAddStockVO != null) {
+		if(warehousingAddStockVO.size() != 0) {
+			System.out.println("------ warehousingAddStockVO is Not Null ! ------");
 			for(int i=0;i<warehousingAddStockVO.size();i++) {
 				if(warehousingAddStockVO.get(i).getStPayMethod().equals("현금")) {
 					warehousingAddStockVO.get(i).setStPayMethod("cash");
@@ -139,6 +135,48 @@ public class StoreCloseController {
 				}
 			}
 			service.warehousingInsertAddStock(warehousingAddStockVO);
+			System.out.println("warehousing table data insert seccess ! (Add Stock)");
+		}
+		System.out.println("------ warehousingAddStockVO is Null ! ------");
+		
+		// 재고 수량과 실 수량이 같지 않은 데이터를 담기위한 빈 list
+		List<StockVO> plusStockList = new ArrayList<StockVO>();
+		
+		// stock update (재고수량, 재고상태)
+		if(stockVO.size() != 0) {
+			for(int i=0;i<stockVO.size();i++) {
+				if(stockVO.get(i).getStQty() != stockVO.get(i).getTruthQty()) {
+					System.out.println("stockVO에서 재고수량과 실 수량이 같지 않은 재고 : " + stockVO.get(i).getStName());
+					
+					if(stockVO.get(i).getTruthQty() > stockVO.get(i).getLackQty()) {
+						stockVO.get(i).setStStatus("B1");
+					} else if (stockVO.get(i).getTruthQty() == 0) {
+						stockVO.get(i).setStStatus("B3");
+					} else if (stockVO.get(i).getTruthQty() <= stockVO.get(i).getLackQty()) {
+						stockVO.get(i).setStStatus("B2");
+					} 
+					System.out.println("실수량 : " + stockVO.get(i).getTruthQty());
+					System.out.println("재고상태 : " + stockVO.get(i).getStStatus());
+					
+					plusStockList.add(stockVO.get(i));
+				}
+			}
+			if(plusStockList.size() != 0) {
+				for(int j=0;j<plusStockList.size();j++) {
+					System.out.println("plusStockList : " + plusStockList.get(j).getStName());
+				}
+				service.stockUpdate(plusStockList);
+				System.out.println("stock table data update seccess !");
+			}
+		}
+		
+		// storeopen update (오픈시간, 기본준비금 제외한 모든 데이터)
+		if(storeVO.size() != 0) {
+			for(int i=0;i<storeVO.size();i++) {
+				System.out.println("store cash : " + storeVO.get(i).getCash());
+			}
+			service.storeUpdate(storeVO);
+			System.out.println("storeopen table data update seccess !");
 		}
 
 		return "store/closedreceipt";

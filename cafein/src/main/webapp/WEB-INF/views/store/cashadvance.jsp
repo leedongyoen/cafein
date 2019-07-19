@@ -63,6 +63,9 @@
 	// 시재 등록 및 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#cashInsert').on("click",function(){
 		
+		sessionStorage.removeItem("jsonCashList");
+		cashDataList = new Array();
+		
 		// 총 현금 시재
 		totalcashSum = Number(removeCommas($('#totalcash50000').val())) + Number(removeCommas($('#totalcash10000').val())) + Number(removeCommas($('#totalcash5000').val())) 
 					+ Number(removeCommas($('#totalcash1000').val())) + Number(removeCommas($('#totalcash500').val())) + Number(removeCommas($('#totalcash100').val()));
@@ -93,7 +96,8 @@
 					cash:totalcashSum,
 					difference:minusCash,
 					orCash:operatingreserveSum,
-					netIncome:totalcashsales
+					netIncome:totalcashsales,
+					openTime:storeOpenTime
 			};
 			
 			// 배열에 넣기
@@ -158,6 +162,8 @@
 	// 시재 재등록 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	// 저장 후 데이터 변경 못하게 할지 생각해보기
 	$('#cashEdit').on("click",function(){
+		sessionStorage.removeItem("jsonCashList");
+		cashDataList = new Array();
 		//$('#resultTable').css('visibility','hidden');
 		$('#cashadvanceSave').text('수정 전');
 		$('#cashInsert').attr('disabled',false);

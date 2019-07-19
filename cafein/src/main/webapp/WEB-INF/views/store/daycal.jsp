@@ -34,7 +34,8 @@
 	var addDataList, cashDataList, stockTruthList = new Array(), jsonStockList;			// sessionStorage 가 담길 배열 x 3
 	var stockList = new Array(), truthQty; 		// 재고수량과 실수량이 들어갈 list, list 내의 실수량
 	var operatingreserveSum=0, orSum=0;		// 영업 지출금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
-	var jsonString, jsonData, DBdefaultCash, storeOpenTime;
+	var jsonString, jsonData, DBdefaultCash, storeOpenTime;			// 매장의 기본 준비금을 알기위해 json으로 데이터를 변환할 때 사용하는 변수 2개, 기본준비금(db), 매장오픈시간
+	var lackQty; 			// 재고상태의 기준수량
 	
 	function getoperatingreserve(){
 		
@@ -318,6 +319,7 @@
 						value:item.stQty
 					})))
 					.append($('<td>').html(item.stNum).attr('hidden','hidden'))
+					.append($('<td>').html(item.lackQty).attr('hidden','hidden'))
 					.appendTo('#stocktruthlistTable tbody');
 				});
 				
@@ -395,6 +397,7 @@
 		
 		var closeSign = confirm('마감을 완료 하시겠습니까?');
 		if(closeSign) {
+			
 			$('#cashadvanceInsert').val(JSON.stringify(cashDataList));
 			$('#stocktruthInsert').val(JSON.stringify(stockTruthList));
 			$('#operationreservInsert').val(JSON.stringify(addDataList));

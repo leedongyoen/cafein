@@ -58,6 +58,7 @@
 			 , ST_AQTY
 			 , CA_NUM
 			 , ST_STATUS
+			 , LACK_QTY
 		FROM STOCK
 		WHERE S_ID = #{sId}
 	</select>
@@ -114,12 +115,30 @@
 	
 	<!-- 재고 테이블에 수량 update -->
 	<update id="stockUpdate">
-		<foreach collection="list" item="item" index="index" separator=";">
+		<foreach  item="item" collection="list"  index="index" separator=";" open="DECLARE BEGIN" close="; END;" >
 			UPDATE STOCK SET 
-				  	  ST_QTY = #{item.stQty}
-					, ST_STATUS = #{item.stStatus}
+				  	  ST_QTY = #{item.truthQty}
+				  	 ,ST_STATUS = #{item.stStatus} 
+					
 			WHERE ST_NUM = #{item.stNum}
 		</foreach>
 	</update>
+	
+	<!-- 재고 테이블에 수량 update -->
+	<update id="storeUpdate">
+		<foreach  item="item" collection="list"  index="index" separator=";" open="DECLARE BEGIN" close="; END;" >
+			UPDATE STOREOPEN
+			SET 
+				CLOSETIME = SYSTIMESTAMP,
+				CASH = #{item.cash},
+				OR_CASH = #{item.orCash},
+				DIFFERENCE = #{item.difference},
+				NET_INCOME = #{item.netIncome}
+			WHERE 
+				TO_CHAR(OPENTIME,'YYYY-MM-DD HH24MI') = #{item.openTime}
+		</foreach>
+	</update>
+	
+	
 	
 </mapper>
