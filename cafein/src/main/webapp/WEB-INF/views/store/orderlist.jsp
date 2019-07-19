@@ -302,7 +302,10 @@
 					display:"inline"
 				});
 				 
-				
+				$('.C4').css({
+					display:"none"
+				});
+				 
 					
 			}
 		});
