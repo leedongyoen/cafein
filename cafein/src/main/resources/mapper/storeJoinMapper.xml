@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StoreJoinDAO">
+
+<insert id="insertJoin" parameterType="store">
+INSERT INTO STORE
+      (S_ID, 
+      S_PW, 
+      S_NAME, 
+      S_ADD, 
+      S_ADD2,
+      S_ADD3,  
+      S_TEL, 
+      ST_DELI_SERVICE, 
+      ST_OPEN_TIME, 
+      ST_CLOSE_TIME, 
+      ST_MILE_SERVICE)
+      values
+      (#{sid},
+      #{spw},
+      #{sname},
+      #{sadd},
+      #{sadd2},
+      #{sadd2},
+      #{stel},
+      #{stdeliservice},
+      #{stopentime},
+      #{stclosetime},
+      #{stmileservice})
+
+</insert>
+<select id="idCheck" resultType="int">
+	SELECT COUNT(*)
+	FROM STORE
+	WHERE S_ID= #{sid}
+</select>
+
+
+
+
+</mapper>
