@@ -119,7 +119,7 @@ var valNo;
 	   
 	   
    });
-   
+     
    //gird전체삭제
    $("#clearRow").on("click",function(){
    		$("#gridlist").jqGrid('clearGridData');
