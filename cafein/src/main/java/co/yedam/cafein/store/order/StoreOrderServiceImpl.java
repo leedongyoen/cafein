@@ -68,6 +68,19 @@ public class StoreOrderServiceImpl {
 		return result;
 	}
 
+	// 모든 매장에서 주문이 들어온지 5문이 지난 주문이 있는지 확인하고
+	// 있으면 주문 취솔 바뀜.
+	public int getordertimecheck(){
+		int n=0;
+		int result =0;
+		List<OrdersVO> cancellist = dao.getordertimecheck();
+		for(int i=0; i<cancellist.size(); i++) {
+			n = dao.updatecheckordercancel(cancellist.get(i));
+			result +=n;
+		}
+		
+		return result;
+	}
 
 //-------------------------------------------------------------------------------------
 	

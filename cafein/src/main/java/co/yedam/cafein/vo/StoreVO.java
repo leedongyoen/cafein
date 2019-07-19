@@ -13,10 +13,16 @@ public class StoreVO {
 	private String stappstat;
 	private String stmileservice;
 	
+	private String sadd2;
 	
 	
 	
-	
+	public String getSadd2() {
+		return sadd2;
+	}
+	public void setSadd2(String sadd2) {
+		this.sadd2 = sadd2;
+	}
 	public String getStopentime() {
 		return stopentime;
 	}
@@ -83,9 +89,9 @@ public class StoreVO {
 	public String toString() {
 		return "StoreVO [sid=" + sid + ", spw=" + spw + ", sname=" + sname + ", sadd=" + sadd + ", stel=" + stel
 				+ ", stdeliservice=" + stdeliservice + ", stopentime=" + stopentime + ", stclosetime=" + stclosetime
-				+ ", stappstat=" + stappstat + ", stmileservice=" + stmileservice + "]";
+				+ ", stappstat=" + stappstat + ", stmileservice=" + stmileservice + ", sadd2=" + sadd2 + "]";
 	}
-
+	
 	
 	
 }

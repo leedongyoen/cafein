@@ -301,8 +301,11 @@
 				$('.C0').css({
 					display:"inline"
 				});
-				
-				
+				 
+				$('.C4').css({
+					display:"none"
+				});
+				 
 					
 			}
 		});
