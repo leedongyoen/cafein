@@ -158,6 +158,7 @@
 	// 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#savebtn').on("click",function(){
 		$('#operatingreserveSave').text('수정 완료');
+		$('#savebtn').attr('disabled',true);
 		$('#addbtn').attr('disabled',true);
 		$('#backbtn').attr('disabled',true);
 		$('.delbtn').attr('disabled',true);
@@ -174,6 +175,7 @@
 	// 저장 후 데이터 변경 못하게 할지 생각해보기
 	$('#editbtn').on("click",function(){
 		$('#operatingreserveSave').text('수정 전');
+		$('#savebtn').attr('disabled',false);
 		$('#addbtn').attr('disabled',false);
 		$('#backbtn').attr('disabled',false);
 		$('.delbtn').attr('disabled',false);

@@ -1,7 +1,10 @@
 package co.yedam.cafein.store.order;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,6 +56,7 @@ public class StoreOrderController {
 		return service.getmenuoptionlist(vo);
 	}
 	
+//-------------------------------------------------------------------------------------
 	
 	// 해당 주문번호 취소
 	@ResponseBody
@@ -64,6 +68,22 @@ public class StoreOrderController {
 		
 		return service.updateordercancel(vo);
 	}
+
+	// 해당 주문번호 승인
+	@ResponseBody
+	@RequestMapping(value="updateorderapply", method=RequestMethod.POST)
+	public int updateorderapply(String oNum, String takeTime) {
+		OrdersVO vo = new OrdersVO();
+		vo.setoNum(oNum);
+		vo.setTakeTime(takeTime);
+		
+		return service.updateorderapply(vo);
+	}
+	
+
+	
+//-------------------------------------------------------------------------------------
+	
 	
 	// 미정
 	// 옵션 묶기

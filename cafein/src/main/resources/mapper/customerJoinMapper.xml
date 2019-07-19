@@ -11,7 +11,8 @@
 		C_ADD,
 		C_ADD2,
 		C_ADD3, 
-		DOB)
+		DOB,
+		EMAIL)
 	VALUES 
 		(#{cId},
 		 #{cNick}, 
@@ -21,11 +22,23 @@
 		 #{cAdd},
 		 #{cAdd2},
 		 #{cAdd3}, 
-		 #{dob}) 
+		 #{dob},
+		 #{email}) 
 	</insert> 
 	<select id="idCheck" resultType="int">
 		SELECT COUNT(*) 
 		FROM CUSTOMER
 		WHERE C_ID= #{cId}
+	</select>
+	
+	
+	<insert id="authKey" parameterType="customer">
+		INSERT INTO AUTH (AUTHNUM) VALUES (#{authNum})
+	</insert>
+	
+	<select id="authkeyCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM AUTH
+		WHERE AUTHNUM= #{authNum}
 	</select>
 </mapper>

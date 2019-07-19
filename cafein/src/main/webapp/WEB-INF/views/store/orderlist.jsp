@@ -32,8 +32,23 @@
 	function applyorder(){
 		var ordern = $('#applyordernumber').val();
 		var taketime = $('select[name="takeTime"]').val();
-		console.log(ordern); 
-		console.log(taketime); 
+		$.ajax({
+			url: 'updateorderapply',
+			type:'POST',
+			data: {oNum : ordern , takeTime: taketime},
+			dataType:'json',
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){
+				if(data == 1){
+					alert("주문번호 : "+ordern+" 를 승인하셨습니다.");
+				}
+				
+				getstoreorderlist();
+			}
+			
+		});
 	}
 	
 	// 거절 버튼 클릭 시 모달창 띄우기
@@ -57,7 +72,7 @@
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){
-				console.log(data);
+				alert("주문번호 : "+ordern+" 를 거절하셨습니다.");
 				getstoreorderlist();
 			}
 			

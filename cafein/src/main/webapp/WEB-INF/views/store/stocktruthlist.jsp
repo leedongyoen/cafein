@@ -22,7 +22,7 @@
 	})
 	
 	// 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
-	$('#truthsavebtn').on("click",function(){
+	$('#truthsavebtn').on("click",function() {
 	
 		sessionStorage.removeItem("jsonStockList");
 		stockTruthList = new Array();
@@ -38,7 +38,8 @@
 					stNum:$('#inputId tr').eq(i).find('td').eq(4).text(),
 					stQty:$('#inputId tr').eq(i).find('td').eq(2).text(),
 					truthQty:$('#inputId tr').eq(i).find('input').val(),
-					stLoss:($('#inputId tr').eq(i).find('input').val())-($('#inputId tr').eq(i).find('td').eq(2).text())
+					stLoss:($('#inputId tr').eq(i).find('input').val())-($('#inputId tr').eq(i).find('td').eq(2).text()),
+					lackQty:$('#inputId tr').eq(i).find('td').eq(5).text()
 			};
 			
 			stockTruthList.push(stockList);
@@ -53,6 +54,7 @@
 		sessionStorage.setItem("jsonStockList",jsonStockList);
 
 		$('#stocktruthlistSave').text('수정 완료');
+		$('#truthsavebtn').attr('disabled',true);
 		$('#truthbackbtn').attr('disabled',true);
 		$('.truthQty').attr('readonly',true);
 	})
@@ -61,7 +63,7 @@
 	$('#trutheditbtn').on("click",function(){
 		
 		sessionStorage.removeItem("jsonStockList");
-		
+		$('#truthsavebtn').attr('disabled',false);
 		$('#stocktruthlistSave').text('수정 전');
 		$('#truthbackbtn').attr('disabled',false);
 		$('.truthQty').attr('readonly',false);

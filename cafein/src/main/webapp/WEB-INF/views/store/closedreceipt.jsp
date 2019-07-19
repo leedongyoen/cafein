@@ -41,18 +41,18 @@ p {
 	<!-- 오픈, 마감 일시 -->
 	<li>
 		<span>오픈일시</span>
-		<label>2019-07-15 10:00</label>
+		<label></label>
 	</li>
 	<li>
 		<span>마감일시</span>
-		<label>2019-07-15 22:00</label>
+		<label></label>
 	</li>
 	<hr>
 	<!-- 매출 -->
 	<li>
 		<span class="sales">현금</span>
-		<span class="sales">49 건</span>
-		<label>489,400원</label>
+		<span class="sales"></span>
+		<label></label>
 	</li>
 	<li>
 		<span class="sales">카드</span>

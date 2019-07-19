@@ -18,7 +18,9 @@
 	<!-- AOP 적용할려면 주석해제 -->
 	<!-- <aop:aspectj-autoproxy></aop:aspectj-autoproxy> -->
 
-
+	<!-- 자동으로 스캔하여 BEAN 등록 -->
+	<context:component-scan
+		base-package="co.yedam.cafein"></context:component-scan>
 
 	<!-- connection pool -->
 	<context:property-placeholder
@@ -84,7 +86,7 @@
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
 		<property name="username" value="bnghty22@gmail.com" />
-		<property name="password" value="Rlawngh123" />
+		<property name="password" value="epcbehreqclmmugq" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
