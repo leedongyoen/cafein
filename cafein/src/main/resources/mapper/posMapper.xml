@@ -30,12 +30,14 @@
 		M_NUM "mNum"
 		, OP_NAME "opName"
 		, OP_PRICE "opPrice"
+		, RECIPENO "recipeno"
 		FROM RECIPE
 		WHERE S_ID= #{sId}
 		AND M_NUM = #{mNum}
 		AND( CA_NUM = 'CAOP'
 		OR CA_NUM = 'CAIC'
 		OR CA_NUM = 'CAHT')
+		ORDER BY OP_NAME
 	</select>
 	<!-- 고객 검색 -->
 	<select id="getCusList" resultType="viewposcussearch">

@@ -1,6 +1,7 @@
 package co.yedam.cafein.store.open;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +19,31 @@ import co.yedam.cafein.vo.StoreOpenVO;
 public class StoreOpenController {
 
 	@Autowired
-	StoreOpenServiceImpl storeOpenService;
+	StoreOpenService storeOpenService;
 	
+	//오픈 페이지 이동
 	@RequestMapping(value="/storeopen.do")
 	public String getStoreOpenListForm() {
 		return "store/storeopen"; 
 	}
 	
+	//오픈할 때 INSERT 컨트롤
 	@ResponseBody
 	@RequestMapping(value="/insertstoreopen.do",  method = RequestMethod.POST, consumes = "application/json")
-	public Map<String,Object> insertStoreOpen(Model model,@RequestBody StoreOpenVO vo) {
+	public Map<String,Object> insertOpen(Model model,@RequestBody StoreOpenVO vo) {
+		storeOpenService.insertOpen(vo);
 		Map<String,Object> result = new HashMap<String, Object>();
 		result.put("result", Boolean.TRUE);
 		return result;
+		
 	}
 	
+	//오픈 목록 리스트
+	@ResponseBody
+	@RequestMapping(value = "/getOpenList")
+	public List<StoreOpenVO> getOpenList(Model model, StoreOpenVO vo) {
+		
+		return storeOpenService.getOpenList(vo);
+
+	}
 }

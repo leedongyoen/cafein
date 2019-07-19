@@ -702,9 +702,9 @@ $(function(){
 		});
 		if(selectoptionck){
 			
-			list.cuNumList = selectop;
+			list.cuoptionlist = selectop;
 		}else{
-			list.cuNumList = null;
+			list.cuoptionlist = null;
 		}
 		list.qty = $('#ordernum').html();
 		

@@ -1,16 +1,36 @@
 package co.yedam.cafein.customer;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
 import co.yedam.cafein.store.info.StoreInfoServiceImpl;
 import co.yedam.cafein.store.menu.MenuServiceImpl;
+import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.MenuVO;
 import co.yedam.cafein.vo.RecipeVO;
 import co.yedam.cafein.vo.StoreVO;
@@ -47,6 +67,56 @@ public class CustomerCartOrderController {
 		}
 		
 
+	//장바구니->주문
+	//1건 -> 단건 주문페이지, 2건 이상-> 다건 주문페이지
+		@SuppressWarnings("unchecked")
+		@RequestMapping(value = "cartorder", method = RequestMethod.POST)
+		public ModelAndView cartorder(@RequestParam String jsonData) throws ParseException, JsonParseException, JsonMappingException, IOException {
+			ModelAndView mv = new ModelAndView();
+			//System.out.println(jsonData);
+			JSONParser jsonParser = new JSONParser();
+			JSONObject cartObj = new JSONObject();
+	        JSONArray insertParam = (JSONArray) jsonParser.parse(jsonData);
+	        for(int i = 0; i<insertParam.size() ;i++) {
+	        	System.out.println(insertParam.get(i));
+	        	cartObj = (JSONObject) insertParam.get(i);
+	        }
+
+	        
+		/*
+		 * MenuOrderVO vo; System.out.println(vo); mv.addObject("selectmenu", vo);
+		 * mv.addObject("option", service.getorderrecipeno(vo));
+		 */
+	        ObjectMapper mapper = new ObjectMapper();
+	        List<MenuOrderVO> meorvo = (List<MenuOrderVO>) mapper.readValue(jsonData, new TypeReference<List<MenuOrderVO>>() {});
+	        
+	        
+	        if(meorvo.size()==1) {
+	        	mv.addObject("selectmenu",meorvo.get(0));
+	        	mv.addObject("option", service.getorderrecipeno(meorvo.get(0)));	//메뉴번호로 CAOP들 받아옴
+	        	mv.setViewName("customer/orderregi");
+	        }else if(meorvo.size()>1) {
+	        	mv.addObject("cartLists",meorvo);
+	        	//해당 메뉴별 모든 옵션을 map에다가 넣고map(string,Object)
+	        	//mv addObject에 map 넣고 같이 보내기
+	        	
+	        	Map<String, Object> map  = new HashMap<String, Object>();
+	        	
+	        	
+	        	for(int v = 0;v < meorvo.size();v++) {
+	        		map.put(meorvo.get(v).getmNum(), service.getorderrecipeno(meorvo.get(v)));
+	        		
+	        		//maplist.add(map);
+	        	}
+
+	        	mv.addObject("menumap",map);
+	        	mv.setViewName("customer/orderregimany");
+	        }
+	        
+			return mv;
+		}
+		
+		
 
 		/*
 		 * @RequestMapping(value="cartmng",method=RequestMethod.GET) public ModelAndView

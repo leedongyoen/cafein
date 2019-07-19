@@ -2,6 +2,8 @@ package co.yedam.cafein.vo;
 
 import java.util.Arrays;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StockVO {
 
 	private String stNum;
@@ -14,7 +16,10 @@ public class StockVO {
 	private double stanUnit;
 	private String stStatus;
 	private String stUnit;
+	
+	private int enterQty;
 	private int lackQty;
+	
 	
 	private String[] stNumList;
 	private String stStatusNm;
@@ -117,6 +122,14 @@ public class StockVO {
 	public void setStUnit(String stUnit) {
 		this.stUnit = stUnit;
 	}
+	
+	
+	public int getEnterQty() {
+		return enterQty;
+	}
+	public void setEnterQty(int enterQty) {
+		this.enterQty = enterQty;
+	}
 	public int getLackQty() {
 		return lackQty;
 	}
@@ -127,8 +140,8 @@ public class StockVO {
 	public String toString() {
 		return "StockVO [stNum=" + stNum + ", sId=" + sId + ", stName=" + stName + ", stQty=" + stQty + ", stAqty="
 				+ stAqty + ", stPrice=" + stPrice + ", caNum=" + caNum + ", stanUnit=" + stanUnit + ", stStatus="
-				+ stStatus + ", stNumList=" + Arrays.toString(stNumList) + ", stStatusNm=" + stStatusNm + ", caNm="
-				+ caNm + ", truthQty=" + truthQty + "]";
+				+ stStatus + ", stUnit=" + stUnit + ", lackQty=" + lackQty + ", stNumList=" + Arrays.toString(stNumList)
+				+ ", stStatusNm=" + stStatusNm + ", caNm=" + caNm + ", truthQty=" + truthQty + "]";
 	}
-
+	
 }

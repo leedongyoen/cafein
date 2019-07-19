@@ -44,8 +44,11 @@ $(function(){
 		var price = 0;
 		var id = "<%=(String) session.getAttribute("cId")%>";
 		
-		console.log(local_cart.length);
+		
 		for(var i = 0;i<local_cart.length;i++){
+			console.log("이에요: "+local_cart.length);
+			//local_storage에 qty를 orderqty로 
+			local_cart[i].orderqty = local_cart[i].qty;
 
 			qty = (local_cart[i].qty*1);
 			price = (local_cart[i].totalPrice*1)/qty;
@@ -68,7 +71,7 @@ $(function(){
 			.append($('<td rowspan="2">'))
 			.append($('<td>').html(local_cart[i].mName))   //.html(local_cart[i].mName))
 			.append($('<td rowspan="2">').html(state))    //.html(state))
-			.append($('<td rowspan="2">').append($('<input>').attr({type: "text", name:"orderqty",value:local_cart[i].qty})))//.append($('<button>').val("-")))      //.html(local_cart[i].qty).append($('<button>').val("-"))))
+			.append($('<td rowspan="2">').append($('<input>').attr({type: "text", name:"orderqty", value:local_cart[i].qty})))   //.append($('<button>').val("-")))      //.html(local_cart[i].qty).append($('<button>').val("-"))))
 			.append($('<td rowspan="2">').html(local_cart[i].totalPrice))
 			.appendTo("#CartList table tbody");
 			
@@ -81,7 +84,6 @@ $(function(){
 				if(local_cart[i].sId==arrStoreid[k])
 					{
 						storeName=arrStorename[k];
-						
 					}
 			}
 			
@@ -98,25 +100,24 @@ $(function(){
 			$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
 			
 			//$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
+				
 			
-			for(var j = 0;j<local_cart[i].cuNumList.length;j++){
-				//function(mNum,local_cart[i].cuNumList[j])
+			if(local_cart[i].cuoptionlist != null){
+				for(var j = 0;j<local_cart[i].cuoptionlist.length;j++){
+					var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuoptionlist[j]);
 				
-				var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuNumList[j]);
-				
-				
-				$('<li>').html(detail).appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
-				
-		
-			}		
+					$('<li>').html(detail).appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
+					
+				}
+			} 
+					
 						//$('<li>').html(local_cart[i].cuNumList[j]);
 						//console.log($test);
 						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
 					
-				//totalPrice 합계 넣기
-				
-				$("#CartList div p span strong").html(sumtotalPrice);
+			$("#CartList div p span strong").html(sumtotalPrice);
 		}
+		
 	}
 	
 });
@@ -136,28 +137,40 @@ function orderBtnDelete(){
 }
 
 function orderBtnClick(){
-/* 	var selcheck = [];
-	$('[name=cartnumlist]:checked').each(function(){
-		selcheck.push($(this).val());
-	});
-	
-	for(var i = 0;i<selcheck.length;i++){
-		console.log(selcheck[i]);
-	} */
+
 	var ordercart = $("#orderCartForm").serializeObject();
 	var arr = [];
+
 	
 	for(var k = 0;k<ordercart.cartnumlist.length;k++){
 		arr.push(local_cart[ordercart.cartnumlist[k]]);
 	}
 	
-	alert(JSON.stringify(arr));
+	console.log(JSON.stringify(arr));
 	//alert 로 선택한 리스트와 수량이 넘어옴
 
 	
 	//controller 타고 넘겨주기...... 
-	
-	
+/* 
+	$.ajax({
+		url: 'cartorder',
+		type: "POST",
+		data: JSON.stringify(arr),		
+		dataType: 'json',
+//		processData : false,
+		
+		contentType : "application/json",
+		success: function() {
+			console.log('d');
+		},
+
+		error: function(xhr) {
+		  console.log('실패 - ', xhr);
+		}
+	}); */
+
+$('[name="jsonData"]').val(JSON.stringify(arr));
+	document.fCart.submit();
 }
 
 function getOptionNaming(mnumber, stnumber){
@@ -179,6 +192,9 @@ function getOptionNaming(mnumber, stnumber){
 </head>
 <body>
 
+	<form action="cartorder" method="post" name="fCart">
+		<input type="hidden" name="jsonData">
+	</form>
 	<div
 		style="width: 100%; text-align: center; padding: 3px; border: 1px solid pink;"
 		id="CartListWrapper">
@@ -207,7 +223,7 @@ function getOptionNaming(mnumber, stnumber){
 			id="CartList">
 			<!-- display: inline-block; -->
 
-			<form id="orderCartForm" method="post">
+			<form id="orderCartForm" name="orderCartForm" action="cartorder" method="POST">
 
 				<div style="background: gray;">
 					<label><input type="checkbox"></label> <a href="#"></a>
@@ -220,7 +236,7 @@ function getOptionNaming(mnumber, stnumber){
 						<thead>
 							<tr>
 								<th rowspan="1"></th>
-								<th rowspan="1">매2장 명</th>
+								<th rowspan="1">z   2z2  장 명</th>
 								<th colspan="2">상e품/ 옵션정보</th>
 								<th rowspan="1">ICE/HOT</th>
 								<th rowspan="1">수e량</th>

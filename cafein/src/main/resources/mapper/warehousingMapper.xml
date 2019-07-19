@@ -65,5 +65,4 @@
 		GROUP BY w.ST_NUM, s.st_name
 	</select>
 	     
-	     
 </mapper> 

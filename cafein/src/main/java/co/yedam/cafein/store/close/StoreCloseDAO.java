@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
+import co.yedam.cafein.vo.StoreOpenVO;
 import co.yedam.cafein.vo.WarehousingVO;
 
 @Repository
@@ -28,13 +29,35 @@ public class StoreCloseDAO {
 		return mybatis.selectList("storeCloseDAO.getChasAdvance", vo);
 	}
 	
+	public StoreOpenVO getStoreOpen(StoreOpenVO vo) {
+		return mybatis.selectOne("storeCloseDAO.getStoreOpen", vo);
+	}
+	
 	// 마감 재고 수량 조회
 	public List<StockVO> getStockTruthList(StockVO vo) {
 		return mybatis.selectList("storeCloseDAO.getStockTruthList", vo);
 	}
 	
-	// 영업 지출금 
-	public int insertWarehousing(WarehousingVO vo) {
-		return mybatis.insert("storeCloseDAO.warehousingInsert", vo);
+	//----------마감 정산 시 DB에 데이터 insert 및 update------------
+	
+	// 영업 지출금(추가된 재고)가 존재할 경우 insert
+	public int warehousingInsertAddStock(List<WarehousingVO> vo) {
+		return mybatis.insert("storeCloseDAO.warehousingInsertAddStock", vo);
 	}
+	
+	// 손실된 재고량이 존재하며 0보다 크거나 작은 경우 insert
+	public int warehousingInsertLoss(List<WarehousingVO> vo) {
+		return mybatis.insert("storeCloseDAO.warehousingInsertLoss", vo);
+	}
+	
+	// 재고 수량이 변경되었다면 수량과 재고수량에 따른 재고상태를 update
+	public int stockUpdate(List<StockVO> vo) {
+		return mybatis.insert("storeCloseDAO.stockUpdate", vo);
+	}
+	
+	// 재고 수량이 변경되었다면 수량과 재고수량에 따른 재고상태를 update
+	public int storeUpdate(List<StoreOpenVO> vo) {
+		return mybatis.insert("storeCloseDAO.storeUpdate", vo);
+	}
+	
 }

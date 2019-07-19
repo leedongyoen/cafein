@@ -19,6 +19,7 @@
 		JOIN MENU M
 		ON ORD.M_NUM = M.M_NUM 
 		WHERE O.S_ID=#{sId}
+				AND ORD.CA_NUM NOT IN ('CAOP')
 		ORDER BY O.O_NUM DESC
 	
 	</select>
@@ -41,8 +42,31 @@
 		on QTY.M_NUM = ORD.M_NUM
 		WHERE ORD.O_NUM = #{oNum}
 		     AND ORD.M_NUM = #{mNum}
-		    AND ORD.CA_NUM IN ('CAIC','CAHT','CAOP')
+		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE')
     
+
+	</select>
+	
+	
+	<select id="getmenuoptionlist" resultType="orderdt">
+	
+		SELECT DNUM.O_DNUM,O.O_NUM, ORD.M_NUM, M.M_NAME ,ORD.OP_DNUM , ORD.RECIPENO, RE.OP_NAME
+		FROM ORDERS O JOIN ORDER_DETAILS ORD
+		ON O.O_NUM = ORD.O_NUM
+		JOIN RECIPE RE
+		ON ORD.RECIPENO = RE.RECIPENO
+		JOIN (
+		  SELECT M_NUM,O_NUM, MIN(O_DNUM) O_DNUM
+				  FROM ORDER_DETAILS
+				  GROUP BY M_NUM,O_NUM
+		) DNUM
+		ON DNUM.M_NUM =  ORD.M_NUM AND DNUM.O_NUM = ORD.O_NUM AND DNUM.O_DNUM = ORD.OP_DNUM
+		JOIN MENU M
+    	ON ORD.M_NUM = M.M_NUM
+		WHERE O.S_ID=#{sId}
+		    AND ORD.O_NUM = #{oNum}
+		    AND ORD.CA_NUM ='CAOP'
+		ORDER BY ORD.M_NUM
 
 	</select>
 	
@@ -55,5 +79,58 @@
 		GROUP BY M_NUM
 	
 	</select>
+
+
+	<update id="updateordercancel">
+		UPDATE ORDERS
+		SET REFUSE_REASON = #{refuseReason} , DELIVERY_STATUS = 'C4'
+		WHERE O_NUM = #{oNum}	
+	</update>
+	
+	
+	<update id="updateorderapply">
+		UPDATE ORDERS
+			SET DE_APPLY_TIME= systimestamp
+			    , TAKE_TIME = #{takeTime}
+			     , DELIVERY_STATUS='C1'
+			WHERE O_NUM= #{oNum}
+	</update>
+	
+	
+	<select id="getdeliverytatuscheck" resultType="order">
+	
+		SELECT O_NUM
+		FROM ORDERS
+		WHERE TAKE_TIME IS NOT NULL
+		    AND DELIVERY_STATUS = 'C1'
+		    AND TO_CHAR(SYSDATE,'HH24:MI') > TO_CHAR(DE_APPLY_TIME+(TAKE_TIME/24/60),'HH24:MI')
+			
+	</select>
+	
+	<update id="updatedeliverystatus">
+		
+			UPDATE ORDERS
+			SET DELIVERY_STATUS = 'C3'
+			WHERE O_NUM = #{oNum}
+
+	</update>
+	
+	
+	<select id="getordertimecheck" resultType="order">
+	
+		SELECT O_NUM
+		FROM ORDERS
+		WHERE DELIVERY_STATUS = 'C0'
+		    AND TO_CHAR(SYSDATE,'HH24:MI') > TO_CHAR(O_DATE+(5/24/60),'HH24:MI')
+			
+	</select>
+	
+	<update id="updatecheckordercancel">
+	
+		UPDATE ORDERS
+		SET DELIVERY_STATUS = 'C4'
+		WHERE O_NUM = #{oNum}
+	
+	</update>
 
 </mapper>

@@ -112,9 +112,9 @@ public class CustomerOrderController {
 			vo.setcAdd("");
 			vo.setcAdd3("");
 			
-		}else if(vo.getReceipt().equals("delivery")){
-			vo.setDeliveryStatus("C0");
 		}
+		
+		vo.setDeliveryStatus("C0");
 		
 		// orders테이블에 넣기
 		service.insertorder(vo);
