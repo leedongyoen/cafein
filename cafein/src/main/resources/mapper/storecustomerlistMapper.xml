@@ -20,10 +20,9 @@
 		c.c_join,
 		r.MILEAGE
 	FROM customer
-		c LEFT OUTER JOIN reserve r
-		ON (c.c_id = r.c_id)
-		WHERE r.s_id = #{sId}
-		AND c.c_id = #{cId}
+		c left OUTER JOIN reserve r
+		ON (c.c_id = r.c_id and  r.s_id = #{sId})
+		where c.c_id = #{cId}
 	</select>
 	
 	<select id="getCustomerhistory" resultType="customer">

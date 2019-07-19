@@ -28,7 +28,7 @@
 		var storelogin = '<%=session.getAttribute("sid")%>';
 		console.log(storelogin);
  		$.ajax({
- 			url : 'allcustomerlist',
+ 			url : 'storelist',
 			type : 'GET',
 			dataType : 'json',
 			data: {sId: storelogin},
@@ -41,25 +41,19 @@
 	}
 	
 	function customerListResult(data){
-// 		$('#modalView').modal("hide"); //닫기
 		$("#customerTbody").empty();
 		console.log(data);
 		$.each(data,function(idx, user){
-				$('<tr>').attr("onclick","modalshow('"+user.cId+"')")
+				$('<tr>').attr("onclick","customerSelect('"+user.cId+"')")
 						.append($('<td>').html(user.cId))
-// 						.append($('<td>').html(user.cNick))
 						.append($('<td>').html(user.cName))
-// 						.append($('<td>').html(user.cTel))
-// 						.append($('<td>').html(user.mileage))
-// 						.append($('<td>').html('<button type=\'button\' class=\'btn btn-primary\' data-toggle=\'modal\' data-target=\'#modalView\' class=\'btn btn-primary\' name=\'Selectbtn\' onclick=\'modalshow("'+user.cId+'");\'>조회</button>'))
-// 						.append($('<td>').html('<button type=\'button\' class=\'btn btn-primary\' data-toggle=\'modal\' data-target=\'#modalView\' class=\'btn btn-primary\' name=\'orderlistbtn\' onclick=\'modalordershow("'+user.cId+'");\'>구매이력</button>'))
 						.append($('<td>').val(user.cId))
 						.appendTo('#customerTbody');
 					
 		});
 					
 	}
-	function modalshow(cId){
+	function customerSelect(cId){
 		var storelogin = '<%=session.getAttribute("sid")%>';
 		$('#toggleTable').show();
 		console.log(cId);
@@ -81,15 +75,14 @@
 		$('input:text[name="cTel"]').val(data.cTel);
 		$('input:text[name="cAdd"]').val(data.cAdd);
 		$('input:text[name="cJoin"]').val(data.cJoin);
-		$('input:text[name="mileage"]').val(data.mileage);
+		$('input:text[name="mileage"]').val(data.mileage)
 		
 		history(data.cId);
 
 	}//stockSelectResult
 	
 	function history(cId){
-		var storelogin = '<%=session.getAttribute("sid")%>
-	';
+		var storelogin = '<%=session.getAttribute("sid")%>';
 		$('#c_history').show();
 		console.log(cId);
 		$.ajax({
@@ -104,14 +97,21 @@
 	}
 
 	function historyResult(data) {
+		
+		$('#historyTbody').empty();
 		console.log(data);
-		$('input:text[name="cId" ]').val(data.cId);
-		$('input:text[name="oNum"]').val(data.oNum);
-		$('input:text[name="GD"]').val(data.GD);
-		$('input:text[name="mName"]').val(data.mName);
-		$('input:text[name="totals"]').val(data.totals);
-		$('input:text[name="payMethod"]').val(data.payMethod);
-		$('input:text[name="receipt"]').val(data.receipt);
+		$.each(data,function(idx, user){
+			$('<tr>')
+					.append($('<td>').html(user.cId))
+					.append($('<td>').html(user.oNum))
+					.append($('<td>').html(user.gd))
+					.append($('<td>').html(user.mName))
+					.append($('<td>').html(user.total))
+					.append($('<td>').html(user.payMethod))
+					.append($('<td>').html(user.receipt))
+					.appendTo('#historyTbody');
+				
+		});
 	}
 </script>
 
@@ -132,12 +132,7 @@
 					<thead>
 						<tr>
 							<th>고객ID</th>
-							<!-- 						<th>닉네임</th> -->
 							<th>이름</th>
-							<!-- 						<th>연락처</th> -->
-							<!-- 						<th>마일리지</th> -->
-							<!-- 						<th>고객조회</th> -->
-							<!-- 						<th>이력</th> -->
 
 						</tr>
 					</thead>
@@ -191,6 +186,10 @@
 					</table>
 				</form>
 			</div>
+			<div class="container">
+				<h2 align="center">구매이력</h2>
+				<hr>
+			</div>
 			<div>
 				<table border="1" class="table table-hover" id="c_history">
 					<thead>
@@ -198,31 +197,14 @@
 							<th>ID</th>
 							<th>주문번호</th>
 							<th>메뉴/옵션</th>
+							<th>메뉴</th>
 							<th>TOTALS</th>
 							<th>결제방식</th>
 							<th>수령방식</th>
-							
-						</tr>
-						<tbody id="histomerTbody">
-						</tbody>
-						<tr>
-							<td><input type="text" id="oNum" name="oNum" readonly></td>
-							<td><input type="text" id="GD" name="GD" readonly></td>
-						</tr>
-						<tr>
-							
-							<td><input type="text" id="totals" name="totals" readonly></td>
-						</tr>
-						<tr>
-							
-							<td><input type="text" id="payMethod" name="payMethod"
-								readonly></td>
-						</tr>
-						<tr>
-							
-							<td><input type="text" id="receipt" name="receipt" readonly></td>
 						</tr>
 					</thead>
+					<tbody id=historyTbody>
+					</tbody>
 				</table>
 			</div>
 
