@@ -27,6 +27,11 @@ public class WarehousingServiceImpl implements WarehousingService{
 		// TODO Auto-generated method stub
 		return wareDao.getEndteredList(vo);
 	}
+	@Override
+	public int insertEnter(WarehousingVO vo) {
+		
+		return wareDao.insertEnter(vo);
+	}
 	
 
 }

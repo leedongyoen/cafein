@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.cafein.ConditionService;
+import co.yedam.cafein.store.warehousing.WarehousingService;
 import co.yedam.cafein.vo.ConditionVO;
 import co.yedam.cafein.vo.StockVO;
 
@@ -24,6 +25,8 @@ public class StoreStockController {
 	StoreStockService storeStockService;
 	@Autowired
 	ConditionService conditionService;
+	@Autowired
+	WarehousingService warehousingService;
 	
 	//재고목록 페이지 이동
 	@RequestMapping(value = "/stocklist.do")
@@ -105,8 +108,8 @@ public class StoreStockController {
 			int n=0;
 			for(StockVO vo: list) {
 			try {
-				int result = storeStockService.updateEnterQty(vo);
-				n = n+result;
+				int resultEnter = storeStockService.updateEnterQty(vo);
+				n = n+resultEnter;
 				}catch(Exception e){
 					e.printStackTrace();
 				}

@@ -10,8 +10,9 @@
 $(function() {
 	stockList();
 });
+//
 
-//입고할 목록 요청하기
+//입고할 재고 목록 요청하기
 function stockList() {
 	$.ajax({
 		url : 'stocks',
@@ -25,7 +26,7 @@ function stockList() {
 	});
 }//stockList
 
-//입고할 목록 받아오기
+//입고할 재고 목록 받아오기
 function stockListResult(data) {
 	
 	console.log(data);
@@ -49,16 +50,19 @@ function makeData(){
 			var obj = {};
 			var td = $(this).children();
 			var enterQty = td.eq(4).find("input").val();
+			 
 		if (enterQty == '') {
 			
 		}else{
 			var stNum = td.eq(0).text();
 			var sId = "<%= (String)session.getAttribute("sid") %>";
-						
+			var stPrice = td.eq(2).text();
+			var warePrice = parseInt(stPrice) * parseInt(enterQty);
+				
 			obj["enterQty"] = enterQty;
 			obj["stNum"] = stNum;
 			obj["sId"] = sId;
-		
+			obj["warePrice"] = warePrice;
 			//목록에 담기
 			list.push(obj);
       		}
@@ -77,16 +81,34 @@ function makeData(){
 		mimeType : 'application/json',
 			dataType: 'json',
 			success : function(data){
-				alert(data+'건이 입고 완료되었습니다.');
+				alert(data+'건  정상 입고 되었습니다.');
 				stockList();
+				
 // 				location.href = "storemainform.do";
 			},
 			error : function(data){
 				alert("상태값 :" + status + " Http에러메시지 :" + msg);
 			}
 		})
-
-	
+		
+		$.ajax({ 
+			url:'insertEnter.do',
+			type: 'POST',
+			data: JSON.stringify(list),
+			contentType: 'application/json;charset=utf-8',
+		mimeType : 'application/json',
+			dataType: 'json',
+			success : function(data){
+				alert(data+'건의 입고 내역이 저장되었습니다');
+				
+				
+// 				location.href = "storemainform.do";
+			},
+			error : function(data){
+				alert("상태값 :" + status + " Http에러메시지 :" + msg);
+			}
+		})
+		
 }
 
 
