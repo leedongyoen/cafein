@@ -22,6 +22,23 @@ public class CustomerJoinServiceImpl implements CustomerJoinService {
 	public int idCheck(CustomerVO cId) {
 		return customerjoinDAO.idCheck(cId);
 	}
+
+	@Override
+	public int authKey(CustomerVO authNum) {
+		return customerjoinDAO.authKey(authNum);
+	}
+
+	@Override
+	public int authKey(String authNum) {
+		return customerjoinDAO.authKey(authNum);
+	}
+
+	@Override
+	public int authkeyCheck(CustomerVO authNum) {
+		return customerjoinDAO.authkeyCheck(authNum);
+	}
+
+	
 	
 	
 

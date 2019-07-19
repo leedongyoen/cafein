@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.yedam.cafein.customer.join.CustomerJoinDAO;
 import co.yedam.cafein.customer.main.CustomerMainService;
 import co.yedam.cafein.customer.reserve.ReserveService;
-import co.yedam.cafein.google.MailService;
 import co.yedam.cafein.vo.CustomerMainVO;
 import co.yedam.cafein.vo.ReserveVO;
 

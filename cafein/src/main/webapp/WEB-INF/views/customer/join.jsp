@@ -170,25 +170,14 @@
 // 			return false;
 // 		}
 
-	 function check() {
-		 var form = document.customerjoinForm;
-		 var authNum = ${authNum};
-		 
-		 if(!form.authnum.value) {
-			 alert("인증번호를 입력하세요.");
-			 return false;
-		 }
-		 if(form.authnum.value != authNum) {
-			 alert("틀린 인증번호입니다. 인증번호를 다시 입력해 주세요");
-			 form.authnum.value="";
-			 return false;
-		 }
-		 if(form.authnum.value == authNum) {
-			 alert("인증완료");
-			 opner.document.userinput.mailCheck.value="인증완료";
-			 self.close();
-		 }
-	 }
+
+	function myFunction() {
+		  var myWindow = window.open("sendmail.do", "", "width=300,height=200");
+		}
+
+
+
+	
 </script>
 </head>
 <body>
@@ -241,14 +230,9 @@
         <tr>
         	<th>이메일</th>
         	<td><input type="email" name="email" id="email">
-        		<button type="button"name="authnum" onclick="">인증</button>
+        		<button type="button"
+        		onclick="myFunction()">이메일 인증</button>
         	</td>
-        </tr>
-        <tr id="joincode">
-        	<th>인증번호</th>
-        	<td><input type="number" name="inputcode">
-        		<input type="button" value="확인">
-        	</td> 	
         </tr>
       </table>
       <button type ="button" class="btn btn-default"

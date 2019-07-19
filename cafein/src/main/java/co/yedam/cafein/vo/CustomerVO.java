@@ -18,7 +18,7 @@ public class CustomerVO {
 	private String cAdd3;
 	private int stmp;
 	private String email;
-	private int authNum;
+	private String authNum;
 	
 	// 마일리지 조인
 	private String mileage;
@@ -30,11 +30,11 @@ public class CustomerVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getAuthNum() {
+	public String getAuthNum() {
 		return authNum;
 	}
-	public void setAuthNum(int authNum) {
-		this.authNum = authNum;
+	public void setAuthNum(String string) {
+		this.authNum = string;
 	}
 
 
@@ -144,6 +144,6 @@ public class CustomerVO {
 				+ ", stmp=" + stmp + ", mileage=" + mileage + ", sId=" + sId + ", dob=" + dob + ", cJoin=" + cJoin
 				+ "]";
 	}
-	
+
 	
 }

@@ -8,4 +8,9 @@ public interface CustomerJoinService {
 	
 	public int idCheck(CustomerVO  vo);
 
+	public int authKey(String authNum);
+
+	public int authKey(CustomerVO authNum); 
+	
+	public int authkeyCheck(CustomerVO vo);
 }

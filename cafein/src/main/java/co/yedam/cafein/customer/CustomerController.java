@@ -1,5 +1,6 @@
 package co.yedam.cafein.customer;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
 import java.io.IOException;
@@ -25,10 +26,12 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,7 +50,6 @@ import co.yedam.cafein.customer.info.CustomerInfoService;
 import co.yedam.cafein.customer.join.CustomerJoinDAO;
 import co.yedam.cafein.customer.join.CustomerJoinService;
 import co.yedam.cafein.customer.login.KakaoRestAPI;
-import co.yedam.cafein.google.MailService;
 import co.yedam.cafein.google.TempKey;
 import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.NaverLoginVO;
@@ -69,9 +71,6 @@ public class CustomerController {
 
 	@Autowired
 	CustomerJoinService customerjoinService;
-
-	@Autowired
-	MailService mailservice;
 
 	private void setNaverLoginVO(NaverLoginVO naverLoginVO) {
 		this.naverLoginVO = naverLoginVO;
@@ -194,47 +193,36 @@ public class CustomerController {
 		return map;
 	}
 
-<<<<<<< HEAD
-//	// 회원가입 이메일 인증1
-//
-//	 @RequestMapping(value = "sendMail", method = RequestMethod.POST, produces = "application/json")
-//	 @ResponseBody 
-//	 public boolean sendMailAuth(HttpSession session, @RequestParam String email) { 
-//		 int ran = new Random().nextInt(100000) + 10000; // 10000 ~99999 
-//		 String joinCode = String.valueOf(ran); session.setAttribute("joinCode", joinCode);
-//		  String subject = "회원가입 인증 코드 발급 안내 입니다."; StringBuilder sb = new
-//		  StringBuilder(); sb.append("귀하의 인증 코드는 " + joinCode + " 입니다."); return
-//		  mailservice.send(subject, sb.toString(), "bnghty5798@naver.com", email); 
-//	  }
-	// 회원가입 이메일 인증2
-	@RequestMapping("emailAuto.do")
-	public ModelAndView emailAuth(HttpServletRequest request, 
-			HttpServletResponse response) throws Exception {
-		String email = request.getParameter("email");
-		String authNum = "";
+	//랜덤함수를 발생 시키는 메소드
+		public String RandomNum() {
+			StringBuffer buffer = new StringBuffer();
+			for (int i = 0; i<=5; i++) {
+				int n  = (int) (Math.random()*10);
+				buffer.append(n);
+			}
+			return buffer.toString();
+		}
 		
-		authNum = RandomNum();
-		
-		sendEmail(email.toString(), authNum);
-		
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("customer/join");
-		mv.addObject("email", email);
-		mv.addObject("authNum", authNum);
-		return mv; 
-	}
 	//이메일 보내는 메소드
-	private void sendEmail(String email, String authNum) {
+	@RequestMapping(value="sendmail.do")
+	public String sendEmail(String email, String authNum) {
 		String host = "smtp.gmail.com";
-		String subject = "인증번호 전달";
-		String fromName = "관리자";
+		String subject = "<관리자>인증번호 입니다.";
 		String from = "bnghty22@gmail.com"; // 보내는 메일
 		String to = "bnghty5798@naver.com";
-
+		
+		authNum = RandomNum();	
+		
+		CustomerVO vo = new CustomerVO();
+		
+		vo.setAuthNum(authNum);
+		System.out.println(vo.getAuthNum());
+		
+		customerjoinService.authKey(authNum);
 		String content = "인증번호 [" + authNum + "]";
 
 		final String username = "bnghty22@gmail.com"; // change accordingly
-		final String password = "Rlawngh123"; // change accordingly
+		final String password = "epcbehreqclmmugq"; // change accordingly
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -254,29 +242,29 @@ public class CustomerController {
 			message.setFrom(new InternetAddress(from));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject(subject);
-			message.setContent(content, "text/html;charset=utf8");
+			message.setContent(content, "text/html;charset=utf-8");
 			Transport.send(message);
 			System.out.println("Sent message successfully....");
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+		return "customer/emailauth";
+		
+	}
+	// 인증키를 체크할 
+	@RequestMapping(value = "/getauthjoin/{authNum}", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<Object, Object> authkeyCheck(@PathVariable("authNum") String authNum) {
+		CustomerVO vo = new CustomerVO();
+		vo.setAuthNum(authNum);
+		System.out.println("================" + vo.getAuthNum());
+		int n = customerjoinService.authkeyCheck(vo);
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		map.put("cnt", n);
+		return map;
 	}
 	
-	//랜덤함수를 발생 시키는 메소드
-	public String RandomNum() {
-		StringBuffer buffer = new StringBuffer();
-		for (int i = 0; i<=6; i++) {
-			int n  = (int) (Math.random()*10);
-			buffer.append(n);
-		}
-		return buffer.toString();
-	}
-	
-	
-	// ID/PW 찾기
-=======
 	//ID/PW 찾기
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 	@RequestMapping("customerfindidpw.do")
 	public String findidpw() {
 		return "customer/findidpw";
@@ -314,8 +302,9 @@ public class CustomerController {
 		session.setAttribute("cId", customer.getcId());
 		session.setAttribute("cJoin", customer.getcJoin());
 		session.setAttribute("token", access_token);
+		return kakaoName;
 
-		return "customer/main";
+		
 
 	}
 
