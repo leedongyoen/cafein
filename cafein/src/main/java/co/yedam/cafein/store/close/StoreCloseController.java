@@ -108,7 +108,6 @@ public class StoreCloseController {
 	public Map<String, Object> dateInsertUpdate(@RequestBody StoreCloseDataInsertVO vo) throws JsonParseException, JsonMappingException, IOException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("store", vo.getStore());
-		map.put("warehousing", vo.getWarehousingAddStock());
 		
 		service.storeCloseDataImsert(vo);
 		return map;

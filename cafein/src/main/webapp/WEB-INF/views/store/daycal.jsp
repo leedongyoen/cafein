@@ -8,9 +8,39 @@
 <%@ include file="storehead.jsp" %>
 <title>Store Closing Page</title>
 <style>
+ul {
+	list-style: none;
+	width:450px;
+	margin-left: auto;
+  	margin-right: auto;
+}
+li {
+	width:450px;
+}
+hr {
+	width:400;
+	align:left;
+}
+span {
+	display:inline-block;
+	width:300px;
+}
+.sales {
+	width:175px;
+}
+p {
+	text-align:center;
+}
 .truthlist {
 	background-color:white;
 }
+.modal-dialog.modal-80size {
+  width: 50%;
+  height: 80%;
+  margin: 0;
+  padding: 20%;
+}
+
 </style>
 <script>
 
@@ -151,10 +181,15 @@
 		
 		
 		if($('#operatingreserveSave').text() == '수정 완료') {
+			$('#savebtn').attr('disabled',true);
 			$('#addbtn').attr('disabled',true);
 			$('#backbtn').attr('disabled',true);
 			$('.delbtn').attr('disabled',true);
 			$('.delbtn').attr('value','삭제불가');
+			$('#stName').attr('readonly',true);
+			$('#wareQty').attr('readonly',true);
+			$('#sum').attr('readonly',true);
+			$("input[name=stPayMethod]").attr('disabled',true); 
 		}
 	}
 	
@@ -354,6 +389,7 @@
 		}
 		
 		if($('#stocktruthlistSave').text() == '수정 완료') {
+			$('#truthsavebtn').attr('disabled',true);
 			$('#truthbackbtn').attr('disabled',true);
 			$('.truthQty').attr('readonly',true);
 		}
@@ -374,6 +410,8 @@
 		});
 	}
 	
+	var receiptCashString, receiptCashData, receiptMileageString, receiptMileageData; 
+	
 	// 마감 영수증을 위한 결제내역(현금/카드) 조회
 	function getCloseReceiptCash() {
 		$.ajax({
@@ -385,6 +423,9 @@
 			},
 			success:function(data){
 				console.log(data)
+				receiptCashString = JSON.stringify(data);
+				receiptCashData = JSON.parse(receiptCashString);
+				console.log('receiptCashData : ' + receiptCashData.total)
 			}
 		});
 	}
@@ -417,6 +458,9 @@
 	}
 	
 //---------------------------------------------------------------------------------------------------------------------
+	
+	var receiptJsonString, receipt;		// 영수증 출력 시 필요한 데이터를 json parse를 위한 변수
+	
 	// 마감 정산 버튼 클릭 시
 	function closeCheck(){
 		if($('#operatingreserveSave').text() == '수정 전') {
@@ -443,6 +487,18 @@
 				success:function(data){
 					getCloseReceiptCash();
 					getCloseReceiptMileage();
+					
+					receiptJsonString = JSON.stringify(data);
+					console.log('opentime, closetime : ' + receiptJsonString.openTime + ', ' + receiptJsonString.closeTime);
+					
+					receipt = JSON.parse(receiptJsonString);
+					console.log('opentime, closetime : ' + receipt.store.openTime + ', ' + receipt.closeTime);
+					
+					$('#opentime').text('2019');
+					
+					
+					// 마감 내역 모달창 show
+					$("#receiptmodal").modal('show');
 					console.log('store : '+data.store)
 					console.log('warehousing : '+data.warehousing)
 					console.log(data)
@@ -521,6 +577,162 @@
 			</div><br>
 		</div>
 	</div>
+	
+	<!-- 마감 영수증  Modal -->
+	<div class="modal fade" id="receiptmodal" role="dialog">
+		<div class="modal-dialog" style="max-width: 40%; width: auto;">		
+			<div class="modal-content">
+				<div class="modal-body">
+					<form class="form-borizontal" action="#" method="POST">
+						<div class="table-responsive">
+							<ul>
+								<li>
+									<p>*** <%= session.getAttribute("sName") %> 마감 결과 ***</p>
+								</li>
+								<hr>
+								<!-- 오픈, 마감 일시 -->
+								<li>
+									<span>오픈일시</span>
+									<label id="opentime"></label>
+								</li>
+								<li>
+									<span>마감일시</span>
+									<label id="closetime"></label>
+								</li>
+								<hr>
+								<!-- 매출 -->
+								<li>
+									<p>직접수령</p>
+								</li>
+								<hr>
+								<li>
+									<span class="sales">현금</span>
+									<span class="sales" id="takeoutCashCnt"></span>
+									<label id="takeoutCashSum"></label>
+								</li>
+								<li>
+									<span class="sales">카드</span>
+									<span class="sales" id="takeoutCardCnt"></span>
+									<label id="takeoutCardSum"></label>
+								</li>
+								<li>
+									<span class="sales">합계</span>
+									<span class="sales" id="takeoutSumCnt"></span>
+									<label id="takeoutSum"></label>
+								</li>
+								<hr>
+								<li>
+									<p>배달주문</p>
+								</li>
+								<hr>
+								<li>
+									<span class="sales">현금</span>
+									<span class="sales" id="deliveryCashCnt"></span>
+									<label id="deliveryCashSum"></label>
+								</li>
+								<li>
+									<span class="sales">카드</span>
+									<span class="sales" id="deliveryCardCnt"></span>
+									<label id="deliveryCardSum"></label>
+								</li>
+								<li>
+									<span class="sales">합계</span>
+									<span class="sales" id="deliverySumCnt"></span>
+									<label id="deliverySum"></label>
+								</li>
+								<hr>
+								<li>
+									<p>포인트 내역</p>
+								</li>
+								<hr>
+								<li>
+									<span class="sales">포인트사용</span>
+									<span class="sales" id="pointMinusCnt"></span>
+									<label id="pointMinusSum"></label>
+								</li>
+								<li>
+									<span class="sales">포인트적립</span>
+									<span class="sales" id="pointPlusCnt"></span>
+									<label id="pointPlusSum"></label>
+								</li>
+								<li>
+									<span class="sales">환불포인트</span>
+									<span class="sales" id="refundPointCnt"></span>
+									<label id="refundPointSum"></label>
+								</li>
+								<hr>
+								<li>
+									<p>환불내역</p>
+								</li>
+								<hr>
+								<li>
+									<span class="sales">현금</span>
+									<span class="sales" id="refundCashCnt"></span>
+									<label id="refundCashSum"></label>
+								</li>
+								<li>
+									<span class="sales">카드</span>
+									<span class="sales" id="refundCardCnt"></span>
+									<label id="refundCardSum"></label>
+								</li>
+								<li>
+									<span class="sales">합계</span>
+									<span class="sales" id="refundSumCnt"></span>
+									<label id="refundSum"></label>
+								</li>
+								<hr>
+								<li>
+									<span>총매출</span>
+									<label id="storeTotalSum"></label>
+								</li>
+								<hr>
+								<!-- 시재 -->
+								<li>
+									<p>현금 관리</p>
+								</li>
+								<li>
+									<span>현금시재</span>
+									<label id="storeCash"></label>
+								</li>
+								<li>
+									<span>현금매출</span>
+									<label id="storeCashSum"></label>
+								</li>
+								<li>
+									<span>준비금</span>
+									<label id="storeDefaultCash"></label>
+								</li>
+								<li>
+									<span>영업지출금</span>
+									<label id="storeOrSum"></label>
+								</li>
+								<li>
+									<span>포인트사용</span>
+									<label id="storeCashPoint"></label>
+								</li>
+								<hr>
+								<li>
+									<span>순수익</span>
+									<label id="storeNetIncome"></label>
+								</li>
+								<hr>
+								<li>
+									<span>차액</span>
+									<label id="storeDefference"></label>
+								</li>
+								<hr>
+							</ul>
+						</div>
+					</form>
+				
+				</div>
+				<div class="modal-footer">		
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal" onclick="location.href='storemainform.do'">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 </div>
 </body>
 </html>
