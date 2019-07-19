@@ -52,7 +52,6 @@
 		ST_STATUS
 	FROM STOCK
 	WHERE ST_NUM = #{stNum}
-  
   </select>
   
   <insert id="insertStock" parameterType="stock">
@@ -115,6 +114,7 @@
             </when>
             <otherwise>
                st_num = #{stNum}
+               
             </otherwise>
          </choose>
       </where>

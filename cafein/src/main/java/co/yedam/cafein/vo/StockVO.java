@@ -2,6 +2,8 @@ package co.yedam.cafein.vo;
 
 import java.util.Arrays;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StockVO {
 
 	private String stNum;
@@ -127,8 +129,8 @@ public class StockVO {
 	public String toString() {
 		return "StockVO [stNum=" + stNum + ", sId=" + sId + ", stName=" + stName + ", stQty=" + stQty + ", stAqty="
 				+ stAqty + ", stPrice=" + stPrice + ", caNum=" + caNum + ", stanUnit=" + stanUnit + ", stStatus="
-				+ stStatus + ", stNumList=" + Arrays.toString(stNumList) + ", stStatusNm=" + stStatusNm + ", caNm="
-				+ caNm + ", truthQty=" + truthQty + "]";
+				+ stStatus + ", stUnit=" + stUnit + ", lackQty=" + lackQty + ", stNumList=" + Arrays.toString(stNumList)
+				+ ", stStatusNm=" + stStatusNm + ", caNm=" + caNm + ", truthQty=" + truthQty + "]";
 	}
-
+	
 }

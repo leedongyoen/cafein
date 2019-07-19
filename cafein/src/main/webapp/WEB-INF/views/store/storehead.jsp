@@ -116,7 +116,7 @@ body {
 
       </li>
       
-      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/warehousingregi.do">오픈</a></li>
+      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/storeopen.do">오픈</a></li>
       <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/daycal.do">마감</a></li>
 
     </ul>

@@ -34,7 +34,8 @@
 	var addDataList, cashDataList, stockTruthList = new Array(), jsonStockList;			// sessionStorage 가 담길 배열 x 3
 	var stockList = new Array(), truthQty; 		// 재고수량과 실수량이 들어갈 list, list 내의 실수량
 	var operatingreserveSum=0, orSum=0;		// 영업 지출금 현금 지출액 합계(operatingreserve.jsp에서 사용), 영업 준비금 현금 지출액 합계(계속 더해질 용도)
-
+	var jsonString, jsonData, DBdefaultCash, storeOpenTime;			// 매장의 기본 준비금을 알기위해 json으로 데이터를 변환할 때 사용하는 변수 2개, 기본준비금(db), 매장오픈시간
+	var lackQty; 			// 재고상태의 기준수량
 	
 	function getoperatingreserve(){
 		
@@ -50,16 +51,16 @@
 				
 				$('#operatingreservTable tbody').empty();
 				$.each(data,function(idx,item){		// idx : length 와 비슷한 느낌, item : data
-					sum = item.wareQty*item.warePrice;
-					totalSum += sum;
-					
-					
+					//sum = item.wareQty*item.warePrice;
+					sum = item.warePrice/item.wareQty;
+					totalSum += Number(item.warePrice);
+				
 					if(item.stPayMethod == 'CARD') {
 						$('<tr>')
 						.append($('<td>').html(item.stName))
 						.append($('<td>').html(addCommas(item.wareQty)))
-						.append($('<td>').html(addCommas(item.warePrice)+'원'))
 						.append($('<td>').html(addCommas(sum)+'원'))
+						.append($('<td>').html(addCommas(item.warePrice)+'원'))
 						.append($('<td>').html('카드'))
 						.append($('<td>').append($('<input>').attr({
 							type:'button',
@@ -72,8 +73,8 @@
 						$('<tr>')
 						.append($('<td>').html(item.stName))
 						.append($('<td>').html(addCommas(item.wareQty)))
-						.append($('<td>').html(addCommas(item.warePrice)+'원'))
 						.append($('<td>').html(addCommas(sum)+'원'))
+						.append($('<td>').html(addCommas(item.warePrice)+'원'))
 						.append($('<td>').html('현금'))
 						.append($('<td>').append($('<input>').attr({
 							type:'button',
@@ -82,9 +83,11 @@
 							value:'삭제불가'
 						})))
 						.appendTo('#operatingreservTable tbody');
-						orSum += sum;		// 현금 영업준비금 때문에 필요
+						orSum += Number(item.warePrice);		// 현금 영업준비금 때문에 필요
 					}
 				});
+				
+				console.log('total sum : ' + totalSum)
 				
 				addDataList = sessionStorage.getItem("jsonVoList");
 				console.dir(addDataList)
@@ -99,17 +102,18 @@
 
 					getList();
 					for(i=0;i<addDataList.length;i++) {
-						listSum += addDataList[i].sum;
+						listSum += addDataList[i].warePrice;
 						if(addDataList[i].stPayMethod == '현금') {
-							orSum += addDataList[i].sum;
+							orSum += addDataList[i].warePrice;
 							console.log('session에 있는 현금  : ' + addDataList[i].stPayMethod)
 						}
 					}
+					
 					totalSum += listSum;
 				}
 				
 				$('<tr>')
-				.append($('<th>').html('총금액'))
+				.append($('<th>').html('총지출액'))
 				.append($('<th>').html(addCommas(totalSum)+'원').attr('colspan','6').attr('id','totalSum').css('text-align','right'))
 				.appendTo('#operatingreservTable tfoot');
 				addTotalSum = totalSum;
@@ -132,8 +136,8 @@
 			$('<tr>').attr('id','deleteRow'+[i])
 			.append($('<td>').html(addDataList[i].stName))
 			.append($('<td>').html(addDataList[i].wareQty))
-			.append($('<td>').html(addCommas(addDataList[i].warePrice)+'원'))
-			.append($('<td>').html(addCommas(addDataList[i].sum)+'원').attr('id','sum'))
+			.append($('<td>').html(addCommas(addDataList[i].sum)+'원'))
+			.append($('<td>').html(addCommas(addDataList[i].warePrice)+'원').attr('id','warePrice'))
 			.append($('<td>').html(addDataList[i].stPayMethod))
 			.append($('<td>').append($('<input>').attr({
 				type:'button',
@@ -169,6 +173,30 @@
 	
 	var cashSum=0, usedMile=0, totalcash=0;		// 현금 매출액, 사용된 마일리지, 총 현금 시재
 	var defaultcash=50000, totalcashsales=0;	// 기본준비금, 총 현금 매출액
+	
+	function getStoreOpen() {
+		$.ajax({
+			url:"storeopen",		// request 보낼 서버경로
+			type:'GET',			
+			data:{sId:sId},				// 보낼 데이터 (매장id 보내야함)
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				console.log('data : ' + data)
+				jsonString = JSON.stringify(data);
+				jsonData = JSON.parse(jsonString);
+				console.log('store open data parse : ' + jsonData.defaultCash)
+				
+				DBdefaultCash = jsonData.defaultCash;
+				storeOpenTime = jsonData.openTime;
+				
+				$('#defaultCash').val(DBdefaultCash);
+				$('#defaultCash').text(addCommas(DBdefaultCash)+'원');
+			}
+		});
+	}
+	
 	
 	// 현금 시재 정산 페이지 호출
 	function getCashAdvance() {
@@ -259,6 +287,7 @@
 				alert('통신 실패');
 			},
 			success:function(data){
+				getStoreOpen();
 				getCashAdvance();
 				$('#content').html(data);
 			}
@@ -290,6 +319,7 @@
 						value:item.stQty
 					})))
 					.append($('<td>').html(item.stNum).attr('hidden','hidden'))
+					.append($('<td>').html(item.lackQty).attr('hidden','hidden'))
 					.appendTo('#stocktruthlistTable tbody');
 				});
 				
@@ -367,6 +397,7 @@
 		
 		var closeSign = confirm('마감을 완료 하시겠습니까?');
 		if(closeSign) {
+			
 			$('#cashadvanceInsert').val(JSON.stringify(cashDataList));
 			$('#stocktruthInsert').val(JSON.stringify(stockTruthList));
 			$('#operationreservInsert').val(JSON.stringify(addDataList));

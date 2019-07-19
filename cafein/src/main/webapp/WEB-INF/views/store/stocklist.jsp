@@ -10,7 +10,8 @@
 
 <script src="./js/json.min.js"></script>
 <script type="text/javascript">
-
+	
+	
 	$(function() {
 		stockList();
 

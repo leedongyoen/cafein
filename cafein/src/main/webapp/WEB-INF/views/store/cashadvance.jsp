@@ -52,6 +52,7 @@
 		
 	}
 	
+	// input 태그에 숫자만 입력받기 위한 함수
 	function inNumber(){
         if(event.keyCode<48 || event.keyCode>57){
            event.returnValue=false;
@@ -61,6 +62,9 @@
 
 	// 시재 등록 및 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#cashInsert').on("click",function(){
+		
+		sessionStorage.removeItem("jsonCashList");
+		cashDataList = new Array();
 		
 		// 총 현금 시재
 		totalcashSum = Number(removeCommas($('#totalcash50000').val())) + Number(removeCommas($('#totalcash10000').val())) + Number(removeCommas($('#totalcash5000').val())) 
@@ -82,6 +86,7 @@
 			// input 태그에 입력한 값을 sessionStorage에 담기 위한 배열
 			// cash : 현금시재, defference : 차액, orCash : 영업준비금, netIncome : 순수익
 			var cashList = {
+					sId:sId,
 					c50000:$('#cash50000').val(),
 					c10000:$('#cash10000').val(),
 					c5000:$('#cash5000').val(),
@@ -91,7 +96,8 @@
 					cash:totalcashSum,
 					difference:minusCash,
 					orCash:operatingreserveSum,
-					netIncome:totalcashsales
+					netIncome:totalcashsales,
+					openTime:storeOpenTime
 			};
 			
 			// 배열에 넣기
@@ -105,6 +111,8 @@
 		}
 		console.log('jsonCashList : ' + jsonCashList)
 		
+		
+		// input 태그에 값이 없으면 저장이 되지 않도록 하기 위함
 		if($('#cash50000').val() == "") {
 			alert("5만원 권수를 입력해 주세요.");
 			$('#cash50000').focus();
@@ -154,6 +162,8 @@
 	// 시재 재등록 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	// 저장 후 데이터 변경 못하게 할지 생각해보기
 	$('#cashEdit').on("click",function(){
+		sessionStorage.removeItem("jsonCashList");
+		cashDataList = new Array();
 		//$('#resultTable').css('visibility','hidden');
 		$('#cashadvanceSave').text('수정 전');
 		$('#cashInsert').attr('disabled',false);
@@ -172,7 +182,7 @@
 			<table class="table table-striped">
 				<tr>
 					<th>기본 준비금</th>
-					<td><p id="defaultCash">50,000원</p></td>
+					<td><p id="defaultCash"></p></td>
 				</tr>
 				<tr>
 					<th>영업 지출금(현금 결제건)</th>

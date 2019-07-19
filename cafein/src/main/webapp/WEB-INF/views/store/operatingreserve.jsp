@@ -22,7 +22,8 @@
 
 		var stName = $('#stName').val();
 		var wareQty = $('#wareQty').val();
-		var warePrice = $('#warePrice').val();
+		sum = $('#sum').val();
+		var warePrice = wareQty*sum;
 		var stPayMethod = $('input[name="stPayMethod"]:checked').val();
 		console.log('stPayMethod : ' + stPayMethod)
 		
@@ -35,14 +36,14 @@
 	    var sysdate = year + '-' + mon + '-' + day;		//chan_val
 	    console.log('sysdate : ' + sysdate);
 	    
-	    if(stName != '' && wareQty != '' && warePrice != '') {
+	    if(stName != '' && wareQty != '' && sum != '') {
 	    	
 	    	// 배열에 들어갈 객체들을 list에 담는다
 			var voList = {		// llist
 					 wareDate : sysdate
 				    , wareQty : wareQty
-				    , warePrice : removeCommas(warePrice)
-				    , sum : wareQty*removeCommas(warePrice)
+				    , warePrice : wareQty*removeCommas(sum)
+				    , sum : removeCommas(sum)
 				    , stName : stName
 				    , sId : sId
 				    , stPayMethod : stPayMethod
@@ -57,7 +58,7 @@
 
 		console.log('adddatalist : '+addDataList);
 		
-		sum = removeCommas(wareQty) * removeCommas(warePrice);
+		warePrice = removeCommas(wareQty) * removeCommas(sum);
 		
 		if(stName == "") {
 			alert("항목을 입력해 주세요.");
@@ -67,17 +68,17 @@
 			alert("수량을 입력해 주세요.");
 			$('#wareQty').focus();
 			return;
-		} else if(warePrice == "") {
+		} else if(sum == "") {
 			alert("가격을 입력해 주세요.");
-			$('#warePrice').focus();
+			$('#sum').focus();
 			return;
 		}
 
 		$('<tr>')
 		.append($('<td>').html(stName))
 		.append($('<td>').html(wareQty))
-		.append($('<td>').html(warePrice+'원'))
-		.append($('<td>').html(addCommas(sum)+'원').attr('id','sum'))
+		.append($('<td>').html(addCommas(sum)+'원'))
+		.append($('<td>').html(addCommas(warePrice)+'원').attr('id','warePrice'))
 		.append($('<td>').html(stPayMethod))
 		.append($('<td>').append($('<input>').attr({
 			type:'button',
@@ -85,12 +86,12 @@
 		}).addClass('delbtn')))
 		.appendTo('#operatingreservTable tbody');
 		
-		addTotalSum += sum;
+		addTotalSum += warePrice;
 		
 		console.log('stPayMethod val : '+stPayMethod)
 		
 		if(stPayMethod == '현금') {
-			operatingreserveSum += sum;
+			operatingreserveSum += warePrice;
 		}
 		
 		console.log('addTotalSum : ' +addTotalSum)
@@ -99,7 +100,7 @@
 		
 		$('#stName').val('');
 		$('#wareQty').val('');
-		$('#warePrice').val('');
+		$('#sum').val('');
 		$("#stPayMethod").val('카드').prop("selected", true);
 		
 		console.log("operatingreserv에서 daycal total.val : " + $('#totalSum').text())
@@ -150,20 +151,21 @@
 	$('#backbtn').on("click",function(){
 		$('#stName').val('');
 		$('#wareQty').val('');
-		$('#warePrice').val('');
+		$('#sum').val('');
 		$("#stPayMethod").val('카드').prop("checked", true);
 	})
 	
 	// 저장 버튼 클릭 시 실행 ------------------------------------------------------------------------------
 	$('#savebtn').on("click",function(){
 		$('#operatingreserveSave').text('수정 완료');
+		$('#savebtn').attr('disabled',true);
 		$('#addbtn').attr('disabled',true);
 		$('#backbtn').attr('disabled',true);
 		$('.delbtn').attr('disabled',true);
 		$('.delbtn').attr('value','삭제불가');
 		$('#stName').attr('readonly',true);
 		$('#wareQty').attr('readonly',true);
-		$('#warePrice').attr('readonly',true);
+		$('#sum').attr('readonly',true);
 		$("input[name=stPayMethod]").attr('disabled',true); 
 
 
@@ -173,13 +175,14 @@
 	// 저장 후 데이터 변경 못하게 할지 생각해보기
 	$('#editbtn').on("click",function(){
 		$('#operatingreserveSave').text('수정 전');
+		$('#savebtn').attr('disabled',false);
 		$('#addbtn').attr('disabled',false);
 		$('#backbtn').attr('disabled',false);
 		$('.delbtn').attr('disabled',false);
 		$('.delbtn').attr('value','삭제');
 		$('#stName').attr('readonly',false);
 		$('#wareQty').attr('readonly',false);
-		$('#warePrice').attr('readonly',false);
+		$('#sum').attr('readonly',false);
 		$("input[name=stPayMethod]").attr('disabled',false); 
 	})
 	
@@ -228,7 +231,7 @@
 					<th>가격</th>
 				</tr>
 				<tr>
-					<td><input type="text" id="warePrice"  onkeypress="inNumber()" numberOnly></td>
+					<td><input type="text" id="sum"  onkeypress="inNumber()" numberOnly></td>
 				</tr>
 				<tr>
 					<th>결제방식</th>

@@ -17,6 +17,9 @@ AND OP_NAME IS NULL
 <if test="sort == null or sort == '' ">
 ORDER BY CU_NUM
 </if>
+<if test="sort != null and sort != '' ">
+ORDER By ${sort}
+</if>
 </select>
 <select id="getMymenuDetail" resultType="viewmymenu">
 SELECT
