@@ -7,7 +7,7 @@
 
 	<!-- 매장 pos기 메뉴조회 -->
 	<select id="getStoreMenuList" resultType="viewpos">
-		SELECT
+		SELECT DISTINCT
 		S_ID "sId"
 		, RECIPENO "recipeno"
 		, M_NAME "mName"
