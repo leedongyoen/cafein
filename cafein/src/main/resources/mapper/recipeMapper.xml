@@ -44,6 +44,7 @@
      		, M_NUM
      		, CA_NUM
      		, OP_NAME 
+     		, RECIPENO
      		
      	from recipe where ca_num='CAOP'
      </select>
