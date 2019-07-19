@@ -488,15 +488,23 @@ p {
 					getCloseReceiptCash();
 					getCloseReceiptMileage();
 					
-					receiptJsonString = JSON.stringify(data);
-					console.log('opentime, closetime : ' + receiptJsonString.openTime + ', ' + receiptJsonString.closeTime);
 					
-					receipt = JSON.parse(receiptJsonString);
-					console.log('opentime, closetime : ' + receipt.store.openTime + ', ' + receipt.closeTime);
+					console.log("마감 정산 후 data : "+data);
+					console.log("마감 정산 후 data.store : "+data.store);
+					console.log("마감 정산 후 data.store.lenght : "+data.store.length);
 					
-					$('#opentime').text('2019');
-					
-					
+					var opentime;
+					var closetime;
+					for(var i=0;i<data.store.length;i++){
+						opentime = data.store[i].openTime;
+						closetime = data.store[i].closeTime;
+					}
+					console.log("마감 정산 후 opentime: "+opentime);
+					console.log("마감 정산 후 closetime: "+closetime);
+
+					$('#opentime').text(opentime);
+					$('#closetime').text(closetime);
+				
 					// 마감 내역 모달창 show
 					$("#receiptmodal").modal('show');
 					console.log('store : '+data.store)
