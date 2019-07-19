@@ -115,13 +115,13 @@
 		<tr>
 			<th>HOT/ICE</th>
 			<td>
-				<input type="radio" id="ice" name="hotice_option" value="ice">ice
-				<input type="radio"  id="hot" name="hotice_option" value="hot">hot
+				<input  type="radio" id="ice" name="hotice_option" value="CAIC">ice
+				<input  type="radio"  id="hot" name="hotice_option" value="CAHT">hot
 			</td>
 		</tr>
 		<tr>
 			<th>OPTION</th>
-			<td id="option"></td>
+			<td id="selecOp"></td>
 		</tr>
 		<tr>
 			<th>총 금 액</th>
@@ -193,34 +193,58 @@
 						
 		function detailmyMenuListResult(datas){
 			$("#myModal").modal('show');
-			
 		$("#detailtable table").empty();
-		$("#option").html("");
+		$("#selecOp").html("");
 		var pl = 0;
 		$.each(datas, function(data, item) {
 			console.log(item);
-				$("#sId").val(item.sId);
-				$("#cId").val(item.cId);
-				$("#mNum").val(item.mNum);
- 				$("#cuNum").val(item.cuNum);
-				$("#sName").val(item.sName);
-				$("#mName").val(item.mName);
-				if(item.opName =="ICE"){
+			$('input:text[name="sId"]').val(item.sId);
+			$('input:text[name="cId"]').val(item.cId);
+			$('input:text[name="mNum"]').val(item.mNum);
+			$('input:text[name="cuNum"]').val(item.cuNum);
+			$('input:text[name="sName"]').val(item.sName);
+			$('input:text[name="mName"]').val(item.mName);
 
+				if(item.opName =="ICE"){
+ 
 					$("#ice").attr("checked","checked");
 					
 				}else if(item.opName =="HOT"){
 					$("#hot").attr("checked","checked");	
 				}
 				if(item.caNum =="CAOP"){
-					var option = $("#option").html();
-					option =option+'<br>'+item.opName+ '('+item.opPrice+')원';
-					$("#option").html(option);
-					pl +=item.opPrice;
-				}else{
+					
+					$("<input>").attr({ 
+					     type: "checkbox",
+					     name: "cuoptionlist", 
+					     id: item.stNum,
+					     value: item.stNum,
+					     checked:"checked",
+					     disabled:"disabled"
+					   	})
+					   	.attr("class","checkoption")
+					   	.appendTo("#selecOp");			
+					$("<label>").attr("for",item.stNum)
+								.append(item.opName+"("+item.opPrice+"원 추가)")
+								.appendTo("#selecOp");
+					$("<input>").attr({
+						type:'hidden',
+						id : 'option'+item.stNum,
+						value: item.opPrice
+					}).appendTo("#selecOp");
+					$("<br>").appendTo("#selecOp");
+					
+					
+					/* $("#selecOp").append("<input type='checkbox' name='checkbox' id='"
+							+item.stNum+"' value='"+item.stNum+"'><label for='"+item.stNum+"'><input type='text' name='"+item.opPrice+"' value='"+item.opPrice+"'>"+
+							"<input type='hidden' name='cuoptionlist' value='"+item.stNum+"'>");	 */
+					pl += item.opPrice;
+				}
+				else{
 					$("#mPrice").val(item.mPrice);
 					pl += item.mPrice;
 				}
+				
 		
 		});
 		$("#totalPrice").val(pl);
@@ -287,16 +311,17 @@ $(function(){
 		var list =  $("#mymenudetailForm").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
-		var option = $("#option").html();
-		$('[name=hotice_option]:checked').each(function(){
+
+		
+		$('[name=cuoptionlist]:checked').each(function(){
 			selectop.push($(this).val());
 			selectoptionck=true;
 		});
 		if(selectoptionck){
 			
-			list.cuNumList = selectop;
+			list.cuoptionlist = selectop;
 		}else{
-			list.cuNumList = null;
+			list.cuoptionlist = null;
 		}
 		list.qty = $('#no').html();
 		

@@ -306,7 +306,9 @@
 					display:"none"
 				});
 				 
-					
+				$('.C5').css({
+					display:"none"
+				});	
 			}
 		});
 	}
