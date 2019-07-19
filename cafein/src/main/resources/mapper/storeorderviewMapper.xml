@@ -114,5 +114,23 @@
 			WHERE O_NUM = #{oNum}
 
 	</update>
+	
+	
+	<select id="getordertimecheck" resultType="order">
+	
+		SELECT O_NUM
+		FROM ORDERS
+		WHERE DELIVERY_STATUS = 'C0'
+		    AND TO_CHAR(SYSDATE,'HH24:MI') > TO_CHAR(O_DATE+(5/24/60),'HH24:MI')
+			
+	</select>
+	
+	<update id="updatecheckordercancel">
+	
+		UPDATE ORDERS
+		SET DELIVERY_STATUS = 'C4'
+		WHERE O_NUM = #{oNum}
+	
+	</update>
 
 </mapper>

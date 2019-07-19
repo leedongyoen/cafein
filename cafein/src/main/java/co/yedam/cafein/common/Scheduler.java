@@ -26,7 +26,7 @@ public class Scheduler {
 		
 		
 		service.getdeliverytatuscheck();
-		 
+		service.getordertimecheck();
 		
 	}
 }
