@@ -9,7 +9,8 @@
 <%@ include file="storehead.jsp" %>
 <title>Store Opening Page</title>
 <script>
-	
+
+	var id = "<%= (String)session.getAttribute("sid") %>";
 	var openTotalCash = 0; //영업준비시재 합계
 // 	$('#orSum').text(addCommas(operatingreserveSum)+'원');
 	
@@ -68,7 +69,7 @@
 		} else {
 			$('#totalcash100').val(0);
 		}
-		//변수에 텍스트값 더해주기
+		//변수에  텍스트 총값 더해주기
 		openTotalCash = parseInt(removeCommas($('#totalcash50000').val())) + parseInt(removeCommas($('#totalcash10000').val())) + 
 						parseInt(removeCommas($('#totalcash5000').val())) + parseInt(removeCommas($('#totalcash1000').val())) +
 						parseInt(removeCommas($('#totalcash500').val())) + parseInt(removeCommas($('#totalcash100').val()));
@@ -94,7 +95,7 @@
 	
 	function makeData(){
 			//객체에 제이슨형태로 담기. 오픈시간/매장아이디/영업준비금
-  		var JsonData ={"openTime" : '20190718', "sId" : 'SH001', "defaultCash" : openTotalCash};
+  		var JsonData ={"sId" : id, "defaultCash" : openTotalCash};
 			
 		//객체를 제이슨으로 변환
   		console.log(JSON.stringify(JsonData));

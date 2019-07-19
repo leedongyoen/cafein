@@ -9,6 +9,7 @@
 	<select id="getStoreMenuList" resultType="viewpos">
 		SELECT
 		S_ID "sId"
+		, RECIPENO "recipeno"
 		, M_NAME "mName"
 		, M_NUM "mNum"
 		, CA_NUM "caNum"
@@ -17,6 +18,7 @@
 		, M_PRICE "mPrice"
 		FROM POSSEL_VIEW
 		group by S_ID
+		, RECIPENO
 		, M_NAME
 		, M_NUM
 		, CA_NUM

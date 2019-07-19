@@ -79,8 +79,13 @@
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
+				
 					<form class="form-borizontal" id="mymenudetailForm" action="#" method="POST">
 						<div class="table-responsive">
+						<input type="text" name="mNum" style="display: none;" >
+						<input type="text" name="sId" style="display: none;" >
+						<input type="text" name="cId" style="display: none;" >
+						<input type="text" name="orderqty" style="display: none;">
 						<table id="detailtable" class="table table-hover">
 		<tr>
 			<th>매 장 명</th>
@@ -102,9 +107,9 @@
 			<th>수 량</th>
 			<td>
 			
-				<button onclick="add(-1)">-</button>
+				<input type="button" onclick="add(-1)" value="-">
 				<span id="no">1 </span>
-				<button onclick="add(1)">+</button>
+				<input type="button" onclick="add(1)" value="+">
 			</td>
 		</tr>
 		<tr>
@@ -194,6 +199,9 @@
 		var pl = 0;
 		$.each(datas, function(data, item) {
 			console.log(item);
+				$("#sId").val(item.sId);
+				$("#cId").val(item.cId);
+				$("#mNum").val(item.mNum);
  				$("#cuNum").val(item.cuNum);
 				$("#sName").val(item.sName);
 				$("#mName").val(item.mName);
@@ -253,10 +261,8 @@
 	
 	//수량
 	function add(num) {
-		$("#no").empty();
 		var price = $('#mPrice').val();
 		var v_totalprice = $('#totalPrice').val();
-
 		var no = $("#no").html();
 		if (num == -1) {
 			if (Number(no) == 1) {
@@ -313,7 +319,26 @@ $(function(){
 
 	});
 	//주문하기
-	
+	$("#cu_orderbtn").on("click",function(){
+		var list =  $("#mymenudetailForm").serializeObject();
+		var selectop = [];
+		var selectoptionck=false;
+		$('[name=hotice_option]:checked').each(function(){
+			selectop.push($(this).val());
+			selectoptionck=true;
+		});
+		if(selectoptionck){
+			
+			list.cuNumList = selectop;
+		}else{
+			list.cuNumList = null;
+		}
+		
+		$('[name=orderqty]').val($('#no').html());
+		console.log(JSON.stringify(list));
+		
+		document.menudetailForm.submit();
+	});
 	});
 </script>
 </body>

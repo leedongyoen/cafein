@@ -19,7 +19,7 @@ public class OrdersVO {
 	private String deliveryStatus;
 	private String refuseReason;
 	private String takeTime;
-
+	private Timestamp deApplyTime;
 	
 	// store name을 가져오기 위해서
 	private String oDnum; // 주문상세 테이블 pk
@@ -37,6 +37,12 @@ public class OrdersVO {
 	private int cnt;		// 주문 건수를 알기위함
 	
 	
+	public Timestamp getDeApplyTime() {
+		return deApplyTime;
+	}
+	public void setDeApplyTime(Timestamp deApplyTime) {
+		this.deApplyTime = deApplyTime;
+	}
 	public String getmName() {
 		return mName;
 	}
@@ -199,10 +205,22 @@ public class OrdersVO {
 		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
 				+ receipt + ", sId=" + sId + ", payMethod=" + payMethod + ", mileage=" + mileage + ", cAdd=" + cAdd
 				+ ", cAdd3=" + cAdd3 + ", totals=" + totals + ", deliveryStatus=" + deliveryStatus + ", refuseReason="
+<<<<<<< HEAD
 				+ refuseReason + ", takeTime=" + takeTime + ", oDnum=" + oDnum + ", sName=" + sName + ", mNum=" + mNum
 				+ ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno=" + receipno + ", caNum=" + caNum
 				+ ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option=" + hotice_option + ", addmileage="
 				+ addmileage + ", mName=" + mName + ", cnt=" + cnt + "]";
+=======
+				+ refuseReason + ", takeTime=" + takeTime + ", deApplyTime=" + deApplyTime + ", oDnum=" + oDnum
+				+ ", sName=" + sName + ", mNum=" + mNum + ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno="
+				+ receipno + ", caNum=" + caNum + ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option="
+				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + "]";
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 	}
 
+<<<<<<< HEAD
+=======
+
+	
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 }

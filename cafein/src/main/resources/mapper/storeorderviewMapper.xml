@@ -86,5 +86,51 @@
 		SET REFUSE_REASON = #{refuseReason} , DELIVERY_STATUS = 'C4'
 		WHERE O_NUM = #{oNum}	
 	</update>
+	
+	
+	<update id="updateorderapply">
+		UPDATE ORDERS
+			SET DE_APPLY_TIME= systimestamp
+			    , TAKE_TIME = #{takeTime}
+			     , DELIVERY_STATUS='C1'
+			WHERE O_NUM= #{oNum}
+	</update>
+	
+	
+	<select id="getdeliverytatuscheck" resultType="order">
+	
+		SELECT O_NUM
+		FROM ORDERS
+		WHERE TAKE_TIME IS NOT NULL
+		    AND DELIVERY_STATUS = 'C1'
+		    AND TO_CHAR(SYSDATE,'HH24:MI') > TO_CHAR(DE_APPLY_TIME+(TAKE_TIME/24/60),'HH24:MI')
+			
+	</select>
+	
+	<update id="updatedeliverystatus">
+		
+			UPDATE ORDERS
+			SET DELIVERY_STATUS = 'C3'
+			WHERE O_NUM = #{oNum}
+
+	</update>
+	
+	
+	<select id="getordertimecheck" resultType="order">
+	
+		SELECT O_NUM
+		FROM ORDERS
+		WHERE DELIVERY_STATUS = 'C0'
+		    AND TO_CHAR(SYSDATE,'HH24:MI') > TO_CHAR(O_DATE+(5/24/60),'HH24:MI')
+			
+	</select>
+	
+	<update id="updatecheckordercancel">
+	
+		UPDATE ORDERS
+		SET DELIVERY_STATUS = 'C4'
+		WHERE O_NUM = #{oNum}
+	
+	</update>
 
 </mapper>

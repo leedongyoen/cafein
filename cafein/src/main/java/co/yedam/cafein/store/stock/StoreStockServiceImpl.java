@@ -43,4 +43,10 @@ public class StoreStockServiceImpl implements StoreStockService {
 		return stockDao.getStock(vo);
 	}
 
+	@Override
+	public int updateEnterQty(StockVO vo) {
+		
+		return stockDao.updateEnterQty(vo);
+	}
+
 }

@@ -21,5 +21,21 @@ public class CustomerJoinDAO {
 		return mybatis.selectOne("CustomerJoinDAO.idCheck", cId);
 	}
 
+	public int authKey(CustomerVO authNum) {
+		return mybatis.insert("CustomerJoinDAO.authKey", authNum);
+	}
+
+	public int authKey(String authNum) {
+		return mybatis.insert("CustomerJoinDAO.authKey", authNum);
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public int authkeyCheck(CustomerVO authNum) {
+		return mybatis.selectOne("CustomerJoinDAO.authkeyCheck", authNum);
+	}
+
+	
+
 	
 }
