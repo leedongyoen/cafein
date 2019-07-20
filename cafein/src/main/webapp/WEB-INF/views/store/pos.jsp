@@ -141,6 +141,7 @@ footerrow : true});
  //메뉴탭에서 매장메뉴 나오기
  $(document).ready(function(){
 	 $("#cusSearchModal").modal('hide');
+	 $("#orderListModal").modal('hide');
 		//메뉴로드
 	 $.ajax({
 			url:'pos/'+sId,
@@ -279,6 +280,10 @@ footerrow : true});
  	});
 
  	
+ 	//주문내역 검색 모달창
+ 	$(document).on("click","#orderList", function(){
+ 		$("#orderListModal").modal('show');
+ 	});
 
  	
  	
@@ -398,10 +403,7 @@ footerrow : true});
 	<div style="text-align:left">
 	<input type="button" id="clearRow" value="전체취소">
 	<input type="button" id="deleteRow" value="선택취소">
-	
-	
 	</div>
-	<div style="text-align:right"> 총 가격 4600원</div>
 			<div style="text-align:right">
 			<button id="customersearch">회원검색</button>
 		<!-- 고객 검색 모달창 -->	
@@ -421,6 +423,47 @@ footerrow : true});
 							<tr> 
 								<th>NAME</th>
 								<th>TEL</th>
+								<th>MILEAGE</th>
+							</tr>
+							</thead>
+							<tbody id="searchTable">
+							</tbody>
+						</table>
+						</div>
+					</form>
+				
+				</div>
+				<div class="modal-footer">		
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<button id="orderList">결제정보</button>
+	<!-- 결제내역조회 모달 -->
+	<div class="modal fade" id="orderListModal" role="dialog">
+		<div class="modal-dialog">		
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">ORDER LIST</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form class="form-borizontal" action="#" method="POST">
+						<div class="btn-group">
+							<input type="date" class="btn btn-secondary" id="startDate"
+								name="startDate">&nbsp; <input type="date"
+								class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
+							<input type="button" value="검색" class="btn btn-success"
+								id="btnSearch" onclick="dateSearch()">
+						</div>
+						<div class="table-responsive">
+						<table id="orderlisttable" class="table">
+							<thead>
+							<tr> 
+								<th>DATE</th>
+								<th>DATE</th>
 								<th>MILEAGE</th>
 							</tr>
 							</thead>
