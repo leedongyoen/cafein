@@ -425,7 +425,11 @@ p {
 				console.log(data)
 				receiptCashString = JSON.stringify(data);
 				receiptCashData = JSON.parse(receiptCashString);
-				console.log('receiptCashData : ' + receiptCashData.total)
+				console.log('receiptCashData : ' + receiptCashData)
+				for(var i=0;i<receiptCashData.length;i++){
+					// 배열로 넘어온 데이터 어떻게 구분할지 고민
+					console.log('for문 안 data (total): ' +  receiptCashData[i].total)
+				}
 			}
 		});
 	}
