@@ -445,6 +445,13 @@ p {
 			},
 			success:function(data){
 				console.log(data)
+				receiptMileageString = JSON.stringify(data);
+				receiptMileageData = JSON.parse(receiptMileageString);
+				console.log('receiptMileageData : ' + receiptMileageData)
+				for(var i=0;i<receiptMileageData.length;i++){
+					// 배열로 넘어온 데이터 어떻게 구분할지 고민
+					console.log('for문 안 data (total): ' +  receiptMileageData[i].total)
+				}
 			}
 		});
 	}
@@ -513,6 +520,10 @@ p {
 					$("#receiptmodal").modal('show');
 					console.log('store : '+data.store)
 					console.log('warehousing : '+data.warehousing)
+					for(var i=0;i<receiptMileageData.length;i++){
+						// 배열로 넘어온 데이터 어떻게 구분할지 고민
+						console.log('for문 안 receiptMileageData (total): ' +  receiptMileageData[i].total)
+					}
 					console.log(data)
 				}
 			});
