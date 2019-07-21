@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.cafein.viewvo.ViewStockCheckVO;
 import co.yedam.cafein.vo.MenuVO;
@@ -24,19 +25,45 @@ public class RecipeController {
 	RecipeSerciveImpl service,service2;
 	
 	
-	//조건있는 전체조회
-	@RequestMapping(value="/recipes/{sId}/{mNum}", method=RequestMethod.GET)
-	public List<ViewStockCheckVO> getRecipeList(
-								@PathVariable("sId") String sId
-								, @PathVariable("mNum") String mNum
-								,ViewStockCheckVO vo
-								,Model model){
-		vo.setsId(sId);
-		vo.setmNum(mNum);
-		return service.getRecipeList(vo);
-		
-	}
 	
+	/*
+	 * @RequestMapping(value="/storerecipemenuoption/{sId}/{mNum}",
+	 * method=RequestMethod.GET) public ModelAndView getRecipeList(
+	 * 
+	 * @PathVariable("sId") String sId , @PathVariable("mNum") String mNum
+	 * //,ViewStockCheckVO vo ,Model model){
+	 * 
+	 * 
+	 * ModelAndView mv = new ModelAndView(); ViewStockCheckVO vo = new
+	 * ViewStockCheckVO(); RecipeVO vo2 = new RecipeVO(); StockVO vo3 = new
+	 * StockVO();
+	 * 
+	 * vo.setsId(sId); vo.setmNum(mNum); vo2.setsId(sId); vo2.setmNum(mNum);
+	 * vo3.setsId(sId); //
+	 * mv.addObject("recipedetail",service.getRecipeDetailList(vo2));
+	 * mv.addObject("recipelist",service.getRecipeList(vo)); //모든 레시피 정보 가져옴
+	 * mv.addObject("stocklist",service.getRecipeStockList(vo3)); //stock caNum 가져옴
+	 * 
+	 * mv.setViewName("store/menulist"); return mv;
+	 * 
+	 * }
+	 */
+	
+	//조건있는 전체조회
+	
+	  @RequestMapping(value="/recipes/{sId}/{mNum}",
+	  method=RequestMethod.GET) public List<ViewStockCheckVO> getRecipeList(
+	  
+	  @PathVariable("sId") String sId , @PathVariable("mNum") String mNum
+	  ,ViewStockCheckVO vo ,Model model){
+	  
+	  
+	  vo.setsId(sId); vo.setmNum(mNum); 
+	  //service.getRecipeDetailList(vo); 
+	  return service.getRecipeList(vo);
+	  
+	  }
+	 
 	
 	@ResponseBody
 	@RequestMapping(value="/recipes/{recipeno}", method=RequestMethod.DELETE)
@@ -100,15 +127,13 @@ public class RecipeController {
 	
 	
 	//stock caNum List 받아옴
-		@RequestMapping(value="/recipes/{sId}", method=RequestMethod.GET)
-		public List<StockVO> getStockCaNumList(
-									@PathVariable("sId") String sId
-									,StockVO vo
-									,Model model){
-			vo.setsId(sId);
-			return service.getRecipeStockList(vo);
-		}
 	
+	  @RequestMapping(value="/recipes/{sId}", method=RequestMethod.GET) public
+	  List<StockVO> getStockCaNumList(
+	  
+	  @PathVariable("sId") String sId ,StockVO vo ,Model model){ vo.setsId(sId);
+	  return service.getRecipeStockList(vo); }
+	 
 	
 		
 	//옵션 
@@ -147,19 +172,17 @@ public class RecipeController {
 		
 		
 		//ice hot 이 stnum이  null이라 급하게 가져옴
-		@RequestMapping(value="/options/{sId}/{mNum}", method=RequestMethod.GET)
-		public List<RecipeVO> getRecipeIceHotList(
-									@PathVariable("sId") String sId
-									, @PathVariable("mNum") String mNum
-									,RecipeVO vo
-									,Model model){
-			vo.setsId(sId);
-			vo.setmNum(mNum);
-			return service.getRecipeDetailList(vo);
-			
-		}
-		
-		
+	
+	  @RequestMapping(value="/options/{sId}/{mNum}", method=RequestMethod.GET)
+	  public List<RecipeVO> getRecipeIceHotList(
+	  
+	  @PathVariable("sId") String sId , @PathVariable("mNum") String mNum ,RecipeVO
+	  vo ,Model model){ vo.setsId(sId); vo.setmNum(mNum); 
+	  return service.getRecipeDetailList(vo);
+	  
+	  }
+	  
+	 
 	
 	
 }
