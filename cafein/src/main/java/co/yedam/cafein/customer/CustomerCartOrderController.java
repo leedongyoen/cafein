@@ -240,11 +240,12 @@ public class CustomerCartOrderController {
 				
 				
 				
+				Map<String, Object> map = new HashMap<String, Object>();
 				
-				List<OrdersVO> orderlist = new ArrayList<OrdersVO>();
 				
 				  for(int c = 0;c<cartorder.size();c++) {
 					  
+					  List<OrdersVO> orderlist = new ArrayList<OrdersVO>();
 					  info = cartorder.get(c);
 					/*공통데이터를 뒤에 오는 메뉴들에도 넣어줘야함
 
@@ -260,7 +261,7 @@ x sId=SH001,
 x total=1010,
 
 		*/
-					  if(c>0) {
+					  
 						  cartorder.get(c).setoNum(cartorder.get(0).getoNum());
 						  cartorder.get(c).setcAdd(cartorder.get(0).getcAdd());
 						  cartorder.get(c).setcAdd3(cartorder.get(0).getcAdd3());
@@ -270,17 +271,15 @@ x total=1010,
 						  cartorder.get(c).setReceipt(cartorder.get(0).getReceipt());  
 						  cartorder.get(c).setsId(cartorder.get(0).getsId());  
 						  cartorder.get(c).setTotal(cartorder.get(0).getTotal());  
-						}
-					  //...
+						
+					//...
 					  
 					  
 				// order details 테이블에 넣을 vo
 				RecipeVO recipevo = new RecipeVO();
 				recipevo.setmNum(cartorder.get(c).getmNum());
-				System.out.println("현재 메뉴번호로 레시피 찾기: "+cartorder.get(c).getmNum());
 				// 해당 메뉴의 기본 레시피 번호
 				List<RecipeVO> recipelist = service.getorderrecipenolist(recipevo);
-				System.out.println("recipelist: "+recipelist);
 				OrdersVO insertvo;
 				
 				// 해당 메뉴의 기본 레시피 넣기
@@ -288,12 +287,13 @@ x total=1010,
 					insertvo = new OrdersVO();
 					insertvo.setoNum(cartorder.get(c).getoNum());
 					insertvo.setmNum(info.getmNum());
-					System.out.println("info.getmNum(): "+cartorder.get(c).getoNum()+" : "+info.getmNum());
+				
+					
 					if ((recipelist.get(n).getCaNum().equals("CAIC") && recipelist.get(n).getCaNum().equals(info.getHotice_option()))) {
 						insertvo.setoQty("0");
 						insertvo.setReceipno(recipelist.get(n).getRecipeno());
 						insertvo.setCaNum(recipelist.get(n).getCaNum());
-
+						
 						orderlist.add(insertvo);
 						
 					}else if((recipelist.get(n).getCaNum().equals("CAHT") && recipelist.get(n).getCaNum().equals(info.getHotice_option()))) {
@@ -301,6 +301,7 @@ x total=1010,
 						insertvo.setoQty("0");
 						insertvo.setReceipno(recipelist.get(n).getRecipeno());
 						insertvo.setCaNum(recipelist.get(n).getCaNum());
+						
 						orderlist.add(insertvo);
 
 					}else if((recipelist.get(n).getCaNum().equals("CAHT") && !(recipelist.get(n).getCaNum().equals(info.getHotice_option())))
@@ -313,16 +314,15 @@ x total=1010,
 						insertvo.setoQty(info.getoQty());
 						insertvo.setReceipno(recipelist.get(n).getRecipeno());
 						insertvo.setCaNum(recipelist.get(n).getCaNum());
+						
 						orderlist.add(insertvo);
 					}
 
-					System.out.println("들어간 자료? "+orderlist.toString());
 				}
 				
 				// 해당 메뉴의 옵션처리
 				if( info.getOptionlist() != null) {
-					System.out.println(cartorder.get(c).getOptionlist());
-					
+									
 					String[] optionlist = info.getOptionlist();
 					for (int n = 0; n < optionlist.length; n++) {
 						
@@ -332,25 +332,26 @@ x total=1010,
 						insertvo.setoQty(info.getoQty());
 						insertvo.setReceipno(optionlist[n]);
 						insertvo.setCaNum("CAOP");
-						System.out.println("들어간 자료22? "+insertvo);
+
 						orderlist.add(insertvo);
 					}
 					
 				}
 	
 				
-			}
 				
 				System.out.println("======== 완성" + orderlist);
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("list", orderlist);
-				System.out.println(map);
 				
-				/*
+				map.put("list", orderlist);
+				
+				
+				  System.out.println("map: "+map.get("list").toString());
+				
+				
 				//***** 여러개 넣기
 				// order details 테이블에 넣기
 				int n = service.insertorderdetails(map);
-
+		
 				System.out.println("===========결과 : "+n);
 				
 				// 해당 주문번호의 op_dnum수정
@@ -364,19 +365,10 @@ x total=1010,
 					n = service.insertmileage(info);
 				}
 				
-				
-				
-				*/
-				
+		}		
 				
 				
 				
-				
-		
-		  
-		  
-		  
-		  
 			
 		/*
 		 * JSONParser jsonParser = new JSONParser(); JSONObject cartObj = new

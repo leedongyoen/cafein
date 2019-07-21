@@ -164,7 +164,7 @@ function orderCartInsert(){
 </head>
 
 	<body>
-		<h1 align="center">주 2문</h1>
+		<h1 align="center">주 문</h1>
 		<div class="container" >
 		
 		<form action="ordercartmany" method="post" name="fCart">
@@ -187,13 +187,10 @@ function orderCartInsert(){
 				</tr>
 		<c:forEach items="${cartLists}" var="cartlist">
 				<tr>
-					<th>메 뉴e 명</th>
+					<th>메 뉴 명</th>
 					<td>
-					
 					 <input type="hidden" name="mNum" value="${cartlist.mNum}">
 					
-					 	
-					 
 					 ${cartlist.mName}
 						<c:if test="${cartlist.hotice_option eq 'CAHT'}">
 							( HOT )
@@ -311,13 +308,8 @@ function orderCartInsert(){
 				</c:forEach>
 				</table>
 				<br>				
-				<br><br><br>
-				<table>
-				
-				
-				
-				
-				
+				<br>
+				<table class="table">
 				
 				<tr id="reservetr" style="display: none;">
 					<th>적립금</th>

@@ -30,8 +30,8 @@ $(function(){
 	$("#menuTable tbody tr").click(function(){
 		
 		//tr 누를때 session에서 sid가져옴
+		<%-- var storeid = "<%= (String)session.getAttribute("sid") %>";  --%>
 		var storeid = "SH001";
-
 		
 		$('#insertMenuFormTable').hide();
 		$('#toggleTable').show();
@@ -361,7 +361,6 @@ $(function(){
 
 
 
-
 function insertMenuForm(){
 	$('#toggleTable').hide();
 	$('#recipeTablediv').hide();
@@ -555,6 +554,21 @@ function optionDelete(){
 		$("#fileForm").submit();
 
 	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </script>
 </head>
 <body>
