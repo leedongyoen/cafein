@@ -265,7 +265,7 @@ footerrow : true});
 		}else if(opName == 'ICE'){
 			$("#HOT").hide();
 			$("#ICE").hide();
-		}
+		}                                    
 	//	currNo++;
  	 jQuery("#gridlist").jqGrid('addRow', {
 //	       rowID : mNum,          //중복되지 않게 rowid설정
