@@ -49,6 +49,20 @@ public class OrdersVO {
 	private int cardRefundCnt; 
 	
 	
+	
+	
+	public String getDetailNm() {
+		return detailNm;
+	}
+	public void setDetailNm(String detailNm) {
+		this.detailNm = detailNm;
+	}
+	public int getAddcanclemileage() {
+		return addcanclemileage;
+	}
+	public void setAddcanclemileage(int addcanclemileage) {
+		this.addcanclemileage = addcanclemileage;
+	}
 	public Timestamp getDeApplyTime() {
 		return deApplyTime;
 	}
@@ -269,10 +283,13 @@ public class OrdersVO {
 				+ refuseReason + ", takeTime=" + takeTime + ", deApplyTime=" + deApplyTime + ", oDnum=" + oDnum
 				+ ", sName=" + sName + ", mNum=" + mNum + ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno="
 				+ receipno + ", caNum=" + caNum + ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option="
-				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", cnt=" + cnt
-				+ ", addMileageCnt=" + addMileageCnt + ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime
-				+ ", refundSum=" + refundSum + ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod
-				+ ", cashRefundCnt=" + cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + "]";
+				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", detailNm=" + detailNm
+				+ ", addcanclemileage=" + addcanclemileage + ", cnt=" + cnt + ", addMileageCnt=" + addMileageCnt
+				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", refundSum=" + refundSum
+				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
+				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + "]";
 	}
+
+
 	
 }
