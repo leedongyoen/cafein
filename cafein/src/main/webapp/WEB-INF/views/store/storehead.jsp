@@ -23,7 +23,7 @@
 $(function(){
 	var sId = "<%= (String)session.getAttribute("sId") %>";
 	var sName = "<%= (String)session.getAttribute("sName") %>";
-	console.log("sId = " + sId + "  sName = " + sName + "  openSwitch =" + openSwitch );
+	console.log("sId = " + sId + "  sName = " + sName );
 	
 	if(sId == "null") {
 		$("#loginbtn").css('display', 'inline');
