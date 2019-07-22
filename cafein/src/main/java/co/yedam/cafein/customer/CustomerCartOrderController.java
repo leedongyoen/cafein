@@ -209,6 +209,7 @@ public class CustomerCartOrderController {
 			  vo.setMileage( Integer.parseInt((String)insertParam.get("mileage"))); 
 			  
 			  
+			  
 			/*
 			 * String[] hioption = new String[hoticeop.size()]; hioption=
 			 * hoticeop.toArray(hioption); vo.setHotice_option(hoticeop.get(i));
