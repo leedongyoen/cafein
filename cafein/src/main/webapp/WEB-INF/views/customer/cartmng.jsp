@@ -212,7 +212,7 @@ function getOptionNaming(mnumber, stnumber){
 	<div
 		style="width: 100%; text-align: center; padding: 3px; border: 1px solid pink;"
 		id="CartListWrapper">
-		<h3 align="center">장바 구니</h3>
+		<h3 align="center">장바구니</h3>
 
 		<c:forEach var="cart" items="${optionname}" varStatus="i">
 			<script>
@@ -250,10 +250,10 @@ function getOptionNaming(mnumber, stnumber){
 						<thead>
 							<tr>
 								<th rowspan="1"></th>
-								<th rowspan="1">z   2z2  장 명</th>
-								<th colspan="2">상e품/ 옵션정보</th>
+								<th rowspan="1">매 장 명</th>
+								<th colspan="2">상품/옵션정보</th>
 								<th rowspan="1">ICE/HOT</th>
-								<th rowspan="1">수e량</th>
+								<th rowspan="1">수 량</th>
 								<th rowspan="1">구매 금액</th>
 
 							</tr>

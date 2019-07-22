@@ -7,7 +7,8 @@
 			   ,C_PW
 			   ,C_JOIN
 		FROM CUSTOMER
-		WHERE C_ID = #{cId} AND C_PW = #{cPw}
+		WHERE C_ID = #{cId}
+			<if test="cPw != null and cPw != '' ">AND C_PW = #{cPw}</if>
 	</select>
 	
 	<!-- 카카오 로그인 시 db에 정보가 있는지 확인 -->

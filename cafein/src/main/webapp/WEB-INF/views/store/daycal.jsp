@@ -59,7 +59,7 @@ p {
 		});
 	});
 
-	var sId = "<%= (String)session.getAttribute("sid") %>";			// 로그인 한 매장 아이디(세션값 받아와야함) 
+	var sId = "<%= (String)session.getAttribute("sId") %>";			// 로그인 한 매장 아이디(세션값 받아와야함) 
 	var sum, listSum=0, totalSum=0, addTotalSum=0,i;	// 합계(row별), session의 합계(row별 총 합계), db의 총 합계, operatingreserve.jsp에서 추가하는 항목의 합계
 	var addDataList, cashDataList, stockTruthList = new Array(), jsonStockList;			// sessionStorage 가 담길 배열 x 3
 	var stockList = new Array(), truthQty; 		// 재고수량과 실수량이 들어갈 list, list 내의 실수량
@@ -210,7 +210,7 @@ p {
 //---------------------------------------------------------------------------------------------------------------------
 	
 	var cashSum=0, usedMile=0, totalcash=0;		// 현금 매출액, 사용된 마일리지, 총 현금 시재
-	var defaultcash=50000, totalcashsales=0;	// 기본준비금, 총 현금 매출액
+	var defaultcash, totalcashsales=0;	// 기본준비금, 총 현금 매출액
 	
 	function getStoreOpen() {
 		$.ajax({
@@ -253,8 +253,9 @@ p {
 					usedMile += item.mileage;
 					
 				});
-				// 총 현금 매출액 = 현금 매출액 - 마일리지 - 영업준비금 ..?
-				totalcashsales = cashSum - usedMile - operatingreserveSum;
+				console.log(data)
+				// 총 현금 매출액 = 기본 준비금 + 현금 매출액 - 마일리지 - 영업준비금 ..?
+				totalcashsales = DBdefaultCash + cashSum - usedMile - operatingreserveSum;
 				console.log('cashSum : '+cashSum+', usedMile : '+usedMile+', operatingreserveSum : '+operatingreserveSum)
 				
 				$('#cashSales').text(addCommas(cashSum)+'원');
@@ -709,10 +710,6 @@ p {
 
 					$('#opentime').text(opentime);
 					$('#closetime').text(closetime);
-					console.log('addmileage : '+addmileage)
-					console.log('addMileageCnt : '+addMileageCnt)
-					console.log('minusmileage : '+minusmileage)
-					console.log('minusMileageCnt : '+minusMileageCnt)
 					// 마감 내역 모달창 show
 					$("#receiptmodal").modal('show');
 					console.log('store : '+data.store)

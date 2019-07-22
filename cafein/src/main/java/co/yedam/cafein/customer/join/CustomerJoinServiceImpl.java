@@ -1,6 +1,7 @@
 package co.yedam.cafein.customer.join;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -15,6 +16,12 @@ public class CustomerJoinServiceImpl implements CustomerJoinService {
 	
 	@Override
 	public int insertJoin(CustomerVO vo) {
+		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+		//암호화  하기전
+		String scPw = scpwd.encode(vo.getcPw());
+		//암호화 후 db저장
+		vo.setcPw(scPw);
+		System.out.println(vo.toString());
 		return customerjoinDAO.insertJoin(vo);
 	}
 

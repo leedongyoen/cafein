@@ -95,7 +95,7 @@ public class StoreCloseServiceImpl implements StoreCloseService {
 				}
 			}
 			if(plusList.size() != 0) {
-				//dao.warehousingInsertLoss(plusList);
+				dao.warehousingInsertLoss(plusList);
 				System.out.println("warehousing table data insert seccess ! (Loss)");
 			}
 			
@@ -111,7 +111,7 @@ public class StoreCloseServiceImpl implements StoreCloseService {
 					warehousingAddStockVO.get(i).setStPayMethod("card");
 				}
 			}
-			//dao.warehousingInsertAddStock(warehousingAddStockVO);
+			dao.warehousingInsertAddStock(warehousingAddStockVO);
 			System.out.println("warehousing table data insert seccess ! (Add Stock)");
 		}
 		System.out.println("------ warehousingAddStockVO is Null ! ------");
@@ -142,7 +142,7 @@ public class StoreCloseServiceImpl implements StoreCloseService {
 				for(int j=0;j<plusStockList.size();j++) {
 					System.out.println("plusStockList : " + plusStockList.get(j).getStName());
 				}
-				//dao.stockUpdate(plusStockList);
+				dao.stockUpdate(plusStockList);
 				System.out.println("stock table data update seccess !");
 			}
 		}
