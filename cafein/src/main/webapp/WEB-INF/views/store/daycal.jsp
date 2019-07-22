@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
 <%@ include file="storehead.jsp" %>
 <title>Store Closing Page</title>
 <style>
@@ -43,7 +42,6 @@ p {
 
 </style>
 <script>
-
 
 	//영업 지출금 페이지 호출
 	$(function startOperatingReserve() {
