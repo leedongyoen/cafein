@@ -226,19 +226,7 @@ function minus(id_num) {
 	
 	v_totalprice = Number(v_totalprice) - Number(price);
 	$("input:text[name='total']").val(v_totalprice);
-	/*
-	var v_totalprice = $("input:text[name='total']").val();
-	
-	var no = $("input:text[name='oQty']").val();
-	 else if (num == 1) {
-		no = Number(no) + 1;
-		v_totalprice = Number(v_totalprice) + Number(price);
-	}
-	$("input:text[name='total']").val(v_totalprice);
-	$("input:text[name='oQty']").val(no);
-	*/
-	
-	
+
 	
 }
 
