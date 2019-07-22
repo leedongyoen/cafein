@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
@@ -46,6 +47,11 @@ public class CustomerOrderServiceImpl {
 	
 	public List<RecipeVO> getorderrecipeno(MenuOrderVO vo){
 		return dao.getorderrecipeno(vo);
+	}
+	
+	// 자주 이용하는 매장
+	public List<StoreVO> gettopstorelist(CustomerVO vo){
+		return dao.gettopstorelist(vo);
 	}
 	
 	// 배달서비스 여부

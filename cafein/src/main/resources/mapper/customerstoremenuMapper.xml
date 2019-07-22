@@ -15,6 +15,8 @@
 		<result column="st_close_time" property="stclosetime"/>
 		<result column="st_app_stat" property="stappstat"/>
 		<result column="st_mile_service" property="stmileservice"/>
+		<result column="opencheck" property="opencheck"/>
+		<result column="rank" property="rank"/>
 	</resultMap> 
 
 	<select id="getStoreList" resultType="store" resultMap="storeMap">
@@ -23,6 +25,15 @@
 				, S_ADD 
 				, S_TEL
 				, ST_DELI_SERVICE
+				, ( SELECT 
+		                CASE 
+		                    WHEN TO_CHAR(SYSDATE,'yy/mm/dd HH24:MI') BETWEEN OPENTIME AND NVL(CLOSETIME,TO_CHAR(SYSDATE,'yy/mm/dd')||' 23:59') THEN '1'
+		                ELSE '0'
+		                END
+		            FROM STOREOPEN 
+		            WHERE TO_CHAR(OPENTIME,'yy/mm/dd') = TO_CHAR(SYSDATE,'yy/mm/dd')
+		                AND S_ID = STORE.S_ID
+		          ) "OPENCHECK"
 		FROM STORE
 		WHERE ST_APP_STAT = 'Y'
 			AND TO_CHAR(SYSDATE,'HH24:MI') BETWEEN ST_OPEN_TIME AND ST_CLOSE_TIME
@@ -30,6 +41,32 @@
 			AND S_ADD like #{sadd} || '%'
 		</if>
 		ORDER BY S_NAME DESC
+	</select>
+	
+	<select id="gettopstorelist" resultMap="storeMap">
+	
+		SELECT
+			RANK() OVER ( ORDER BY COUNT(O.O_NUM) DESC) RANK,
+			S.S_NAME
+	      , S.S_ID
+	      , S.ST_DELI_SERVICE
+	      , ( SELECT 
+	                CASE 
+	                    WHEN TO_CHAR(SYSDATE,'yy/mm/dd HH24:MI') BETWEEN OPENTIME AND NVL(CLOSETIME,TO_CHAR(SYSDATE,'yy/mm/dd')||' 23:59') THEN '1'
+	                ELSE '0'
+	                END
+	            FROM STOREOPEN 
+	            WHERE TO_CHAR(OPENTIME,'yy/mm/dd') = TO_CHAR(SYSDATE,'yy/mm/dd')
+	                AND S_ID = S.S_ID
+	          ) "OPENCHECK"
+			FROM 
+				ORDERS O JOIN ORDER_DETAILS ORD
+				ON O.O_NUM = ORD.O_NUM
+				JOIN STORE S
+				ON O.S_ID = S.S_ID
+			WHERE O.C_ID = #{cId}
+			GROUP BY S.S_NAME , S.S_ID , S.ST_DELI_SERVICE
+	
 	</select>
 	
 	<select id="getSearchStore" resultType="store" resultMap="storeMap">

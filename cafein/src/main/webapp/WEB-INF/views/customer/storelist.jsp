@@ -22,10 +22,13 @@ input {
 <div class="container">
 
 	<button id="selectStore" class="btn btn-outline-info" >매장 선택</button>
+	<h3 align="center" id="selectstorename"></h3>
+	<br><hr>
+	<div id="topstorebtn"></div>
 	<hr>
 	
 	<input class="form-control" id="myInput" type="text" placeholder="Search..">
-	
+	 
 	<hr>
 	
 	<!-- 메뉴 선택 -->
@@ -225,11 +228,47 @@ input {
 	//주소-좌표 변환 객체를 생성
     var geocoder = new daum.maps.services.Geocoder();
 	
+	function gettopstorelist(){
+		var checklogin = "<%=(String) session.getAttribute("cId")%>";
+		$.ajax({
+			url:'gettopstorelist',
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			data: {cId: checklogin},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){
+				console.log(data);
+			
+				$.each(data,function(idx,item){
+					if(item.opencheck == '1'){
+						
+						$('#topstorebtn').append($('<button>').attr({
+														type:"button"
+														, onclick:"menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')"
+														, class :"btn btn-outline-info"											
+													}).append(item.sname+"(주문가능)"));
+					}else{
+						$('#topstorebtn').append($('<button>').attr({
+							type:"button"
+							, onclick:"menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')"
+							, class :"btn btn-outline-info"
+							, "disabled":"disabled"
+						}).append(item.sname+"(오픈준비중)"));
+						//$('.orderno').attr('onclick','').unbind('click'); 
+					}
+				});
+			}
+		});
+	}
 	
 	function menuList(sid,sname,stdeliservice){
 		selectstoreid = sid;
 		storename=sname;
 		storedeliservice = stdeliservice;
+		$('#selectstorename').html(sname);
 		console.log(sid,sname)
 		$.ajax({
 			url:'storelistmenu/'+sid,
@@ -391,10 +430,11 @@ input {
 			alert('로그인이 필요합니다.');
 		}else{
 			$.ajax({
-				url:'customerinfo/'+checklogin,
+				url:'customerinfo',
 				type:'GET',
 				//contentType:'application/json;charset=utf-8',
 				dataType:'json',
+				data: {cId:checklogin },
 				error:function(xhr,status,msg){
 					alert("상태값 :" + status + " Http에러메시지 :"+msg);
 				},
@@ -437,12 +477,20 @@ input {
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				var v_open;
 				standardsearchAddress="";
 				$("#storetable tbody").empty();
 				$("#storemodalminititle").html("모든매장");
 				$("#customerAddress").html("");
 				$.each(data,function(idx,item){
-					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')")
+					if(item.opencheck == '1'){
+						item.stdeliservice = '주문가능';
+						v_open = 'orderok';
+					}else{
+						item.stdeliservice = '준비중';
+						v_open = 'orderno';
+					}
+					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')").attr("class",v_open)
 					.append($('<td>').html(item.sname))
 					.append($('<td>').html(item.sadd))
 					.append($('<td>').html("-"))
@@ -451,6 +499,8 @@ input {
 					.appendTo('#storetable tbody');
 					
 				});
+				
+				$('.orderno').attr('onclick','').unbind('click'); 
 			}
 		});
 	}
@@ -581,7 +631,7 @@ input {
 	}
 
 $(function(){
-
+	gettopstorelist();
 	// 로그인시에만 나만의 메뉴 등록 가능하게 
 	mymenu_login_check = "<%= (String)session.getAttribute("cId") %>";
 	if(mymenu_login_check == "null" || mymenu_login_check == ""){
@@ -740,6 +790,10 @@ $(function(){
 //localStorage.setItem("cartlist",insert_session);
 		localStorage.setItem("cartlist",JSON.stringify(local_cart));
 		console.log("localStorage : "+localStorage.getItem("cartlist"));
+		var result = confirm('장바구니로 이동하시겠습니까?'); 
+		if(result) { //yes 
+			location.replace('cartmng.jsp'); 
+		} 
 
 	});
 	

@@ -26,6 +26,7 @@ import co.yedam.cafein.store.info.StoreInfoServiceImpl;
 import co.yedam.cafein.store.menu.MenuServiceImpl;
 import co.yedam.cafein.store.menu.RecipeSerciveImpl;
 import co.yedam.cafein.vo.CartVO;
+import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.MenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
@@ -54,6 +55,14 @@ public class CustomerOrderController {
 		mv.addObject("option", service.getorderrecipeno(vo));
 		mv.setViewName("customer/orderregi");
 		return mv;
+	}
+	
+	// 자주 이용하는 매장목록
+	@ResponseBody
+	@RequestMapping(value = "/gettopstorelist", method = RequestMethod.GET)
+	public List<StoreVO> gettopstorelist(CustomerVO vo) {
+
+		return service.gettopstorelist(vo);
 	}
 
 	// 배달서비스 여부
