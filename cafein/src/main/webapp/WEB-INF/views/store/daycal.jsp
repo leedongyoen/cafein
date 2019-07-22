@@ -410,6 +410,8 @@ p {
 		});
 	}
 	
+//---------------------------------------------------------------------------------------------------------------------
+	
 	var receiptCashString, receiptCashData, receiptMileageString, receiptMileageData; 
 	
 	// 마감 영수증을 위한 결제내역(현금/카드) 조회
@@ -434,12 +436,13 @@ p {
 		});
 	}
 	
+	var addmileage, minusmileage, mtotal, addMileageCnt, minusMileageCnt;			// 사용된 마일리지, 적립해준 마일리지, 마일리지 총 합계, 마일리지 적립 횟수, 마일리지 사용 횟수
 	// 마감 영수증을 위한 결제내역(마일리지/총매출액) 조회
 	function getCloseReceiptMileage() {
 		$.ajax({
 			url:"closereceiptmileage",		// request 보낼 서버경로
 			type:'GET',			
-			data:{sId:sId},				// 보낼 데이터 (매장id 보내야함)
+			data:{sId:sId,openTime:storeOpenTime},				// 보낼 데이터 (매장id 보내야함)
 			error:function(){
 				alert('통신 실패');
 			},
@@ -451,24 +454,16 @@ p {
 				for(var i=0;i<receiptMileageData.length;i++){
 					// 배열로 넘어온 데이터 어떻게 구분할지 고민
 					console.log('for문 안 data (total): ' +  receiptMileageData[i].total)
+					addmileage = receiptMileageData[i].addmileage;
+					minusmileage = receiptMileageData[i].mileage;
+					mtotal = receiptMileageData[i].total;
+					addMileageCnt = receiptMileageData[i].addMileageCnt;
+					minusMileageCnt = receiptMileageData[i].minusMileageCnt;
 				}
 			}
 		});
 	}
 	
-//---------------------------------------------------------------------------------------------------------------------
-	// 숫자 3단위마다 콤마 생성
-	function addCommas(x) {
-	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
-	
-	//모든 콤마 제거
-	function removeCommas(x) {
-	    if(!x || x.length == 0) return "";
-	    else return x.split(",").join("");
-	}
-	
-//---------------------------------------------------------------------------------------------------------------------
 	
 	var receiptJsonString, receipt;		// 영수증 출력 시 필요한 데이터를 json parse를 위한 변수
 	
@@ -515,15 +510,15 @@ p {
 
 					$('#opentime').text(opentime);
 					$('#closetime').text(closetime);
-				
+					console.log('addmileage : '+addmileage)
+					console.log('addMileageCnt : '+addMileageCnt)
+					console.log('minusmileage : '+minusmileage)
+					console.log('minusMileageCnt : '+minusMileageCnt)
 					// 마감 내역 모달창 show
 					$("#receiptmodal").modal('show');
 					console.log('store : '+data.store)
 					console.log('warehousing : '+data.warehousing)
-					for(var i=0;i<receiptMileageData.length;i++){
-						// 배열로 넘어온 데이터 어떻게 구분할지 고민
-						console.log('for문 안 receiptMileageData (total): ' +  receiptMileageData[i].total)
-					}
+					
 					console.log(data)
 				}
 			});
@@ -538,6 +533,17 @@ p {
 
 	}
 
+//---------------------------------------------------------------------------------------------------------------------
+	// 숫자 3단위마다 콤마 생성
+	function addCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	//모든 콤마 제거
+	function removeCommas(x) {
+	    if(!x || x.length == 0) return "";
+	    else return x.split(",").join("");
+	}
 
 </script>
 </head>

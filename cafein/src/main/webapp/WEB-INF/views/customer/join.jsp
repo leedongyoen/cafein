@@ -127,52 +127,20 @@
 	            }
 	         }).open();
 	     }
-// 		function checkMail() {
-// 			var email = document.getElementById("email").value;
-			
-// 			if(email == "") {
-// 				alert ("메일을 입력해주세요.")
-// 				return false;
-// 			}
-		
-// 			var xhttp = new XMLHttpRequest();
-// 			xhttp.onreadystatechange = function () {
-// 				if(xhttp.readyState == 4) {
-// 					var data = JSON.parse(xhttp.responseText);
-// 					if(data != null) {
-// 						alert("이미 가입한 메일입니다.");
-// 						$("#joincode").css("display", "none");
-// 					} else {
-// 						sendMail(email);
-// 						$("#joincode").css("display", "");
-// 					}
-// 				}
-// 			};
-// 			xhttp.open("post", 'checkMail', true);
-// 			xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charse=-utf-8");
-// 			xhttp.send('email=' + email);
-// 			return false;
-// 		}
-		
-// 		function sendMail(email) {
-// 			var xhttp = new XMLHttpRequest();
-// 			xhttp.onreadystatechange = function () {
-// 				if (xhttp.readyState == 4) {
-// 					if(xhttp.status == 200)
-// 						alert("메일을 정상적으로 보냈습니다.");
-// 					else
-// 						alert("올바른메일 형식이 아닙니다.");
-// 				}
-// 			};
-// 			xhttp.open("post", 'sendMail', true);
-// 			xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-// 			xhttp.send('email=' + email);
-// 			return false;
-// 		}
 
-
+	//이메일을 보내는 스크립트.
 	function myFunction() {
-		  var myWindow = window.open("sendmail.do", "", "width=300,height=200");
+		  var screenW = screen.availWidth;  // 스크린 가로사이즈
+		  var screenH = screen.availHeight; // 스크린 세로사이즈
+		  var popW = 500; // 띄울창의 가로사이즈
+		  var popH = 300; // 띄울창의 세로사이즈
+		  var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션 
+		  var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
+
+		 window.open('sendmail.do','','width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
+
+
+		//  var myWindow = window.open("sendmail.do", "", "width=600,height=200");
 		}
 
 

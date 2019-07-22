@@ -45,6 +45,7 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import co.yedam.cafein.customer.login.CustomerLoginDAO;
 import co.yedam.cafein.customer.login.CustomerLoginService;
 import co.yedam.cafein.customer.info.CustomerInfoService;
 import co.yedam.cafein.customer.join.CustomerJoinDAO;
@@ -62,7 +63,8 @@ public class CustomerController {
 	private NaverLoginVO naverLoginVO;
 	private String apiResult = null;
 	private CustomerJoinDAO customerJoinDAO;
-
+	private CustomerLoginDAO loginDAO;
+	
 	@Autowired
 	CustomerLoginService customerLoginService;
 
@@ -209,7 +211,7 @@ public class CustomerController {
 		String host = "smtp.gmail.com";
 		String subject = "<관리자>인증번호 입니다.";
 		String from = "bnghty22@gmail.com"; // 보내는 메일
-		String to = "bnghty5798@naver.com";
+		String to = "bnghty5798@naver.com"; //받는 메일
 		
 		authNum = RandomNum();	
 		
@@ -219,7 +221,7 @@ public class CustomerController {
 		System.out.println(vo.getAuthNum());
 		
 		customerjoinService.authKey(authNum);
-		String content = "인증번호 [" + authNum + "]";
+		String content = "인증번호 " + authNum + "";
 
 		final String username = "bnghty22@gmail.com"; // change accordingly
 		final String password = "epcbehreqclmmugq"; // change accordingly
@@ -244,14 +246,14 @@ public class CustomerController {
 			message.setSubject(subject);
 			message.setContent(content, "text/html;charset=utf-8");
 			Transport.send(message);
-			System.out.println("Sent message successfully....");
+			System.out.println("성공적으로 메일이 보내졌습니다.");
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
 		return "customer/emailauth";
 		
 	}
-	// 인증키를 체크할 
+	// 회원가입 인증번호 인증키를 체크할 컨트롤러 
 	@RequestMapping(value = "/getauthjoin/{authNum}", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<Object, Object> authkeyCheck(@PathVariable("authNum") String authNum) {
@@ -269,6 +271,112 @@ public class CustomerController {
 	public String findidpw() {
 		return "customer/findidpw";
 
+	}
+	
+	//회원의 아이디를 찾을 컨트롤러.
+	@RequestMapping(value="idfind.do")
+	public String idFind(CustomerVO vo, String cId, String cTel, String cName, HttpServletRequest requset) {
+		String host = "smtp.gmail.com";
+		String subject = "<관리자>회원님의 아이디 발송 입니다.";
+		String from = "bnghty22@gmail.com"; // 보내는 메일
+		String to = "bnghty5798@naver.com"; //받는 메일
+	//	String Id = requset.getParameter("cId");
+	
+		vo.setcName(cName);
+		vo.setcTel(cTel);
+		vo.setcId(cId);
+
+		vo = customerLoginService.idFind(vo);
+		
+		System.out.println(vo.getcName());
+		System.out.println(vo.getcTel());
+		System.out.println(vo.getcId());
+		
+		String content = "회원님의 아이디는 " + vo.getcId() + " 입니다.";
+
+		final String username = "bnghty22@gmail.com"; // change accordingly
+		final String password = "epcbehreqclmmugq"; // change accordingly
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.port", "587");
+		// Get the Session object.
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+		try {
+			// Create a default MimeMessage object.
+			Message message = new MimeMessage(session);
+		
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+			message.setSubject(subject);
+			message.setContent(content, "text/html;charset=utf-8");
+			Transport.send(message);
+			System.out.println("성공적으로 메일이 보내졌습니다.");
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+		return "customer/login";
+		
+	}
+	
+	//비밀번호 찾기 컨트롤러 
+	@RequestMapping(value="pwfind.do")
+	public String pwFind(CustomerVO vo, String cId, String cTel, String authNum) {
+		String host = "smtp.gmail.com";
+		String subject = "<관리자>----임시 비밀번호 발송-----";
+		String from = "bnghty22@gmail.com"; // 보내는 메일
+		String to = "bnghty5798@naver.com"; //받는 메일
+		
+		authNum = RandomNum();	
+		vo.setcPw(authNum);
+		System.out.println(vo);
+
+		customerLoginService.pwFind(vo);
+		
+		System.out.println(vo.getcId());
+		System.out.println(vo.getcTel());
+	//	customerjoinService.authKey(authNum);
+	//	customerjoinService.authKey(authNum);	
+
+		
+		String content = "임시비밀번호  =" + authNum + "";
+
+		final String username = "bnghty22@gmail.com"; // change accordingly
+		final String password = "epcbehreqclmmugq"; // change accordingly
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.port", "587");
+		// Get the Session object.
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+		try {
+			// Create a default MimeMessage object.
+			Message message = new MimeMessage(session);
+		
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+			message.setSubject(subject);
+			message.setContent(content, "text/html;charset=utf-8");
+			Transport.send(message);
+			System.out.println("성공적으로 메일이 보내졌습니다.");
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+		return "customer/login";
+		
+		
 	}
 
 	// 카카오 로그인

@@ -37,7 +37,9 @@ public class OrdersVO {
 	
 	private int addcanclemileage;
 	private int cnt;		// 주문 건수를 알기위함
-	
+	private int addMileageCnt;			// 사용한 적립금 건수
+	private int minusMileageCnt;		// 마일리지를 적립해준 주문 건수
+	private Timestamp openTime;			// 마일리지 검색 할 때 where 절에 필요
 	
 	
 	public int getAddcanclemileage() {
@@ -215,6 +217,24 @@ public class OrdersVO {
 	public void setCnt(int cnt) {
 		this.cnt = cnt;
 	}
+	public int getAddMileageCnt() {
+		return addMileageCnt;
+	}
+	public void setAddMileageCnt(int addMileageCnt) {
+		this.addMileageCnt = addMileageCnt;
+	}
+	public int getMinusMileageCnt() {
+		return minusMileageCnt;
+	}
+	public void setMinusMileageCnt(int minusMileageCnt) {
+		this.minusMileageCnt = minusMileageCnt;
+	}
+	public Timestamp getOpenTime() {
+		return openTime;
+	}
+	public void setOpenTime(Timestamp openTime) {
+		this.openTime = openTime;
+	}
 	@Override
 	public String toString() {
 		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
@@ -223,8 +243,14 @@ public class OrdersVO {
 				+ refuseReason + ", takeTime=" + takeTime + ", deApplyTime=" + deApplyTime + ", oDnum=" + oDnum
 				+ ", sName=" + sName + ", mNum=" + mNum + ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno="
 				+ receipno + ", caNum=" + caNum + ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option="
+<<<<<<< HEAD
 				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", detailNm=" + detailNm
 				+ ", addcanclemileage=" + addcanclemileage + ", cnt=" + cnt + "]";
+=======
+				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", cnt=" + cnt
+				+ ", addMileageCnt=" + addMileageCnt + ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime
+				+ "]";
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 	}
 
 
