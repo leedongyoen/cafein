@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.vo.MenuOrderVO;
+import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.RecipeVO;
 import co.yedam.cafein.vo.StoreVO;
@@ -19,6 +20,16 @@ public class CustomerOrderServiceImpl {
 	
 	public List<OrdersVO> getOrderList(OrdersVO vo){
 		return dao.getOrderlist(vo);
+	}
+	
+	// 고객 페이지 - 주문 클릭시 메뉴 상세 
+	public List<OrderDetailsVO> getcustomerordermenudetail(OrdersVO vo){
+		return dao.getcustomerordermenudetail(vo);
+	}
+	
+	// 고객 페이지 - 주문 클릭시 주문 상세 
+	public OrdersVO getcustomeroderdetail(OrdersVO vo){
+		return dao.getcustomeroderdetail(vo);
 	}
 	
 	public List<OrdersVO> mainOrderList(OrdersVO vo) {
@@ -57,6 +68,11 @@ public class CustomerOrderServiceImpl {
 		return dao.insertorder(vo);
 	}
 	
+	// 마일리지 사용한 만큼 빼기
+	public int setcanclemileage(OrdersVO vo) {
+		return dao.setcanclemileage(vo);
+	}
+	
 	// 해당 메뉴의 기본 레시피 번호 가져오기
 	public List<RecipeVO> getorderrecipenolist(RecipeVO vo) {
 		return dao.getorderrecipenolist(vo);
@@ -82,5 +98,10 @@ public class CustomerOrderServiceImpl {
 	// 만약 해당 매장의 마일리지가 없을 경우
 	public int insertmileage(OrdersVO vo) {
 		return dao.insertmileage(vo);
+	}
+
+	public int getodnum2(OrdersVO vo) {
+		return dao.getodnum2(vo);
+		
 	}
 }

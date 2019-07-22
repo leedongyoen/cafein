@@ -65,8 +65,11 @@ public class StoreOrderController {
 		OrdersVO vo = new OrdersVO();
 		vo.setoNum(oNum);
 		vo.setRefuseReason(refuseReason);
-		
-		return service.updateordercancel(vo);
+		int n = service.updateordercancel(vo);
+		if(n > 0 ) {
+			n = service.updateordermileage(vo);
+		}
+		return n;
 	}
 
 	// 해당 주문번호 승인

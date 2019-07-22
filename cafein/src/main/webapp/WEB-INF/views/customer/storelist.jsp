@@ -455,21 +455,30 @@ input {
 		});
 	}
 	
+	// 메뉴 수량 증가시
 	function add(num) {
 		var price = $('#price').val();
 		var v_totalprice = $('#totalPrice').val();
 
 		var no = $("#ordernum").html();
+		var sum_optionprice=0;
+		$("input[name=cuoptionlist]:checked").each(function() {
+			var test = $(this).val(); 
+			var price = $('#option'+test).val();
+			sum_optionprice =Number(sum_optionprice)+ Number(price);
+
+		});
+
 		if (num == -1) {
 			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
 				return;
 			}
 			no = Number(no) - 1;
-			v_totalprice = Number(v_totalprice) - Number(price);
+			v_totalprice = Number(v_totalprice) - Number(price) - Number(sum_optionprice);
 		} else if (num == 1) {
 			no = Number(no) + 1;
-			v_totalprice = Number(v_totalprice) + Number(price);
+			v_totalprice = Number(v_totalprice) + Number(price) + Number(sum_optionprice);
 		}
 		
 		$('#totalPrice').val(v_totalprice);
@@ -649,11 +658,13 @@ $(function(){
   		
   		var v_totalprice = $('#totalPrice').val();
   		var option_price = $('#option'+$(this).val()).val();
-  
+  		
+  		var v_ordernum =  $('#ordernum').html();
+  		
   		if($(this).is(":checked")){
-				v_totalprice = Number(v_totalprice)+Number(option_price);
+				v_totalprice = Number(v_totalprice)+(Number(option_price)*Number(v_ordernum));
 		}else{
-			v_totalprice = Number(v_totalprice)-Number(option_price);
+			v_totalprice = Number(v_totalprice)-(Number(option_price)*Number(v_ordernum));
 		}
   		$('#totalPrice').val(v_totalprice);
   	});

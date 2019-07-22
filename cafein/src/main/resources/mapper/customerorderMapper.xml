@@ -12,11 +12,42 @@
 		      , O.S_ID
 		      , S.S_NAME
 		      , O.PAY_METHOD
+		      , O.DELIVERY_STATUS
+		      ,O.DELIVERY_STATUS
+		      , CO.DETAIL_NM
 		FROM ORDERS O JOIN STORE S
 		ON O.S_ID = S.S_ID
+		JOIN CONDITION CO
+		ON O.DELIVERY_STATUS = CO.DETAIL_CD
 		WHERE O.C_ID= #{cId}
 		ORDER BY O.O_DATE DESC
 	
+	
+	</select>
+	
+	<select id="getcustomeroderdetail" resultType="order">
+		select S.S_NAME, O.TOTAL, O.RECEIPT, O.C_ADD, O.C_ADD3, O.PAY_METHOD
+		from ORDERS O JOIN STORE S
+		ON O.S_ID = S.S_ID
+		where O_NUM=#{oNum}
+	
+	</select>
+	
+	<select id="getcustomerordermenudetail" resultType="orderdt">
+		select DNUM.O_DNUM, ord.M_NUM,ord.OP_DNUM, RE.OP_NAME , ord.CA_NUM, m.M_NAME,ord.O_QTY
+		from ORDER_DETAILS ord join menu m
+		on ord.m_num = m.m_num
+		JOIN RECIPE RE
+		  ON ord.RECIPENO = RE.RECIPENO
+		JOIN (
+				  SELECT M_NUM,O_NUM, MIN(O_DNUM) O_DNUM
+						  FROM ORDER_DETAILS
+						  GROUP BY M_NUM,O_NUM
+				) DNUM
+		ON DNUM.M_NUM =  ord.M_NUM AND DNUM.O_NUM = ord.O_NUM AND DNUM.O_DNUM = ord.OP_DNUM
+		where ord.O_NUM= #{oNum}
+		      and ord.ca_num in ('CAOP','CAHT','CAIC','CADR','CADE')
+		order by DNUM.O_DNUM, ord.M_NUM,RE.OP_NAME 
 	
 	</select>
 
@@ -153,5 +184,34 @@
 				AND C_ID=#{cId}
 	
 	</update>
+	
+	<update id="setcanclemileage">
+	
+		<selectKey keyProperty="addcanclemileage" resultType="int" order="BEFORE">
+		
+			SELECT MILEAGE
+			FROM ORDERS
+			WHERE O_NUM= #{oNum}
+		
+		</selectKey>
+		
+		UPDATE RESERVE SET MILEAGE = MILEAGE - #{addcanclemileage}
+		WHERE S_ID = #{sId} and C_ID=#{cId}
+	
+	</update>
+
+
+	<update id="getodnum2">
+		<selectKey keyProperty="opDnum" resultType="string" order="BEFORE">
+			SELECT MIN(O_DNUM) OP_DNUM
+			FROM ORDER_DETAILS
+			WHERE O_NUM =#{oNum} and M_NUM =#{mNum}
+		</selectKey>
+		
+		UPDATE ORDER_DETAILS SET OP_DNUM=#{opDnum} 
+		WHERE O_NUM= #{oNum} and M_NUM =#{mNum}
+	
+	</update>
+
 
 </mapper>
