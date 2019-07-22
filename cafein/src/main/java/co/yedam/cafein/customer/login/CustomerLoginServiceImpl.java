@@ -42,4 +42,15 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
 		return dao.insertCustomerNaver(vo);
 	}
 
+	//비밀번호 찾을 컨트롤
+	@Override
+	public void pwFind(CustomerVO vo) {
+		dao.pwFind(vo);
+	}
+	//아이디를 찾을 폼
+	@Override
+	public CustomerVO idFind(CustomerVO vo) {
+		return dao.idFind(vo);
+	}
+
 }

@@ -17,4 +17,8 @@ public interface CustomerLoginService {
 	public int insertCustomerKakao(CustomerVO vo);
 	
 	public int insertCustomerNaver(CustomerVO vo);
+	
+	public void pwFind(CustomerVO vo);
+	
+	public CustomerVO idFind(CustomerVO vo);
 }
