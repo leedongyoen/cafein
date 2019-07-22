@@ -140,7 +140,6 @@
 					<tbody id="customerTbody">
 					</tbody>
 				</table>
-
 			</div>
 		</div>
 
