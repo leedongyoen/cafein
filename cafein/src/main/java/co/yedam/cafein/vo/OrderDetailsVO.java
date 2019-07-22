@@ -11,10 +11,17 @@ public class OrderDetailsVO {
 	private String opDnum;
 	private String mName;
 	private String sId;
+	private String caNum;
 	
 	
 	
 	
+	public String getCaNum() {
+		return caNum;
+	}
+	public void setCaNum(String caNum) {
+		this.caNum = caNum;
+	}
 	public String getsId() {
 		return sId;
 	}
@@ -66,7 +73,7 @@ public class OrderDetailsVO {
 	@Override
 	public String toString() {
 		return "OrderDetailsVO [oDnum=" + oDnum + ", oNum=" + oNum + ", mNum=" + mNum + ", oQty=" + oQty + ", opName="
-				+ opName + ", opDnum=" + opDnum + ", mName=" + mName + ", sId=" + sId + "]";
+				+ opName + ", opDnum=" + opDnum + ", mName=" + mName + ", sId=" + sId + ", caNum=" + caNum + "]";
 	}
 
 

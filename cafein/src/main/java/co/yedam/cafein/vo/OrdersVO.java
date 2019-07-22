@@ -33,7 +33,9 @@ public class OrdersVO {
 	private String hotice_option; // 해당 메뉴의 hot ice 
 	private int addmileage; // 적립된 마일리지
 	private String mName;
+	private String detailNm;
 	
+	private int addcanclemileage;
 	private int cnt;		// 주문 건수를 알기위함
 	private int addMileageCnt;			// 사용한 적립금 건수
 	private int minusMileageCnt;		// 마일리지를 적립해준 주문 건수

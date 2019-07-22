@@ -23,12 +23,12 @@
 	});
 	
 	
-	
+	//매장 고객 리스트 요청
 	function customerList(){
 		var storelogin = '<%=session.getAttribute("sid")%>';
 		console.log(storelogin);
  		$.ajax({
- 			url : 'storelist',
+ 			url : 'allcustomerlist',
 			type : 'GET',
 			dataType : 'json',
 			data: {sId: storelogin},
@@ -39,7 +39,7 @@
 			
 		}); 
 	}
-	
+	//매장 고객리스트 받아오기
 	function customerListResult(data){
 		$("#customerTbody").empty();
 		console.log(data);
@@ -53,6 +53,7 @@
 		});
 					
 	}
+	//매장 고객 단건 조회 요청
 	function customerSelect(cId){
 		var storelogin = '<%=session.getAttribute("sid")%>';
 		$('#toggleTable').show();
@@ -67,7 +68,7 @@
 			success : customerSelectResult
 		});
 	}
-
+	// 매장 고객 단건조회 결과 뿌리기
 	function customerSelectResult(data) {
 		$('input:text[name="cId" ]').val(data.cId);
 		$('input:text[name="cNick"]').val(data.cNick);
@@ -80,7 +81,7 @@
 		history(data.cId);
 
 	}//stockSelectResult
-	
+	//고객 구매이력 요청
 	function history(cId){
 		var storelogin = '<%=session.getAttribute("sid")%>';
 		$('#c_history').show();
@@ -95,7 +96,7 @@
 			success : historyResult
 		});
 	}
-
+	//고객 구매이력 받아오기
 	function historyResult(data) {
 		
 		$('#historyTbody').empty();

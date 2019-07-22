@@ -11,8 +11,10 @@
 <script src="./js/json.min.js"></script>
 <script type="text/javascript">
 	
-	
+	var sId = "<%= (String)session.getAttribute("sId") %>";
 	$(function() {
+		loginCheck();
+		
 		stockList();
 
 		stockSelect();
@@ -61,6 +63,7 @@
 					},
 					success : function(data) {
 // 						console.log(data.result);
+						alert("정상 삭제되었습니다.");
 						stockList();
 					}
 				});
@@ -75,7 +78,7 @@
 			var stNum = $(this).closest('tr').find('#hidden_stNum').val();
 			//하나의 재고 요청
 			$.ajax({
-				url : 'stocks/' + stNum,
+				url : 'stocks/' + stNum +'/'+ sId,
 				type : 'GET',
 				contentType : 'application/json;charset=utf-8',
 				dataType : 'json',
@@ -150,6 +153,7 @@
 				contentType : 'application/json',
 				mimeType : 'application/json',
 				success : function(data) {
+					alert("정상 수정되었습니다.");
 					stockList();
 				},
 				error : function(xhr, status, message) {
@@ -176,6 +180,7 @@
 				success : function(response) {
 					if (response.result == true) {
 						stockList();
+						alert("정상 등록되었습니다.");
 					}
 				},
 				error : function(xhr, status, message) {
@@ -188,7 +193,7 @@
 	//재고 목록 조회 요청
 	function stockList() {
 		$.ajax({
-			url : 'stocks',
+			url : 'stocks/' + sId,
 			type : 'GET',
 			contentType : 'application/json;charset=utf-8',
 			dataType : 'json',
@@ -259,12 +264,12 @@
 	}//stockListResult
 	
 	function modalInsert() {
-		var id = "${sid}";
+
 		
 		//값 지우기
 		$('input:text[name="stNum"]').val('');
 		//세션 입력
-		$('input:text[name="sId"]').val(id);
+		$('input:text[name="sId"]').val(sId);
 		$('input:text[name="stName"]').val('');
 		$('input:text[name="stQty"]').val('');
 		$('input:text[name="stAqty"]').val('');
@@ -340,7 +345,7 @@
 				</div>
 				<div class="form-group">
 					<label>매장 명</label> <input type="text" class="form-control"
-						name="sId" readonly>
+						name="sId" value="${sId}" readonly>
 				</div>
 				<div class="form-group">
 					<label>재고 명</label> <input type="text" class="form-control"

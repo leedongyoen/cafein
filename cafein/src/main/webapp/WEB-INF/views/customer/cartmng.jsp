@@ -46,7 +46,7 @@ $(function(){
 		
 		
 		for(var i = 0;i<local_cart.length;i++){
-			console.log("이에요: "+local_cart.length);
+			
 			//local_storage에 qty를 orderqty로 
 			local_cart[i].orderqty = local_cart[i].qty;
 
@@ -54,7 +54,7 @@ $(function(){
 			price = (local_cart[i].totalPrice*1)/qty;
 			sumtotalPrice = (qty*price) + sumtotalPrice;
 			
-			console.log(sumtotalPrice);
+			
 			
 			if(local_cart[i].hotice_option=="CAIC"){
 					state="ICE";
@@ -123,17 +123,26 @@ $(function(){
 });
 
 
-function orderBtnDelete(){
+function orderDeleteClick(){
 	
 	var ordercart = $("#orderCartForm").serializeObject();
-	var arr = local_cart;
+	var arr = JSON.parse(localStorage.getItem("cartlist"));
+	console.log("arr: "+arr);
 	
-	for(var k = 0;k<ordercart.cartnumlist.length;k++){
-		console.log(local_cart[ordercart.cartnumlist[k]]);
+	for(var k = arr.length-1;k>=0;k--){
+		//console.log("ordercart.cartnumlist[k]: "+ordercart.cartnumlist[k]+"  k: "+k);
+		for(var m = 0;m<ordercart.cartnumlist.length;m++){
+			if(ordercart.cartnumlist[m]==k){
+				arr.splice(k,1);
+				console.log("k: "+k);
+			}
+		}
+		
 	}
-	local_cart=arr;
-	alert(JSON.stringify(arr));
-	
+	local_cart=JSON.stringify(arr);
+	localStorage.setItem("cartlist",local_cart);
+	//alert(local_cart);
+	window.location.reload(true);
 }
 
 function orderBtnClick(){
@@ -265,7 +274,7 @@ function getOptionNaming(mnumber, stnumber){
 
 		<br> <br> <br>
 		<div align="right">
-			<button class="btn btn-default" onclick="orderBtnDelete()">삭제</button>
+			<button class="btn btn-default" onclick="orderDeleteClick()">삭제</button>
 			<a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
 		</div>
 	</div>

@@ -7,6 +7,8 @@
 		<result column="s_pw" property="spw" />
 		<result column="s_name" property="sname" />
 		<result column="s_add" property="sadd" />
+		<result column="s_add2" property="sadd2" />
+		<result column="s_add3" property="sadd3" />
 		<result column="s_tel" property="stel" />
 		<result column="st_deli_service" property="stdeliservice" />
 		<result column="st_open_time" property="stopentime" />
@@ -17,7 +19,7 @@
 	<!-- 단건 회원조회 -->
 	<select id="getStore" parameterType="store" resultMap="storeMap">
 		SELECT
-		S_ID, S_PW, S_NAME, S_ADD, S_TEL, ST_DELI_SERVICE,
+		S_ID, S_PW, S_NAME, S_ADD, S_ADD2, S_ADD3, S_TEL, ST_DELI_SERVICE,
 		ST_OPEN_TIME,
 		ST_CLOSE_TIME, ST_MILE_SERVICE
 		FROM STORE
@@ -28,7 +30,9 @@
 	<update id="infoedit" parameterType="store" >
 		update store set
 		S_TEL =				#{stel},
-		S_ADD = 			#{sadd},
+		S_ADD  = 			#{sadd},
+		S_ADD2 = 			#{sadd2},
+		S_ADD3 = 			#{sadd3},
 		ST_DELI_SERVICE = 	#{stdeliservice},
 		ST_OPEN_TIME = 		#{stopentime},
 		ST_CLOSE_TIME =		#{stclosetime}

@@ -35,6 +35,7 @@
 		,ST_UNIT
 		,LACK_QTY
 	FROM STOCK
+	WHERE S_ID = #{sId}
   </select>	
   
    <select id="getStock" resultMap="stockMap">
@@ -52,6 +53,7 @@
 		ST_STATUS
 	FROM STOCK
 	WHERE ST_NUM = #{stNum}
+	AND S_ID = #{sId}
   </select>
   
   <insert id="insertStock" parameterType="stock">
