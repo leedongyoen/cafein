@@ -30,6 +30,7 @@
 	
 	// 승인 모달창에서 승인 할 경우
 	function applyorder(){
+		event.stopPropagation();
 		var ordern = $('#applyordernumber').val();
 		var taketime = $('select[name="takeTime"]').val();
 		$.ajax({
@@ -53,7 +54,7 @@
 	
 	// 거절 버튼 클릭 시 모달창 띄우기
 	function refuse(ordern){
-		
+		event.stopPropagation();
 		console.log(ordern);
 		$('#cancelordernumber').val(ordern);
 		$('#refusemodal').modal('show');

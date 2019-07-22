@@ -42,7 +42,7 @@
 		on QTY.M_NUM = ORD.M_NUM
 		WHERE ORD.O_NUM = #{oNum}
 		     AND ORD.M_NUM = #{mNum}
-		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE')
+		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE','CAJP')
     
 
 	</select>
