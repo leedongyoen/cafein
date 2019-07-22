@@ -26,7 +26,14 @@
 	</select>
 	
 	<select id="getcustomeroderdetail" resultType="order">
-		select S.S_NAME, O.TOTAL, O.RECEIPT, O.C_ADD, O.C_ADD3, O.PAY_METHOD
+		select S.S_NAME
+				, O.TOTAL
+				, O.RECEIPT
+				, O.C_ADD
+				, O.C_ADD3
+				, O.PAY_METHOD
+				, O.DELIVERY_STATUS
+				, O.REFUSE_REASON
 		from ORDERS O JOIN STORE S
 		ON O.S_ID = S.S_ID
 		where O_NUM=#{oNum}
@@ -46,7 +53,7 @@
 				) DNUM
 		ON DNUM.M_NUM =  ord.M_NUM AND DNUM.O_NUM = ord.O_NUM AND DNUM.O_DNUM = ord.OP_DNUM
 		where ord.O_NUM= #{oNum}
-		      and ord.ca_num in ('CAOP','CAHT','CAIC','CADR','CADE')
+		      and ord.ca_num in ('CAOP','CAHT','CAIC','CADR','CADE','CAJP')
 		order by DNUM.O_DNUM, ord.M_NUM,RE.OP_NAME 
 	
 	</select>

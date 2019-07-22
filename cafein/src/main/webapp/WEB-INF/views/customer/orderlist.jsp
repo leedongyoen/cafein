@@ -81,6 +81,10 @@
 		var v_option ="";
 		var v_hotice ="";
 		var v_qty="";
+		
+		$('#orderstatusview').hide();
+		$('#orderstatus').html("");
+		
 		$.ajax({
 			url:'getcustomerordermenudetail',
 			type:'GET',
@@ -156,6 +160,10 @@
 					delivery="직접 수령";
 				}
 				
+				if(data.deliveryStatus == 'C4'){
+					$('#orderstatusview').show();
+					$('#orderstatus').html(data.refuseReason);
+				}
 				
 				$('#deliverydetail').html(delivery);
 				$('#storename').html(data.sName);
@@ -225,6 +233,10 @@
 							<tr>
 								<th>주문번호</th>
 								<td id="ordernum"></td>
+							</tr>
+							<tr id="orderstatusview" style="display: none;">
+								<th>주문 취소 사유</th>
+								<td id="orderstatus"></td>
 							</tr>
 							
 							<tr>

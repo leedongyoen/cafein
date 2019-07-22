@@ -45,6 +45,15 @@ input {
 		var v_totalprice = $("input:text[name='total']").val();
 		
 		var no = $("input:text[name='oQty']").val();
+		var sum_optionprice=0;
+		
+/* 		$("input[name=optionlist]:checked").each(function() {
+			var test = $(this).val(); 
+			var price = $('#price'+test).val();
+			sum_optionprice =Number(sum_optionprice)+ Number(price);
+
+		}); */
+		
 		if (num == -1) {
 			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
