@@ -25,7 +25,7 @@
 	
 	//매장 고객 리스트 요청
 	function customerList(){
-		var storelogin = '<%=session.getAttribute("sid")%>';
+		var storelogin = '<%=session.getAttribute("sId")%>';
 		console.log(storelogin);
  		$.ajax({
  			url : 'allcustomerlist',
@@ -55,7 +55,7 @@
 	}
 	//매장 고객 단건 조회 요청
 	function customerSelect(cId){
-		var storelogin = '<%=session.getAttribute("sid")%>';
+		var storelogin = '<%=session.getAttribute("sId")%>';
 		$('#toggleTable').show();
 		console.log(cId);
 		$.ajax({
@@ -83,7 +83,7 @@
 	}//stockSelectResult
 	//고객 구매이력 요청
 	function history(cId){
-		var storelogin = '<%=session.getAttribute("sid")%>';
+		var storelogin = '<%=session.getAttribute("sId")%>';
 		$('#c_history').show();
 		console.log(cId);
 		$.ajax({

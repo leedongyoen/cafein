@@ -60,6 +60,12 @@ public class StoreCloseServiceImpl implements StoreCloseService {
 		return dao.getCloseReceiptMileage(vo);
 	}
 
+
+	@Override
+	public List<OrdersVO> getRefundInfo(OrdersVO vo) {
+		return dao.getRefundInfo(vo);
+	}
+	
 	@Override
 	public int storeCloseDataImsert(StoreCloseDataInsertVO vo) {
 
@@ -153,6 +159,7 @@ public class StoreCloseServiceImpl implements StoreCloseService {
    
 		return 0;
 	}
+
 
 
 

@@ -42,7 +42,7 @@
 		on QTY.M_NUM = ORD.M_NUM
 		WHERE ORD.O_NUM = #{oNum}
 		     AND ORD.M_NUM = #{mNum}
-		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE')
+		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE','CAJP')
     
 
 	</select>
@@ -83,8 +83,23 @@
 
 	<update id="updateordercancel">
 		UPDATE ORDERS
-		SET REFUSE_REASON = #{refuseReason} , DELIVERY_STATUS = 'C4'
+		SET REFUSE_REASON = #{refuseReason} 
+			, DELIVERY_STATUS = 'C4'
 		WHERE O_NUM = #{oNum}	
+	</update>
+	
+	<update id="updateordermileage">
+		<selectKey keyProperty="addcanclemileage,addmileage,sId,cId" resultType="order" order="BEFORE">
+			SELECT MILEAGE+TOTAL*0.01*-1 as addcanclemileage
+					, MILEAGE as addmileage
+					, S_ID as sId
+					, C_ID as cId
+			FROM ORDERS
+			WHERE O_NUM = #{oNum}
+		</selectKey>
+			UPDATE RESERVE SET MILEAGE = MILEAGE + #{addmileage} - #{addcanclemileage}
+			WHERE S_ID= #{sId} 
+				AND C_ID=#{cId}
 	</update>
 	
 	
@@ -129,6 +144,7 @@
 	
 		UPDATE ORDERS
 		SET DELIVERY_STATUS = 'C4'
+			, REFUSE_REASON = '주문 확인 시간 초과'
 		WHERE O_NUM = #{oNum}
 	
 	</update>

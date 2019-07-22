@@ -51,18 +51,19 @@ public class StoreStockController {
 	
 	// 전체조회
 	@ResponseBody
-	@RequestMapping(value = "/stocks", method = RequestMethod.GET)
-	public List<StockVO> getStockList(Model model, StockVO vo) {
-		
+	@RequestMapping(value = "/stocks/{sId}", method = RequestMethod.GET)
+	public List<StockVO> getStockList(@PathVariable String sId, Model model, StockVO vo) {
+		vo.setsId(sId);
 		return storeStockService.getStockList(vo);
 
 	}
-
+	
 	// 단건조회
 	@ResponseBody
-	@RequestMapping(value = "/stocks/{stNum}", method = RequestMethod.GET)
-	public StockVO getStock(@PathVariable String stNum, StockVO vo, Model model) {
+	@RequestMapping(value = "/stocks/{stNum}/{sId}", method = RequestMethod.GET)
+	public StockVO getStock(@PathVariable String stNum,@PathVariable String sId, StockVO vo, Model model) {
 		vo.setStNum(stNum);
+		vo.setsId(sId);
 		return storeStockService.getStock(vo);
 	}
 

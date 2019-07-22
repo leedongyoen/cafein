@@ -33,12 +33,36 @@ public class OrdersVO {
 	private String hotice_option; // 해당 메뉴의 hot ice 
 	private int addmileage; // 적립된 마일리지
 	private String mName;
+	private String detailNm;
 	
+	private int addcanclemileage;
 	private int cnt;		// 주문 건수를 알기위함
 	private int addMileageCnt;			// 사용한 적립금 건수
 	private int minusMileageCnt;		// 마일리지를 적립해준 주문 건수
-	private Timestamp openTime;			// 마일리지 검색 할 때 where 절에 필요
+	private String openTime;			// 마일리지 검색 할 때 where 절에 필요
 	
+	// 환불내역 조회
+	private int refundSum;
+	private int refundMileage; 
+	private String refundMethod; 
+	private int cashRefundCnt; 
+	private int cardRefundCnt; 
+	
+	
+	
+	
+	public String getDetailNm() {
+		return detailNm;
+	}
+	public void setDetailNm(String detailNm) {
+		this.detailNm = detailNm;
+	}
+	public int getAddcanclemileage() {
+		return addcanclemileage;
+	}
+	public void setAddcanclemileage(int addcanclemileage) {
+		this.addcanclemileage = addcanclemileage;
+	}
 	public Timestamp getDeApplyTime() {
 		return deApplyTime;
 	}
@@ -214,11 +238,42 @@ public class OrdersVO {
 	public void setMinusMileageCnt(int minusMileageCnt) {
 		this.minusMileageCnt = minusMileageCnt;
 	}
-	public Timestamp getOpenTime() {
+
+	public String getOpenTime() {
 		return openTime;
 	}
-	public void setOpenTime(Timestamp openTime) {
+	public void setOpenTime(String openTime) {
 		this.openTime = openTime;
+	}
+	public int getRefundSum() {
+		return refundSum;
+	}
+	public void setRefundSum(int refundSum) {
+		this.refundSum = refundSum;
+	}
+	public int getRefundMileage() {
+		return refundMileage;
+	}
+	public void setRefundMileage(int refundMileage) {
+		this.refundMileage = refundMileage;
+	}
+	public String getRefundMethod() {
+		return refundMethod;
+	}
+	public void setRefundMethod(String refundMethod) {
+		this.refundMethod = refundMethod;
+	}
+	public int getCashRefundCnt() {
+		return cashRefundCnt;
+	}
+	public void setCashRefundCnt(int cashRefundCnt) {
+		this.cashRefundCnt = cashRefundCnt;
+	}
+	public int getCardRefundCnt() {
+		return cardRefundCnt;
+	}
+	public void setCardRefundCnt(int cardRefundCnt) {
+		this.cardRefundCnt = cardRefundCnt;
 	}
 	@Override
 	public String toString() {
@@ -228,9 +283,13 @@ public class OrdersVO {
 				+ refuseReason + ", takeTime=" + takeTime + ", deApplyTime=" + deApplyTime + ", oDnum=" + oDnum
 				+ ", sName=" + sName + ", mNum=" + mNum + ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno="
 				+ receipno + ", caNum=" + caNum + ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option="
-				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", cnt=" + cnt
-				+ ", addMileageCnt=" + addMileageCnt + ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime
-				+ "]";
+				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", detailNm=" + detailNm
+				+ ", addcanclemileage=" + addcanclemileage + ", cnt=" + cnt + ", addMileageCnt=" + addMileageCnt
+				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", refundSum=" + refundSum
+				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
+				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + "]";
 	}
 
+
+	
 }

@@ -40,6 +40,11 @@ public class StoreOrderServiceImpl {
 	public int updateordercancel(OrdersVO vo){
 		return dao.updateordercancel(vo);
 	}
+
+	// 주문 취소 ( 매장 에서 ) 
+	public int updateordermileage(OrdersVO vo){
+		return dao.updateordermileage(vo);
+	}
 	
 	// 주문 승인 ( 매장 에서 ) 
 	public int updateorderapply(OrdersVO vo){

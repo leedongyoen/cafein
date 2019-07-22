@@ -22,7 +22,7 @@
 	// 승인 버튼 클릭 시 모달창 띄우기
 	function apply(ordern){
 		console.log(ordern);
-
+		event.stopPropagation();
 		$('#applyordernumber').val(ordern);
 		$('#applyemodal').modal('show');
 		
@@ -30,6 +30,7 @@
 	
 	// 승인 모달창에서 승인 할 경우
 	function applyorder(){
+		
 		var ordern = $('#applyordernumber').val();
 		var taketime = $('select[name="takeTime"]').val();
 		$.ajax({
@@ -53,7 +54,7 @@
 	
 	// 거절 버튼 클릭 시 모달창 띄우기
 	function refuse(ordern){
-		
+		event.stopPropagation();
 		console.log(ordern);
 		$('#cancelordernumber').val(ordern);
 		$('#refusemodal').modal('show');
@@ -87,7 +88,7 @@
 	
 	// 주문 번호 클릭시 나오는 옵션들
 	function menudetail(order_n){
-		var sId = '<%= session.getAttribute("sid") %>';
+		var sId = '<%= session.getAttribute("sId") %>';
 		var menunum="";
 		
 		var test="";
@@ -132,6 +133,7 @@
 						if(menunum != item.opDnum){
 							menunum = item.oDnum;
 							test = test + "<br>" +item.mName+"-";
+							test = test +" " +item.opName;
 							console.log(test);
 						}
 					}); 
@@ -151,7 +153,7 @@
 	
 	function getstoreorderlist(){
 		
-		var sId = '<%= session.getAttribute("sid") %>';
+		var sId = '<%= session.getAttribute("sId") %>';
 		$('#orderlisttable tbody').empty();
 		$.ajax({
 			url: 'getstoreorderlist',
@@ -198,6 +200,7 @@
 			type:'GET',
 			data: {oNum: ordernumber, mNum: ordermnum},
 			dataType:'json',
+			async: false,
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
@@ -265,7 +268,7 @@
 						var before = $('#'+ordernum).html();
 						before = before +","+after;
 						$('#'+ordernum).html(before);
-					}else{ // 다르면
+					}else if(ordernum != item.oNum){ // 다르면
 						ordernum = item.oNum;
 						ordermnum= item.mNum;
 						$('<tr>').attr({
