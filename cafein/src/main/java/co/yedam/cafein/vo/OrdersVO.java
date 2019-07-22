@@ -243,14 +243,9 @@ public class OrdersVO {
 				+ refuseReason + ", takeTime=" + takeTime + ", deApplyTime=" + deApplyTime + ", oDnum=" + oDnum
 				+ ", sName=" + sName + ", mNum=" + mNum + ", oQty=" + oQty + ", opDnum=" + opDnum + ", receipno="
 				+ receipno + ", caNum=" + caNum + ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option="
-<<<<<<< HEAD
-				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", detailNm=" + detailNm
-				+ ", addcanclemileage=" + addcanclemileage + ", cnt=" + cnt + "]";
-=======
 				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", cnt=" + cnt
 				+ ", addMileageCnt=" + addMileageCnt + ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime
 				+ "]";
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 	}
 
 
