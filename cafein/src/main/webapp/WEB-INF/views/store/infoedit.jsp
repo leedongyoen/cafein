@@ -160,7 +160,7 @@ function checkpwbtn(){
 		if(current_pw == $("#s_pw").val()  ){
 			if($("#new_pw").val() == $("#newck_pw").val()){
 				$.ajax({
-					url : 'storepw/'+'SH001',
+					url : 'storepw/'+ sid,
 					type : 'PUT',
 					contentType : 'application/json;charrset=utf-8',
 					dataType : 'json',
