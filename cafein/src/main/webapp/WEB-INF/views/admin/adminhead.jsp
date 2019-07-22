@@ -25,6 +25,7 @@ body {
 
 <script>
 
+
 	$(function(){
 		var aId = "<%= (String)session.getAttribute("aId") %>";
 		console.log("Admin id = " + aId);
@@ -38,6 +39,15 @@ body {
 			$("#logoutbtn").css('display', 'inline');
 		}
 	});
+	
+	
+	function loginCheck(){
+		var aId = "<%= (String)session.getAttribute("aId") %>";
+		if(aId == "null"){
+			alert("로그인 하십시오!");
+			location.href="adminlogin.do";
+		}
+	}
 </script>
 </head>
 <body>

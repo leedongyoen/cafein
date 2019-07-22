@@ -18,8 +18,12 @@
 <script>
 
 	$(function(){
+		loginCheck();
 		storepermissionList();
 	});
+	
+	
+
 	function storepermissionList(){
 		console.log('function==============')
 		$.ajax({
