@@ -88,7 +88,7 @@
 	
 	// 주문 번호 클릭시 나오는 옵션들
 	function menudetail(order_n){
-		var sId = '<%= session.getAttribute("sid") %>';
+		var sId = '<%= session.getAttribute("sId") %>';
 		var menunum="";
 		
 		var test="";
@@ -153,7 +153,7 @@
 	
 	function getstoreorderlist(){
 		
-		var sId = '<%= session.getAttribute("sid") %>';
+		var sId = '<%= session.getAttribute("sId") %>';
 		$('#orderlisttable tbody').empty();
 		$.ajax({
 			url: 'getstoreorderlist',
