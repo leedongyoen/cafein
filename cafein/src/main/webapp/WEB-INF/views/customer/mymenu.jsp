@@ -347,7 +347,7 @@ $(function(){
 	});
 	//주문하기
 	$("#cu_orderbtn").on("click",function(){
-		var list =  $("#menudetailForm").serializeObject();
+		var list =  $("#mymenudetailForm").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
 		$('[name=cuoptionlist]:checked').each(function(){

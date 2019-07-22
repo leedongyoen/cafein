@@ -23,7 +23,9 @@
   height:600px;
   border: 1px solid;
 }
-
+.chbtn {
+	color: red;
+}
 
 </style>
 </head>
@@ -35,8 +37,9 @@ var sId="SH001"; //헤더에있는 Id로 교체
 var qty = 1;
 var currNo=0;
 var valNo;
+var lastSel;
 
-
+var editableCells = ['qty'];
    $(document).ready(function() {
 
 	   $("#gridlist").jqGrid({
@@ -46,7 +49,7 @@ var valNo;
                { label: '메뉴명',  name: 'mName',  width: 130 },
                { label: '옵션',   name: 'opName', width: 150  },
                { label: '금액',   index:'Price',name: 'Price', width: 75 ,formatter:'integer'},
-               { label: '수량',   name: 'qty', width: 75,editable: true},
+               { label: '수량',   name: 'qty', width: 75},
                { label: 'parentMNum', name:'parentMNum', hidden:true},
                { label: 'sonMNum', name:'sonMNum', hidden:true}
            ],
@@ -64,11 +67,12 @@ var valNo;
 //           multiselect : true,//체크박스 사라짐
     		height:300,
     		scroll:1,
-    		'cellEdit': true,
-    		'cellsubmit' : 'clientArray',
-    	   editurl: 'clientArray',
            scrollrows : true, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
            gridview : true,
+           closeAfterEdit: true,
+           cellEdit:true,
+           forceFit : true,
+           cellsubmit:"clientArray",
            footerrow:true,
            userDataOnFooter:true,
      //      userData: { Price: Price },
@@ -81,7 +85,14 @@ var valNo;
 	       		groupColumnShow : [false],
 	       		groupText : ["{0}"],
 	       		groupcheckbox: true
-	       	},	
+	       	},
+	       	/*수량처리
+	       	
+	       	ondblClickRow: function(rowid, iRow, iCol, e){
+	       		$("#gridlist").jqGrid('getGridParam', {editable: true,cellEdit: true});        	
+	       	}, 
+	       	
+	       	*/
 	      //합계
 	 	   afterInsertRow: function () {
 	 	   var grid = $("#gridlist");
@@ -321,9 +332,8 @@ footerrow : true});*/
  		}
  	//현금or카드 결제
  	$(document).on("click","#cash", function(){
-			$("#card").hide();
-			
-			//css로 색변경으로 하기
+ //		$("#cash").removeClass();
+// 		$("#cash").addclass('chbtn');
 		});
  	$(document).on("click","#card", function(){
 		$("#cash").hide();
@@ -333,19 +343,51 @@ footerrow : true});*/
  	
  	//결제하기
  	$(document).on("click","#payment", function(){
-		$("#paymentModal").modal('show');
+ //		$("#paymentModal").empty();
+ 		$("#paymentModal").modal('show');
+ 		var list =  $("#girdForm").serializeObject();
 		var selectop = [];
 		var grid = $("#gridlist");
 		var dataIDs =  grid.jqGrid('getDataIDs');
+		//주문한 데이터 모두 가져오기
 		for(i = 0; i < dataIDs.length; i++)
 		{
-			
 			var rowData = grid.jqGrid ('getRowData', dataIDs[i]);
 			console.log($(rowData.qty).text());
 			selectop.push(rowData);
 		}
-		
 		console.log(selectop);
+		console.log(list);
+		
+		
+		//주문한금액 전체 가져오기
+		var PSum = grid.jqGrid('getCol','Price',false,'sum');
+		console.log(PSum);
+		//		$("#payresult").empty();
+		
+		$("<input>").attr({
+			type:"text",
+			name:"getpay",
+			value:PSum})
+			.attr("class","pay")
+			.appendTo("#payresult");
+		
+		//현금 선택시 받으신금액 입력
+		$('input.numOnly').on('keyup',function(){
+			var cnt = $(".exam input.num_sum").length;     
+	          console.log(cnt);
+	          
+			  for( var i=1; i< cnt; i++){
+			     var sum = parseInt($(this).val() || 0 );
+			     sum++
+			    console.log(sum);
+			  }
+			var minus = parseInt($("#getmoney").val() || 0);
+			var sum = minus-PSum;
+			console.log(sum);
+			$("#resultmoney").val(sum);
+		});
+		
 		
 	});
  	
@@ -355,8 +397,10 @@ footerrow : true});*/
 <br><br>
 <div class ="container">
 <div class="left">
+<form class="form-borizontal" name="girdForm" action="customerorder" method="POST">
     <table id="gridlist"></table>
     <div id="pager"></div>
+</form>
 </div>
 
 <!-- 메뉴 선택 창 -->
@@ -525,23 +569,22 @@ footerrow : true});*/
 							<input type="button" id="cash" value="현금">
 							<input type="button" id="card" value="카드">
 						</div>
-						<table id="payNow" class="table">
+						<table id="payNow" class="exam">
 							<thead>
 							<tr> 
-								<th>받으실 돈 :  <input type="text" id="getpay"></th>
+								<th>받으신 돈</th>
+								<td><input type="text" id="getmoney" class="numOnly num_sum"></td>
 							</tr>
 							<tr> 
-								<th>받으신 돈 :  <input type="text" id="getpay2"></th>
+								<th>받으실 돈</th>
+								<td id="payresult" class="numOnly num_sum"></td>
 							</tr>
 							<tr> 
-								<th>거스름 돈 :  <input type="text" id="gopay"></th>
+								<th>거스름 돈</th>
+								<td><input type="text" id="resultmoney" class="numOnly num_sum"></td>
 							</tr>
 							</thead>
 						</table>
-						<div style="text-align:right">
-						 총 금액 : <input type="text" id="allpay">
-						
-						</div>
 						</div>
 					</form>
 				
