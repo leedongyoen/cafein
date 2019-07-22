@@ -159,6 +159,90 @@ function orderCartInsert(){
 	
 }
 
+function plus(id_num) {
+	//var price = $("input:text[name='price']").val();
+	var cnt = id_num.substring(4);
+	var price = $('#price'+ cnt).val();
+	var qty = $('#qty'+ cnt).val();
+	console.log(price+" "+qty);
+	
+	
+	
+	var v_totalprice = $("input:text[name='total']").val();
+	var plusqty = (qty*1)+1;
+	
+	$('#qty'+ cnt).val(plusqty);
+	
+	v_totalprice = Number(v_totalprice) + Number(price);
+	$("input:text[name='total']").val(v_totalprice);
+	
+	/*
+	var v_totalprice = $("input:text[name='total']").val();
+	
+	var no = $("input:text[name='oQty']").val();
+	if (num == -1) {
+		if (Number(no) == 1) {
+			alert("1개 이상으로 주문해주세요.");
+			return;
+		}
+		no = Number(no) - 1;
+		v_totalprice = Number(v_totalprice) - Number(price);
+	} else if (num == 1) {
+		no = Number(no) + 1;
+		v_totalprice = Number(v_totalprice) + Number(price);
+	}
+	$("input:text[name='total']").val(v_totalprice);
+	$("input:text[name='oQty']").val(no);
+	*/
+	
+	
+}
+
+function minus(id_num) {
+	//var price = $("input:text[name='price']").val();
+	var cnt = id_num.substring(5);
+	var price = $('#price'+ cnt).val();
+	var qty = $('#qty'+ cnt).val();
+	console.log(price+" "+qty);
+	
+	var v_totalprice = $("input:text[name='total']").val();
+	
+	var minusqty = (qty*1)-1;
+	if(minusqty == 0){
+		minusqty = 1;
+		alert("1개 이상으로 주문해주세요.");
+		return;
+	}
+	$('#qty'+ cnt).val(minusqty);
+	/* if (no == -1) {
+		if (Number(no) == 1) {
+			alert("1개 이상으로 주문해주세요.");
+			return;
+		}
+		no = Number(no) - 1;
+		v_totalprice = Number(v_totalprice) - Number(price);
+	} */
+	
+	
+	v_totalprice = Number(v_totalprice) - Number(price);
+	$("input:text[name='total']").val(v_totalprice);
+	/*
+	var v_totalprice = $("input:text[name='total']").val();
+	
+	var no = $("input:text[name='oQty']").val();
+	 else if (num == 1) {
+		no = Number(no) + 1;
+		v_totalprice = Number(v_totalprice) + Number(price);
+	}
+	$("input:text[name='total']").val(v_totalprice);
+	$("input:text[name='oQty']").val(no);
+	*/
+	
+	
+	
+}
+
+
 
 </script>
 </head>
@@ -185,7 +269,7 @@ function orderCartInsert(){
 					<th>매 장 명</th>
 					<td>${cartLists[0].sName}</td>
 				</tr>
-		<c:forEach items="${cartLists}" var="cartlist">
+		<c:forEach items="${cartLists}" var="cartlist" varStatus="status">
 				<tr>
 					<th>메 뉴 명</th>
 					<td>
@@ -211,7 +295,7 @@ function orderCartInsert(){
 								<c:if test="${cartlist.mNum eq entry.key}">
 										<c:forEach items="${entry.value}" var="opvalue">
 										${opvalue}
-											<c:forEach items="${cartlist.cuoptionlist}" var="culist" varStatus="status">
+											<c:forEach items="${cartlist.cuoptionlist}" var="culist">
 											
 												<c:if test="${culist eq opvalue}">
 											
@@ -300,9 +384,10 @@ function orderCartInsert(){
 				</tr>
 				<tr>
 					<th>금 액</th>
-					<td><input id="price" value="${cartlist.mPrice}" size="6" readonly> &nbsp;&nbsp;
-						<button type="button" onclick="add(1)">+</button> <input name="oQty" size="1" value="${cartlist.orderqty}" readonly>
-						<button type="button" onclick="add(-1)">-</button></td>
+					<td><input id="price${status.count}" value="${cartlist.mPrice}" size="6" readonly> &nbsp;&nbsp;
+						<button type="button" id = "plus${status.count}" onclick="plus(this.id)">+</button>
+							<input name="oQty" id = "qty${status.count}" size="1" value="${cartlist.orderqty}" readonly>
+						<button type="button" id = "minus${status.count}" onclick="minus(this.id)">-</button></td>
 				</tr>
 				
 				</c:forEach>
@@ -357,7 +442,7 @@ function orderCartInsert(){
 				</tr>
 				<tr>
 					<th>총 금 액</th>
-					<td><input name="total" value="1010" readonly></td>
+					<td><input name="total" value="0" readonly></td>
 				</tr>
 			</table>
 
