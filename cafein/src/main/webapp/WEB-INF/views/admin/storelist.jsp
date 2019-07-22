@@ -17,7 +17,13 @@
 <META NAME="Description" CONTENT="">
 <script>
 
-/* 	$(function storeList(){
+$(function() {
+	loginCheck();
+	storeList();
+});
+
+
+/* 	$(function storeList(){ 
 			$.ajax({
 				url : 'storelist.do',
 				type : 'GET',
@@ -33,8 +39,9 @@
 		
 	}); */
 	
-	$(function storeList(){
-		console.log('function in')
+	function storeList(){
+		console.log('function in');
+	
 		$.ajax({
 			url : 'storelist',
 			type : 'GET',
@@ -62,7 +69,7 @@
 		
 		}); 
 	
-	});
+	}
 	
 
 /* 	function storeListResult(){

@@ -47,7 +47,7 @@ public class StoreController {
 		
 		int n = storejoinService.insertJoin(vo);
 		ModelAndView mv = new ModelAndView();
-		if(n==1) {
+		if(n== 1) {
 			out.println("<script>alert('가입이 완료되었습니다. 승인 완료시 로그인 가능합니다.');</script>");
 			return("store/login");
 		}else {
