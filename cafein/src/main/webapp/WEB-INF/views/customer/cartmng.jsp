@@ -66,7 +66,7 @@ $(function(){
 			
 			$("#CartList div a").html(local_cart[i].sId);
 			$('<tr>')
-			.append($('<td rowspan="2">').append($('<input>').attr({type: "checkbox", name:"cartnumlist", value:i,})))
+			.append($('<td rowspan="2">').append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i,onClick:"cartlist(this.value)",})))
 			.append($('<td rowspan="2">'))    //.html()
 			.append($('<td rowspan="2">'))
 			.append($('<td>').html(local_cart[i].mName))   //.html(local_cart[i].mName))
@@ -120,8 +120,27 @@ $(function(){
 		
 	}
 	
+	
+	
+
+	
 });
 
+function cartlist(val){
+	console.log(val);
+	var allPrice = 0;
+	$("input[name=cartnumlist]:checked").each(function() {
+		var test = $(this).val(); 
+		var addNum = $("#orderCartForm div table tbody tr:eq("+(val*2)+") td:eq(6)").html();
+		console.log("test: "+addNum);
+		allPrice = allPrice + (addNum*1);
+		//sum_optionprice =Number(sum_optionprice)+ Number(price);
+
+	});
+	
+	console.log(allPrice);
+	$("#orderCartForm div p span strong").html(val);
+}
 
 function orderDeleteClick(){
 	
@@ -250,7 +269,7 @@ function getOptionNaming(mnumber, stnumber){
 						<thead>
 							<tr>
 								<th rowspan="1"></th>
-								<th rowspan="1">매 장 명</th>
+								<th rowspan="1">매장 명</th>
 								<th colspan="2">상품/옵션정보</th>
 								<th rowspan="1">ICE/HOT</th>
 								<th rowspan="1">수 량</th>

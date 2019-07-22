@@ -1,5 +1,7 @@
 package co.yedam.cafein.customer;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -193,12 +195,33 @@ public class CustomerCartOrderController {
 			  //해당 메뉴의 선택한 옵션들을 list넣음
 			  vo.setmNum(cartcnt.get(i));
 			  
-			  ArrayList<String> oplistarr =(ArrayList<String>) insertParam.get(cartcnt.get(i).toString());
-			  System.out.println("DURL: "+cartcnt.get(i).toString());
-			  String[] oplist = new String[oplistarr.size()];
-			  oplist= oplistarr.toArray(oplist);
-
-			  vo.setOptionlist(oplist);
+			  
+			  ArrayList<String> oplistarr = new ArrayList<String>();
+			  
+			
+			  
+			  Object insertParam2 =  insertParam.get(cartcnt.get(i).toString());
+			  
+			  System.out.println("===================="+insertParam2);
+			  if(insertParam2.toString().length() > 6) {
+				  oplistarr =(ArrayList<String>) insertParam2;
+				  System.out.println("::::"+oplistarr.toString());
+				  
+				  String[] oplist = new String[oplistarr.size()];
+				  oplist= oplistarr.toArray(oplist);
+				  vo.setOptionlist(oplist);
+			  }else {
+				  
+				  System.out.println("===================="+insertParam2);
+				  oplistarr = new ArrayList<String>();
+				  String[] oplist = new String[1];
+				  oplistarr.add(insertParam2.toString());
+				  oplist = oplistarr.toArray(oplist);
+				  vo.setOptionlist(oplist);
+			  }
+			  System.out.println("==========full option list"+vo.getOptionlist());
+			  
+			  
 			  vo.setcAdd((String) insertParam.get("cAdd"));
 			  vo.setcAdd3((String) insertParam.get("cAdd3"));
 			  vo.setsId((String) insertParam.get("sId")); 
@@ -219,8 +242,8 @@ public class CustomerCartOrderController {
 			  hioption= hoticeop.toArray(hioption);
 			  vo.setHotice_option(hoticeop.get(i)); 
 			  
-			  String[] oqtty = new String[oqtyy.size()];
-			  oqtty= oplistarr.toArray(oqtty);
+			  //String[] oqtty = new String[oqtyy.size()];
+			  //oqtty= oplistarr.toArray(oqtty);
 			  vo.setoQty(oqtyy.get(i));
 		
 			   
