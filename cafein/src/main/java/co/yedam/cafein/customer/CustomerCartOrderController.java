@@ -107,26 +107,29 @@ public class CustomerCartOrderController {
 	        	List<RecipeVO> opNames = service.getOptionName(vo);
 	        	//System.out.println("opNames: "+opNames);
 	        	
+	        	
 	        	for(int j = 0;j<meorvo.size();j++) {
 	        		String[] stList = meorvo.get(j).getCuoptionlist();
-	        		
-	        		for(int s = 0; s<stList.length;s++) {
-	        			//System.out.println("stList: "+stList[s]);
-	        			
-	        			for(int w = 0;w<opNames.size();w++) {
-	        				
-	        				if(meorvo.get(j).getmNum().equals(opNames.get(w).getmNum())) {
-	        					//System.out.println("size: meorvo.get(j).getmNum():"+meorvo.get(j).getmNum());
-	        					//System.out.println("size: opNames.get(w).getmNum():"+opNames.get(w).getmNum());
-	        					if(opNames.get(w).getStNum().equals(stList[s])) {
-		        					stList[s] = opNames.get(w).getRecipeno();
-		        					//System.out.println("afterL: "+stList[s]);
-		        				}	
-	        				}
-	        				
-	        			}
+	        		if(stList!=null) {
+		        		for(int s = 0; s<stList.length;s++) {
+		        			//System.out.println("stList: "+stList[s]);
+		        			
+		        			for(int w = 0;w<opNames.size();w++) {
+		        				
+		        				if(meorvo.get(j).getmNum().equals(opNames.get(w).getmNum())) {
+		        					//System.out.println("size: meorvo.get(j).getmNum():"+meorvo.get(j).getmNum());
+		        					//System.out.println("size: opNames.get(w).getmNum():"+opNames.get(w).getmNum());
+		        					if(opNames.get(w).getStNum().equals(stList[s])) {
+			        					stList[s] = opNames.get(w).getRecipeno();
+			        					//System.out.println("afterL: "+stList[s]);
+			        				}	
+		        				}
+		        				
+		        			}
+		        		}
+		        		meorvo.get(j).setCuoptionlist(stList);
 	        		}
-	        		meorvo.get(j).setCuoptionlist(stList);
+	        		
 	        	}
 	        	
 	        	System.out.println("수정: "+meorvo);
@@ -191,8 +194,11 @@ public class CustomerCartOrderController {
 			  vo.setmNum(cartcnt.get(i));
 			  
 			  ArrayList<String> oplistarr =(ArrayList<String>) insertParam.get(cartcnt.get(i).toString());
-			  String[] oplist = new String[oplistarr.size()];
-			  oplist= oplistarr.toArray(oplist);
+			  String[] oplist = null;
+			  if(oplistarr != null) {
+				  oplist = new String[oplistarr.size()];
+				  oplist= oplistarr.toArray(oplist);
+			  }else			  
 			  
 			  vo.setOptionlist(oplist);
 			  vo.setcAdd((String) insertParam.get("cAdd"));
@@ -210,7 +216,10 @@ public class CustomerCartOrderController {
 			  vo.setHotice_option(hoticeop.get(i)); 
 			  
 			  String[] oqtty = new String[oqtyy.size()];
-			  oqtty= oplistarr.toArray(oqtty);
+			  if(oplistarr != null) {
+				  oqtty= oplistarr.toArray(oqtty);
+			  }
+			  
 			  vo.setoQty(oqtyy.get(i));
 		
 			  cartorder.add(vo);

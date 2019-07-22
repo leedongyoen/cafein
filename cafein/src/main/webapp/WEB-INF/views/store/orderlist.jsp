@@ -132,6 +132,7 @@
 						if(menunum != item.opDnum){
 							menunum = item.oDnum;
 							test = test + "<br>" +item.mName+"-";
+							test = test +" " +item.opName;
 							console.log(test);
 						}
 					}); 
@@ -198,6 +199,7 @@
 			type:'GET',
 			data: {oNum: ordernumber, mNum: ordermnum},
 			dataType:'json',
+			async: false,
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
@@ -265,7 +267,7 @@
 						var before = $('#'+ordernum).html();
 						before = before +","+after;
 						$('#'+ordernum).html(before);
-					}else{ // 다르면
+					}else if(ordernum != item.oNum){ // 다르면
 						ordernum = item.oNum;
 						ordermnum= item.mNum;
 						$('<tr>').attr({

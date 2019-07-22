@@ -44,4 +44,15 @@ public class CustomerLoginDAO {
 		return mybatis.insert("customerLoginDAO.insertCustomerNaver", vo);
 	}
 	
+	//아이디 찾기 폼
+	public CustomerVO idFind(CustomerVO vo) {
+		System.out.println(" - - - - id - - - -");
+		return mybatis.selectOne("customerLoginDAO.idFind", vo);
+	}
+	
+	//비밀번호 찾기 폼
+	public void pwFind(CustomerVO vo) {
+		mybatis.update("customerLoginDAO.pwFind", vo);
+	}
+	
 }

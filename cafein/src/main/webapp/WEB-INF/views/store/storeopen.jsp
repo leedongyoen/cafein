@@ -9,10 +9,15 @@
 <%@ include file="storehead.jsp" %>
 <title>Store Opening Page</title>
 <script>
-
-	var id = "<%= (String)session.getAttribute("sid") %>";
+	
+	var sId = "<%= (String)session.getAttribute("sId") %>";
 	var openTotalCash = 0; //영업준비시재 합계
 // 	$('#orSum').text(addCommas(operatingreserveSum)+'원');
+	
+	//비로그인시 예외처리
+	$(function() {
+		loginCheck();		
+	});
 	
 	//onkeypress 이벤트
 	function inNumber(){
@@ -95,7 +100,7 @@
 	
 	function makeData(){
 			//객체에 제이슨형태로 담기. 오픈시간/매장아이디/영업준비금
-  		var JsonData ={"sId" : id, "defaultCash" : openTotalCash};
+  		var JsonData ={"sId" : sId, "defaultCash" : openTotalCash};
 			
 		//객체를 제이슨으로 변환
   		console.log(JSON.stringify(JsonData));

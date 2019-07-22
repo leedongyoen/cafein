@@ -33,12 +33,27 @@ public class OrdersVO {
 	private String hotice_option; // 해당 메뉴의 hot ice 
 	private int addmileage; // 적립된 마일리지
 	private String mName;
+	private String detailNm;
 	
+	private int addcanclemileage;
 	private int cnt;		// 주문 건수를 알기위함
 	private int addMileageCnt;			// 사용한 적립금 건수
 	private int minusMileageCnt;		// 마일리지를 적립해준 주문 건수
 	private Timestamp openTime;			// 마일리지 검색 할 때 where 절에 필요
 	
+	
+	public int getAddcanclemileage() {
+		return addcanclemileage;
+	}
+	public void setAddcanclemileage(int addcanclemileage) {
+		this.addcanclemileage = addcanclemileage;
+	}
+	public String getDetailNm() {
+		return detailNm;
+	}
+	public void setDetailNm(String detailNm) {
+		this.detailNm = detailNm;
+	}
 	public Timestamp getDeApplyTime() {
 		return deApplyTime;
 	}
@@ -232,5 +247,6 @@ public class OrdersVO {
 				+ ", addMileageCnt=" + addMileageCnt + ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime
 				+ "]";
 	}
+
 
 }

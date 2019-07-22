@@ -12,7 +12,11 @@
 	<h1 align="center">재고 출고 통계</h1>
 	<div class="container">
 		<script type="text/javascript">
+		var sId = "<%= (String)session.getAttribute("sId") %>";
 		
+		$(function() {
+			loginCheck();		
+		});
 		google.charts.load('current', {
 			packages : [ 'corechart', 'bar' ]
 		});
@@ -62,7 +66,8 @@
 				dataType : 'json',
 				data : {
 					startDate : startDate,
-					endDate : endDate
+					endDate : endDate,
+					sId : sId
 				},
 				
 				error : function(status, msg) {

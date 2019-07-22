@@ -56,11 +56,11 @@ public class StoreController {
 	}
 	
 	// ajax 회원가입 id 체크를 할 컨트롤러
-		@RequestMapping(value = "/getstorejoin/{sid}", method = RequestMethod.POST)
+		@RequestMapping(value = "/getstorejoin/{sId}", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<Object, Object> idCheck(@PathVariable("sid") String sid) {
+		public Map<Object, Object> idCheck(@PathVariable("sId") String sId) {
 			StoreVO vo = new StoreVO();
-			vo.setSid(sid);
+			vo.setSid(sId);
 			System.out.println("================" + vo.getSid());
 			int n = storejoinService.idCheck(vo);
 			Map<Object, Object> map = new HashMap<Object, Object>();
@@ -90,9 +90,9 @@ public class StoreController {
 			return "store/login";
 		} else {
 			System.out.println("not null");
-			session.setAttribute("sid", store.getSid());
+			session.setAttribute("sId", store.getSid());
 			session.setAttribute("sName", store.getSname());
-			System.out.println(session.getAttribute("sid"));
+			System.out.println(session.getAttribute("sId"));
 			System.out.println("store name : " + store.getSname());
 			return "store/main";
 		}
@@ -103,11 +103,11 @@ public class StoreController {
 	@RequestMapping("storelogout.do")
 	public String logout(HttpSession session) {
 		
-		String id = (String) session.getAttribute("sid");
+		String id = (String) session.getAttribute("sId");
 		
 		if(id != null) {
 			System.out.println("매장 로그아웃");
-			session.removeAttribute("sid");
+			session.removeAttribute("sId");
 			session.removeAttribute("sName");
 			
 		}

@@ -29,6 +29,7 @@ import co.yedam.cafein.vo.CartVO;
 import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.MenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
+import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.RecipeVO;
 import co.yedam.cafein.vo.StoreVO;
@@ -85,6 +86,22 @@ public class CustomerOrderController {
 
 		return service.getOrderList(vo);
 	}
+	
+	// 고객 페이지 - 주문 클릭시 메뉴 상세
+	@ResponseBody
+	@RequestMapping(value = "/getcustomerordermenudetail", method = RequestMethod.GET)
+	public List<OrderDetailsVO> getstoreorderdetails(OrdersVO vo) {
+
+		return service.getcustomerordermenudetail(vo);
+	}
+	
+	// 고객 페이지 - 주문 클릭시 주문 상세
+	@ResponseBody
+	@RequestMapping(value = "/getcustomeroderdetail", method = RequestMethod.GET)
+	public OrdersVO getcustomeroderdetail(OrdersVO vo) {
+
+		return service.getcustomeroderdetail(vo);
+	}
 
 	
 	//메인에서 고객 총주문금액 리스트 
@@ -118,6 +135,13 @@ public class CustomerOrderController {
 		
 		// orders테이블에 넣기
 		service.insertorder(vo);
+		
+		// 마일리지 사용했으면 마일리지 업데이트
+		if(info.getMileage() > 0) {
+			info.setoNum(vo.getoNum());
+			int n = service.setcanclemileage(info);
+			
+		}
 		
 		// order details 테이블에 넣을 list
 		List<OrdersVO> orderlist = new ArrayList<OrdersVO>();

@@ -46,7 +46,7 @@ var valNo;
                { label: '메뉴명',  name: 'mName',  width: 130 },
                { label: '옵션',   name: 'opName', width: 150  },
                { label: '금액',   index:'Price',name: 'Price', width: 75 ,formatter:'integer'},
-               { label: '수량',   name: 'qty', width: 75, editable:true},
+               { label: '수량',   name: 'qty', width: 75,editable: true},
                { label: 'parentMNum', name:'parentMNum', hidden:true},
                { label: 'sonMNum', name:'sonMNum', hidden:true}
            ],
@@ -64,6 +64,9 @@ var valNo;
 //           multiselect : true,//체크박스 사라짐
     		height:300,
     		scroll:1,
+    		'cellEdit': true,
+    		'cellsubmit' : 'clientArray',
+    	   editurl: 'clientArray',
            scrollrows : true, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
            gridview : true,
            footerrow:true,
@@ -78,17 +81,21 @@ var valNo;
 	       		groupColumnShow : [false],
 	       		groupText : ["{0}"],
 	       		groupcheckbox: true
-	       	},
+	       	},	
 	      //합계
 	 	   afterInsertRow: function () {
 	 	   var grid = $("#gridlist");
 	 	   var PSum = grid.jqGrid('getCol','Price',false,'sum');
-	 	   var QSum = grid.jqGrid('getCol','qty',false,'sum');
-	 	   		grid.jqGrid("footerData", "set", {mName:"합계",Price:PSum,qty:QSum});
+	 	   		grid.jqGrid("footerData", "set", {mName:"합계",Price:PSum});
+	 	   		
+	 	   console.log(PSum);
 	 	   //		grid.jqGrid("footerData", "set", {mName:"합계",qty:QSum});
 	 	   }
 	       	
+	       	
        });
+	   
+	   
 	   //그리드내 행 삭제
 	   $("#deleteRow").on("click",function(){
 			var grid = $("#gridlist");
@@ -131,15 +138,14 @@ var valNo;
 var buffdata = $('#testGrid').jqGrid('getDataIDs'); // 테이블에 있는 모든 데이터를 수집한다.
 $('#testGrid').jqGrid('getGridParam','selarrrow') // 체크한줄 불러옴 배열로 가져옴
 
-$("#testGrid").jqGrid('delRowData', rowids[i]); // 로우 삭제
 $("#jourTable").getDataIDs(); // 모든 로우 ids 가져옴
 var updateList = $("#schoolGrid").getChangedCells('all'); //<--셀에값이 변한 줄 불러옴
-footerrow : true});
- $('#debtorTable').jqGrid('footerData', 'set', {accountName:'합계', amount:debTotal});  //footer 데이터  */
+footerrow : true});*/
 
  
  //메뉴탭에서 매장메뉴 나오기
  $(document).ready(function(){
+	 $("#paymentModal").modal('hide');
 	 $("#cusSearchModal").modal('hide');
 	 $("#orderListModal").modal('hide');
 		//메뉴로드
@@ -253,6 +259,7 @@ footerrow : true});
 	    });
 	    
  	}
+ //옵션 메뉴 gird에 출력
  	$(document).on("click",".opbutton", function(){
  		var opName = $(this).val();
 		var mNum = $(this).next().val();
@@ -284,10 +291,6 @@ footerrow : true});
  	$(document).on("click","#orderList", function(){
  		$("#orderListModal").modal('show');
  	});
-
- 	
- 	
- 	 
  
  	//회원검색창 띄우기
  	$(document).on("click","#customersearch", function(){
@@ -305,14 +308,14 @@ footerrow : true});
 	    }); 
  		
  	}
- 	function aftersearch(data1,data2,data3){
+ 	function aftersearch(Name,Tel,mileage){
  		$('#cusSearchModal').modal("hide");
- 		console.log(data1,data2,data3);
+ 		console.log(Name,Tel,mileage);
  			$("#aftersearch tbody").empty();
  		    	 $('<tr>')
- 		          .append($('<td><input type=\'text\' class=\'data1\' id=\'data1\' value=\''+data1+'\'>'))
- 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'data2\' value=\''+data2+'\'>'))
- 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'data3\' value=\''+data3+'\'>'))
+ 		          .append($('<td><input type=\'text\' class=\'data1\' id=\'data1\' value=\''+Name+'\'>'))
+ 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'data2\' value=\''+Tel+'\'>'))
+ 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'data3\' value=\''+mileage+'\'>'))
  		          .appendTo('#aftersearch tbody');
  		      
  		}
@@ -325,6 +328,27 @@ footerrow : true});
  	$(document).on("click","#card", function(){
 		$("#cash").hide();
 	});
+ 	
+ 	
+ 	
+ 	//결제하기
+ 	$(document).on("click","#payment", function(){
+		$("#paymentModal").modal('show');
+		var selectop = [];
+		var grid = $("#gridlist");
+		var dataIDs =  grid.jqGrid('getDataIDs');
+		for(i = 0; i < dataIDs.length; i++)
+		{
+			
+			var rowData = grid.jqGrid ('getRowData', dataIDs[i]);
+			console.log($(rowData.qty).text());
+			selectop.push(rowData);
+		}
+		
+		console.log(selectop);
+		
+	});
+ 	
 	
 </script>
 <br><br>
@@ -398,7 +422,9 @@ footerrow : true});
 <tbody>
 </tbody>
 </table>
+
 </div>
+사용할 마일리지 : <input type="text" id="useMile">
 <p></p>
 	<div style="text-align:left">
 	<input type="button" id="clearRow" value="전체취소">
@@ -433,7 +459,8 @@ footerrow : true});
 					</form>
 				
 				</div>
-				<div class="modal-footer">		
+				<div class="modal-footer">	
+					
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -467,27 +494,67 @@ footerrow : true});
 								<th>MILEAGE</th>
 							</tr>
 							</thead>
-							<tbody id="searchTable">
+							<tbody>
 							</tbody>
 						</table>
 						</div>
 					</form>
 				
 				</div>
-				<div class="modal-footer">		
+				<div class="modal-footer">
+					<input type="button" value="환불하기">		
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
 	</div>
-			<input type="button" id="cash" value="현금">
-			<input type="button" id="card" value="카드">
-			<input type="button" onclick="location.href='#'" value="결제하기">
+	
+	
+	<!-- 결제하기 모달창 -->
+	<div class="modal fade" id="paymentModal" role="dialog">
+		<div class="modal-dialog">		
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Payment</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form class="form-borizontal" action="#" method="POST">
+						<div class="table-responsive" style="text-align:left">
+						<div style="text-align:right">
+							<input type="button" id="cash" value="현금">
+							<input type="button" id="card" value="카드">
+						</div>
+						<table id="payNow" class="table">
+							<thead>
+							<tr> 
+								<th>받으실 돈 :  <input type="text" id="getpay"></th>
+							</tr>
+							<tr> 
+								<th>받으신 돈 :  <input type="text" id="getpay2"></th>
+							</tr>
+							<tr> 
+								<th>거스름 돈 :  <input type="text" id="gopay"></th>
+							</tr>
+							</thead>
+						</table>
+						<div style="text-align:right">
+						 총 금액 : <input type="text" id="allpay">
+						
+						</div>
+						</div>
+					</form>
+				
+				</div>
+				<div class="modal-footer">
+					<input type="button" value="결제하기">		
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+			<input type="button" id="payment" value="결제하기">
 		</div>
 </div>
-
-
-
-
 </body>
 </html>

@@ -38,6 +38,11 @@ public class StoreOrderDAO {
 		return template.update("getStoreOrderListDAO.updateordercancel",vo);
 	}
 	
+	// 주문 취소 ( 매장 에서 ) 
+	public int updateordermileage(OrdersVO vo){
+		return template.update("getStoreOrderListDAO.updateordermileage",vo);
+	}
+	
 	// 주문 승인 ( 매장 에서 ) 
 	public int updateorderapply(OrdersVO vo){
 		return template.update("getStoreOrderListDAO.updateorderapply",vo);

@@ -80,7 +80,7 @@
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-borizontal" id="mymenudetailForm" action="#" method="POST">
+					<form class="form-borizontal" name="mymenudetailForm" action="customerorder" method="POST">
 						<div class="table-responsive">
 						<input type="text" name="mNum" style="display: none;" >
 						<input type="text" name="sId" style="display: none;" >
@@ -108,7 +108,7 @@
 			<td>
 			
 				<input type="button" onclick="add(-1)" value="-">
-				<span id="no">1 </span>
+				<span id="ordernum">1 </span>
 				<input type="button" onclick="add(1)" value="+">
 			</td>
 		</tr>
@@ -121,7 +121,7 @@
 		</tr>
 		<tr>
 			<th>OPTION</th>
-			<td id="selecOp"></td>
+			<td id="menudetailoption"></td>
 		</tr>
 		<tr>
 			<th>총 금 액</th>
@@ -180,6 +180,7 @@
 	// 세부화면 모달창
 	function detailmyMenuList(cuNum) {
 		console.log(cuNum);
+		$("#ordernum").text("1");
 		$.ajax({
 			url : 'mymenuop/'+cuNum,
 			type : 'GET',
@@ -194,7 +195,7 @@
 		function detailmyMenuListResult(datas){
 			$("#myModal").modal('show');
 		$("#detailtable table").empty();
-		$("#selecOp").html("");
+		$("#menudetailoption").html("");
 		var pl = 0;
 		$.each(datas, function(data, item) {
 			console.log(item);
@@ -219,20 +220,20 @@
 					     name: "cuoptionlist", 
 					     id: item.stNum,
 					     value: item.stNum,
-					     checked:"checked",
-					     disabled:"disabled"
+					     checked:"checked"
+			//		     disabled:"disabled"
 					   	})
 					   	.attr("class","checkoption")
-					   	.appendTo("#selecOp");			
+					   	.appendTo("#menudetailoption");			
 					$("<label>").attr("for",item.stNum)
 								.append(item.opName+"("+item.opPrice+"원 추가)")
-								.appendTo("#selecOp");
+								.appendTo("#menudetailoption");
 					$("<input>").attr({
 						type:'hidden',
 						id : 'option'+item.stNum,
 						value: item.opPrice
-					}).appendTo("#selecOp");
-					$("<br>").appendTo("#selecOp");
+					}).appendTo("#menudetailoption");
+					$("<br>").appendTo("#menudetailoption");
 					
 					
 					/* $("#selecOp").append("<input type='checkbox' name='checkbox' id='"
@@ -285,9 +286,10 @@
 	
 	//수량
 	function add(num) {
+		
 		var price = $('#mPrice').val();
 		var v_totalprice = $('#totalPrice').val();
-		var no = $("#no").html();
+		var no = $("#ordernum").html();
 		if (num == -1) {
 			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
@@ -300,7 +302,7 @@
 			v_totalprice = Number(v_totalprice) + Number(price);
 		}
 		$('#totalPrice').val(v_totalprice);
-		$("#no").html(no);
+		$("#ordernum").html(no);
 		$('input:text[name="qty"]').val(no);
 	}
 	
@@ -323,7 +325,7 @@ $(function(){
 		}else{
 			list.cuoptionlist = null;
 		}
-		list.qty = $('#no').html();
+		list.qty = $('#ordernum').html();
 		
 
 		var local_cart = localStorage.getItem("cartlist");
@@ -345,10 +347,10 @@ $(function(){
 	});
 	//주문하기
 	$("#cu_orderbtn").on("click",function(){
-		var list =  $("#mymenudetailForm").serializeObject();
+		var list =  $("#menudetailForm").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
-		$('[name=hotice_option]:checked').each(function(){
+		$('[name=cuoptionlist]:checked').each(function(){
 			selectop.push($(this).val());
 			selectoptionck=true;
 		});
@@ -359,10 +361,10 @@ $(function(){
 			list.cuNumList = null;
 		}
 		
-		$('[name=orderqty]').val($('#no').html());
+		$('[name=orderqty]').val($('#ordernum').html());
 		console.log(JSON.stringify(list));
 		
-		document.menudetailForm.submit();
+		document.mymenudetailForm.submit();
 	});
 	});
 </script>
