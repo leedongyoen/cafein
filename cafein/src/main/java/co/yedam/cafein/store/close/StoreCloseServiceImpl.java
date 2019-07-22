@@ -155,6 +155,9 @@ public class StoreCloseServiceImpl implements StoreCloseService {
 			dao.storeUpdate(storeVO);
 			dao.getStoreOpen(storeVO.get(0));
 			System.out.println("storeopen table data update seccess !");
+			for(int i=0;i<storeVO.size();i++) {
+				System.out.println("------------- store close time : " + storeVO.get(i).getCloseTime());
+			}
 		}
    
 		return 0;

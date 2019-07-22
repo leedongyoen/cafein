@@ -217,18 +217,21 @@ p {
 			url:"storeopen",		// request 보낼 서버경로
 			type:'GET',			
 			data:{sId:sId},				// 보낼 데이터 (매장id 보내야함)
+			dataType:'json',
 			error:function(){
 				alert('통신 실패');
 			},
-			success:function(data){
-				console.log(data)
-				jsonString = JSON.stringify(data);
-				jsonData = JSON.parse(jsonString);
-				console.log('store open data parse : ' + jsonData.defaultCash)
+			success:function(jsonData){
+				//console.log(jsonData)
+				/* jsonString = JSON.stringify(data);
+				jsonData = JSON.parse(jsonString); */
+				//console.log('store open data parse : ' + jsonData.defaultCash)
 				
 				DBdefaultCash = jsonData.defaultCash;
 				storeOpenTime = jsonData.openTime;
 				storeCloseTime= jsonData.closeTime;
+				//storeCloseTime= data.closeTime;
+				$('#closetime').text(storeCloseTime);
 				
 				$('#defaultCash').val(DBdefaultCash);
 				$('#defaultCash').text(addCommas(DBdefaultCash)+'원');
@@ -686,6 +689,7 @@ p {
 					getCloseReceiptCash();
 					getCloseReceiptMileage();
 					getRefundInfo();
+					getStoreOpen();
 					
 					console.log("마감 정산 후 data : "+data);
 					console.log("마감 정산 후 data.store : "+data.store);
@@ -706,10 +710,10 @@ p {
 						$('#storeDefference').text(addCommas(data.store[i].difference)+'원');
 					}
 					console.log("마감 정산 후 opentime: "+opentime);
-					console.log("마감 정산 후 closetime: "+closetime);
+					console.log("마감 정산 후 closetime: "+storeCloseTime);
 
 					$('#opentime').text(opentime);
-					$('#closetime').text(closetime);
+				//	$('#closetime').text(storeCloseTime);
 					// 마감 내역 모달창 show
 					$("#receiptmodal").modal('show');
 					console.log('store : '+data.store)
