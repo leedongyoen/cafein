@@ -33,5 +33,7 @@ public interface StoreCloseService {
 	
 	public List<OrdersVO> getCloseReceiptMileage(OrdersVO vo);
 	
+	public List<OrdersVO> getRefundInfo(OrdersVO vo);
+	
 	public int storeCloseDataImsert(StoreCloseDataInsertVO vo);
 }

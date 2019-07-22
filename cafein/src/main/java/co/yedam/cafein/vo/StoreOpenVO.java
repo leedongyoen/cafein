@@ -12,11 +12,14 @@ public class StoreOpenVO {
 	private Timestamp openTime;
 	@JsonFormat(pattern="yy/MM/dd HH:mm", timezone ="Asia/Seoul")
 	private Timestamp closeTime;
-	private int cash;
-	private int defaultCash;
-	private int orCash;
-	private int difference;
-	private int netIncome;
+	private int cash;				// 현금시재
+	private int defaultCash;		// 기본준비금
+	private int orCash;				// 영업지출금
+	private int difference;			// 차액
+	private int netIncome;			// 순수익
+	private int usedMile;			// 현금결제 시 사용된 마일리지
+	private int cashSum;			// 현금 매출액
+	
 	public String getsId() {
 		return sId;
 	}
@@ -65,11 +68,23 @@ public class StoreOpenVO {
 	public void setNetIncome(int netIncome) {
 		this.netIncome = netIncome;
 	}
+	public int getUsedMile() {
+		return usedMile;
+	}
+	public void setUsedMile(int usedMile) {
+		this.usedMile = usedMile;
+	}
+	public int getCashSum() {
+		return cashSum;
+	}
+	public void setCashSum(int cashSum) {
+		this.cashSum = cashSum;
+	}
 	@Override
 	public String toString() {
 		return "StoreOpenVO [sId=" + sId + ", openTime=" + openTime + ", closeTime=" + closeTime + ", cash=" + cash
 				+ ", defaultCash=" + defaultCash + ", orCash=" + orCash + ", difference=" + difference + ", netIncome="
-				+ netIncome + "]";
+				+ netIncome + ", usedMile=" + usedMile + ", cashSum=" + cashSum + "]";
 	}
 
 }
