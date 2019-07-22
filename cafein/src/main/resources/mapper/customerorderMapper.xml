@@ -154,4 +154,18 @@
 	
 	</update>
 
+
+	<update id="getodnum2">
+		<selectKey keyProperty="opDnum" resultType="string" order="BEFORE">
+			SELECT MIN(O_DNUM) OP_DNUM
+			FROM ORDER_DETAILS
+			WHERE O_NUM =#{oNum} and M_NUM =#{mNum}
+		</selectKey>
+		
+		UPDATE ORDER_DETAILS SET OP_DNUM=#{opDnum} 
+		WHERE O_NUM= #{oNum} and M_NUM =#{mNum}
+	
+	</update>
+
+
 </mapper>

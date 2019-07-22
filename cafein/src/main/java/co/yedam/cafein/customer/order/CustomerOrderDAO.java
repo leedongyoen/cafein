@@ -85,4 +85,9 @@ public class CustomerOrderDAO {
 	public int insertmileage(OrdersVO vo) {
 		return dao.insert("CustomerOrderDAO.insertmileage",vo);
 	}
+
+	// 다건주문인데 안겹치려고 잠깐 만들었습니다. order details op_dnum 업데이트
+	public int getodnum2(OrdersVO vo) {
+		return dao.update("CustomerOrderDAO.getodnum2",vo);
+	}
 }

@@ -353,21 +353,19 @@ x total=1010,
 				int n = service.insertorderdetails(map);
 		
 				System.out.println("===========결과 : "+n);
-				
-				// 해당 주문번호의 op_dnum수정
-				n = service.getodnum(info);
-				
-				// 마일리지 업데이트
-				n = service.updatemileage(info);
-				
-				// 해당 매장에 대한 마일리지가 없을 경우
-				if(n == 0) {
-					n = service.insertmileage(info);
-				}
-				
+				n = service.getodnum2(info);
 		}		
 				
-				
+				// 해당 주문번호의 op_dnum수정
+					
+					
+					// 마일리지 업데이트
+					int n = service.updatemileage(info);
+					
+					// 해당 매장에 대한 마일리지가 없을 경우
+					if(n == 0) {
+						n = service.insertmileage(info);
+					}
 				
 			
 		/*
