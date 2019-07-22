@@ -56,5 +56,16 @@
 				,'naver'
 		)
 	</insert>
+	
+	
+	<update id="pwFind">
+	UPDATE CUSTOMER SET C_PW = #{cPw}
+	WHERE C_ID = #{cId} AND C_TEL = #{cTel} 
+	</update>
 
+	<select id ="idFind" resultType="customer">
+		SELECT C_ID 
+		FROM CUSTOMER
+		WHERE C_NAME = #{cName} AND C_TEL = #{cTel}
+	</select>
 </mapper>
