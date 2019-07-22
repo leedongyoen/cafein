@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.channels.SeekableByteChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ import javax.servlet.http.HttpSession;
 import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -73,6 +76,9 @@ public class CustomerController {
 
 	@Autowired
 	CustomerJoinService customerjoinService;
+	
+	@Autowired
+	BCryptPasswordEncoder passEncoder;
 
 	private void setNaverLoginVO(NaverLoginVO naverLoginVO) {
 		this.naverLoginVO = naverLoginVO;
@@ -96,11 +102,22 @@ public class CustomerController {
 	@RequestMapping("customerloginresult.do")
 	public String loginResult(CustomerVO vo, HttpSession session, Model model, HttpServletResponse response)
 			throws IOException {
-
-		CustomerVO customer = customerLoginService.getCustomer(vo);
+		
+//		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+//		//암호화  하기전
+//		String scPw = scpwd.encode(vo.getcPw());
+//		//암호화 후 db저장
+		
+		CustomerVO customers = new CustomerVO();
+		customers.setcId(vo.getcId());
+		System.out.println(customers);
+		
+		CustomerVO customer = customerLoginService.getCustomer(customers);
 		PrintWriter out = response.getWriter();
-
-		if (customer == null) {
+		System.out.println(customer);
+		boolean mathes = passEncoder.matches(vo.getcPw(), customer.getcPw());
+		
+		if (customer == null && mathes == false ) {
 			out.println("<script>alert('입력하신 아이디와 비밀번호를 다시 확인해주세요.');</script>");
 			out.flush();
 			return "customer/login";

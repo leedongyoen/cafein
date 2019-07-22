@@ -22,7 +22,7 @@
 	// 승인 버튼 클릭 시 모달창 띄우기
 	function apply(ordern){
 		console.log(ordern);
-
+		event.stopPropagation();
 		$('#applyordernumber').val(ordern);
 		$('#applyemodal').modal('show');
 		
@@ -30,7 +30,7 @@
 	
 	// 승인 모달창에서 승인 할 경우
 	function applyorder(){
-		event.stopPropagation();
+		
 		var ordern = $('#applyordernumber').val();
 		var taketime = $('select[name="takeTime"]').val();
 		$.ajax({
@@ -88,7 +88,7 @@
 	
 	// 주문 번호 클릭시 나오는 옵션들
 	function menudetail(order_n){
-		var sId = '<%= session.getAttribute("sid") %>';
+		var sId = '<%= session.getAttribute("sId") %>';
 		var menunum="";
 		
 		var test="";
@@ -153,7 +153,7 @@
 	
 	function getstoreorderlist(){
 		
-		var sId = '<%= session.getAttribute("sid") %>';
+		var sId = '<%= session.getAttribute("sId") %>';
 		$('#orderlisttable tbody').empty();
 		$.ajax({
 			url: 'getstoreorderlist',

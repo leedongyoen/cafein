@@ -17,7 +17,7 @@
 //최소길이 & 최대길이 제한
 var minimum = 8;
 var maximun = 12;
-
+var sid = "<%=(String)session.getAttribute("sId")%>";
 var submitcheck = false;
 
 function chkPw(obj, viewObj) {
@@ -160,7 +160,7 @@ function checkpwbtn(){
 		if(current_pw == $("#s_pw").val()  ){
 			if($("#new_pw").val() == $("#newck_pw").val()){
 				$.ajax({
-					url : 'storepw/'+'SH001',
+					url : 'storepw/'+ sid,
 					type : 'PUT',
 					contentType : 'application/json;charrset=utf-8',
 					dataType : 'json',
@@ -191,7 +191,7 @@ function checkpwbtn(){
 	function readstoreinfo(){
 		
 		$.ajax({
-        	url : 'storeinfo/' + '<%=(String)session.getAttribute("sid")%>',
+        	url : 'storeinfo/' + sid,
         	type : 'GET',
         	dataType : 'json',
         	error : function(xhr, status, msg){
