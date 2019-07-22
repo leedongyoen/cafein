@@ -410,10 +410,9 @@ public class CustomerController {
 		session.setAttribute("cId", customer.getcId());
 		session.setAttribute("cJoin", customer.getcJoin());
 		session.setAttribute("token", access_token);
-		return kakaoName;
-
 		
-
+		//return kakaoName;
+		return "customer/main";
 	}
 
 	// 네이버 로그인

@@ -64,6 +64,21 @@
 		</where>
 		GROUP BY w.ST_NUM, s.st_name
 	</select>
-	     
-	     
+	
+	<insert id="insertEnter" parameterType="warehousing">
+		 INSERT INTO WAREHOUSING(
+		 					WARE_NUM, 
+		 					WARE_DATE, 
+		 					WARE_QTY, 
+		 					WARE_PRICE, 
+		 					ST_NUM, 
+		 					S_ID) 
+					 VALUES (
+							 'WH'||LPAD(WARE_SEQ.NEXTVAL,4,0) ,
+							 SYSDATE,
+							 #{enterQty},
+							 #{warePrice},
+							 #{stNum}, 
+							 #{sId})
+	</insert>	
 </mapper> 

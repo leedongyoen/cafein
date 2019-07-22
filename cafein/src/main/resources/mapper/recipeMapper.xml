@@ -44,6 +44,7 @@
      		, M_NUM
      		, CA_NUM
      		, OP_NAME 
+     		, RECIPENO
      		
      	from recipe where ca_num='CAOP'
      </select>
@@ -100,7 +101,8 @@
 				,S_ID 
 				,ST_NAME
 				,CA_NUM 
-				 ,ST_AQTY*1000 "stAqty"
+				 ,ST_AQTY "stAqty"
+				 ,ST_UNIT "stUnit"
 			from stock
 			where s_id=#{sId}
 	</select>
@@ -118,7 +120,7 @@
 			 	
 			 	VALUES ( 'RE'||lpad(RECIPE_SEQ.nextval,3,0)
 			 			, #{sId}
-			 			, #{consum}/1000
+			 			, #{consum}
 			 			, #{stNum}
 			 			, #{mNum}
 			 			, #{caNum}
@@ -155,7 +157,7 @@
 					
 					VALUES ( 'RE'||lpad(RECIPE_SEQ.nextval,3,0)
 							, #{sId}
-							, #{consum}/1000
+							, #{consum}
 							, #{stNum}
 							, #{mNum}
 							, #{caNum}

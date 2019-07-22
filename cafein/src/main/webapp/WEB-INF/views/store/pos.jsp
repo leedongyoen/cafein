@@ -33,18 +33,22 @@
 var sId="SH001"; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
 var qty = 1;
-var currNo;
+var currNo=0;
+var valNo;
+
 
    $(document).ready(function() {
 
 	   $("#gridlist").jqGrid({
            colModel: [
-        	   { label: 'mNum',  name:'mNum',   hidden:true},
+        	   { label: 'recipeno',  name:'recipeno', hidden:true},
+        	   { label: 'mNum',  name:'mNum', hidden:true},
                { label: '메뉴명',  name: 'mName',  width: 130 },
                { label: '옵션',   name: 'opName', width: 150  },
-               { label: '금액',   name: 'Price', width: 75 , formatter:'integer' },
+               { label: '금액',   index:'Price',name: 'Price', width: 75 ,formatter:'integer'},
                { label: '수량',   name: 'qty', width: 75, editable:true},
-               { label: 'parentMNum', name:'parentMNum', hidden:true}
+               { label: 'parentMNum', name:'parentMNum', hidden:true},
+               { label: 'sonMNum', name:'sonMNum', hidden:true}
            ],
            formatter:{
         	   integer:{thousandsSeparator:",",defaultValue:'0'}
@@ -55,16 +59,16 @@ var currNo;
            rownumWidth:40,//로우넘의 가로길이
            rowNum:5,// 그리드에 보여줄 데이터의 갯수,-1하면 무한으로 보여준단다..
            width:600,//그리드의 총 가로길이
-    //       rowList:[10,20,30],//몇개식 보여줄건지 선택가능하다, 배열형식이라 5,10,15,20,,,가능
-    //       multiboxonly : true,
-           multiselect : true,//체크박스 사라짐
+           rowList:[10,20,30],//몇개식 보여줄건지 선택가능하다, 배열형식이라 5,10,15,20,,,가능
+//           multiboxonly : false,
+//           multiselect : true,//체크박스 사라짐
     		height:300,
     		scroll:1,
            scrollrows : true, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
            gridview : true,
            footerrow:true,
            userDataOnFooter:true,
-           cmTemplate: {sortable: false},
+     //      userData: { Price: Price },
            hoverrows: false,
            autoencode: true,
            ignoreCase: true,
@@ -75,39 +79,53 @@ var currNo;
 	       		groupText : ["{0}"],
 	       		groupcheckbox: true
 	       	},
+	      //합계
+	 	   afterInsertRow: function () {
+	 	   var grid = $("#gridlist");
+	 	   var PSum = grid.jqGrid('getCol','Price',false,'sum');
+	 	   var QSum = grid.jqGrid('getCol','qty',false,'sum');
+	 	   		grid.jqGrid("footerData", "set", {mName:"합계",Price:PSum,qty:QSum});
+	 	   //		grid.jqGrid("footerData", "set", {mName:"합계",qty:QSum});
+	 	   }
 	       	
        });
-	    var total = $("#gridlist").jqGrid('getCol', 'qty', false, 'sum');
-	   $("#gridlist").jqGrid("footerData", "set", {
-	       Rate:'total',
-	   });
-	   /* $("#gridlist").navGrid('#pager', { edit: false, add: false, del: false, search: false });
-	   $("#gridlist").navButtonAdd('#pager', {
-	       caption: "Delete",
-	       buttonicon: "ui-icon-del",
-	       position: "last",
-	       onClickButton: function() {
-	           alert("Deleting Row");
-	           row_ids = $grid.getGridParam('selarrrow');
-	           jQuery("#gridlist").delGridRow(row_ids)
-	       }
-	   }); */
-	  
+	   //그리드내 행 삭제
 	   $("#deleteRow").on("click",function(){
 			var grid = $("#gridlist");
-			var rowKey = grid.getGridParam("selrow")
-			if(rowKey){
-				$("#gridlist").jqGrid('delRowData',rowKey);
-			}else alert("Please Select Row to delete!");
-
-		}); 
-	 
+			
+			var rowKey = grid.getGridParam("selrow");
+			var sonMNum =  grid.jqGrid("getCell",rowKey,"sonMNum");
+			var parentMNum = grid.jqGrid("getCell",rowKey,"parentMNum");
+			if(sonMNum == parentMNum){
+				var dataIDs = grid.getDataIDs(); 
+				for(i = 0; i < dataIDs.length; i++)
+				{
+					var rowData = grid.jqGrid ('getRowData', dataIDs[i]);
+					if(rowData.parentMNum ==sonMNum) {
+					    console.log(dataIDs[i]);
+						console.log(rowData);
+					    $("#gridlist").jqGrid('delRowData',dataIDs[i]);	
+				    }
+				}
+			}else if(sonMNum == ''){
+					$("#gridlist").jqGrid('delRowData',rowKey);	
+					console.log(rowKey);
+			}
+			var PSum = grid.jqGrid('getCol','Price',false,'sum');
+		 	   var QSum = grid.jqGrid('getCol','qty',false,'sum');
+		 	   		grid.jqGrid("footerData", "set", {mName:"합계", Price:PSum, qty:QSum});
+			
+		});
+	   
 	   
    });
-  
+     
+   //gird전체삭제
+   $("#clearRow").on("click",function(){
+   		$("#gridlist").jqGrid('clearGridData');
+   });
 
-
-
+   
 
 /* 
 var buffdata = $('#testGrid').jqGrid('getDataIDs'); // 테이블에 있는 모든 데이터를 수집한다.
@@ -121,9 +139,9 @@ footerrow : true});
 
  
  //메뉴탭에서 매장메뉴 나오기
-
  $(document).ready(function(){
 	 $("#cusSearchModal").modal('hide');
+	 $("#orderListModal").modal('hide');
 		//메뉴로드
 	 $.ajax({
 			url:'pos/'+sId,
@@ -151,7 +169,6 @@ footerrow : true});
 			});
 	 		}
 	 	});
-	 	//그리드에 행 삭제
 	 	
 	});	
 //매장별 메뉴출력
@@ -168,7 +185,8 @@ footerrow : true});
 				.append($('<br>'))
 				.append($('<input type=\'button\'class=\'mbutton\'  id=\'coffee\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_mNum\'>').val(item.mNum))
-				.append($('<input type=\'hidden\' id=\'hidden_mPrice}\'>').val(item.mPrice))
+				.append($('<input type=\'hidden\' id=\'hidden_mPrice\'>').val(item.mPrice))
+				.append($('<input type=\'hidden\' id=\'hidden_recipeno\'>').val(item.recipeno))
 				.appendTo('#coffeetable tbody tr');
 			}
 			else if(item.caNum == "CADR" && item.opName == null){
@@ -176,14 +194,16 @@ footerrow : true});
 				.append($('<br>'))
 				.append($('<input type=\'button\' class=\'mbutton\' id=\'beverage\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId2\'>').val(item.mNum))
-				.append($('<input type=\'hidden\' id=\'hidden_mPrice2}\'>').val(item.mPrice))
+				.append($('<input type=\'hidden\' id=\'hidden_mPrice2\'>').val(item.mPrice))
+				.append($('<input type=\'hidden\' id=\'hidden_recipeno2\'>').val(item.recipeno))
 				.appendTo('#beveragetable tbody tr');
 			}else if(item.caNum == "CADE" && item.opName == null){
 				$('<td>')
 				.append($('<br>'))
 				.append($('<input type=\'button\' class=\'mbutton\' id=\'dessert\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId3\'>').val(item.mNum))
-				.append($('<input type=\'hidden\' id=\'hidden_mPrice3}\'>').val(item.mPrice))
+				.append($('<input type=\'hidden\' id=\'hidden_mPrice3\'>').val(item.mPrice))
+				.append($('<input type=\'hidden\' id=\'hidden_recipeno3\'>').val(item.recipeno))
 				.appendTo('#desserttable tbody tr');
 			}
 		});
@@ -193,6 +213,7 @@ footerrow : true});
    		 var mName = $(this).val();
 	     var mNum = $(this).next().val();
 	     var Price = $(this).next().next().val();
+	     var recipeno = $(this).next().next().next().val();
 	 $.ajax({
 			url:'pos/',
 			type:'GET',
@@ -204,18 +225,18 @@ footerrow : true});
 			},
 			success:getOptionList
 		}); 
-	 currNo=mNum;
+	 currNo++;
+	 valNo = currNo;
+	 
 	 jQuery("#gridlist").jqGrid('addRow', {
 //       rowID : mNum,          //중복되지 않게 rowid설정
-       initdata : {mNum, mName, Price, qty, mNum},
-       position :"last",           //first, last
+       initdata : {recipeno:recipeno, mNum:mNum, mName:mName, Price:Price, qty:qty, parentMNum:currNo,sonMNum:valNo},
+       position :"last",           
        useDefValues : false,
        useFormatter : false,
        addRowParams : {extraparam:{}}    
 }); 
 	});
- 
-
  //메뉴 옵션 나타내기
  	function getOptionList(data){
 	 
@@ -226,7 +247,8 @@ footerrow : true});
 	          .append($('<br>'))
 	          .append($('<input type=\'button\'class=\'opbutton\' id=\''+item.opName+'\'>').val(item.opName))
 	          .append($('<input type=\'hidden\' id=\'hidden_menuId4\'>').val(item.mNum))
-	          .append($('<input type=\'hidden\' id=\'hidden_menuId5\'>').val(item.opPrice))
+	          .append($('<input type=\'hidden\' id=\'hidden_mPrice4\'>').val(item.opPrice))
+	          .append($('<input type=\'hidden\' id=\'hidden_recipeno4\'>').val(item.recipeno))
 	          .appendTo('#coffeetableoption tbody');
 	    });
 	    
@@ -235,7 +257,7 @@ footerrow : true});
  		var opName = $(this).val();
 		var mNum = $(this).next().val();
 		var Price = $(this).next().next().val();
-		
+		var recipeno = $(this).next().next().next().val();
 		
 		if(opName == 'HOT'){
 			$("#ICE").hide();
@@ -243,11 +265,11 @@ footerrow : true});
 		}else if(opName == 'ICE'){
 			$("#HOT").hide();
 			$("#ICE").hide();
-		}
-			
+		}                                    
+	//	currNo++;
  	 jQuery("#gridlist").jqGrid('addRow', {
 //	       rowID : mNum,          //중복되지 않게 rowid설정
-	       initdata : {opName, Price, qty, currNo},
+	       initdata : {recipeno:recipeno,opName:opName, Price:Price, qty:qty, parentMNum:currNo},
 	       position :"last",           //first, last
 	       useDefValues : false,
 	       useFormatter : false,
@@ -258,6 +280,10 @@ footerrow : true});
  	});
 
  	
+ 	//주문내역 검색 모달창
+ 	$(document).on("click","#orderList", function(){
+ 		$("#orderListModal").modal('show');
+ 	});
 
  	
  	
@@ -290,7 +316,15 @@ footerrow : true});
  		          .appendTo('#aftersearch tbody');
  		      
  		}
- 	
+ 	//현금or카드 결제
+ 	$(document).on("click","#cash", function(){
+			$("#card").hide();
+			
+			//css로 색변경으로 하기
+		});
+ 	$(document).on("click","#card", function(){
+		$("#cash").hide();
+	});
 	
 </script>
 <br><br>
@@ -367,15 +401,9 @@ footerrow : true});
 </div>
 <p></p>
 	<div style="text-align:left">
-	<button>전체취소</button>
+	<input type="button" id="clearRow" value="전체취소">
 	<input type="button" id="deleteRow" value="선택취소">
-	<button>수량변경</button>
-	<button>-</button>
-	<button>+</button>
-	
-	
 	</div>
-	<div style="text-align:right"> 총 가격 4600원</div>
 			<div style="text-align:right">
 			<button id="customersearch">회원검색</button>
 		<!-- 고객 검색 모달창 -->	
@@ -411,9 +439,50 @@ footerrow : true});
 			</div>
 		</div>
 	</div>
-			<button>현금</button>
-			<button>카드</button>
-			<button onclick="location.href='#'">결제하기</button>
+	
+	<button id="orderList">결제정보</button>
+	<!-- 결제내역조회 모달 -->
+	<div class="modal fade" id="orderListModal" role="dialog">
+		<div class="modal-dialog">		
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">ORDER LIST</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form class="form-borizontal" action="#" method="POST">
+						<div class="btn-group">
+							<input type="date" class="btn btn-secondary" id="startDate"
+								name="startDate">&nbsp; <input type="date"
+								class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
+							<input type="button" value="검색" class="btn btn-success"
+								id="btnSearch" onclick="dateSearch()">
+						</div>
+						<div class="table-responsive">
+						<table id="orderlisttable" class="table">
+							<thead>
+							<tr> 
+								<th>DATE</th>
+								<th>DATE</th>
+								<th>MILEAGE</th>
+							</tr>
+							</thead>
+							<tbody id="searchTable">
+							</tbody>
+						</table>
+						</div>
+					</form>
+				
+				</div>
+				<div class="modal-footer">		
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+			<input type="button" id="cash" value="현금">
+			<input type="button" id="card" value="카드">
+			<input type="button" onclick="location.href='#'" value="결제하기">
 		</div>
 </div>
 

@@ -43,14 +43,24 @@ public class StoreOrderDAO {
 		return template.update("getStoreOrderListDAO.updateorderapply",vo);
 	}
 	
-	// 해당 매장의 배달 서비스 가져오기. ( 배달대기인 것만 )
+	// 매장의 배달 소요시간이 지난 주문 목록 가져오기. ( 배달대기인 것만 )
 	public List<OrdersVO> getdeliverytatuscheck(){
 		return template.selectList("getStoreOrderListDAO.getdeliverytatuscheck");
 	}
 	
-	// 해당 매장 배달대기에서 배달완료로 바꾸기 ( 소요시간 지나면 ) 
+	// 매장 배달대기에서 배달완료로 바꾸기 ( 소요시간 지나면 ) 
 	public int updatedeliverystatus(OrdersVO vo){
 		return template.update("getStoreOrderListDAO.updatedeliverystatus",vo);
+	}
+	
+	// 모든 매장에서 주문이 들어온지 5문이 지난 주문이 있는지 확인
+	public List<OrdersVO> getordertimecheck(){
+		return template.selectList("getStoreOrderListDAO.getordertimecheck");
+	}
+	
+	// 주문이 들어온지 5분이 지난 주문들을 주문 취소로 바뀜
+	public int updatecheckordercancel(OrdersVO vo){
+		return template.update("getStoreOrderListDAO.updatecheckordercancel",vo);
 	}
 
 	//-------------------------------------------------------------------------------------

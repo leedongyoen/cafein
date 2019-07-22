@@ -19,7 +19,7 @@
 						,OPENTIME
 						,DEFAULT_CASH) 
 				VALUES( #{sId},
-						TO_DATE( #{openTime} ,'YYYY-MM-DD'),
+						SYSDATE,
 						#{defaultCash}
 						)
 </insert>

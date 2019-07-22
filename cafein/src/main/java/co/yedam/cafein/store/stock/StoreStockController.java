@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.yedam.cafein.ConditionServiceImpl;
+import co.yedam.cafein.ConditionService;
+import co.yedam.cafein.store.warehousing.WarehousingService;
 import co.yedam.cafein.vo.ConditionVO;
 import co.yedam.cafein.vo.StockVO;
 
@@ -21,9 +22,11 @@ import co.yedam.cafein.vo.StockVO;
 public class StoreStockController {
 
 	@Autowired
-	StoreStockServiceImpl storeStockService;
+	StoreStockService storeStockService;
 	@Autowired
-	ConditionServiceImpl conditionService;
+	ConditionService conditionService;
+	@Autowired
+	WarehousingService warehousingService;
 	
 	//재고목록 페이지 이동
 	@RequestMapping(value = "/stocklist.do")
@@ -94,4 +97,23 @@ public class StoreStockController {
 		storeStockService.updateStock(vo);
 		return vo;
 	}
+	
+	// 입고 수량추가
+		@ResponseBody
+		@RequestMapping(value = "/enterQty.do", method = RequestMethod.PUT
+				, consumes = "application/json" // 요청헤더
+		)
+		public int updateEnterQty(@RequestBody List<StockVO> list, Model model) {
+			
+			int n=0;
+			for(StockVO vo: list) {
+			try {
+				int resultEnter = storeStockService.updateEnterQty(vo);
+				n = n+resultEnter;
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			return n;
+		}
 }

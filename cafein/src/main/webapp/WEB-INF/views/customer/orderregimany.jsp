@@ -138,8 +138,25 @@ function getstoredeliverservice(){
 }
 
 function orderCartInsert(){
+	
+	
+	  /*  var list = new Array();
+	   var list2 = new Array();
+	   $("input[name$='hello']:checked").each(function(){
+		   list.push($(this).val());
+	   });
+		
+	   console.log(list);
+	   console.log("::::"+$("input[name$='hello']").val()); 
+	   $("input[name=optionlist]").val();*/
 	var ordercart = $("#ordercartform").serializeObject();
-	console.log(ordercart);
+	
+	console.log(JSON.stringify(ordercart));
+	
+	$('[name="jsonData"]').val(JSON.stringify(ordercart));
+	document.fCart.submit();
+	
+	
 }
 
 
@@ -147,29 +164,33 @@ function orderCartInsert(){
 </head>
 
 	<body>
-		<h1 align="center">주문</h1>
+		<h1 align="center">주 문</h1>
 		<div class="container" >
+		
+		<form action="ordercartmany" method="post" name="fCart">
+			<input type="hidden" name="jsonData">
+		</form>
+		
 		<form class="form-borizontal" id="ordercartform" name="ordercartform" method="POST" >
 			
+		
+			 <input id="storeid" value="${selectmenu.sId}" name="sId" style="display: none" >
+			 <input id="storeid" value="${selectmenu.cId}" name="cId" style="display: none" >  
+			 			
+		
+	
 			
-		<c:forEach items="${cartLists}" var="cartlist">
-		<p>   ${cartlist}</p>
-			 <input id="storeid" value="" name="sId" style="display: none" >
-			<!-- <input id="cid" value="" name="cId" style="display: none" >  -->
-			<hr>
 			<table class="table">
 				<tr>
 					<th>매 장 명</th>
-					<td>${cartlist.sName}</td>
+					<td>${cartLists[0].sName}</td>
 				</tr>
+		<c:forEach items="${cartLists}" var="cartlist">
 				<tr>
 					<th>메 뉴 명</th>
 					<td>
+					 <input type="hidden" name="mNum" value="${cartlist.mNum}">
 					
-					<%-- 
-					<input type="hidden" name="mNum" value="${cartlist.mNum}">
-					 --%>	
-					 
 					 ${cartlist.mName}
 						<c:if test="${cartlist.hotice_option eq 'CAHT'}">
 							( HOT )
@@ -185,16 +206,74 @@ function orderCartInsert(){
 				<tr>
 					<th>옵션</th>
 					<td>
+						<%-- <c:forEach items="${optionname}" var="oplist"> --%>
+							<c:forEach var = "entry" items="${menumap}">
+								<c:if test="${cartlist.mNum eq entry.key}">
+										<c:forEach items="${entry.value}" var="opvalue">
+										${opvalue}
+											<c:forEach items="${cartlist.cuoptionlist}" var="culist" varStatus="status">
+											
+												<c:if test="${culist eq opvalue}">
+											
+													!
+													
+													<!-- hap = [${culist}+${culist}+....] -->
+													 <input type="checkbox" class="checkoption"  id="${cartlist.mNum}" name="${cartlist.mNum}" value="${opvalue}" checked="checked">
+													 
+													 <input type="hidden" id="optionlist" name="optionlist">
+													 
+													 
+													<label for="${oplist.recipeno}">${oplist.opName}(${oplist.opPrice})</label>
+													<input type="hidden" id="price${oplist.recipeno}" value="${oplist.opPrice}"><br>
+													 
+													
+													
+												</c:if>
+												
+											</c:forEach>
+										</c:forEach>
+									<%-- <c:if test="${oplist.stNum eq entry.value}">
+							
+									<input type="checkbox" class="checkoption" id="${oplist.recipeno}" name="optionlist" value="${oplist.recipeno}" checked="checked">
+									<label for="${oplist.recipeno}">${oplist.opName}(${oplist.opPrice})</label>
+									<input type="hidden" id="price${oplist.recipeno}" value="${oplist.opPrice}"><br>
+									</c:if> --%>
+								</c:if>
+							</c:forEach>
+						<%-- </c:forEach> --%>
+						
+		 
+					<%-- 손님이 선택한 옵션->
 						<c:forEach items="${cartlist.cuoptionlist}" var="culist">
 							<input type="text" value="${culist}">	<!-- for돌려 더 출력 -->
 						</c:forEach>
-						!!!!!!!
-						<div> ${menumap} </div>
-					!!!!!!!
-						<c:forEach items="${menumap.RecipeVO}" var="menuop">
-							<input type="text" value="${menuop.recipeno}">
+						<br>
+						장바구니에서 선택한 메뉴 번호와 전체 옵션이름들->
+						<c:forEach var = "entry" items="${menumap}">
+						<div>${entry.key}</div>
+						<div>${entry.value}</div>
+					
 						</c:forEach>
-					!!!!!!!
+						
+						
+						 
+					mNum stNum option->
+						<c:forEach items="${optionname}" var="oplist">
+							<input type="text" value="${oplist.mNum}">
+							<input type="text" value="${oplist.stNum}">
+							<input type="text" value="${oplist.recipeno}">
+							<input type="text" value="${oplist.opName}">	<!-- for돌려 더 출력 -->
+							<br>
+						</c:forEach> --%> 
+		
+		
+		
+		
+		
+						<%-- <c:forEach items="${menumap}" var="menuop">
+							<input type="text" value="${menuop.recipeno}">
+						</c:forEach> --%>
+		
 					<!--  			
 						<c:forEach items="${option}" var="option"> 
 							<c:forEach items="${selectmenu.cuoptionlist}" var="select">
@@ -206,7 +285,7 @@ function orderCartInsert(){
 									<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}"><br>
 							<!--		<c:set var="check" value="O"/>
 								</c:if>
-								
+								5
 							</c:forEach>
 							 <c:if test="${check != 'O'}"> -->
 								
@@ -227,12 +306,10 @@ function orderCartInsert(){
 				</tr>
 				
 				</c:forEach>
-				<hr>
-				
-				
-				
-				
-				
+				</table>
+				<br>				
+				<br>
+				<table class="table">
 				
 				<tr id="reservetr" style="display: none;">
 					<th>적립금</th>

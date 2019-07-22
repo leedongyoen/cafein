@@ -16,7 +16,10 @@ public class StockVO {
 	private double stanUnit;
 	private String stStatus;
 	private String stUnit;
+	
+	private int enterQty;
 	private int lackQty;
+	
 	
 	private String[] stNumList;
 	private String stStatusNm;
@@ -118,6 +121,14 @@ public class StockVO {
 	}
 	public void setStUnit(String stUnit) {
 		this.stUnit = stUnit;
+	}
+	
+	
+	public int getEnterQty() {
+		return enterQty;
+	}
+	public void setEnterQty(int enterQty) {
+		this.enterQty = enterQty;
 	}
 	public int getLackQty() {
 		return lackQty;

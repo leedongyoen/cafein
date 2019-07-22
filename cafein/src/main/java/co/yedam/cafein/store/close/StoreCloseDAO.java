@@ -38,6 +38,17 @@ public class StoreCloseDAO {
 		return mybatis.selectList("storeCloseDAO.getStockTruthList", vo);
 	}
 	
+	// 마감 영수증을 위한 결제내역(현금/카드) 조회
+	public List<OrdersVO> getCloseReceiptCash(OrdersVO vo) {
+		return mybatis.selectList("storeCloseDAO.getCloseReceiptCash", vo);
+	}
+	
+	// 마감 영수증을 위한 결제내역(마일리지/총매출액) 조회
+	public List<OrdersVO> getCloseReceiptMileage(OrdersVO vo) {
+		return mybatis.selectList("storeCloseDAO.getCloseReceiptMileage", vo);
+	}
+	
+	
 	//----------마감 정산 시 DB에 데이터 insert 및 update------------
 	
 	// 영업 지출금(추가된 재고)가 존재할 경우 insert

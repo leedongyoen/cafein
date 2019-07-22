@@ -2,6 +2,8 @@ package co.yedam.cafein.store;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -10,9 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.cafein.store.info.StoreInfoService;
+import co.yedam.cafein.store.join.StoreJoinService;
 import co.yedam.cafein.store.login.StoreLoginService;
 import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.StoreVO;
@@ -24,13 +31,44 @@ public class StoreController {
 	StoreLoginService storeLoginService;
 	@Autowired
 	StoreInfoService storeService;
+	@Autowired
+	StoreJoinService storejoinService; 
 	
 	//매장 회원가입
 	@RequestMapping("storejoin.do")
 	public String storejoin() {
 		return "store/join";
-
 	}
+	//고객회원가입 insert
+	@RequestMapping(value="/storejoin.do", method=RequestMethod.POST)
+	public String insertJoin(StoreVO vo, HttpServletResponse response) throws IOException {
+		System.out.println(vo);
+		PrintWriter out = response.getWriter();
+		
+		int n = storejoinService.insertJoin(vo);
+		ModelAndView mv = new ModelAndView();
+		if(n==1) {
+			out.println("<script>alert('가입이 완료되었습니다. 승인 완료시 로그인 가능합니다.');</script>");
+			return("store/login");
+		}else {
+			return("store/join");
+		}
+	}
+	
+	// ajax 회원가입 id 체크를 할 컨트롤러
+		@RequestMapping(value = "/getstorejoin/{sid}", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<Object, Object> idCheck(@PathVariable("sid") String sid) {
+			StoreVO vo = new StoreVO();
+			vo.setSid(sid);
+			System.out.println("================" + vo.getSid());
+			int n = storejoinService.idCheck(vo);
+			Map<Object, Object> map = new HashMap<Object, Object>();
+			map.put("cnt", n);
+			return map;
+		}
+	
+	 
 	//매장 로그인
 	@RequestMapping("storelogin.do")
 	public String storelogin() {

@@ -2,6 +2,7 @@ package co.yedam.cafein.viewvo;
 
 public class ViewPosVO {
 	
+	private String recipeno;
 	private String sId;
 	private String mName;
 	private String stNum;
@@ -12,6 +13,14 @@ public class ViewPosVO {
 	private int opPrice;
 	private int mPrice;
 	
+	
+	
+	public String getRecipeno() {
+		return recipeno;
+	}
+	public void setRecipeno(String recipeno) {
+		this.recipeno = recipeno;
+	}
 	public int getmPrice() {
 		return mPrice;
 	}
@@ -68,14 +77,10 @@ public class ViewPosVO {
 	}
 	@Override
 	public String toString() {
-		return "ViewPosVO [sId=" + sId + ", mName=" + mName + ", stNum=" + stNum + ", mNum=" + mNum + ", stName="
-				+ stName + ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice + ", mPrice=" + mPrice
-				+ "]";
+		return "ViewPosVO [recipeno=" + recipeno + ", sId=" + sId + ", mName=" + mName + ", stNum=" + stNum + ", mNum="
+				+ mNum + ", stName=" + stName + ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice
+				+ ", mPrice=" + mPrice + "]";
 	}
-	
-	
-	
-	
 	
 	
 

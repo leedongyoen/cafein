@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreOpenVO {
 	private String sId;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone ="Asia/Seoul")
+	@JsonFormat(pattern="yy/MM/dd HH:mm", timezone ="Asia/Seoul")
 	private Timestamp openTime;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone ="Asia/Seoul")
+	@JsonFormat(pattern="yy/MM/dd HH:mm", timezone ="Asia/Seoul")
 	private Timestamp closeTime;
 	private int cash;
 	private int defaultCash;

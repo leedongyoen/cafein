@@ -12,6 +12,7 @@ public interface StoreStockService {
 	public int insertStock(StockVO vo);
 	public int updateStock(StockVO vo);
 	public int deleteStock(StockVO vo);
+	public int updateEnterQty(StockVO vo);
 	
 	
 }

@@ -11,7 +11,6 @@ public interface WarehousingService {
 	
 	public List<WarehousingVO> getEnteredList(WarehousingVO vo);
 	
-	
-	
+	public int insertEnter(WarehousingVO vo);
 	
 }

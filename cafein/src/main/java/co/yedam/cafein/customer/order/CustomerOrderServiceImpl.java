@@ -83,4 +83,9 @@ public class CustomerOrderServiceImpl {
 	public int insertmileage(OrdersVO vo) {
 		return dao.insertmileage(vo);
 	}
+
+	public int getodnum2(OrdersVO vo) {
+		return dao.getodnum2(vo);
+		
+	}
 }

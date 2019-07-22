@@ -171,6 +171,11 @@ function orderBtnClick(){
 
 $('[name="jsonData"]').val(JSON.stringify(arr));
 	document.fCart.submit();
+	
+	
+	
+	
+	
 }
 
 function getOptionNaming(mnumber, stnumber){

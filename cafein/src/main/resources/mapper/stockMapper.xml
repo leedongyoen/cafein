@@ -101,26 +101,31 @@
       WHERE st_num = #{stNum}
    </update>
    
-   <delete id="deleteStock" parameterType="stock">
-      DELETE FROM Stock
-      <where>
-         <choose>
-            <when test="stNumList != null and stNumList.length>0">
-               st_num in
-               <foreach collection="stNumList" open="(" close=")"
-                  separator="," item="item">
-                  #{item}
-               </foreach>
-            </when>
-            <otherwise>
-               st_num = #{stNum}
-               
-            </otherwise>
-         </choose>
-      </where>
+	<delete id="deleteStock" parameterType="stock">
+	      DELETE FROM Stock
+	      <where>
+	         <choose>
+	            <when test="stNumList != null and stNumList.length>0">
+	               st_num in
+	               <foreach collection="stNumList" open="(" close=")"
+	                  separator="," item="item">
+	                  #{item}
+	               </foreach>
+	            </when>
+	            <otherwise>
+	               st_num = #{stNum}
+	               
+	            </otherwise>
+	         </choose>
+		</where>
+	</delete>
 
-   </delete>
-
+	<update id="updateEnterQty" parameterType="stock">
+		UPDATE STOCK 
+		SET ST_QTY = ST_QTY + #{enterQty}
+		WHERE S_ID = #{sId}
+		AND ST_NUM = #{stNum}
+	</update>
 
 </mapper>
 

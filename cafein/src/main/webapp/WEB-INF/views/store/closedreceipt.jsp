@@ -50,6 +50,10 @@ p {
 	<hr>
 	<!-- 매출 -->
 	<li>
+		<p>직접수령</p>
+	</li>
+	<hr>
+	<li>
 		<span class="sales">현금</span>
 		<span class="sales"></span>
 		<label></label>
@@ -59,6 +63,36 @@ p {
 		<span class="sales"></span>
 		<label></label>
 	</li>
+	<li>
+		<span class="sales">합계</span>
+		<span class="sales"></span>
+		<label></label>
+	</li>
+	<hr>
+	<li>
+		<p>배달주문</p>
+	</li>
+	<hr>
+	<li>
+		<span class="sales">현금</span>
+		<span class="sales"></span>
+		<label></label>
+	</li>
+	<li>
+		<span class="sales">카드</span>
+		<span class="sales"></span>
+		<label></label>
+	</li>
+	<li>
+		<span class="sales">합계</span>
+		<span class="sales"></span>
+		<label></label>
+	</li>
+	<hr>
+	<li>
+		<p>포인트 내역</p>
+	</li>
+	<hr>
 	<li>
 		<span class="sales">포인트사용</span>
 		<span class="sales"></span>
@@ -71,13 +105,38 @@ p {
 	</li>
 	<hr>
 	<li>
+		<p>환불내역</p>
+	</li>
+	<hr>
+	<li>
+		<span class="sales">현금</span>
+		<span class="sales"></span>
+		<label></label>
+	</li>
+	<li>
+		<span class="sales">카드</span>
+		<span class="sales"></span>
+		<label></label>
+	</li>
+	<li>
+		<span class="sales">포인트</span>
+		<span class="sales"></span>
+		<label></label>
+	</li>
+	<li>
+		<span class="sales">합계</span>
+		<span class="sales"></span>
+		<label></label>
+	</li>
+	<hr>
+	<li>
 		<span>총매출</span>
 		<label></label>
 	</li>
 	<hr>
 	<!-- 시재 -->
 	<li>
-		<p>현금 결제 건</p>
+		<p>현금 관리</p>
 	</li>
 	<li>
 		<span>현금시재</span>

@@ -16,6 +16,16 @@
 var selRecinum = "";
 var aQty=0.0;
 //c태그 받기 연습
+var storeid = "SH001";
+<%-- var storeid = "<%= (String)session.getAttribute("sid") %>";  --%>
+
+var mNum = "";
+var mName = "";
+var mPrice = "";
+var mCate = "";
+var saleState = "";
+var menuState = "";
+var menuImg = "";
 
 
 $(function(){
@@ -30,8 +40,8 @@ $(function(){
 	$("#menuTable tbody tr").click(function(){
 		
 		//tr 누를때 session에서 sid가져옴
-		var storeid = "SH001";
-
+		
+		
 		
 		$('#insertMenuFormTable').hide();
 		$('#toggleTable').show();
@@ -47,13 +57,13 @@ $(function(){
 		console.log("row: "+tr.text());
 
 		
-		var mNum = td.eq(0).text();
-		var mName = td.eq(1).text();
-		var mPrice = td.eq(2).text();
-		var mCate = td.eq(3).text();
-		var saleState = td.eq(4).text();
-		var menuState = td.eq(5).text();
-		var menuImg = td.eq(6).text();
+		mNum = td.eq(0).text();
+		mName = td.eq(1).text();
+		mPrice = td.eq(2).text();
+		mCate = td.eq(3).text();
+		saleState = td.eq(4).text();
+		menuState = td.eq(5).text();
+		menuImg = td.eq(6).text();
 		
 		if(mCate=='CACO'){mCate="CACO";}
 		else if(mCate=='CADR'){mCate="CADR";}
@@ -75,199 +85,14 @@ $(function(){
 		$("#fileupdateName").val(mNum);
 	
 		
-		$.ajax({
-			url:'recipes/'+storeid+'/'+mNum,
-			type:'GET',
-			//contentType:'application/json;charset=utf-8',
-			dataType:'json',
-			error:function(xhr,status,msg){
-				alert("상태값 :" + status + " Http에러메시지 :"+msg);
-			},
-			success:function(data){
-				
-				$("#cmNum").val(mNum);
-				$("#cmName").val(mName);
-				$("#omNum").val(mNum);
-				
-				
-				if(data.length==0){
-					$("#recipeTable tbody").empty();
-					console.log("noting");
-				}
-				else
-					{
-					console.log(data);
-					
-					
-						$("#recipeTable tbody").empty();
-						for(var i = 0;i<data.length;i++){
-						
-							if(data[i].caNum!='CAOP')
-							{
-								$('<tr>')
-								.append($('<td>').html(data[i].stName))
-								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
-								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].stAqty)))
-								.append($('<td>').html(data[i].stanUnit))
-								.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
-								.appendTo("#recipeTable tbody");
-							}
-							
-							
-						}
-				
-					
-						
-						
-					}
-			}
-		});
+		menulist(mNum);
+		
+		
+		
+		/*		
 
 		
-		
-		
-		 $.ajax({
-			url:'options/'+storeid+'/'+mNum,
-			type:'GET',
-			//contentType:'application/json;charset=utf-8',
-			dataType:'json',
-			error:function(xhr,status,msg){
-				alert("상태값 :" + status + " Http에러메시지 :"+msg);
-			},
-			success:function(data){
-					console.log(data);
-					if(data.length==0){
-						$("#optionTable tbody").empty();
-						console.log("noting");
-					}
-					else{
-						
-						
-						$("#optionTable tbody").empty();
-						for(var i = 0;i<data.length;i++){
-							console.log("dad: "+data[i].caNum);
-							if(data[i].caNum=='CAOP'||data[i].caNum=='CAIC'||data[i].caNum=='CAHT')
-							{
-								
-								$('<tr>')
-								.append($('<td>').html(data[i].opName))
-								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
-								.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].opPrice)))
-								.append($('<td style="visibility:hidden;">').html(data[i].recipeno))
-								.appendTo("#optionTable tbody");
-							}
-							
-						}
-						
-					}
-					
-										
-					
-
-			}
-		}); 
-	
-		
-		
-		
-		$.ajax({
-			url:'recipes/'+'SH001',
-			type:'GET',
-			//contentType:'application/json;charset=utf-8',
-			dataType:'json',
-			error:function(xhr,status,msg){
-				alert("상태값 :" + status + " Http에러메시지 :"+msg);
-			},
-			success:function(data){
-				//console.log(data);
-				
-				
-				
-				
-				$("#reciSelect").empty();
-				$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#reciSelect');
-				
-				for(var i = 0;i<data.length;i++){
-
-					if(data[i].caNum=='CACP' || data[i].caNum=='CACM')
-					{
-						console.log(data[i].caNum);
-						//data[i].caNum
-						//옵션에 caNum이 CACM과 CACP를 추가
-						/* var option = $("<option>"+data[i].caNum+"</option>");
-		                $('#opSelct').append(option);
- */
- 
- 						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty/1000+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum+" : "+data[i].stAqty + '</option>').appendTo('#reciSelect');
- 						
- 
- 
- 							
-					}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM')){
-						console.log(data[i].caNum);
-						//data[i].caNum
-						//옵션에 caNum이 CACM과 CAJP를 추가
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
-						
-					}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
-						console.log(data[i].caNum);
-						//data[i].caNum
-						//옵션에 caNum이 CACM과 CADP를 추가
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
-						
-						}
-					}
-				
-				
-				$("#opSelct").empty();
-				$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#opSelct');
-				$('<option value=\'{"value1":"","value2":"CAIC"}\'>' + 'ICE' + '</option>').appendTo('#opSelct');
-				$('<option value=\'{"value1":"","value2":"CAHT"}\'>' + 'HOT' + '</option>').appendTo('#opSelct');
-				
-				for(var i = 0;i<data.length;i++){
-					//console.log('hello: '+data[i].caNum);
-					if(mCate=='CACO' && (data[i].caNum=='CACP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT'))
-					{
-						//console.log(data[i].caNum);
-						//data[i].caNum
-						//옵션에 caNum이 CACM과 CACP를 추가
-						/* var option = $("<option>"+data[i].caNum+"</option>");
-		                $('#opSelct').append(option);
- */
-						
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
-						
- 
- 							
-					}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
-						console.log(data[i].caNum);
-						//data[i].caNum
-						//옵션에 caNum이 CACM과 CAJP를 추가
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
-						
-					}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
-						console.log(data[i].caNum);
-						//data[i].caNum
-						//옵션에 caNum이 CACM과 CADP를 추가
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
-						
-						}
-					}
-				}
-				
-			
-		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	*/	
 		
 		
 		
@@ -361,7 +186,6 @@ $(function(){
 
 
 
-
 function insertMenuForm(){
 	$('#toggleTable').hide();
 	$('#recipeTablediv').hide();
@@ -369,6 +193,191 @@ function insertMenuForm(){
 	$('#insertMenuFormTable').show();
 	
 }
+
+function menulist(mNum){
+	$.ajax({
+		url:'recipes/'+storeid+'/'+mNum,
+		type:'GET',
+		//contentType:'application/json;charset=utf-8',
+		dataType:'json',
+		error:function(xhr,status,msg){
+			alert("상태값 :" + status + " Http에러메시지 :"+msg);
+		},
+		success:function(data){
+			
+			$("#cmNum").val(mNum);
+			$("#cmName").val(mName);
+			$("#omNum").val(mNum);
+			
+			
+			if(data.length==0){
+				$("#recipeTable tbody").empty();
+				console.log("noting");
+			}
+			else
+				{
+				console.log(data);
+				
+				
+					$("#recipeTable tbody").empty();
+					for(var i = 0;i<data.length;i++){
+					
+						if(data[i].caNum!='CAOP')
+						{
+							$('<tr>')
+							.append($('<td>').html(data[i].stName))
+							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
+							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].stAqty)))
+							.append($('<td>').html(data[i].stanUnit))
+							.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
+							.appendTo("#recipeTable tbody");
+						}
+						
+						
+					}
+			
+				
+					
+					
+				}
+		}
+	});
+
+	
+	 $.ajax({
+		url:'options/'+storeid+'/'+mNum,
+		type:'GET',
+		//contentType:'application/json;charset=utf-8',
+		dataType:'json',
+		error:function(xhr,status,msg){
+			alert("상태값 :" + status + " Http에러메시지 :"+msg);
+		},
+		success:function(data){
+				console.log(data);
+				if(data.length==0){
+					$("#optionTable tbody").empty();
+					console.log("noting");
+				}
+				else{
+					
+					
+					$("#optionTable tbody").empty();
+					for(var i = 0;i<data.length;i++){
+						console.log("dad: "+data[i].caNum);
+						if(data[i].caNum=='CAOP'||data[i].caNum=='CAIC'||data[i].caNum=='CAHT')
+						{
+							
+							$('<tr>')
+							.append($('<td>').html(data[i].opName))
+							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
+							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].opPrice)))
+							.append($('<td style="visibility:hidden;">').html(data[i].recipeno))
+							.appendTo("#optionTable tbody");
+						}
+						
+					}
+					
+				}
+				
+									
+				
+
+		}
+	}); 
+
+	
+	
+	
+	$.ajax({
+		url:'recipes/'+'SH001',
+		type:'GET',
+		//contentType:'application/json;charset=utf-8',
+		dataType:'json',
+		error:function(xhr,status,msg){
+			alert("상태값 :" + status + " Http에러메시지 :"+msg);
+		},
+		success:function(data){
+			//console.log(data);
+			
+			
+			
+			
+			$("#reciSelect").empty();
+			$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#reciSelect');
+			
+			for(var i = 0;i<data.length;i++){
+
+				if(data[i].caNum=='CACP' || data[i].caNum=='CACM')
+				{
+					console.log(data[i].caNum);
+					//data[i].caNum
+					//옵션에 caNum이 CACM과 CACP를 추가
+					// var option = $("<option>"+data[i].caNum+"</option>");
+	               // $('#opSelct').append(option); 
+
+
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum+" : "+data[i].stAqty + '</option>').appendTo('#reciSelect');
+						
+
+
+							
+				}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM')){
+					console.log(data[i].caNum);
+					//data[i].caNum
+					//옵션에 caNum이 CACM과 CAJP를 추가
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
+					
+				}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
+					console.log(data[i].caNum);
+					//data[i].caNum
+					//옵션에 caNum이 CACM과 CADP를 추가
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
+					}
+				}
+			
+			
+			$("#opSelct").empty();
+			$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#opSelct');
+			$('<option value=\'{"value1":"","value2":"CAIC"}\'>' + 'ICE' + '</option>').appendTo('#opSelct');
+			$('<option value=\'{"value1":"","value2":"CAHT"}\'>' + 'HOT' + '</option>').appendTo('#opSelct');
+			
+			for(var i = 0;i<data.length;i++){
+				//console.log('hello: '+data[i].caNum);
+				if(mCate=='CACO' && (data[i].caNum=='CACP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT'))
+				{
+					//console.log(data[i].caNum);
+					//data[i].caNum
+					//옵션에 caNum이 CACM과 CACP를 추가
+					// var option = $("<option>"+data[i].caNum+"</option>");
+	                //$('#opSelct').append(option);
+
+					
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
+					
+
+							
+				}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
+					console.log(data[i].caNum);
+					//data[i].caNum
+					//옵션에 caNum이 CACM과 CAJP를 추가
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
+					
+				}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
+					console.log(data[i].caNum);
+					//data[i].caNum
+					//옵션에 caNum이 CACM과 CADP를 추가
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
+					
+					}
+				}
+			}
+			
+		
+	});
+	
+
+}
+
 
 
 function menuInsert(){
@@ -418,12 +427,13 @@ function menuDelete(){
 			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
 		}, success:function(xhr) {
 			console.log(xhr.result);
-			window.location.reload();
+			menulist(menuId);
 		}
 	});
 }
 
 function menuUpdate() {
+	var menuId = $("#mNum").val();
 	$.ajax({
 		url: "menues",
 		type: 'PUT',
@@ -431,15 +441,15 @@ function menuUpdate() {
 		data: JSON.stringify($("#menudetail").serializeObject()),
 		contentType: 'application/json',
 		success: function(data) { 
-			window.location.reload();
+			menulist(menuId);
 		}
 		
 	});  
 }
 
 function recipeInsert(){
-	
-	var reQty1 = $("#consum").val()/1000;
+	var menuId = $("#mNum").val();
+	var reQty1 = $("#consum").val();
 	var reQty2 = aQty;
 		//$("#recistAqty").val();
 	
@@ -456,7 +466,7 @@ function recipeInsert(){
 	alert(JSON.stringify($("#recipeTableForm").serializeObject()));
 	//=====================================================================================
  	$.ajax({
-		url: "recipes/"+(reQty2*1000),
+		url: "recipes/"+(reQty2),
 		type: 'POST',
 		dataType: 'json',
 		data: JSON.stringify($("#recipeTableForm").serializeObject()),
@@ -464,7 +474,7 @@ function recipeInsert(){
 		success: function(data) {
 			if(data.result == true) {
 				console.log(data);
-				window.location.reload();
+				menulist(menuId);
 	    	}
 			
 		}
@@ -474,7 +484,7 @@ function recipeInsert(){
 
 
 function recipeDelete(){
-	
+	var menuId = $("#mNum").val();
 	console.log(selRecinum);
 	$.ajax({
 		url:'recipes/'+selRecinum,  
@@ -485,7 +495,7 @@ function recipeDelete(){
 			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
 		}, success:function(xhr) {
 			console.log(xhr.result);
-			window.location.reload();
+			menulist(menuId);
 		}
 	}); 
 }
@@ -493,7 +503,7 @@ function recipeDelete(){
 
 
 function optionInsert(){
-	
+	var menuId = $("#mNum").val();
  	alert(JSON.stringify($("#optionTableForm").serializeObject()));
 	
  	$.ajax({
@@ -505,7 +515,7 @@ function optionInsert(){
 		success: function(data) {
 			if(data.result == true) {
 				console.log(data);
-				window.location.reload();
+				menulist(menuId);
 	    	}
 			
 		}
@@ -514,6 +524,7 @@ function optionInsert(){
 }
 
 function optionDelete(){
+	var menuId = $("#mNum").val();
 	console.log(selRecinum);
 	 $.ajax({
 		url:'options/'+selRecinum,  
@@ -524,7 +535,7 @@ function optionDelete(){
 			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
 		}, success:function(xhr) {
 			console.log(xhr.result);
-			window.location.reload();
+			menulist(menuId);
 		}
 	});
 	 
@@ -555,6 +566,21 @@ function optionDelete(){
 		$("#fileForm").submit();
 
 	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </script>
 </head>
 <body>
@@ -654,7 +680,7 @@ function optionDelete(){
 
 				<form id="menudetail">
 					<input type="button" value="확정" id="btnUpdate"> 
-					<input type="button" value="삭제" id="btnMenuDelete" onclick="menuDelete()">
+					<!-- <input type="button" value="삭제" id="btnMenuDelete" onclick="menuDelete()"> -->
 					<input type="hidden" id="sId" name="sId" value="SH001"> 
 					<table border="1" class="table table-hover">
 
@@ -763,8 +789,7 @@ function optionDelete(){
 						<td><input type="text" id="cmName" readonly></td>
 					</tr>
 				</table>
-					
-						<h4>재료 추가</h4>
+					 
 						<table border="1" class = "table table-hover">
 							<tr>
 								<th>카테고리 선택</th>
@@ -793,7 +818,7 @@ function optionDelete(){
 				
 			
 				<br>
-				<table border="1"  id="recipeTable" class = "table">
+				<table border="1"  id="recipeTable" class = "table table-hover">
 					<thead class = "thead-dark">
 					<tr>
 						<th>재료명</th>
