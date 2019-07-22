@@ -17,7 +17,7 @@
 //최소길이 & 최대길이 제한
 var minimum = 8;
 var maximun = 12;
-
+var sid = "<%=(String)session.getAttribute("sId")%>";
 var submitcheck = false;
 
 function chkPw(obj, viewObj) {
@@ -191,7 +191,7 @@ function checkpwbtn(){
 	function readstoreinfo(){
 		
 		$.ajax({
-        	url : 'storeinfo/' + '<%=(String)session.getAttribute("sid")%>',
+        	url : 'storeinfo/' + sid,
         	type : 'GET',
         	dataType : 'json',
         	error : function(xhr, status, msg){
