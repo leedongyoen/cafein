@@ -19,21 +19,23 @@
 <script src="./js/json.min.js"></script>   
 <script>
 
-$(function(){
-	var id = "<%= (String)session.getAttribute("sid") %>";
-	var sName = "<%= (String)session.getAttribute("sName") %>";
-	console.log("store id = " + id + "store name = " + sName);
 	
-	if(id == "null") {
+$(function(){
+	var sId = "<%= (String)session.getAttribute("sId") %>";
+	var sName = "<%= (String)session.getAttribute("sName") %>";
+	console.log("sId = " + sId + "  sName = " + sName + "  openSwitch =" + openSwitch );
+	
+	if(sId == "null") {
 		$("#loginbtn").css('display', 'inline');
 		$("#logoutbtn").css('display', 'none');
 	}
-	if(id != "null") {
+	if(sId != "null") {
 		$("#loginbtn").css('display', 'none');
 		$("#logoutbtn").css('display', 'inline');
 	}
+	
 });
-
+	
 function startTime() {
 	var dayko = ['일','월','화','수','목','금','토'];
     var today = new Date();
@@ -53,6 +55,14 @@ function startTime() {
 function checkTime(i) {
     if (i < 10) {i = "0" + i}; // 숫자가 10보다 작을 경우 앞에 0을 붙여줌
     return i;
+}
+
+function loginCheck(){
+	var sId = "<%= (String)session.getAttribute("sId") %>";
+	if(sId == "null") {
+		alert("로그인을 해주세요.");
+		location.href="storelogin.do";
+	}
 }
 </script>
 
@@ -116,8 +126,8 @@ body {
 
       </li>
       
-      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/storeopen.do">오픈</a></li>
-      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/daycal.do">마감</a></li>
+      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/storeopen.do" id="openbtn">오픈</a></li>
+      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/daycal.do" id="closebtn">마감</a></li>
 
     </ul>
 
