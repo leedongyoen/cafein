@@ -33,6 +33,8 @@
 		c_name = #{cName},
 		c_tel = #{cTel},
 		c_add = #{cAdd},
+		c_add2 = #{cAdd2},
+		c_add3 = #{cAdd3},
 		dob = #{dob}
 		where c_id
 		= #{cId}

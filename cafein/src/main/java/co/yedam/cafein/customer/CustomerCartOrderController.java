@@ -179,7 +179,7 @@ public class CustomerCartOrderController {
 			JSONParser jsonParser = new JSONParser();
 			
 			JSONObject insertParam = (JSONObject) jsonParser.parse(jsonData);
-			System.out.println(insertParam);
+			System.out.println("insertPa: "+insertParam);
 			
 			
 			ArrayList<String> cartcnt = (ArrayList<String>) insertParam.get("mNum");
@@ -194,12 +194,10 @@ public class CustomerCartOrderController {
 			  vo.setmNum(cartcnt.get(i));
 			  
 			  ArrayList<String> oplistarr =(ArrayList<String>) insertParam.get(cartcnt.get(i).toString());
-			  String[] oplist = null;
-			  if(oplistarr != null) {
-				  oplist = new String[oplistarr.size()];
-				  oplist= oplistarr.toArray(oplist);
-			  }else			  
-			  
+			  System.out.println("DURL: "+cartcnt.get(i).toString());
+			  String[] oplist = new String[oplistarr.size()];
+			  oplist= oplistarr.toArray(oplist);
+
 			  vo.setOptionlist(oplist);
 			  vo.setcAdd((String) insertParam.get("cAdd"));
 			  vo.setcAdd3((String) insertParam.get("cAdd3"));
@@ -211,17 +209,21 @@ public class CustomerCartOrderController {
 			  vo.setMileage( Integer.parseInt((String)insertParam.get("mileage"))); 
 			  
 			  
+			  
+			/*
+			 * String[] hioption = new String[hoticeop.size()]; hioption=
+			 * hoticeop.toArray(hioption); vo.setHotice_option(hoticeop.get(i));
+			 */
+			  
 			  String[] hioption = new String[hoticeop.size()];
 			  hioption= hoticeop.toArray(hioption);
 			  vo.setHotice_option(hoticeop.get(i)); 
 			  
 			  String[] oqtty = new String[oqtyy.size()];
-			  if(oplistarr != null) {
-				  oqtty= oplistarr.toArray(oqtty);
-			  }
-			  
+			  oqtty= oplistarr.toArray(oqtty);
 			  vo.setoQty(oqtyy.get(i));
 		
+			   
 			  cartorder.add(vo);
 			  System.out.println(vo);
 				  

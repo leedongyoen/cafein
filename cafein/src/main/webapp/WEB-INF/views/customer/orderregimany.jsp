@@ -258,20 +258,30 @@ function minus(id_num) {
 					<td>${cartLists[0].sName}</td>
 				</tr>
 		<c:forEach items="${cartLists}" var="cartlist" varStatus="status">
+				
 				<tr>
 					<th>메 뉴 명</th>
 					<td>
 					 <input type="hidden" name="mNum" value="${cartlist.mNum}">
 					
 					 ${cartlist.mName}
-						<c:if test="${cartlist.hotice_option eq 'CAHT'}">
-							( HOT )
+					 <c:choose>
+				    <c:when test="${cartlist.hotice_option eq 'CAHT'}">
+				       ( HOT )
 						<input type="hidden" name=hotice_option value="CAHT">
-						 </c:if>
-						<c:if test="${cartlist.hotice_option eq 'CAIC'}">
-							( ICE )
+				    </c:when>
+				
+				    <c:when test="${cartlist.hotice_option eq 'CAIC'}">
+				       ( ICE )
 						<input type="hidden" name=hotice_option value="CAIC">
-						 </c:if> 
+				    </c:when>
+				    <c:otherwise>
+				        ( DESSERT )
+						<input type="hidden" name=hotice_option value=" ">
+				    </c:otherwise>
+				</c:choose>
+				
+
 					</td>
 
 				</tr>
