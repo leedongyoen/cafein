@@ -41,6 +41,8 @@
 			UPPER(PAY_METHOD) = 'CASH'
             AND
             O.DELIVERY_STATUS = 'C3'
+            AND
+            TOTAL > 0
 	</select>
 	
 	<!-- 매장 기본 준비금, 오픈시간, 마감시간 조회 -->
@@ -80,6 +82,7 @@
 		WHERE O.O_DATE BETWEEN SOP.OPENTIME AND SOP.CLOSETIME
 		        AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS ='C3') OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS = 'C3' ) )
 		AND O.S_ID = #{sId}
+		AND O.TOTAL > 0
 		GROUP BY O.RECEIPT, O.PAY_METHOD  
 	</select>
 	
@@ -98,6 +101,23 @@
     	( O.O_DATE BETWEEN SOP.OPENTIME AND NVL(SOP.CLOSETIME,SYSTIMESTAMP))
 	   	AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS ='C3') OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS = 'C3' ) )
 		AND O.S_ID = #{sId}
+		AND O.TOTAL > 0
+	</select>
+	
+	<!-- 마감 영수증을 위한 환불내역(결제방식 별 금액, 마일리지, 건수) 조회 -->
+	<select id="getRefundInfo" resultType="order">
+		SELECT SUM(TOTAL) "refundSum"
+			 , SUM(MILEAGE) "refundMileage"
+			 , PAY_METHOD "refundMethod"
+			 , COUNT(CASE WHEN MILEAGE > 0 THEN 1 ELSE NULL END) "mileage"
+			 , COUNT(CASE WHEN PAY_METHOD = 'cash' THEN 1 ELSE NULL END) "cashRefundCnt"
+			 , COUNT(CASE WHEN PAY_METHOD = 'card' THEN 1 ELSE NULL END) "cardRefundCnt"
+		FROM ORDERS O JOIN STOREOPEN SOP
+		ON O.S_ID = SOP.S_ID
+		WHERE O.O_DATE BETWEEN SOP.OPENTIME AND SOP.CLOSETIME
+		AND O.TOTAL <![CDATA[ < ]]> 0
+		AND O.S_ID = #{sId}
+		GROUP BY PAY_METHOD
 	</select>
 	
 	  

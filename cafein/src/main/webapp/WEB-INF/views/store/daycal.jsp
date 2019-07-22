@@ -261,6 +261,9 @@ p {
 				$('#usedMileage').text('P'+addCommas(usedMile));
 				$('#totalCashSales').text(addCommas(totalcashsales)+'원');
 				
+				// 영수증에 출력
+				$('#storeCashSum ').text(addCommas(cashSum)+'원');
+				$('#storeCashPoint').text(addCommas(usedMile)+'P');
 				
 				cashDataList = sessionStorage.getItem("jsonCashList");
 				//console.log('cashDataList : '+cashDataList)
@@ -411,8 +414,11 @@ p {
 	}
 	
 //---------------------------------------------------------------------------------------------------------------------
-	
+// 영수증 출력에 필요한 데이터들 
 	var receiptCashString, receiptCashData, receiptMileageString, receiptMileageData; 
+	var delCashCnt, delCashSum, delCardCnt, delCardSum, takeCashCnt, takeCashSum, takeCardCnt, takeCardSum;
+	// 주문건이 존재하는지 체크하기위한 변수
+	var del = 0, delCash = 0, delCard = 0, take = 0, takeCash = 0, takeCard = 0;
 	
 	// 마감 영수증을 위한 결제내역(현금/카드) 조회
 	function getCloseReceiptCash() {
@@ -428,21 +434,117 @@ p {
 				receiptCashString = JSON.stringify(data);
 				receiptCashData = JSON.parse(receiptCashString);
 				console.log('receiptCashData : ' + receiptCashData)
-				for(var i=0;i<receiptCashData.length;i++){
-					// 배열로 넘어온 데이터 어떻게 구분할지 고민
-					console.log('for문 안 data (total): ' +  receiptCashData[i].total)
+				
+				// 주문건이 단 하나도 없을 때
+				if(receiptCashData.length == 0) {
+					delCashCnt = 0;
+					delCashSum = 0;
+					delCardCnt = 0;
+					delCardSum = 0;
+					takeCashCnt = 0;
+					takeCashSum = 0;
+					takeCardCnt = 0;
+					takeCardSum = 0;
+				} else {
+					
+					for(var i=0;i<receiptCashData.length;i++) {
+						
+						if(receiptCashData[i].receipt == 'delivery'){
+							del = 1;
+							if(receiptCashData[i].payMethod == 'cash') {
+								delCash = 1;
+								delCashCnt = receiptCashData[i].cnt, 
+								delCashSum = receiptCashData[i].total;
+								
+							} else if(receiptCashData[i].payMethod == 'card') {
+								delCard = 1;
+								delCardCnt = receiptCashData[i].cnt, 
+								delCardSum = receiptCashData[i].total;
+
+							}
+							
+						} else if(receiptCashData[i].receipt == 'takeout'){
+							console.log('takeout이 있을 경우 ')
+							take = 1;
+							if(receiptCashData[i].payMethod == 'cash') {
+								takeCash = 1;
+								takeCashCnt = receiptCashData[i].cnt, 
+								takeCashSum = receiptCashData[i].total;
+								
+							} else if(receiptCashData[i].payMethod == 'card') {
+								takeCard = 1;
+								takeCardCnt = receiptCashData[i].cnt, 
+								takeCardSum = receiptCashData[i].total;
+								
+							}
+						} 
+					}
 				}
+				
+				// 값이 존재하지 않으면 건수와 금액을 0으로 설정한다
+				if(del == 0) {
+					delCashCnt = 0;
+					delCashSum = 0;
+					delCardCnt = 0;
+					delCardSum = 0;
+				}
+				if(delCash == 0) {
+					delCashCnt = 0;
+					delCashSum = 0;
+				}
+				if(delCard == 0) {
+					delCardCnt = 0;
+					delCardSum = 0;
+				}
+				
+				if(take == 0) {
+					takeCashCnt = 0;
+					takeCashSum = 0;
+					takeCardCnt = 0;
+					takeCardSum = 0;
+				}
+				if(takeCash == 0) {
+					takeCashCnt = 0;
+					takeCashSum = 0;
+				}
+				if(takeCard == 0) {
+					takeCardCnt = 0;
+					takeCardSum = 0;
+				}
+				
+				
+				
+				// 배달주문 현금결제
+				$('#deliveryCashCnt').text(delCashCnt+' 건');
+				$('#deliveryCashSum').text(addCommas(delCashSum)+'원');
+				// 배달주문 카드결제
+				$('#deliveryCardCnt').text(delCardCnt+' 건');
+				$('#deliveryCardSum').text(addCommas(delCardSum)+'원');
+				// 배달주문 카드/현금 합계
+				$('#deliverySumCnt').text(delCashCnt+delCardCnt+' 건');
+				$('#deliverySum').text(addCommas(delCashSum+delCardSum)+'원');
+				// 직접수령주문 현금결제
+				$('#takeoutCashCnt').text(takeCashCnt+' 건');
+				$('#takeoutCashSum').text(addCommas(takeCashSum)+'원');
+				// 직접수령주문 카드결제
+				$('#takeoutCardCnt').text(takeCardCnt+' 건');
+				$('#takeoutCardSum').text(addCommas(takeCardSum)+'원');
+				// 직접수령주문 카드/현금 합계
+				$('#takeoutSumCnt').text(takeCashCnt+takeCardCnt+' 건');
+				$('#takeoutSum').text(addCommas(takeCashSum+takeCardSum)+'원');
+				
 			}
 		});
 	}
 	
-	var addmileage, minusmileage, mtotal, addMileageCnt, minusMileageCnt;			// 사용된 마일리지, 적립해준 마일리지, 마일리지 총 합계, 마일리지 적립 횟수, 마일리지 사용 횟수
+	var addmileage, minusmileage, storetotal, addMileageCnt, minusMileageCnt;			// 사용된 마일리지, 적립해준 마일리지, 매장 총 매출, 마일리지 적립 횟수, 마일리지 사용 횟수
+
 	// 마감 영수증을 위한 결제내역(마일리지/총매출액) 조회
 	function getCloseReceiptMileage() {
 		$.ajax({
 			url:"closereceiptmileage",		// request 보낼 서버경로
 			type:'GET',			
-			data:{sId:sId,openTime:storeOpenTime},				// 보낼 데이터 (매장id 보내야함)
+			data:{sId:sId,openTime:storeOpenTime.substring(0,8)},				// 보낼 데이터 (매장id 보내야함)
 			error:function(){
 				alert('통신 실패');
 			},
@@ -451,15 +553,104 @@ p {
 				receiptMileageString = JSON.stringify(data);
 				receiptMileageData = JSON.parse(receiptMileageString);
 				console.log('receiptMileageData : ' + receiptMileageData)
-				for(var i=0;i<receiptMileageData.length;i++){
-					// 배열로 넘어온 데이터 어떻게 구분할지 고민
-					console.log('for문 안 data (total): ' +  receiptMileageData[i].total)
-					addmileage = receiptMileageData[i].addmileage;
-					minusmileage = receiptMileageData[i].mileage;
-					mtotal = receiptMileageData[i].total;
-					addMileageCnt = receiptMileageData[i].addMileageCnt;
-					minusMileageCnt = receiptMileageData[i].minusMileageCnt;
+				
+				if(receiptMileageData.length == 0) {
+					addmileage = 0;
+					minusmileage = 0;
+					addMileageCnt = 0;
+					minusMileageCnt = 0;
+				} else {
+					for(var i=0;i<receiptMileageData.length;i++){
+						// 배열로 넘어온 데이터 어떻게 구분할지 고민
+						console.log('for문 안 data (total): ' +  receiptMileageData[i].total)
+						addmileage = receiptMileageData[i].addmileage;
+						minusmileage = receiptMileageData[i].mileage;
+						storetotal = receiptMileageData[i].total;
+						addMileageCnt = receiptMileageData[i].addMileageCnt;
+						minusMileageCnt = receiptMileageData[i].minusMileageCnt;
+					}
 				}
+				
+				 
+				$('#pointMinusCnt').text(minusMileageCnt+' 건');
+				$('#pointMinusSum').text(addCommas(minusmileage)+'P');
+				$('#pointPlusCnt').text(addMileageCnt+' 건');
+				$('#pointPlusSum').text(addCommas(addmileage)+'P');
+				$('#storeTotalSum').text(addCommas(storetotal)+'원');
+				console.log('for문 밖 data addmileage, minusmileage : ' + addmileage + ', ' + minusmileage)
+			}
+		});
+	}
+	
+	// 환불 내역 조회에 필요한 변수
+	var refundString, refundData;			// json 파싱을 위한 변수
+	var cardrefundsum, cardrefundmileage, cardrefundcnt, cardrefundmileagecnt, 
+		cashrefundsum, cashrefundmileage, cashrefundcnt, cashrefundmileagecnt;
+	var refundcash = 0, refundcard = 0;
+	
+	// 환불 내역 조회
+	function getRefundInfo() {
+		$.ajax({
+			url:"refundinfo",		// request 보낼 서버경로
+			type:'GET',			
+			data:{sId:sId},				// 보낼 데이터 (매장id 보내야함)
+			error:function(){
+				alert('통신 실패');
+			},
+			success:function(data){
+				console.log(data);
+				refundString = JSON.stringify(data);
+				refundData = JSON.parse(refundString);
+				//console.log('refundData : ' + refundData[0].val())
+				if(refundData.length == 0) {
+					refundsum = 0;
+					refundmileage = 0;
+					cashrefundcnt = 0;
+					cardrefundcnt = 0;
+				} else {
+					for(var i=0;i<refundData.length;i++){
+						if(refundData[i].refundMethod == 'card') {
+							refundcard = 1;
+							cardrefundsum = refundData[i].refundSum;
+							cardrefundmileage = refundData[i].refundMileage;
+							cardrefundcnt = refundData[i].cardRefundCnt;
+							cardrefundmileagecnt = refundData[i].mileage;
+						} else if(refundData[i].refundMethod == 'cash') {
+							refundcash = 1;
+							cashrefundsum = refundData[i].refundSum;
+							cashrefundmileage = refundData[i].refundMileage;
+							cashrefundcnt = refundData[i].cashRefundCnt;
+							cashrefundmileagecnt = refundData[i].mileage;
+						}
+						
+					}
+				}
+				
+				if(refundcard == 0) {
+					cardrefundsum = 0;
+					cardrefundmileage = 0;
+					cardrefundcnt = 0;
+					cardrefundmileagecnt = 0;
+				}
+				if(refundcard == 0) {
+					cashrefundsum = 0;
+					cashrefundmileage = 0;
+					cashrefundcnt = 0;
+					cashrefundmileagecnt = 0;
+				}
+				console.log('환불 내역이 있을 시')
+				// 현금 결제 환불
+				$('#refundCashCnt').text(cashrefundcnt+' 건');
+				$('#refundCashSum').text(addCommas(cashrefundsum)+'원');
+				// 카드 결제 환불
+				$('#refundCardCnt').text(cardrefundcnt+' 건');
+				$('#refundCardSum').text(addCommas(cardrefundsum)+'원');
+				// 카드/현금 환불 합계
+				$('#refundSumCnt').text(cardrefundcnt+cashrefundcnt+' 건');
+				$('#refundSum').text(addCommas(cardrefundsum+cashrefundsum)+'원');
+				// 포인트 환불
+				$('#refundPointCnt').text(cardrefundmileagecnt+cashrefundmileagecnt+' 건');
+				$('#refundPointSum').text(addCommas(cardrefundmileage+cashrefundmileage)+'P');
 			}
 		});
 	}
@@ -493,7 +684,7 @@ p {
 				success:function(data){
 					getCloseReceiptCash();
 					getCloseReceiptMileage();
-					
+					getRefundInfo();
 					
 					console.log("마감 정산 후 data : "+data);
 					console.log("마감 정산 후 data.store : "+data.store);
@@ -501,9 +692,17 @@ p {
 					
 					var opentime;
 					var closetime;
+					
 					for(var i=0;i<data.store.length;i++){
 						opentime = data.store[i].openTime;
 						closetime = data.store[i].closeTime;
+						console.log("마감 정산 후 현금시재: "+data.store[i].cash);
+						
+						$('#storeCash').text(addCommas(data.store[i].cash)+'원');
+						$('#storeDefaultCash').text(addCommas(data.store[i].defaultCash)+'원');
+						$('#storeOrSum').text(addCommas(data.store[i].orCash)+'원');
+						$('#storeNetIncome').text(addCommas(data.store[i].netIncome)+'원');
+						$('#storeDefference').text(addCommas(data.store[i].difference)+'원');
 					}
 					console.log("마감 정산 후 opentime: "+opentime);
 					console.log("마감 정산 후 closetime: "+closetime);

@@ -101,6 +101,13 @@ public class StoreCloseController {
 		return service.getCloseReceiptMileage(vo);
 	}
 	
+	// 마감 영수증을 위한 결제내역(마일리지/총매출액) 조회
+	@ResponseBody
+	@RequestMapping(value="/refundinfo", method=RequestMethod.GET)
+	public List<OrdersVO> getRefundInfo(OrdersVO vo) {
+		return service.getRefundInfo(vo);
+	}
+	
 	//----------------------------------------------------------------------------
 	// 마감 정산 버튼 클릭 시 모든 데이터 insert 및 update
 	@ResponseBody

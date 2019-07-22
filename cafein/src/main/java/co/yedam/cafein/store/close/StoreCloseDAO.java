@@ -48,6 +48,11 @@ public class StoreCloseDAO {
 		return mybatis.selectList("storeCloseDAO.getCloseReceiptMileage", vo);
 	}
 	
+	// 마감 영수증을 위한 환불내역 조회
+	public List<OrdersVO> getRefundInfo(OrdersVO vo) {
+		return mybatis.selectList("storeCloseDAO.getRefundInfo", vo);
+	}
+	
 	
 	//----------마감 정산 시 DB에 데이터 insert 및 update------------
 	
