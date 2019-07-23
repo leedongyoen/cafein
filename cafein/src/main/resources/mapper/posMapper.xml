@@ -13,6 +13,7 @@
 		, M_PRICE "mPrice"
 		,CA_NUM "caNum"
 		 FROM MENU
+		 WHERE S_ID= #{sId} 
 	</select>
 	<!-- 메뉴선택시 옵션 가져오기 -->
 	<select id="getOptionList" resultType="recipe">
@@ -21,6 +22,7 @@
 		, OP_NAME "opName"
 		, OP_PRICE "opPrice"
 		, RECIPENO "recipeno"
+		, CA_NUM "caNum"
 		FROM RECIPE
 		WHERE S_ID= #{sId}
 		AND M_NUM = #{mNum}
