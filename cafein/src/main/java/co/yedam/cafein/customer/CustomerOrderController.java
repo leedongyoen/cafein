@@ -45,7 +45,7 @@ public class CustomerOrderController {
 	@Autowired
 	MenuServiceImpl service3;
 	
-	// 주문으로 넘어가는 부분
+	// 주문으로 넘어가는 부분 
 
 	@RequestMapping(value = "/customerorder", method = RequestMethod.POST)
 	public ModelAndView customerorder(MenuOrderVO vo) {
@@ -229,12 +229,16 @@ public class CustomerOrderController {
 		// 해당 주문번호의 op_dnum수정
 		n = service.getodnum(info);
 		
-		// 마일리지 업데이트
-		n = service.updatemileage(info);
-		
-		// 해당 매장에 대한 마일리지가 없을 경우
-		if(n == 0) {
-			n = service.insertmileage(info);
+		// 해당 매장의 마일리지 서비스를 할 경우에만.
+		if(info.getMileageservice().equals("Y")) {
+			
+			// 마일리지 업데이트
+			n = service.updatemileage(info);
+			
+			// 해당 매장에 대한 마일리지가 없을 경우
+			if(n == 0) {
+				n = service.insertmileage(info);
+			}
 		}
 		
 		mv.setViewName("customer/delivery");
