@@ -155,6 +155,19 @@
 	
 	</update>
 	
+	<update id="getmutilodnum">
+		<selectKey keyProperty="opDnum" resultType="string" order="BEFORE">
+			SELECT MIN(O_DNUM) OP_DNUM
+			FROM ORDER_DETAILS
+			WHERE O_NUM =#{oNum} AND M_NUM =#{mNum}
+		</selectKey>
+		
+		UPDATE ORDER_DETAILS SET OP_DNUM=#{opDnum} 
+		WHERE O_NUM= #{oNum} AND M_NUM =#{mNum}
+	
+	</update>
+	
+	
 	<insert id="insertmileage">
 		<selectKey keyProperty="addmileage" resultType="int" order="BEFORE">
 		
