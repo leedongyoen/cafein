@@ -82,6 +82,7 @@
 
 
 	<update id="updateordercancel">
+
 		UPDATE ORDERS
 		SET REFUSE_REASON = #{refuseReason} 
 			, DELIVERY_STATUS = 'C4'
@@ -90,14 +91,14 @@
 	
 	<update id="updateordermileage">
 		<selectKey keyProperty="addcanclemileage,addmileage,sId,cId" resultType="order" order="BEFORE">
-			SELECT MILEAGE+TOTAL*0.01*-1 as addcanclemileage
+			SELECT (TOTAL*0.01*-1) as addcanclemileage
 					, MILEAGE as addmileage
 					, S_ID as sId
 					, C_ID as cId
 			FROM ORDERS
 			WHERE O_NUM = #{oNum}
 		</selectKey>
-			UPDATE RESERVE SET MILEAGE = MILEAGE + #{addmileage} - #{addcanclemileage}
+			UPDATE RESERVE SET MILEAGE = MILEAGE + #{addmileage} + #{addcanclemileage}
 			WHERE S_ID= #{sId} 
 				AND C_ID=#{cId}
 	</update>

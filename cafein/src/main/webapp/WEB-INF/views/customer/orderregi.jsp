@@ -41,6 +41,7 @@ input {
 
 	function add(num) {
 		//var price = $("input:text[name='price']").val();
+		//optionlist
 		var price = $("#price").val();
 		var v_totalprice = $("input:text[name='total']").val();
 		
@@ -49,21 +50,23 @@ input {
 		
  		$("input[name=optionlist]:checked").each(function() {
 			var test = $(this).val(); 
-			var recipeno = $('#option'+test).val();
-			sum_optionprice =Number(sum_optionprice)+ Number(price);
+
+			var recipeno = $('#price'+test).val();
+
+			sum_optionprice =Number(sum_optionprice)+ Number(recipeno)*(Number(no)+Number(num));
 
 		}); 
-		console.log(sum_optionprice);
+		console.log("옵션*구매갯수 합계"+sum_optionprice);
 		if (num == -1) {
 			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
 				return;
 			}
 			no = Number(no) - 1;
-			v_totalprice = Number(v_totalprice) - Number(price);
+			v_totalprice = Number(price)*Number(no) + Number(sum_optionprice);
 		} else if (num == 1) {
 			no = Number(no) + 1;
-			v_totalprice = Number(v_totalprice) + Number(price);
+			v_totalprice = Number(price)*Number(no) + Number(sum_optionprice);
 		}
 		$("input:text[name='total']").val(v_totalprice);
 		$("input:text[name='oQty']").val(no);
@@ -108,10 +111,12 @@ input {
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				
+			
 				if(data == 'N'){
+					$("input:text[name='mileageservice']").val('N');
 					$('#reservetr').hide();
 				}else{
+					$("input:text[name='mileageservice']").val('Y');
 					$('#reservetr').show();
 					getcustomermileage();
 				}
@@ -174,15 +179,18 @@ input {
 
 		
 		 // 옵션 선택시
-	  	$(".checkoption").change(function(){
+	  	$(".checkoption").change(function(){//oQty
 	  		var optionprice = $("#price"+$(this).val()).val();
 	  		console.log($(this).val());
 	  		console.log(optionprice);
 	  		var v_totalprice =  $("input:text[name='total']").val();
+	  		var v_qty = $("input:text[name='oQty']").val();
+	  		
+	  		
 	  		if($(this).is(":checked")){
-					v_totalprice = Number(v_totalprice)+Number(optionprice);
+					v_totalprice = Number(v_totalprice)+Number(optionprice)*Number(v_qty);
 			}else{
-				v_totalprice = Number(v_totalprice) - Number(optionprice);
+				v_totalprice = Number(v_totalprice) - Number(optionprice)*Number(v_qty);
 			}
 	  		 $("input:text[name='total']").val(v_totalprice);
 
@@ -234,10 +242,25 @@ input {
 			$('#insertmileage').val("0");
 			
 		});
+		$('input[name="receipt"]').change(function() {
+		    // 모든 radio를 순회한다.
+		    if( $('input[name="receipt"]:checked').val() == 'takeout'){
+		    	$('#deliveryaddress').hide();
+		    }else{
+		    	$('#deliveryaddress').show();
+		    }
+		});
+
+/* 		$('#dtakeout').click(function() {
+			$('#deliveryaddress').hide();
+		});
 		
+		$('#delivery').click(function() {
+			$('#deliveryaddress').show();
+		}); */
+		//$('#deliveryaddress').show();
 	});
 	
-	//getordernumber
 
 	
 </script>
@@ -247,7 +270,10 @@ input {
 		<div class="container" >
 		<form class="form-borizontal" id="orderform" name="orderform" action="insertcustomerorder" method="POST" >
 			<input id="storeid" value="${selectmenu.sId}" name="sId" style="display: none" >
-			<input id="storeid" value="${selectmenu.cId}" name="cId" style="display: none" >
+			<input id="cid" value="${selectmenu.cId}" name="cId" style="display: none" >
+			<input  value="${selectmenu.cId}" name="mileageservice" style="display: none" >
+			
+			<div class=”table-responsive“>
 			<table class="table">
 			
 <!-- 				<tr>
@@ -340,7 +366,7 @@ input {
 						</td>
 					</tr>
 				
-					<tr class="deliverY" style="display: none;">
+					<tr class="deliverY" id="deliveryaddress" style="display: none;">
 						<th>배 달 주 소</th>
 						<td>
 							<input type="text" placeholder="우편번호" readonly="readonly" > <br>
@@ -361,7 +387,7 @@ input {
 					<td><input name="total" value="${selectmenu.totalPrice}" readonly></td>
 				</tr>
 			</table>
-
+			</div>
 			<br>
 			<div>
 				<div align="right">
