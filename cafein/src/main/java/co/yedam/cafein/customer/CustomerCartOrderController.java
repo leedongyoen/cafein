@@ -203,7 +203,12 @@ public class CustomerCartOrderController {
 			  Object insertParam2 =  insertParam.get(cartcnt.get(i).toString());
 			  
 			  System.out.println("===================="+insertParam2);
-			  if(insertParam2.toString().length() > 6) {
+			  if(insertParam2 == null)
+			  {	
+				  //옵션이 없는 메뉴
+				  System.out.println("옵션이 없는 메뉴 입니다.");
+			  }else if(insertParam2.toString().length() > 6) {
+				  //옵션이 여러개인 메뉴
 				  oplistarr =(ArrayList<String>) insertParam2;
 				  System.out.println("::::"+oplistarr.toString());
 				  
@@ -211,7 +216,7 @@ public class CustomerCartOrderController {
 				  oplist= oplistarr.toArray(oplist);
 				  vo.setOptionlist(oplist);
 			  }else {
-				  
+				  //옵션이 하나인 메뉴
 				  System.out.println("===================="+insertParam2);
 				  oplistarr = new ArrayList<String>();
 				  String[] oplist = new String[1];
