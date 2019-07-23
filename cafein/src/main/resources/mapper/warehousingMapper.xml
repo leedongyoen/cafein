@@ -75,13 +75,33 @@
 		 					WARE_QTY, 
 		 					WARE_PRICE, 
 		 					ST_NUM, 
-		 					S_ID) 
+		 					S_ID,
+		 					ST_PAY_METHOD
+		 					) 
 					 VALUES (
 							 'WH'||LPAD(WARE_SEQ.NEXTVAL,4,0) ,
 							 SYSDATE,
 							 #{enterQty},
 							 #{warePrice},
 							 #{stNum}, 
-							 #{sId})
-	</insert>	
+							 #{sId},
+							 #{stPayMethod}
+							 )
+	</insert>
+	
+	<select id="getWarehousing" resultType="warehousing">
+		SELECT w.st_num 	"stNum",
+	      s.st_name 		"stName",
+	      w.ware_price "warePrice",
+	      w.ware_qty	"wareQty",
+	      w.st_loss	"stLoss"
+		FROM warehousing w left outer join stock s
+		ON w.st_num = s.st_num
+		<where>
+			<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
+			 and ware_date between #{startDate} and #{endDate}
+			</if>
+			AND W.S_ID = #{sId}
+		</where>
+	</select>
 </mapper> 
