@@ -439,11 +439,13 @@ footerrow : true});*/
 			.attr("class","pay")
 			.appendTo("#payresult");
 		
-		//현금or카드 결제
+		//현금or카드 결제 
 	 	$(document).on("click","#cash", function(){
 	 		$('#card').attr('disabled', true);
+	 		$('[name=payMethod]').val("cash");
 			});
 	 	$(document).on("click","#card", function(){
+	 		$('[name=payMethod]').val("card");
 	 		$('#cash').attr('disabled', true);
 			$('#getmoney').val($('.pay').val());
 			$('#resultmoney').val('0');
@@ -699,6 +701,9 @@ footerrow : true});*/
 						<input type="text" name="sId" value='<%= session.getAttribute("sId") %>'  style="display: none;" >
 						<input type="text" name="cId"  style="display: none;" >
 						<input type="text" name="optionlist"  style="display: none;" >
+						<input type="text" name="payMethod"  style="display: none;" >
+						
+						
 						<div class="table-responsive" style="text-align:left">
 						<div style="text-align:right">
 							<input type="button" name="payMethod" id="cash" value="현금">

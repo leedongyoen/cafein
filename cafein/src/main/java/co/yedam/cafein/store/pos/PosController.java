@@ -1,7 +1,9 @@
 package co.yedam.cafein.store.pos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -86,16 +88,29 @@ public class PosController {
 		  ordervo.setcId("");
 		  ordervo.setcAdd("");
 		  ordervo.setcAdd3("");
-		  // 결제방식가져와야됨.
+  
+		  ordervo.setPayMethod((String) insertParam.get("payMethod"));
 		  // 배송상태 부분 메퍼수정해야됨
 		  ordervo.setDeliveryStatus("C5");
-		  System.out.println("===== 미완 ordersVO "+ ordervo);
 		  
-		  if(!insertParam.get("cId").equals("")) {
-			  // 고객정보가 넘어올경우에는 마일리지 업데이트 인데
-			  // 해당 매장의 마일리지 서비스를 하는 경우!!!!
-			  // 넣어줘야됨.
+		  
+		  
+		  if(insertParam.get("cId").equals("")) {
+			  ordervo.setcId("");
+		  }else {
+			
 		  }
+		  
+		  System.out.println("===== ordersVO "+ ordervo);
+		  // orders테이블에 넣기
+		  cusService.insertorder(ordervo);
+		  
+		  // 마일리지 업데이트는 
+		  // 해당 매장의 마일리지 서비스를 하는 경우!!!!
+		  // 넣어줘야됨.
+		  
+		  
+		  
 		  
 		 // System.out.println("====================== menulist "+ menulist);
 		  
@@ -197,7 +212,15 @@ public class PosController {
 						  
 						  for(int i=0; i<optionhotice.size();i++) {
 							  System.out.println("======= option"+optionhotice.get(i));
+							  insertvo = new OrdersVO(); 
+							  insertvo.setoNum(ordervo.getoNum());
+							  insertvo.setmNum(v_mNum);
 							  
+							  insertvo.setoQty(v_qty);
+							  insertvo.setReceipno((String) optionhotice.get(i));
+							  insertvo.setCaNum("CAOP");
+							  
+							  orderdetaillist.add(insertvo);
 							  
 						  }
 					  }else if(optionhotice.size() == 0 ) {
@@ -229,8 +252,17 @@ public class PosController {
 			  
 		  }
 		 
-		 
-		  
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", orderdetaillist);
+		
+		// order details 테이블에 넣기
+		int n = cusService.insertorderdetails(map);
+
+		System.out.println("===========결과 : "+n);
+		// 해당 주문번호의 op_dnum수정
+		n = cusService.getodnum(ordervo);
+		
+		
 		mv.setViewName("store/pos");
 		return mv;
 	}
