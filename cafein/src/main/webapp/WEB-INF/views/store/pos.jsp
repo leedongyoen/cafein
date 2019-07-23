@@ -32,26 +32,27 @@
 <body>
 <script type="text/javascript">
 //포스기 버튼
-var sId="SH001"; //헤더에있는 Id로 교체
+var sId='<%= session.getAttribute("sId") %>'; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
-var qty = 1;
+var oQty = 1;
 var currNo=0;
 var valNo;
 var lastSel;
 
-var editableCells = ['qty'];
+var editableCells = ['oQty'];
    $(document).ready(function() {
 
 	   $("#gridlist").jqGrid({
            colModel: [
-        	   { label: 'recipeno',  name:'recipeno', hidden:true},
+        	   { label: 'recipeno',  name:'optionlist', hidden:true},
         	   { label: 'mNum',  name:'mNum', hidden:true},
                { label: '메뉴명',  name: 'mName',  width: 130 },
                { label: '옵션',   name: 'opName', width: 150  },
                { label: '금액',   index:'Price',name: 'Price', width: 75 ,formatter:'integer'},
-               { label: '수량',   name: 'qty', width: 75},
-               { label: 'parentMNum', name:'parentMNum', hidden:true},
-               { label: 'sonMNum', name:'sonMNum', hidden:true}
+               { label: '수량',   name: 'oQty', width: 75},
+               { label: 'hotice_option', name:'hotice_option'},
+               { label: 'parentMNum', name:'parentMNum',hidden:true},
+               { label: 'sonMNum', name:'sonMNum',hidden:true}
            ],
            formatter:{
         	   integer:{thousandsSeparator:",",defaultValue:'0'}
@@ -130,7 +131,7 @@ var editableCells = ['qty'];
 					console.log(rowKey);
 			}
 			var PSum = grid.jqGrid('getCol','Price',false,'sum');
-		 	   var QSum = grid.jqGrid('getCol','qty',false,'sum');
+		 	   var QSum = grid.jqGrid('getCol','oQty',false,'sum');
 		 	   		grid.jqGrid("footerData", "set", {mName:"합계", Price:PSum, qty:QSum});
 			
 		});
@@ -160,6 +161,7 @@ footerrow : true});*/
 	 $("#cusSearchModal").modal('hide');
 	 $("#orderListModal").modal('hide');
 		//메뉴로드
+	
 	 $.ajax({
 			url:'pos/'+sId,
 			type:'GET',
@@ -187,7 +189,81 @@ footerrow : true});*/
 	 		}
 	 	});
 	 	
+	
+	// 최종 주문하기버튼 결제하기
+	 $('#orderbtn').on("click",function(){
+			var selectop = [];
+			var grid = $("#gridlist");
+			var dataIDs =  grid.jqGrid('getDataIDs');
+			console.log("전체다 " + dataIDs);
+			//주문한 데이터 모두 가져오기
+			var mNum=[];
+		
+			var oQty=[];
+			var optionlist=[];
+			var v_mnum;
+			var v_parentMNum = "";
+			
+			var v_total_menu = [];
+			for(i = 0; i < dataIDs.length; i++)
+			{
+				var rowData = grid.jqGrid ('getRowData', dataIDs[i]);
+				console.log(rowData);
+				
+				if(v_parentMNum == ""){
+					v_parentMNum = rowData.parentMNum;
+					mNum.push(rowData.mNum);
+					oQty.push(rowData.oQty);
+		
+				}else if(v_parentMNum == rowData.parentMNum){
+
+					if(rowData.optionlist != "")
+						optionlist.push(rowData.optionlist);
+				}else if(v_parentMNum != rowData.parentMNum){
+					var v_menu =[];
+					v_menu.push(mNum);
+					v_menu.push(oQty);
+					
+					v_menu.push(optionlist);
+					v_total_menu.push(v_menu);
+					
+					v_parentMNum = rowData.parentMNum;
+					mNum = [];
+					oQty = [];
+					
+					optionlist=[];
+					mNum.push(rowData.mNum);
+					oQty.push(rowData.oQty);
+					
+				}
+
+
+			}
+			var v_menu =[];
+			v_menu.push(mNum);
+			v_menu.push(oQty);
+			
+			v_menu.push(optionlist);
+			v_total_menu.push(v_menu);
+
+			console.log("v_total_menu : "+v_total_menu);		
+			var ordercart = $("#orderposform").serializeObject();
+			
+/* 			ordercart.mNum = mNum;
+			ordercart.hotice_option = hotice_option;
+			ordercart.oQty = oQty;
+			ordercart.optionlist = optionlist; */
+			ordercart.optionlist = v_total_menu;
+			console.log(" serializeObject "+ordercart);
+			$('[name="jsonData"]').val(JSON.stringify(ordercart));
+			//console.log($('[name="jsonData"]').val());
+			console.log(JSON.stringify(ordercart));
+			document.posorderinsert.submit();
+	 });
 	});	
+	
+  function orderLast(data){
+}
 //매장별 메뉴출력
  function posMenuListResult(data) {
 		console.log(sId);
@@ -247,7 +323,7 @@ footerrow : true});*/
 	 
 	 jQuery("#gridlist").jqGrid('addRow', {
 //       rowID : mNum,          //중복되지 않게 rowid설정
-       initdata : {recipeno:recipeno, mNum:mNum, mName:mName, Price:Price, qty:qty, parentMNum:currNo,sonMNum:valNo},
+      initdata : {optionlist:recipeno, mNum:mNum, mName:mName, Price:Price, oQty:oQty, parentMNum:currNo,sonMNum:valNo},
        position :"last",           
        useDefValues : false,
        useFormatter : false,
@@ -266,6 +342,7 @@ footerrow : true});*/
 	          .append($('<input type=\'hidden\' id=\'hidden_menuId4\'>').val(item.mNum))
 	          .append($('<input type=\'hidden\' id=\'hidden_mPrice4\'>').val(item.opPrice))
 	          .append($('<input type=\'hidden\' id=\'hidden_recipeno4\'>').val(item.recipeno))
+	          .append($('<input type=\'hidden\' id=\'hotice_option\'>').val(""))
 	          .appendTo('#coffeetableoption tbody');
 	    });
 	    
@@ -276,18 +353,20 @@ footerrow : true});*/
 		var mNum = $(this).next().val();
 		var Price = $(this).next().next().val();
 		var recipeno = $(this).next().next().next().val();
-		
 		if(opName == 'HOT'){
+			$("#hotice_option").val("CAHT");
 			$("#ICE").hide();
 			$("#HOT").hide();
 		}else if(opName == 'ICE'){
+			$("#hotice_option").val("CAIC");
 			$("#HOT").hide();
 			$("#ICE").hide();
-		}                                    
+		} 
+		var hotice_option = $(this).next().next().next().next().val();
 	//	currNo++;
  	 jQuery("#gridlist").jqGrid('addRow', {
 //	       rowID : mNum,          //중복되지 않게 rowid설정
-	       initdata : {recipeno:recipeno,opName:opName, Price:Price, qty:qty, parentMNum:currNo},
+	       initdata : {optionlist:recipeno,hotice_option:hotice_option,opName:opName, Price:Price, oQty:oQty, parentMNum:currNo},
 	       position :"last",           //first, last
 	       useDefValues : false,
 	       useFormatter : false,
@@ -321,7 +400,7 @@ footerrow : true});*/
  	}
  	function aftersearch(Name,Tel,mileage){
  		$('#cusSearchModal').modal("hide");
- 		console.log(Name,Tel,mileage);
+ 			console.log(Name,Tel,mileage);
  			$("#aftersearch tbody").empty();
  		    	 $('<tr>')
  		          .append($('<td><input type=\'text\' class=\'data1\' id=\'data1\' value=\''+Name+'\'>'))
@@ -330,35 +409,23 @@ footerrow : true});*/
  		          .appendTo('#aftersearch tbody');
  		      
  		}
- 	//현금or카드 결제
- 	$(document).on("click","#cash", function(){
- //		$("#cash").removeClass();
-// 		$("#cash").addclass('chbtn');
-		});
- 	$(document).on("click","#card", function(){
-		$("#cash").hide();
-	});
+ 	
  	
  	
  	
  	//결제하기
  	$(document).on("click","#payment", function(){
- //		$("#paymentModal").empty();
+
+ 		$('#cash').removeAttr('disabled');
+ 		$('#card').removeAttr('disabled');
  		$("#paymentModal").modal('show');
- 		var list =  $("#girdForm").serializeObject();
-		var selectop = [];
+ 		$("#payresult").empty();
+ 		$("#cash").empty();
+ 		$("#card").empty();
+ //		var list =  $("#girdForm").serializeObject();
+
 		var grid = $("#gridlist");
-		var dataIDs =  grid.jqGrid('getDataIDs');
-		//주문한 데이터 모두 가져오기
-		for(i = 0; i < dataIDs.length; i++)
-		{
-			var rowData = grid.jqGrid ('getRowData', dataIDs[i]);
-			console.log($(rowData.qty).text());
-			selectop.push(rowData);
-		}
-		console.log(selectop);
-		console.log(list);
-		
+			var dataIDs =  grid.jqGrid('getDataIDs');
 		
 		//주문한금액 전체 가져오기
 		var PSum = grid.jqGrid('getCol','Price',false,'sum');
@@ -367,30 +434,88 @@ footerrow : true});*/
 		
 		$("<input>").attr({
 			type:"text",
-			name:"getpay",
+			name:"total",
 			value:PSum})
 			.attr("class","pay")
 			.appendTo("#payresult");
 		
+		//현금or카드 결제
+	 	$(document).on("click","#cash", function(){
+	 		$('#card').attr('disabled', true);
+			});
+	 	$(document).on("click","#card", function(){
+	 		$('#cash').attr('disabled', true);
+			$('#getmoney').val($('.pay').val());
+			$('#resultmoney').val('0');
+	 		
+		});
 		//현금 선택시 받으신금액 입력
 		$('input.numOnly').on('keyup',function(){
 			var cnt = $(".exam input.num_sum").length;     
-	          console.log(cnt);
+//	          console.log(cnt);
 	          
 			  for( var i=1; i< cnt; i++){
 			     var sum = parseInt($(this).val() || 0 );
 			     sum++
-			    console.log(sum);
+//			    console.log(sum);
 			  }
 			var minus = parseInt($("#getmoney").val() || 0);
 			var sum = minus-PSum;
-			console.log(sum);
+//			console.log(sum);
 			$("#resultmoney").val(sum);
 		});
 		
+//		orderLast(selectop);
 		
 	});
  	
+ 	//환불 날짜별 검색
+/* 	function dateSearch() {
+		//날짜 데이터 같이 보내기
+		var startDate = jQuery('#startDate').val();
+		var endDate = jQuery('#endDate').val();
+
+		//   		if(startDate == '' || endDate == ''){
+		//   			alert('날짜를 선택해 주세요.');
+		//   			return;
+		//   		}
+
+		//alert(jQuery('#startDate').val());
+		//alert(jQuery('#endDate').val());
+
+		$.ajax({
+			url : 'dateSearch',
+			type : 'POST',
+			dataType : 'json',
+			data : {
+				startDate : startDate,
+				endDate : endDate,
+				sId : sId
+			},
+			
+			error : function(status, msg) {
+				alert(status + "메세지" + msg);
+			},
+			success : function(data) {
+				warehousingListResult(data);
+				chartData = [];
+				chartData.push([ '재고명', '수량' ])
+				
+				for (i = 0; i < data.length; i++) {
+					var datas = [ data[i].stName, data[i].wareQty ];
+					//							data[i].warePrice, data[i].stLoss];
+					chartData.push(datas);
+					console.log(datas);
+				}
+				if(datas == null){
+					alert("기간에 맞는 데이터가 없습니다.");
+				}
+				drawChart();
+				
+			}
+		});
+	} */
+	
 	
 </script>
 <br><br>
@@ -468,7 +593,7 @@ footerrow : true});*/
 </table>
 
 </div>
-사용할 마일리지 : <input type="text" id="useMile">
+사용할 마일리지 : <input type="text" id="useMile" value="0">
 <p></p>
 	<div style="text-align:left">
 	<input type="button" id="clearRow" value="전체취소">
@@ -562,12 +687,22 @@ footerrow : true});*/
 					<h5 class="modal-title">Payment</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
+				<form action="posorder" method="post" name="posorderinsert" >
+					<input type="hidden" name="jsonData">
+				</form>
+				<form class="form-borizontal"  id="orderposform" >
 				<div class="modal-body">
-					<form class="form-borizontal" action="#" method="POST">
+						<input type="text" name="cAdd" style="display: none;" >
+						<input type="text" name="cAdd3" style="display: none;" >
+						<input type="text" name="receipt" value="takeout" style="display: none;" >
+						<input type="text" name="mileage" value="0"  style="display: none;" >
+						<input type="text" name="sId" value='<%= session.getAttribute("sId") %>'  style="display: none;" >
+						<input type="text" name="cId"  style="display: none;" >
+						<input type="text" name="optionlist"  style="display: none;" >
 						<div class="table-responsive" style="text-align:left">
 						<div style="text-align:right">
-							<input type="button" id="cash" value="현금">
-							<input type="button" id="card" value="카드">
+							<input type="button" name="payMethod" id="cash" value="현금">
+							<input type="button" name="payMethod"  id="card" value="카드">
 						</div>
 						<table id="payNow" class="exam">
 							<thead>
@@ -586,13 +721,14 @@ footerrow : true});*/
 							</thead>
 						</table>
 						</div>
-					</form>
+					
 				
 				</div>
 				<div class="modal-footer">
-					<input type="button" value="결제하기">		
+					<input type="button" id="orderbtn" value="결제하기">		
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
