@@ -45,7 +45,7 @@ public class CustomerOrderController {
 	@Autowired
 	MenuServiceImpl service3;
 	
-	// 주문으로 넘어가는 부분
+	// 주문으로 넘어가는 부분 
 
 	@RequestMapping(value = "/customerorder", method = RequestMethod.POST)
 	public ModelAndView customerorder(MenuOrderVO vo) {

@@ -27,24 +27,26 @@
 	
 	<select id="getCustomerhistory" resultType="customer">
 	SELECT 
-	o.c_id, o.o_num,
-	CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
-	'OP' else 'MN'END gd,
-	CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
-	r.OP_NAME ELSE m.m_name END m_name, o.total, o.pay_method, o.receipt
-	FROM
-	ORDERS o JOIN order_details od ON od.o_num = o.o_num
-	JOIN MENU m on od.M_NUM = m.M_NUM
-	JOIN recipe r on od.RECIPENO = r.RECIPENO
-	WHERE o.c_id = #{cId} AND o.S_ID=#{sId}
-	ORDER by o.O_NUM, od.O_DNUM
-	
+   		o.c_id, o.o_num,
+  		CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+			 '↳'||r.OP_NAME ELSE m.m_name END m_name , 
+ 		CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+			r.op_price else m.m_price end total,
+  		o.pay_method, o.receipt
+  	 FROM
+   ORDERS o JOIN order_details od ON od.o_num = o.o_num
+   JOIN MENU m on od.M_NUM = m.M_NUM
+   JOIN recipe r on od.RECIPENO = r.RECIPENO
+   WHERE o.c_id = #{cId} 
+  AND o.S_ID= #{sId}
+  AND o.O_DATE > ADD_MONTHS(TRUNC(sysdate), -1)
+  ORDER by  o.O_NUM, od.O_DNUM
 	</select>
 	
 	
 
 
-
+ 
 
 
 
