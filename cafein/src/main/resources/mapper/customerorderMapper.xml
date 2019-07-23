@@ -83,6 +83,7 @@
 								, MILEAGE
 								, C_ADD
 								, C_ADD3
+								, DELIVERY_STATUS
 							)
 		VALUES (
 				#{oNum}
@@ -95,6 +96,7 @@
 				, #{mileage}
 				, #{cAdd}
 				, #{cAdd3}
+				, #{deliveryStatus}
 				)
 	
 	</insert>

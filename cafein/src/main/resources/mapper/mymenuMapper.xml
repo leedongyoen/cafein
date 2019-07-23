@@ -3,9 +3,8 @@
 <mapper namespace="MymenuDAO">
 <!-- 고객 나만의 메뉴 조회 -->
 <select id="getMymenu" resultType="viewmymenu">
-SELECT
+SELECT distinct
 	S_NAME "sName"
-	, ST_NUM "stNum"
 	, S_ID "sId"
 	, M_NAME "mName"
 	, M_PRICE "mPrice"
@@ -38,7 +37,7 @@ SELECT
 	, CA_NUM "caNum"
 FROM MYMENU_VIEW
 WHERE CU_NUM=#{cuNum}
-AND CA_NUM IN ('CAOP','CAIC','CAHT')
+AND CA_NUM IN ('CAOP','CAIC','CAHT',null)
 </select>
 <delete id="deleteMymenu" parameterType="mymenu">
 DELETE MY_MENU 

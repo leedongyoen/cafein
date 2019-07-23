@@ -129,17 +129,27 @@ $(function(){
 function cartlist(val){
 	console.log(val);
 	var allPrice = 0;
+	
 	$("input[name=cartnumlist]:checked").each(function() {
+		
+		
 		var test = $(this).val(); 
-		var addNum = $("#orderCartForm div table tbody tr:eq("+(val*2)+") td:eq(6)").html();
-		console.log("test: "+addNum);
-		allPrice = allPrice + (addNum*1);
+		//console.log("test: "+test);
+		for(var t = 0;t<test.length;t++){
+			//console.log("te33st: "+test[t]);
+			var addNum = $("#orderCartForm div table tbody tr:eq("+(test[t]*2)+") td:eq(6)").html();
+			allPrice = allPrice + (addNum*1);
+		}
+		
+		
+		//console.log("test: "+addNum);
+		
 		//sum_optionprice =Number(sum_optionprice)+ Number(price);
 
 	});
 	
 	console.log(allPrice);
-	$("#orderCartForm div p span strong").html(val);
+	$("#orderCartForm div p span strong").html(allPrice);
 }
 
 function orderDeleteClick(){

@@ -91,6 +91,7 @@ input {
 					<h5 class="modal-title">메뉴</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
+				<h5 id="menumodaltitle" align="center"></h5>
 				<form class="form-borizontal" id="menudetailForm" name="menudetailForm" action="customerorder" method="POST">
 				<div class="modal-body">
 						<input type="text" name="mNum" style="display: none;" >
@@ -328,7 +329,7 @@ input {
     }
     
     // DB정보로 거리 계산
-    function getDBStoreDistance(sid,sname,saddress,stdeliservice){
+    function getDBStoreDistance(sid,sname,saddress,stdeliservice,opencheck){
     	// 주소로 좌표를 검색합니다
     	geocoder.addressSearch(saddress, function(result, status) {
 	    	console.log("for문 안 ge "+saddress);
@@ -347,14 +348,21 @@ input {
 	            console.log(sname+' 거리  : '+distance+"m");
 	           
 	            if(distance < 300){
-	            	
-	            	$('<tr>').attr("onclick","menuList('"+sid+"','"+sname+"','"+stdeliservice+"')")
+	            	if(opencheck == '1'){
+	            		stdeliservice = '주문가능';
+						v_open = 'orderok';
+					}else{
+						stdeliservice = '준비중';
+						v_open = 'orderno';
+					}
+	            	$('<tr>').attr("onclick","menuList('"+sid+"','"+sname+"','"+stdeliservice+"')").attr("class",v_open)
 					.append($('<td>').html(sname))
 					.append($('<td>').html(saddress))
 					.append($('<td>').html(distance+"m"))
 					.append($('<td>').html(stdeliservice))
 					.appendTo('#storetable tbody');
-						
+	            	$('.orderno').attr('onclick','').unbind('click'); 
+	            	
 	            }
 	            
 	            // 다른 매장과 거리 계산을 위해 초기화
@@ -383,8 +391,10 @@ input {
 				$("#storetable tbody").empty();
 				$("#storemodalminititle").html("주변매장");
 				$.each(list,function(idx,item){
-					getDBStoreDistance(item.sid,item.sname,item.sadd,item.stdeliservice);
+					getDBStoreDistance(item.sid,item.sname,item.sadd,item.stdeliservice,item.opencheck);
 				});
+				
+			
 			}
 		});
     }
@@ -499,7 +509,7 @@ input {
 					.appendTo('#storetable tbody');
 					
 				});
-				
+			
 				$('.orderno').attr('onclick','').unbind('click'); 
 			}
 		});
@@ -632,14 +642,21 @@ input {
 
 $(function(){
 	gettopstorelist();
+	//$('.orderno').attr('onclick','').unbind('click'); 
 	// 로그인시에만 나만의 메뉴 등록 가능하게 
 	mymenu_login_check = "<%= (String)session.getAttribute("cId") %>";
 	if(mymenu_login_check == "null" || mymenu_login_check == ""){
 		$("#mymenuInsertbtn").hide();
 		$("#cartbtn").hide();
+		$("#cu_orderbtn").hide();
+		$("#storelistbtn1").attr("disabled","disabled");
+		$("#storelistbtn2").attr("disabled","disabled");
+		$("#menumodaltitle").html("로그인 시에만 주문가능합니다.");
 	}else{
 		$("#mymenuInsertbtn").show();
 		$("#cartbtn").show();
+		$("#cu_orderbtn").show();
+		$("#storemodalminititle").html("");
 	}
 	
 	// 커피 메뉴 선택시 모달창
@@ -743,7 +760,10 @@ $(function(){
 			dataType : 'json',
 			data : JSON.stringify(list),
 			success : function(data) {
-				console.log(data);
+				var result = confirm('나만의 메뉴로 이동하시겠습니까?'); 
+				if(result) { //yes 
+					location.replace("${pageContext.request.contextPath}/mymenu.do"); 
+				} 
 
 			},
 			error : function(request,status,error) {
@@ -792,7 +812,7 @@ $(function(){
 		console.log("localStorage : "+localStorage.getItem("cartlist"));
 		var result = confirm('장바구니로 이동하시겠습니까?'); 
 		if(result) { //yes 
-			location.replace('cartmng.jsp'); 
+			location.replace("${pageContext.request.contextPath}/cartmng"); 
 		} 
 
 	});

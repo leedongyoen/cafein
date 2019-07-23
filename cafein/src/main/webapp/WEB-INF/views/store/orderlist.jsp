@@ -64,10 +64,11 @@
 	function cancelorder(){
 		var ordern = $('#cancelordernumber').val(); //
 		var cancelreason = $('input:text[name="refuseReason"]').val();
+		var sId = '<%= session.getAttribute("sId") %>';
 		$.ajax({
 			url: 'updateordercancel',
 			type:'POST',
-			data: {oNum : ordern , refuseReason: cancelreason},
+			data: {oNum : ordern , refuseReason: cancelreason,sId:sId},
 			dataType:'json',
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
