@@ -245,6 +245,7 @@
 
 				}
 				else if(item.caNum =="CACP" || item.caNum =="CACM"){
+
 					$("#mPrice").val(item.mPrice);
 					pl += item.mPrice;
 
