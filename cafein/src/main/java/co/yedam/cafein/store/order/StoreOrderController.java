@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import co.yedam.cafein.customer.CustomerOrderController;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
@@ -38,11 +39,11 @@ public class StoreOrderController {
 	// 해당 매장의 주문 상세
 	@ResponseBody
 	@RequestMapping(value="getstoreorderdetails", method=RequestMethod.GET)
-	public List<OrderDetailsVO> getstoreorderdetails(String oNum, String mNum){
+	public List<OrderDetailsVO> getstoreorderdetails(String oNum, String mNum, String opDnum){
 		OrdersVO vo = new OrdersVO();
 		vo.setoNum(oNum);
 		vo.setmNum(mNum);
-		
+		vo.setOpDnum(opDnum);  
 		return service.getstoreorderdetails(vo);
 	}
 	

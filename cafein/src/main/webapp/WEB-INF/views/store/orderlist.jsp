@@ -119,20 +119,26 @@
 							);	
 						
 				}else{ //있을 경우
-
+					var menu_qty="0";
 					$.each(data,function(idx,item){
 						console.log(idx);
 						if(menunum == ""){
 							menunum = item.oDnum;
 							test = item.mName+"-";
+							menu_qty="0";
 						}
 						if(menunum == item.opDnum){
+							if(menu_qty == "0" && item.oQty != "0"){
+								test = test+"( "+item.oQty+" )개 - ";
+								menu_qty=item.oQty;
+							}
 							test = test +" "+ item.opName;
 							console.log("--- "+test);
 							
 						}
 						if(menunum != item.opDnum){
 							menunum = item.oDnum;
+							menu_qty="0";
 							test = test + "<br>" +item.mName+"-";
 							test = test +" " +item.opName;
 							console.log(test);
@@ -193,13 +199,14 @@
 		var ordernumber = item.oNum;
 		var ordermnum = item.mNum;
 		var ordermenuname = item.mName;
+		var orderopdnum = item.opDnum;
 		var deliverstatus;
 		
 		//console.log(item);
 		$.ajax({
 			url: 'getstoreorderdetails',
 			type:'GET',
-			data: {oNum: ordernumber, mNum: ordermnum},
+			data: {oNum: ordernumber, mNum: ordermnum, opDnum: orderopdnum},
 			dataType:'json',
 			async: false,
 			error:function(xhr,status,msg){
@@ -234,7 +241,8 @@
 				if(item.deliveryStatus == 'C2') deliverstatus="배달 중";
 				if(item.deliveryStatus == 'C3') deliverstatus="배달완료";
 				if(item.deliveryStatus == 'C4') deliverstatus="주문취소";
-			
+				if(item.deliveryStatus == 'C5') deliverstatus="현장결제"; 
+				
 				if(ordernum == ""){
 					ordernum = item.oNum;
 					$('<tr>').attr({

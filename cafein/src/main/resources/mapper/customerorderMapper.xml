@@ -158,12 +158,12 @@
 	<update id="getmutilodnum">
 		<selectKey keyProperty="opDnum" resultType="string" order="BEFORE">
 			SELECT MIN(O_DNUM) OP_DNUM
-			FROM ORDER_DETAILS
-			WHERE O_NUM =#{oNum} AND M_NUM =#{mNum}
+			FROM ORDER_DETAILS 
+			WHERE O_NUM =#{oNum} AND M_NUM =#{mNum} AND OP_DNUM = 0
 		</selectKey>
-		
+		  
 		UPDATE ORDER_DETAILS SET OP_DNUM=#{opDnum} 
-		WHERE O_NUM= #{oNum} AND M_NUM =#{mNum}
+		WHERE O_NUM= #{oNum} AND M_NUM =#{mNum} AND OP_DNUM = 0 
 	
 	</update>
 	
@@ -235,6 +235,11 @@
 	
 	</update>
 
+	<select id="getstoreorderlistCount" resultType="int">
+		SELECT COUNT(*)
+		FROM ORDERS;
+	
+	</select>
 
 
 

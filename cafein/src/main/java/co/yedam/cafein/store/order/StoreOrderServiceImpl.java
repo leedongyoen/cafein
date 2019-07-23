@@ -6,9 +6,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.cafein.common.Paging;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 
@@ -20,7 +20,8 @@ public class StoreOrderServiceImpl {
 	
 	// 해당 매장의 주문목록 가져오기
 	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
-		return dao.getstoreorderlist(vo);
+		
+		return  dao.getstoreorderlist(vo);
 	}
 	
 	// 해당 매장의 주문상세 가져오기

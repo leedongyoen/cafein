@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
+import co.yedam.cafein.common.Paging;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 
@@ -19,6 +21,11 @@ public class StoreOrderDAO {
 	// 해당 매장의 주문목록 가져오기
 	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
 		return template.selectList("getStoreOrderListDAO.getstoreorderlist",vo);
+	}
+	
+	// 전체건수
+	public int getstoreorderlistCount(OrdersVO vo) {
+		return template.selectOne("getStoreOrderListDAO.getstoreorderlistCount",vo);
 	}
 	
 	// 해당 매장의 주문상세 가져오기
