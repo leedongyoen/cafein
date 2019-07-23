@@ -101,18 +101,93 @@
 		
 		$('#historyTbody').empty();
 		console.log(data);
+		
+		let oNumArr 	= [];
+		let ototalArr 	= [];
+		
+		var cId 		= "";
+		var oNum 		= "";
+		var mName 		= "총합";
+		var total 		= 0;
+		var payMethod 	= "";
+		var receipt 	= "";
+		
 		$.each(data,function(idx, user){
+			var isOverlap = false;
+			for(var i = 0; i < oNumArr.length; ++i){
+				if(oNumArr[i] == user.oNum){
+					isOverlap = true;
+					cId 		= user.cId;
+					oNum 		= user.oNum;
+					mName 		= "총합";
+					total 		+= user.total;
+					payMethod 	= user.payMethod;
+					receipt 	= user.receipt;
+					break;
+				}
+			}
+			
+			if(isOverlap == false){
+				oNumArr.push(user.oNum);
+				ototalArr.push(0);
+				
+				if(cId != ""){
+					console.log("총합");
+					$('<tr>')
+					.append($('<td>').html(cId))
+					.append($('<td>').html(oNum))
+// 					.append($('<td>').html(user.gd))
+					.append($('<td>').html(mName))
+					.append($('<td>').html(total))
+					.append($('<td>').html(payMethod))
+					.append($('<td>').html(receipt))
+					.append($('<td>').html())
+					.appendTo('#historyTbody');
+					
+					cId 		= "";
+					oNum 		= "";
+					mName 		= "총합";
+					total 		= 0;
+					payMethod 	= "";
+					receipt 	= "";
+				}
+			}
+			
+			for(var i = 0; i < oNumArr.length; ++i){
+				if(oNumArr[i] == user.oNum){
+					isOverlap = true;
+					ototalArr[i] += user.total;
+				}
+			}
+			
 			$('<tr>')
 					.append($('<td>').html(user.cId))
 					.append($('<td>').html(user.oNum))
-					.append($('<td>').html(user.gd))
+// 					.append($('<td>').html(user.gd))
 					.append($('<td>').html(user.mName))
 					.append($('<td>').html(user.total))
 					.append($('<td>').html(user.payMethod))
 					.append($('<td>').html(user.receipt))
+					.append($('<td>').html())
 					.appendTo('#historyTbody');
-				
 		});
+		
+		if(cId != ""){
+			console.log("총합");
+			$('<tr>')
+			.append($('<td>').html(cId))
+			.append($('<td>').html(oNum))
+//				.append($('<td>').html(user.gd))
+			.append($('<td>').html(mName))
+			.append($('<td>').html(total))
+			.append($('<td>').html(payMethod))
+			.append($('<td>').html(receipt))
+			.append($('<td>').html())
+			.appendTo('#historyTbody');
+		}
+		
+		console.log(oNumArr);
+		console.log(ototalArr);
 	}
 </script>
 
@@ -196,7 +271,7 @@
 						<tr>
 							<th>ID</th>
 							<th>주문번호</th>
-							<th>메뉴/옵션</th>
+<!-- 							<th>메뉴/옵션</th> -->
 							<th>메뉴</th>
 							<th>TOTALS</th>
 							<th>결제방식</th>
