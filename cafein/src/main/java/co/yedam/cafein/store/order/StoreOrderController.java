@@ -29,9 +29,8 @@ public class StoreOrderController {
 	// 해당 매장의 주문 목록
 	@ResponseBody
 	@RequestMapping(value="getstoreorderlist", method=RequestMethod.GET)
-	public List<OrdersVO> getstoreorderlist(String sId){
-		OrdersVO vo = new OrdersVO();
-		vo.setsId(sId);
+	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
+		
 		
 		return service.getstoreorderlist(vo);
 	}
@@ -98,6 +97,8 @@ public class StoreOrderController {
 //-------------------------------------------------------------------------------------
 	
 	
+	
+//-------------------------------------------------------------------------------------
 	// 미정
 	// 옵션 묶기
 	@ResponseBody

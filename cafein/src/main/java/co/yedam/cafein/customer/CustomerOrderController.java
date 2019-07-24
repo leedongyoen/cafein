@@ -96,11 +96,12 @@ public class CustomerOrderController {
 
 	// 고객 주문 리스트 가져오기
 	@ResponseBody
-	@RequestMapping(value = "/orderlist/{cid}", method = RequestMethod.GET)
-	public List<OrdersVO> getOrderList(@PathVariable("cid") String cId) {
-		OrdersVO vo = new OrdersVO();
-		vo.setcId(cId);
-
+	@RequestMapping(value = "/orderlist", method = RequestMethod.GET)
+	public List<OrdersVO> getOrderList(OrdersVO vo, HttpSession session) {
+		/*
+		 * OrdersVO vo = new OrdersVO(); vo.setcId(cId);
+		 */
+		
 		return service.getOrderList(vo);
 	}
 	
@@ -132,7 +133,7 @@ public class CustomerOrderController {
 
 	// 주문 넣기
 	@RequestMapping(value = "/insertcustomerorder", method = RequestMethod.POST)
-	public ModelAndView insertorder(OrdersVO vo) {
+	public String insertorder(OrdersVO vo) {
 		System.out.println("============주문 :" + vo);
 		ModelAndView mv = new ModelAndView();
 		/*
@@ -248,9 +249,7 @@ public class CustomerOrderController {
 				n = service.insertmileage(info);
 			}
 		}
-		
-		mv.setViewName("customer/delivery");
-		return mv;
+		return "redirect:orderlist.do";
 	}
 
 	// 고객 주문배달 조회
