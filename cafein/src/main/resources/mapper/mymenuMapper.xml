@@ -33,6 +33,7 @@ SELECT distinct
 	, M_NUM "mNum"
 	, CU_NUM "cuNum"
 	, CA_NUM "caNum"
+	, ST_NUM "stNum"
 FROM MYMENU_VIEW
 WHERE CU_NUM=#{cuNum}
 </select>

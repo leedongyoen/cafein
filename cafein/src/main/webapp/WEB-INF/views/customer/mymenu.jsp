@@ -78,7 +78,7 @@
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-borizontal" name="mymenudetailForm" action="customerorder" method="POST">
+					<form class="form-borizontal" name="mymenudetailForm" id="mymenudetailcart" action="customerorder" method="POST">
 						<div class="table-responsive">
 						<input type="text" name="mNum" style="display: none;" >
 						<input type="text" name="sId" style="display: none;" >
@@ -198,7 +198,7 @@
 		$("#detailtable table").empty();
 		$("#menudetailoption").html("");
 		var pl = 0;
-	
+		var mP;
 		$.each(datas, function(data, item) {
 			console.log(item);
 			$('input:text[name="sId"]').val(item.sId);
@@ -238,7 +238,7 @@
 					}).appendTo("#menudetailoption");
 					$("<br>").appendTo("#menudetailoption");
 					
-					pl += item.opPrice;
+					pl = Number(pl) + Number(item.opPrice);
 							/* $("#selecOp").append("<input type='checkbox' name='checkbox' id='"
 							+item.stNum+"' value='"+item.stNum+"'><label for='"+item.stNum+"'><input type='text' name='"+item.opPrice+"' value='"+item.opPrice+"'>"+
 							"<input type='hidden' name='cuoptionlist' value='"+item.stNum+"'>");	 */
@@ -246,16 +246,17 @@
 				}
 				else if(item.caNum =="CACP" || item.caNum =="CACM"){
 
-					$("#mPrice").val(item.mPrice);
-					pl += item.mPrice;
+					/* $("#mPrice").val(item.mPrice);
+					pl += item.mPrice; */
 
 				}
 
-
-		
+			
 		});
-		
-		$("#totalPrice").val(pl);
+		$("#mPrice").val(mP);
+		var totalprice = Number(mP)+Number(pl);	
+		console.log(totalprice);
+		$("#totalPrice").val(totalprice);
 	}; 
 	//삭제창
 	function deleteMymenu(cuNum) {
@@ -317,7 +318,7 @@
 $(function(){
 //장바구니
 	$("#cartbtn").on("click",function(){
-		var list =  $("#mymenudetailForm").serializeObject();
+		var list =  $("#mymenudetailcart").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
 
