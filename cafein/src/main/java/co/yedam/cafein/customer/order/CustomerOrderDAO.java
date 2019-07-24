@@ -98,6 +98,11 @@ public class CustomerOrderDAO {
 		return dao.update("CustomerOrderDAO.getodnum",vo);
 	}
 	
+	// order details 다중일 경우 op_dnum 업데이트
+	public int getmutilodnum(OrdersVO vo) {
+		return dao.update("CustomerOrderDAO.getmutilodnum",vo);
+	}
+	
 	// 주문 끝나고 마일리지 업데이트
 	public int updatemileage(OrdersVO vo) {
 		return dao.update("CustomerOrderDAO.updatemileage",vo);

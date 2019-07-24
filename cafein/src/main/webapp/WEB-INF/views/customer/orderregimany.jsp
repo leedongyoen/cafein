@@ -14,11 +14,77 @@ var no = 1;
 var customerAdd;
 var checklogin = "<%=(String) session.getAttribute("cId")%>";
 
+
+
 //고객 마일리지 가져오기.
 $(function(){
 		getCostomerInfo();
 		getstoremileageservice();
 		getstoredeliverservice();
+		
+		//100원단위 마일리지 사용
+		$('#reservebtn').on("click",function(){
+			var mileage = $('#insertmileage').val();	//차감하려고 적은 마일리지 값
+			var totalmileage =$('#usermileage').text();	//현재 회원의 적립금
+			if( Number(mileage)%100 != 0 || Number(mileage) == 0){
+				alert("100원 단위로만 사용가능합니다.");
+				$('#insertmileage').val("0");				
+
+			}else if(Number(mileage) > Number(totalmileage)){
+				alert('사용가능한 적립금을 초과하였습니다.');
+				
+			}else{
+				var v_totalprice =  $("input:text[name='total']").val();
+				v_totalprice = Number(v_totalprice) - Number(mileage);
+				 $("input:text[name='total']").val(v_totalprice);
+				 var now_mile = (totalmileage*1)-(mileage*1);
+				 $('#usermileage').text(now_mile);
+				 $('#reservebtn').attr('disabled',true);
+			}
+		});
+		
+		// 적립금 사용 취소
+		$('#reservecancelbtn').on("click",function(){
+			// 사용자가 적은 적립금
+			var mileage = $('#insertmileage').val();
+			
+			// 총 가격
+			var v_totalprice =  $("input:text[name='total']").val();
+			v_totalprice = Number(v_totalprice) + Number(mileage);
+			 $("input:text[name='total']").val(v_totalprice);
+			 
+			$('#insertmileage').val("0");
+			$('#reservebtn').attr('disabled',false);
+		});
+		
+		
+		$.ajax({
+			url:'',
+			type:'GET',
+			dataType:'json',
+			data: ,
+			error:function(xhr,status,msg){
+				/* alert("상태값 :" + status + " Http에러메시지 :"+msg); */
+				$('#usermileage').html("0");
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				$('#usermileage').html(data.mileAge);
+			}
+		});
+		
+		
+		
+		
+		//===================================================
+		var cart = ${cartLists[0]};
+		for(var c = 0;c<cart.length;c++){
+			console.log(cart[c].MenuOrderVO);
+		}
+		//$('input:checkbox[id="checkbox_id"]').attr("checked", true);
+		//============================================
+		
+		
+		
 		
 	});
 	
@@ -117,7 +183,7 @@ function getstoredeliverservice(){
 		type:'GET',
 		data: {sId: v_storeId},
 		error:function(xhr,status,msg){
-			alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			alert("상태 값 :" + status + " Http에러메시지 :"+msg);
 		},
 		success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 			
@@ -138,17 +204,7 @@ function getstoredeliverservice(){
 }
 
 function orderCartInsert(){
-	
-	
-	  /*  var list = new Array();
-	   var list2 = new Array();
-	   $("input[name$='hello']:checked").each(function(){
-		   list.push($(this).val());
-	   });
-		
-	   console.log(list);
-	   console.log("::::"+$("input[name$='hello']").val()); 
-	   $("input[name=optionlist]").val();*/
+
 	var ordercart = $("#ordercartform").serializeObject();
 	
 	console.log(JSON.stringify(ordercart));
@@ -176,25 +232,6 @@ function plus(id_num) {
 	v_totalprice = Number(v_totalprice) + Number(price);
 	$("input:text[name='total']").val(v_totalprice);
 	
-	/*
-	var v_totalprice = $("input:text[name='total']").val();
-	
-	var no = $("input:text[name='oQty']").val();
-	if (num == -1) {
-		if (Number(no) == 1) {
-			alert("1개 이상으로 주문해주세요.");
-			return;
-		}
-		no = Number(no) - 1;
-		v_totalprice = Number(v_totalprice) - Number(price);
-	} else if (num == 1) {
-		no = Number(no) + 1;
-		v_totalprice = Number(v_totalprice) + Number(price);
-	}
-	$("input:text[name='total']").val(v_totalprice);
-	$("input:text[name='oQty']").val(no);
-	*/
-	
 	
 }
 
@@ -214,15 +251,6 @@ function minus(id_num) {
 		return;
 	}
 	$('#qty'+ cnt).val(minusqty);
-	/* if (no == -1) {
-		if (Number(no) == 1) {
-			alert("1개 이상으로 주문해주세요.");
-			return;
-		}
-		no = Number(no) - 1;
-		v_totalprice = Number(v_totalprice) - Number(price);
-	} */
-	
 	
 	v_totalprice = Number(v_totalprice) - Number(price);
 	$("input:text[name='total']").val(v_totalprice);
@@ -236,6 +264,9 @@ function minus(id_num) {
 </head>
 
 	<body>
+	
+	
+	
 		<h1 align="center">주 문</h1>
 		<div class="container" >
 		
@@ -254,7 +285,7 @@ function minus(id_num) {
 			
 			<table class="table">
 				<tr>
-					<th>매 장 명</th>
+					<th>매 장  명</th>
 					<td>${cartLists[0].sName}</td>
 				</tr>
 		<c:forEach items="${cartLists}" var="cartlist" varStatus="status">
@@ -276,7 +307,7 @@ function minus(id_num) {
 						<input type="hidden" name=hotice_option value="CAIC">
 				    </c:when>
 				    <c:otherwise>
-				        ( DESSERT )
+				        
 						<input type="hidden" name=hotice_option value=" ">
 				    </c:otherwise>
 				</c:choose>
@@ -288,100 +319,22 @@ function minus(id_num) {
 				<tr>
 					<th>옵션</th>
 					<td>
-						<%-- <c:forEach items="${optionname}" var="oplist"> --%>
-							<c:forEach var = "entry" items="${menumap}">
-								<c:if test="${cartlist.mNum eq entry.key}">
-										<c:forEach items="${entry.value}" var="opvalue">
-										${opvalue}
-											<c:forEach items="${cartlist.cuoptionlist}" var="culist">
-											
-												<c:if test="${culist eq opvalue}">
-											
-													!
-													
-													<!-- hap = [${culist}+${culist}+....] -->
-													 <input type="checkbox" class="checkoption"  id="${cartlist.mNum}" name="${cartlist.mNum}" value="${opvalue}" checked="checked">
-													 
-													 <input type="hidden" id="optionlist" name="optionlist">
-													 
-													 
-													<label for="${oplist.recipeno}">${oplist.opName}(${oplist.opPrice})</label>
-													<input type="hidden" id="price${oplist.recipeno}" value="${oplist.opPrice}"><br>
-													 
-													
-													
-												</c:if>
-												
-											</c:forEach>
-										</c:forEach>
-									<%-- <c:if test="${oplist.stNum eq entry.value}">
-							
-									<input type="checkbox" class="checkoption" id="${oplist.recipeno}" name="optionlist" value="${oplist.recipeno}" checked="checked">
-									<label for="${oplist.recipeno}">${oplist.opName}(${oplist.opPrice})</label>
-									<input type="hidden" id="price${oplist.recipeno}" value="${oplist.opPrice}"><br>
-									</c:if> --%>
-								</c:if>
-							</c:forEach>
-						<%-- </c:forEach> --%>
-						
-		 
-					<%-- 손님이 선택한 옵션->
-						<c:forEach items="${cartlist.cuoptionlist}" var="culist">
-							<input type="text" value="${culist}">	<!-- for돌려 더 출력 -->
-						</c:forEach>
-						<br>
-						장바구니에서 선택한 메뉴 번호와 전체 옵션이름들->
-						<c:forEach var = "entry" items="${menumap}">
-						<div>${entry.key}</div>
-						<div>${entry.value}</div>
 					
-						</c:forEach>
-						
-						
-						 
-					mNum stNum option->
-						<c:forEach items="${optionname}" var="oplist">
-							<input type="text" value="${oplist.mNum}">
-							<input type="text" value="${oplist.stNum}">
-							<input type="text" value="${oplist.recipeno}">
-							<input type="text" value="${oplist.opName}">	<!-- for돌려 더 출력 -->
+					
+					<c:forEach items="${optionname}" var="recipeList">
+						<c:if test="${recipeList.mNum eq cartlist.mNum}">
+							<input type="text" value="${recipeList.opName}">
+							<input type="checkbox" value="${recipeList.recipeno}" id="${recipeList.recipeno}" name="${recipeList.recipeno}" class="checkoption">
 							<br>
-						</c:forEach> --%> 
-		
-		
-		
-		
-		
-						<%-- <c:forEach items="${menumap}" var="menuop">
-							<input type="text" value="${menuop.recipeno}">
-						</c:forEach> --%>
-		
-					<!--  			
-						<c:forEach items="${option}" var="option"> 
-							<c:forEach items="${selectmenu.cuoptionlist}" var="select">
-								<c:if test="${option.stNum eq select}">
-									-->
-									<%-- List<MenuOrderVO> meorvo --%>
-									<input type="checkbox" class="checkoption" id="${option.recipeno}" name="optionlist" value="${option.recipeno}" checked="checked">
-									<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label>
-									<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}"><br>
-							<!--		<c:set var="check" value="O"/>
-								</c:if>
-								5
-							</c:forEach>
-							 <c:if test="${check != 'O'}"> -->
-								
-									<input type="checkbox" class="checkoption" id="${option.recipeno}" name="optionlist" value="${option.recipeno}">
-									<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label>
-									<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}"><br>
-							<!-- </c:if> 
-							<c:remove var="check"/>
-						</c:forEach>-->
+						</c:if>
+					</c:forEach>
+					
+					
 
 					 </td>
 				</tr>
 				<tr>
-					<th>금 액</th>
+					<th>금e 액</th>
 					<td><input id="price${status.count}" value="${cartlist.mPrice}" size="6" readonly> &nbsp;&nbsp;
 						<button type="button" id = "plus${status.count}" onclick="plus(this.id)">+</button>
 							<input name="oQty" id = "qty${status.count}" size="1" value="${cartlist.orderqty}" readonly>
@@ -395,7 +348,7 @@ function minus(id_num) {
 				<table class="table">
 				
 				<tr id="reservetr" style="display: none;">
-					<th>적립금</th>
+					<th>적 @립 금</th>
 					<td><input type="text" name="mileage" id="insertmileage" size="10" value="0">
 						<button type="button" id="reservebtn">사용</button>
 						<button type="button" id="reservecancelbtn">취소</button>
@@ -405,7 +358,7 @@ function minus(id_num) {
 				</tr>
 				
 					<tr class="deliverY" style="display: none;">
-						<th>수 령 방 식</th>
+						<th>수 령   방~ 식</th>
 						<td>
 							<input type="radio" name="receipt" value="delivery" id="delivery" > 
 							<label for="delivery">배달로하기</label> 
@@ -434,13 +387,14 @@ function minus(id_num) {
 					</tr>				
 				
 				<tr>
-					<th>결 제 방 식</th>
+					<th>결 제! 방 식</th>
 					<td><input type="radio" name="payMethod" value="card" id="card"
 						checked> <label for="card">카드 결제</label></td>
 				</tr>
 				<tr>
 					<th>총 금 액</th>
-					<td><input name="total" value="0" readonly></td>
+					<td><input name="total" value="${cartLists[0].totalPrice}" readonly></td>
+					
 				</tr>
 			</table>
 

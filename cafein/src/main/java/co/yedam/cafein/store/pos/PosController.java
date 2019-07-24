@@ -115,6 +115,9 @@ public class PosController {
 		 // System.out.println("====================== menulist "+ menulist);
 		  
 		  List<RecipeVO> recipelist = null;
+		  
+		  List<String> opdnum_menulist = new ArrayList<String>(); 
+		  
 		  // optionlist 
 		  for(int n=0; n<menulist.size(); n++) {
 			  System.out.println("==================menulist get "+ menulist.get(n));
@@ -130,6 +133,7 @@ public class PosController {
 			  String v_qty = null;
 			  JSONArray optionhotice = null;
 			  System.out.println("============== menu size : "+menu.size());
+			  System.out.println("============== menulist : "+menu.get(n));
 			  for(int j=0; j<menu.size();j++) {
 				  
 				  // 들어온 메뉴 갯수대로 가져온다. menudetail 배열
@@ -139,6 +143,7 @@ public class PosController {
 				  // 하나의 menu 배열에서 처음은 메뉴명을 가져온다.
 				  if(j == 0) {
 					  	v_mNum = (String) menudetail.get(0);
+					  	opdnum_menulist.add(v_mNum);
 					  	RecipeVO recipevo = new RecipeVO();
 						recipevo.setmNum((String) menudetail.get(j));
 						
@@ -250,17 +255,28 @@ public class PosController {
 				  
 			  }
 			  
+			  Map<String, Object> map = new HashMap<String, Object>(); 
+			  map.put("list",orderdetaillist);
+			  
+			// order details 테이블에 넣기 
+			  int result = cusService.insertorderdetails(map);
+			  
+			  orderdetaillist.clear();
+			  map.clear();
+			  
+			  
+			// 해당 주문번호의 op_dnum수정 
+			  ordervo.setmNum(v_mNum); 
+			  result = cusService.getmutilodnum(ordervo); 
+			  
+			
+			/*
+			 * for(int i=0; i<opdnum_menulist.size();i++) {
+			 * ordervo.setmNum(opdnum_menulist.get(i)); result =
+			 * cusService.getmutilodnum(ordervo); }
+			 */
 		  }
-		 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", orderdetaillist);
 		
-		// order details 테이블에 넣기
-		int n = cusService.insertorderdetails(map);
-
-		System.out.println("===========결과 : "+n);
-		// 해당 주문번호의 op_dnum수정
-		n = cusService.getodnum(ordervo);
 		
 		
 		mv.setViewName("store/pos");

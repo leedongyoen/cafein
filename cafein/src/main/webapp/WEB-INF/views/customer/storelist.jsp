@@ -751,7 +751,7 @@ $(function(){
 		}else{
 			list.cuNumList = null;
 		}
-		
+		console.log(JSON.stringify(list));
 		
 		$.ajax({
 			url : 'insertmymenu',

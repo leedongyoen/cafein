@@ -10,22 +10,20 @@ SELECT distinct
 	, M_PRICE "mPrice"
 	, C_ID "cId"
 	, CU_NUM "cuNum"
-	, CA_NUM "caNum"
 	, UPLOADFILE "uploadFileName"
 FROM MYMENU_VIEW
 WHERE C_ID=#{cId} 
 AND OP_NAME IS NULL
 <if test="sort == null or sort == '' ">
-ORDER BY CU_NUM
+ORDER BY sName
 </if>
 <if test="sort != null and sort != '' ">
 ORDER By ${sort}
 </if>
 </select>
 <select id="getMymenuDetail" resultType="viewmymenu">
-SELECT
+SELECT distinct
 	S_NAME "sName"
-	, ST_NUM "stNum"
 	, S_ID "sId"
 	, M_NAME "mName"
 	, M_PRICE "mPrice"
@@ -35,9 +33,9 @@ SELECT
 	, M_NUM "mNum"
 	, CU_NUM "cuNum"
 	, CA_NUM "caNum"
+	, ST_NUM "stNum"
 FROM MYMENU_VIEW
 WHERE CU_NUM=#{cuNum}
-AND CA_NUM IN ('CAOP','CAIC','CAHT',null)
 </select>
 <delete id="deleteMymenu" parameterType="mymenu">
 DELETE MY_MENU 

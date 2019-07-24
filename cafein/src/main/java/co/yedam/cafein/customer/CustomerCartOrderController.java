@@ -109,8 +109,9 @@ public class CustomerCartOrderController {
 	        	List<RecipeVO> opNames = service.getOptionName(vo);
 	        	//System.out.println("opNames: "+opNames);
 	        	
-	        	
+	        	int totalPrice = 0;
 	        	for(int j = 0;j<meorvo.size();j++) {
+	        		
 	        		String[] stList = meorvo.get(j).getCuoptionlist();
 	        		if(stList!=null) {
 		        		for(int s = 0; s<stList.length;s++) {
@@ -132,6 +133,8 @@ public class CustomerCartOrderController {
 		        		meorvo.get(j).setCuoptionlist(stList);
 	        		}
 	        		
+	        		totalPrice = totalPrice + Integer.parseInt(meorvo.get(j).getTotalPrice());
+	        		meorvo.get(0).setTotalPrice( (String.valueOf(totalPrice)));
 	        	}
 	        	
 	        	System.out.println("수정: "+meorvo);
@@ -167,6 +170,11 @@ public class CustomerCartOrderController {
 	        
 			return mv;
 		}
+		
+		
+		
+		
+		
 		
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "ordercartmany", method = RequestMethod.POST)
@@ -397,9 +405,9 @@ x total=1010,
 				
 				// 해당 주문번호의 op_dnum수정
 					
-					
-					// 마일리지 업데이트
-					int n = service.updatemileage(info);
+					int n = service.setcanclemileage(info);
+					//추가된 마일리지 업데이트 
+					n = service.updatemileage(info);
 					
 					// 해당 매장에 대한 마일리지가 없을 경우
 					if(n == 0) {
@@ -422,7 +430,7 @@ x total=1010,
 		  //System.out.println("meorvo: "+meorvo);
 		 
 	        
-		  	mv.setViewName("customer/delivery");
+		  	mv.setViewName("customer/orderCheck");
 			return mv;
 		}
 	

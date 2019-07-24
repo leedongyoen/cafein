@@ -96,6 +96,11 @@ public class CustomerOrderServiceImpl {
 		return dao.getodnum(vo);
 	}
 	
+	// order details 다중일 경우 op_dnum 업데이트
+	public int getmutilodnum(OrdersVO vo) {
+		return dao.getmutilodnum(vo);
+	}
+	
 	// 주문 끝나고 마일리지 업데이트
 	public int updatemileage(OrdersVO vo) {
 		return dao.updatemileage(vo);
