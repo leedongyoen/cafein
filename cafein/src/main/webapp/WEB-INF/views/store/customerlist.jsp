@@ -127,10 +127,11 @@
 				}
 			}
 			
+			//중복되는지 IF
 			if(isOverlap == false){
 				oNumArr.push(user.oNum);
 				ototalArr.push(0);
-				
+				//아이디가 같지않으면-
 				if(cId != ""){
 					console.log("총합");
 					$('<tr>')
@@ -151,6 +152,13 @@
 					payMethod 	= "";
 					receipt 	= "";
 				}
+				
+				cId 		= user.cId;
+				oNum 		= user.oNum;
+				mName 		= "총합";
+				total 		+= user.total;
+				payMethod 	= user.payMethod;
+				receipt 	= user.receipt;
 			}
 			
 			for(var i = 0; i < oNumArr.length; ++i){
@@ -173,17 +181,18 @@
 		});
 		
 		if(cId != ""){
-			console.log("총합");
+			console.log("총합1");
 			$('<tr>')
 			.append($('<td>').html(cId))
 			.append($('<td>').html(oNum))
-//				.append($('<td>').html(user.gd))
+//			.append($('<td>').html(user.gd))
 			.append($('<td>').html(mName))
 			.append($('<td>').html(total))
 			.append($('<td>').html(payMethod))
 			.append($('<td>').html(receipt))
 			.append($('<td>').html())
 			.appendTo('#historyTbody');
+			console.log(ototalArr + "------");
 		}
 		
 		console.log(oNumArr);
