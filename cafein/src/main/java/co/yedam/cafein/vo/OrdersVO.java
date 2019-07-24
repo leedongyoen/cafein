@@ -338,13 +338,10 @@ public class OrdersVO {
 				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", refundSum=" + refundSum
 				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
 				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + ", start=" + start + ", end=" + end
-<<<<<<< HEAD
 				+ ", orderlistcontroller=" + orderlistcontroller + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", mileageservice=" + mileageservice + "]";
-=======
-				+ ", mileageservice=" + mileageservice + ", startDate=" + startDate + ", endDate=" + endDate + "]";
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 	}
+
 	
 
 
