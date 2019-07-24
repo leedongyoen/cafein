@@ -110,6 +110,11 @@ public class CustomerOrderServiceImpl {
 	public int insertmileage(OrdersVO vo) {
 		return dao.insertmileage(vo);
 	}
+	
+	// 주문페이지에서 고객이 입력한 주소와 선택한 매장과의 거리 계산을 위해서
+	public StoreVO getorderstoreaddress(StoreVO vo) {
+		return dao.getorderstoreaddress(vo);
+	}
 
 	public int getodnum2(OrdersVO vo) {
 		return dao.getodnum2(vo);
