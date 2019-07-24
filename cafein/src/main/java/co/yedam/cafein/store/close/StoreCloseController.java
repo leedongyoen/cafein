@@ -1,7 +1,6 @@
 package co.yedam.cafein.store.close;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,20 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
 import co.yedam.cafein.vo.StoreCloseDataInsertVO;
 import co.yedam.cafein.vo.StoreOpenVO;
-import co.yedam.cafein.vo.WarehousingVO;
 
 @Controller
 public class StoreCloseController {
@@ -119,5 +114,32 @@ public class StoreCloseController {
 		service.storeCloseDataImsert(vo);
 		return map;
 	}
+	
+	//----------------------------------------------------------------------------
+	// 마감 정산 내역 PDF 파일로 저장
+	/*
+	@RequestMapping("report.do")
+	public void report(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			JasperReport report = JasperCompileManager
+					.compileReport(request.getSession().getServletContext().getRealPath("reports/emp_list2.jrxml"));
+			JRDataSource JRdataSource = new JRBeanCollectionDataSource(empService.emplistReport());
+			JasperPrint print = JasperFillManager.fillReport(report, map, JRdataSource);
+			JRExporter exporter = new JRPdfExporter();
+			OutputStream out;
+			response.reset();
+			out = response.getOutputStream();
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, "report3.pdf");
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
+			exporter.exportReport();
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	*/
 
 }
