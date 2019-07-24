@@ -200,6 +200,15 @@
 		</foreach>
 	</update>
 	
-	
+	<!-- pdf 파일  -->
+	<select id="storeReceipt" resultType="map">
+		SELECT S_ID
+			 , OPENTIME
+			 , CLOSETIME
+		FROM STOREOPEN
+		WHERE S_ID = #{sId}
+		AND OPENTIME IN (SELECT MAX(OPENTIME) 
+						 FROM STOREOPEN)
+	</select>
 	
 </mapper>

@@ -733,6 +733,10 @@ p {
 
 	}
 	
+	$('#receiptSave').on("click",function(){
+		window.open('report.do','report','width=500,height=1000');
+	})
+	
 
 //---------------------------------------------------------------------------------------------------------------------
 	// 숫자 3단위마다 콤마 생성
@@ -789,7 +793,7 @@ p {
 			</div><br><br>
 			<div class="col-4">
 				<button type="button" onclick = "closeCheck()">마감정산</button>
-				<button type="button" >PDF저장</button>
+				<button type="button" id = "receiptSave">PDF 조회 및 저장</button>
 			</div>
 			<div class="col-7">
 				<!-- <table>

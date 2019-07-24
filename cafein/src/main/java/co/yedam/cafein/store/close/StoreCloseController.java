@@ -1,10 +1,17 @@
 package co.yedam.cafein.store.close;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,13 +27,23 @@ import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
 import co.yedam.cafein.vo.StoreCloseDataInsertVO;
 import co.yedam.cafein.vo.StoreOpenVO;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 
 @Controller
 public class StoreCloseController {
 	
 	@Autowired
 	StoreCloseService service;
-	
+	/*
+	@Autowired
+	BasicDataSource dataSource;
+	*/
 	// 매장 마감 정산
 	@RequestMapping("daycal.do")
 	public String daycal() {
@@ -118,19 +135,26 @@ public class StoreCloseController {
 	//----------------------------------------------------------------------------
 	// 마감 정산 내역 PDF 파일로 저장
 	/*
+	@ResponseBody
 	@RequestMapping("report.do")
-	public void report(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void report(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
 		try {
+			String sId = (String) session.getAttribute("sId");
+			//String openTime = (String) session.getAttribute("openTime");
+			
 			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("p_store", sId);
+			//map.put("p_opentime", openTime);
 			JasperReport report = JasperCompileManager
-					.compileReport(request.getSession().getServletContext().getRealPath("reports/emp_list2.jrxml"));
-			JRDataSource JRdataSource = new JRBeanCollectionDataSource(empService.emplistReport());
-			JasperPrint print = JasperFillManager.fillReport(report, map, JRdataSource);
+					.compileReport(request.getSession().getServletContext().getRealPath("reports/receipt.jrxml"));
+			// 커넥션만 넘겨주기, sId와 날짜별로 데이터 다르게 나오게 하기, 이전의 마감 내역 조회
+			Connection conn= dataSource.getConnection();
+			JasperPrint print = JasperFillManager.fillReport(report, map, conn);
 			JRExporter exporter = new JRPdfExporter();
 			OutputStream out;
 			response.reset();
 			out = response.getOutputStream();
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, "report3.pdf");
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, "storeReceipt.pdf");
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
 			exporter.exportReport();
@@ -140,6 +164,6 @@ public class StoreCloseController {
 			e.printStackTrace();
 		}
 	}
-	*/
-
+	
+*/
 }
