@@ -58,6 +58,22 @@ $(function(){
 		});
 		
 		
+		$.ajax({
+			url:'',
+			type:'GET',
+			dataType:'json',
+			data: ,
+			error:function(xhr,status,msg){
+				/* alert("상태값 :" + status + " Http에러메시지 :"+msg); */
+				$('#usermileage').html("0");
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				$('#usermileage').html(data.mileAge);
+			}
+		});
+		
+		
+		
 		
 		//===================================================
 		var cart = ${cartLists[0]};
