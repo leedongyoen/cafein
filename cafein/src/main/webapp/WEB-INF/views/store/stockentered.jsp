@@ -82,8 +82,6 @@
 					
 					for (i = 0; i < data.length; i++) {
 						var datas = [ data[i].stName, data[i].wareQty ];
-						//							data[i].warePrice, data[i].stLoss];
-// 						chartData.shift(datas);
 						chartData.push(datas);
 						console.log(datas);
 					}
