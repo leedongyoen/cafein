@@ -221,11 +221,15 @@ function chkPwContinuity(paramObj) {
 		$("#c_nick").removeAttr("readonly");
 		$("#c_pw").removeAttr("readonly");
 		$("#c_name").removeAttr("readonly");
+		$("#pwbt").removeAttr("disabled");;
 		$("#c_tel").removeAttr("readonly");
-		$("#c_add").removeAttr("readonly");
-		$("#c_add2").removeAttr("readonly");
-		$("#c_add3").removeAttr("readonly");
+// 		$("#cAdd").removeAttr("readonly");
+// 		$("#cAdd2").removeAttr("readonly");
+		$("#cAdd3").removeAttr("readonly");
+		$("#c_addbt").removeAttr("disabled");
 		$("#dob").removeAttr("readonly");
+		
+		alert("수정이 가능합니다.")
 
 	}
 
@@ -250,10 +254,12 @@ function chkPwContinuity(paramObj) {
 		$("#c_nick").attr("readonly", true);
 		// 		$("#c_pw").attr("readonly", true);
 		$("#c_name").attr("readonly", true);
+		$("#pwbt").attr("disabled","disabled");
 		$("#c_tel").attr("readonly", true);
-		$("#c_add").attr("readonly", true);
-		$("#c_add2").attr("readonly", true);
-		$("#c_add3").attr("readonly", true);
+// 		$("#cAdd").attr("readonly", true);
+// 		$("#cAdd2").attr("readonly", true);
+		$("#cAdd3").attr("readonly", true);
+		$("#c_addbt").attr("disabled","disabled");
 		$("#dob").attr("readonly", true);
  
 	}
@@ -402,7 +408,7 @@ function chkPwContinuity(paramObj) {
 					<th>비밀번호</th>
 					<td>
 						<!-- 					<input type="text" id="c_pw" name="cPw" readonly> -->
-						<button type="button" onclick="openModeal()">비밀번호 변경하기</button>
+						<button type="button" id="pwbt" onclick="openModeal()" disabled>비밀번호 변경하기</button>
 
 					</td>
 				</tr>
@@ -416,10 +422,10 @@ function chkPwContinuity(paramObj) {
 				</tr>
 				<tr>
 					<th>주소</th>
-					  <td><input type = "text" id="cAdd2" name = "cAdd2" placeholder="우편번호">
-          <button type = "button" onclick="execPostCode()">우편번호 찾기</button><br>
-          		<input type = "text" id="cAdd" name = "cAdd" placeholder="주소">
-          		<input type = "text" id="cAdd3" name = "cAdd3" placeholder="상세주소"></td>
+					  <td><input type = "text" id="cAdd2" name = "cAdd2" placeholder="우편번호" readonly>
+          <button type = "button" onclick="execPostCode()"id="c_addbt" disabled>우편번호 찾기</button><br>
+          		<input type = "text" id="cAdd" name = "cAdd" size=30 placeholder="주소" readonly>
+          		<input type = "text" id="cAdd3" name = "cAdd3" placeholder="상세주소" readonly></td>
 				</tr>
 				<tr>
 					<th>생년월일</th>
