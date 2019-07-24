@@ -235,15 +235,19 @@ function checkpwbtn(){
 //         $("#sname").removeAttr("readonly");
 //         $("#spw").removeAttr("readonly");
         $("#stel").removeAttr("readonly");
+        $("#pwbt").removeAttr("disabled");
         $("#sadd").removeAttr("readonly");
         $("#sadd2").removeAttr("readonly");
         $("#sadd3").removeAttr("readonly");
         $("#stopentime").removeAttr("readonly");
         $("#stclosetime").removeAttr("readonly");
+        $("#addbt").removeAttr("disabled");
         $("#stdeliservice_y").removeAttr("disabled");
         $("#stdeliservice_n").removeAttr("disabled");
 //         $("#savings_service_y").removeAttr("disabled");
 //         $("#savings_service_n").removeAttr("disabled");
+		
+		alert("수정이 가능합니다.");
 
 		
 	}
@@ -271,9 +275,11 @@ function checkpwbtn(){
         $("#sname").attr("readonly",true);
         $("#spw").attr("readonly",true);
         $("#stel").attr("readonly",true);
+        $("#pwbt").attr("disabled","disabled");
         $("#sadd").attr("readonly",true);
         $("#sadd2").attr("readonly",true);
         $("#sadd3").attr("readonly",true);
+        $("#addbt").attr("disabled","disabled");
         $("#stopentime").attr("readonly",true);
         $("#stclosetime").attr("readonly",true);
         $("#stdeliservice_y").attr("disabled",true);
@@ -392,7 +398,7 @@ function checkpwbtn(){
           <th>비밀번호</th>
           <td>
 <!--           <input type = "text" name = "spw" id = "spw" readonly> -->
-          		<button type="button" onclick="openModeal()"> 비밀번호 변경하기 </button>
+          		<button type="button" id="pwbt" onclick="openModeal()" disabled> 비밀번호 변경하기 </button>
           </td>
         </tr>
         <tr>
@@ -401,10 +407,10 @@ function checkpwbtn(){
         </tr>
         <tr>
           <th>매장주소</th>
-        <td><input type = "text" id="sadd2" name = "sadd2" placeholder="우편번호">
-          <button type = "button" onclick="execPostCode()">우편번호 찾기</button><br>
-          		<input type = "text" id="sadd" name = "sadd" placeholder="주소">
-          		<input type = "text" id="sadd3" name = "sadd3" placeholder="상세주소"></td>
+        <td><input type = "text" id="sadd2" name = "sadd2" placeholder="우편번호" readonly>
+          <button type = "button" id="addbt"onclick="execPostCode()" disabled>우편번호 찾기</button><br>
+          		<input type = "text" id="sadd" name = "sadd" placeholder="주소" readonly>
+          		<input type = "text" id="sadd3" name = "sadd3" placeholder="상세주소" readonly></td>
         </tr>
         <tr>
           <th>영업시간</th>
