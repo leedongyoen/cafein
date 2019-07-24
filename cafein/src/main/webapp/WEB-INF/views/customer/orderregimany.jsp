@@ -72,11 +72,19 @@ $(function(){
 			
 			var coplist = json[c].cuoptionlist;
 			
-			
-			
-			var oplist = coplist.split(",");
+				
+			str = coplist.slice(0,-1);
+			console.log(" 1str: "+str);
+			str = str.substring(1);
+			console.log(" 2str: "+str);
+			var oplist = str.split(",");
 			console.log(oplist);
 			
+			for(var t = 0;t<oplist.length;t++){
+				
+				oplist[t] = oplist[t].trim();
+				$('input:checkbox[id="'+oplist[t]+'"]').attr("checked", true);
+			}
 		
 			
 		}
@@ -115,7 +123,7 @@ function getstoremileageservice(){
 		type:'GET',
 		data: {sId: v_storeId},
 		error:function(xhr,status,msg){
-			alert("상태 값 :" + status + " Http에러메시지 :"+msg);
+			alert("상태값 :" + status + " Http에러메시지 :"+msg);
 		},
 		success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 			
@@ -247,7 +255,7 @@ function minus(id_num) {
 	var minusqty = (qty*1)-1;
 	if(minusqty == 0){
 		minusqty = 1;
-		alert("1개 이상으로 주문해주세요.");
+		alert("1개 이 상으로 주문해주세요.");
 		return;
 	}
 	$('#qty'+ cnt).val(minusqty);
