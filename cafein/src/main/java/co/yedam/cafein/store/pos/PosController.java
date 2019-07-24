@@ -65,7 +65,7 @@ public class PosController {
 	}
 	//pos기 이전 주문조회
 	@ResponseBody
-	@RequestMapping (value = "/searchorder", method = RequestMethod.POST)
+	@RequestMapping (value = "/searchorder", method = RequestMethod.GET)
 	public List<OrdersVO> getCusRefund(OrdersVO vo){
 		System.out.println("이전주문 조회");
 		return posService.getCusRefund(vo);

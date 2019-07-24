@@ -53,13 +53,13 @@
 		   , C_ID "cId"
 		   , O_DATE "oDate"
 		   , TOTAL "total"
-		   , PAY_METHOD payMethod
-		   , MILEAGE mileage
+		   , PAY_METHOD "payMethod"
+		   , MILEAGE "mileage"
 	FROM ORDERS
 	<where>
 	S_ID=#{sId}
 	<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
-				 O_DATE BETWEEN #{startDate} AND #{endDate}
+			AND	 O_DATE BETWEEN #{startDate} AND #{endDate}
 			</if>
 	AND DELIVERY_STATUS ='C5'
 	</where>

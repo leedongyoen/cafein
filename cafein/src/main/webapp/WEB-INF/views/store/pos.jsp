@@ -141,10 +141,10 @@ var editableCells = ['oQty'];
    });
      
    //gird전체삭제
-   $("#clearRow").on("click",function(){
+   /* $("#clearRow").on("click",function(){
    		$("#gridlist").jqGrid('clearGridData');
    });
-
+ */
    
 
 /* 
@@ -297,10 +297,7 @@ footerrow : true});*/
 					optionlist=[];
 					mNum.push(rowData.mNum);
 					oQty.push(rowData.oQty);
-					
 				}
-
-
 			}
 			var v_menu =[];
 			v_menu.push(mNum);
@@ -310,8 +307,7 @@ footerrow : true});*/
 			v_total_menu.push(v_menu);
 			
 			console.log("v_total_menu : "+v_total_menu);		
-			var ordercart = $("#orderposform").serializeObject();
-			
+			var ordercart = $("#orderposform").serializeObject();			
 /* 			ordercart.mNum = mNum;
 			ordercart.hotice_option = hotice_option;
 			ordercart.oQty = oQty;
@@ -476,10 +472,6 @@ footerrow : true});*/
  		          .appendTo('#aftersearch tbody');
  		      
  		}
- 	
- 	
- 	
- 	
  	//결제하기
  	$(document).on("click","#payment", function(){
 
@@ -540,38 +532,43 @@ footerrow : true});*/
 		//날짜 데이터 같이 보내기
 		var startDate = jQuery('#startDate').val();
 		var endDate = jQuery('#endDate').val();
-
-
+		
+		if(startDate > endDate){
+  			alert('검색 날짜를 확인해주세요.');
+  			return;
+  		}else if(startDate == '' || endDate == ''){
+  			alert('날짜를 입력해주세요.');
+  			return;
+  		}
+  		console.log("startDate : "+ startDate);
+  		console.log("endDate : "+ endDate);
+  		
 		$.ajax({
 			url : 'searchorder',
-			type : 'POST',
+			type : 'GET',
 			dataType : 'json',
-			data : {
-				startDate : startDate,
-				endDate : endDate,
-				sId : sId
-			},
-			
+			data : {startDate : startDate,endDate : endDate,sId : sId},
 			error : function(status, msg) {
 				alert(status + "메세지" + msg);
 			},
 			success : function(data) {
-				warehousingListResult(data);
-				chartData = [];
-				chartData.push([ '재고명', '수량' ])
-				
-				for (i = 0; i < data.length; i++) {
-					var datas = [ data[i].stName, data[i].wareQty ];
-					//							data[i].warePrice, data[i].stLoss];
-					chartData.push(datas);
-					console.log(datas);
-				}
-				if(datas == null){
-					alert("기간에 맞는 데이터가 없습니다.");
-				}
-				drawChart();
+				$('#orderlisttable tbody').empty();
+				$.each(data,function(idx,item){
+					$('<tr>')
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'oNum\' value=\''+item.oNum+'\'>'))
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'oDate\' value=\''+item.oDate+'\'>'))
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'scId\' value=\''+item.cId+'\'>'))
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'paymethod\' value=\''+item.payMethod+'\'>'))
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'total\' value=\''+item.total+'\'>'))
+					.appendTo('#orderlisttable tbody');
+				});
+
+					
+					
+			//		getorderdetails(item);
 				
 			}
+			
 		});
 	} 
 	
@@ -661,7 +658,7 @@ footerrow : true});*/
 
 
 	<div style="text-align:left">
-	<input type="button" id="clearRow" value="전체취소">
+	<!-- <input type="button" id="clearRow" value="전체취소"> -->
 	<input type="button" id="deleteRow" value="선택취소">
 	</div>
 			<div style="text-align:right">
@@ -725,7 +722,7 @@ footerrow : true});*/
 							<thead>
 							<tr> 
 								<th>DATE</th>
-								<th>DATE</th>
+								<th>성함</th>
 								<th>결제방식</th>
 								<th>결제금액</th>
 							</tr>
