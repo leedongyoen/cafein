@@ -66,11 +66,7 @@ public class StoreMainController {
 		return "store/orderlist";
 	}
 	
-	//매장 주문하기
-		@RequestMapping("pos.do")
-		public String pos() {
-			return "store/pos";
-		}
+
 	
 
 }

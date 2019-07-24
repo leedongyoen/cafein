@@ -20,6 +20,12 @@
 		JOIN CONDITION CO
 		ON O.DELIVERY_STATUS = CO.DETAIL_CD
 		WHERE O.C_ID= #{cId}
+		<if test="orderlistcontroller == 7">
+			AND O.O_DATE > SYSTIMESTAMP-7
+		</if> 
+		<if test="orderlistcontroller != 7">
+			AND O.O_DATE > SYSTIMESTAMP - (INTERVAL '${orderlistcontroller}' MONTH)
+		</if>
 		ORDER BY O.O_DATE DESC
 	
 	
@@ -34,6 +40,7 @@
 				, O.PAY_METHOD
 				, O.DELIVERY_STATUS
 				, O.REFUSE_REASON
+				, O.TAKE_TIME
 		from ORDERS O JOIN STORE S
 		ON O.S_ID = S.S_ID
 		where O_NUM=#{oNum}
@@ -241,6 +248,12 @@
 	
 	</select>
 
+	<update id="updatecusordercancel">
 
+		UPDATE ORDERS
+		SET REFUSE_REASON = '고객이 주문 취소'
+			, DELIVERY_STATUS = 'C4'
+		WHERE O_NUM = #{oNum}	
+	</update>
 
 </mapper>

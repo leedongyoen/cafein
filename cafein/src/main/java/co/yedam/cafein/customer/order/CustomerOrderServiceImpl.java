@@ -115,6 +115,11 @@ public class CustomerOrderServiceImpl {
 	public StoreVO getorderstoreaddress(StoreVO vo) {
 		return dao.getorderstoreaddress(vo);
 	}
+	
+	// 고객이 직접 주문 취소한 경우
+	public int updatecusordercancel(OrdersVO vo) {
+		return dao.updatecusordercancel(vo);
+	}
 
 	public int getodnum2(OrdersVO vo) {
 		return dao.getodnum2(vo);

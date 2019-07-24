@@ -9,23 +9,25 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>매장POS</title>
 <style type="text/css">
-   
+  body{
+background-color:#424242;
+color:pink;
+}
+ 
 .left {
   position:absolute;
-  width:600px;
+  width:900px;
   height: 600px;
   border: 1px solid;
 }
 .content {
   position:relative;
-  width:70%;
-  left:600px;
+  width:1000px;
+  left:900px;
   height:600px;
   border: 1px solid;
 }
-.chbtn {
-	color: red;
-}
+
 
 </style>
 </head>
@@ -38,7 +40,6 @@ var oQty = 1;
 var currNo=0;
 var valNo;
 var lastSel;
-
 var editableCells = ['oQty'];
    $(document).ready(function() {
 
@@ -50,7 +51,7 @@ var editableCells = ['oQty'];
                { label: '옵션',   name: 'opName', width: 150  },
                { label: '금액',   index:'Price',name: 'Price', width: 75 ,formatter:'integer'},
                { label: '수량',   name: 'oQty', width: 75},
-               { label: 'hotice_option', name:'hotice_option'},
+               { label: 'hotice_option', name:'hotice_option',hidden:true},
                { label: 'parentMNum', name:'parentMNum',hidden:true},
                { label: 'sonMNum', name:'sonMNum',hidden:true}
            ],
@@ -62,7 +63,7 @@ var editableCells = ['oQty'];
            rownumbers: true,//왼쪽에 index 가 생김 1부터 시작
            rownumWidth:40,//로우넘의 가로길이
            rowNum:5,// 그리드에 보여줄 데이터의 갯수,-1하면 무한으로 보여준단다..
-           width:600,//그리드의 총 가로길이
+           width:900,//그리드의 총 가로길이
            rowList:[10,20,30],//몇개식 보여줄건지 선택가능하다, 배열형식이라 5,10,15,20,,,가능
 //           multiboxonly : false,
 //           multiselect : true,//체크박스 사라짐
@@ -140,10 +141,10 @@ var editableCells = ['oQty'];
    });
      
    //gird전체삭제
-   $("#clearRow").on("click",function(){
+   /* $("#clearRow").on("click",function(){
    		$("#gridlist").jqGrid('clearGridData');
    });
-
+ */
    
 
 /* 
@@ -157,6 +158,8 @@ footerrow : true});*/
  
  //메뉴탭에서 매장메뉴 나오기
  $(document).ready(function(){
+	 $("#aftersearch").hide();
+	 
 	 $("#paymentModal").modal('hide');
 	 $("#cusSearchModal").modal('hide');
 	 $("#orderListModal").modal('hide');
@@ -172,6 +175,26 @@ footerrow : true});*/
 			},
 			success: posMenuListResult
 		});
+		
+	 getstoremileageservice();
+	// 매장 마일리지 서비스 정보 가져오기
+	 function getstoremileageservice(){
+			$.ajax({
+				url:'getstoremileageservice',
+				type:'GET',
+				data: {sId: sId},
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){ 
+					//
+					$("input:text[name='stMileageService']").val(data);
+					
+						
+				}
+			}); 
+			
+		}
 	//고객검색이벤트로드
 		$("#customerserch").on("keyup", function() {
 	 		var value = $(this).val().toLowerCase();
@@ -188,6 +211,40 @@ footerrow : true});*/
 			});
 	 		}
 	 	});
+	
+		//100원단위 마일리지 사용
+		$('#reservebtn').on("click",function(){
+			var mileage = $('#useMile').val();	//차감하려고 적은 마일리지 값
+			var totalmileage =$('#cusMile').val();	//현재 회원의 적립금
+			if( Number(mileage)%100 != 0 || Number(mileage) == 0){
+				alert("100원 단위로만 사용가능합니다.");
+				$('#useMile').val("0");				
+
+			}else if(Number(mileage) > Number(totalmileage)){
+				alert('사용가능한 적립금을 초과하였습니다.');
+				
+			}else{
+				var PSum = $("#gridlist").jqGrid('getCol','Price',false,'sum');
+				var sPSum = Number(PSum) - Number(mileage);
+				console.log(sPSum);
+				 $("input:text[name='total']").val(sPSum);
+				 var now_mile = (totalmileage*1)-(mileage*1);
+				 $('#cusMile').val(now_mile);
+				 $('#reservebtn').attr('disabled',true);
+			}
+		});
+		$('#reservecancelbtn').on("click",function(){
+			// 사용자가 적은 적립금
+			var mileage = $('#useMile').val();
+			var totalmileage =$('#cusMile').val();
+			// 총 가격
+			totalmileage = Number(totalmileage) + Number(mileage);
+			 $("input:text[name='total']").val(totalmileage);
+			 
+			$('#useMile').val("0");
+			$('#cusMile').val(totalmileage);
+			$('#reservebtn').attr('disabled',false);
+		});
 	 	
 	
 	// 최종 주문하기버튼 결제하기
@@ -196,14 +253,20 @@ footerrow : true});*/
 			var grid = $("#gridlist");
 			var dataIDs =  grid.jqGrid('getDataIDs');
 			console.log("전체다 " + dataIDs);
+			//고객 정보 가지고 오기
+			var cId = $("#cusId").val();
+			var mileage=$("#useMile").val();
+			console.log(cId, mileage);
+			$("input:text[name='cId']").val(cId);
+			$("input:text[name='mileage']").val(mileage);
+			
 			//주문한 데이터 모두 가져오기
 			var mNum=[];
-		
 			var oQty=[];
 			var optionlist=[];
 			var v_mnum;
 			var v_parentMNum = "";
-			
+			//jq grid에 있는 정보 가지고 오기
 			var v_total_menu = [];
 			for(i = 0; i < dataIDs.length; i++)
 			{
@@ -234,10 +297,7 @@ footerrow : true});*/
 					optionlist=[];
 					mNum.push(rowData.mNum);
 					oQty.push(rowData.oQty);
-					
 				}
-
-
 			}
 			var v_menu =[];
 			v_menu.push(mNum);
@@ -245,10 +305,9 @@ footerrow : true});*/
 			
 			v_menu.push(optionlist);
 			v_total_menu.push(v_menu);
-
-			console.log("v_total_menu : "+v_total_menu);		
-			var ordercart = $("#orderposform").serializeObject();
 			
+			console.log("v_total_menu : "+v_total_menu);		
+			var ordercart = $("#orderposform").serializeObject();			
 /* 			ordercart.mNum = mNum;
 			ordercart.hotice_option = hotice_option;
 			ordercart.oQty = oQty;
@@ -381,16 +440,18 @@ footerrow : true});*/
  	$(document).on("click","#orderList", function(){
  		$("#orderListModal").modal('show');
  	});
- 
+ 	
  	//회원검색창 띄우기
  	$(document).on("click","#customersearch", function(){
+ 		
  		$("#cusSearchModal").modal('show');
  	});
  	//회원검색후 나오는 값
  	function getCus(data){ 
  		$("#customertable tbody").empty();
  		$.each(data, function(idx,item){
-	    	 $("<tr onclick=aftersearch('"+item.cName+"','"+item.cTel+"','"+item.mileage+"')>")
+	    	 $("<tr onclick=aftersearch('"+item.cId+"','"+item.cName+"','"+item.cTel+"','"+item.mileage+"')>")
+	    	 .append($('<td>').html(item.cId))
 	          .append($('<td>').html(item.cName))
 	          .append($('<td>').html(item.cTel))
 	          .append($('<td>').html(item.mileage))
@@ -398,26 +459,26 @@ footerrow : true});*/
 	    }); 
  		
  	}
- 	function aftersearch(Name,Tel,mileage){
+ 	function aftersearch(Id,Name,Tel,mileage){
  		$('#cusSearchModal').modal("hide");
- 			console.log(Name,Tel,mileage);
+ 		 $("#aftersearch").show();
+ 			console.log(Id,Name,Tel,mileage);
  			$("#aftersearch tbody").empty();
  		    	 $('<tr>')
- 		          .append($('<td><input type=\'text\' class=\'data1\' id=\'data1\' value=\''+Name+'\'>'))
- 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'data2\' value=\''+Tel+'\'>'))
- 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'data3\' value=\''+mileage+'\'>'))
+ 		    	 .append($('<td><input type=\'text\'class=\'data0\' id=\'cusId\' value=\''+Id+'\'>'))
+ 		          .append($('<td><input type=\'text\'class=\'data1\' id=\'cusName\' value=\''+Name+'\'>'))
+ 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'cusTel\' value=\''+Tel+'\'>'))
+ 		          .append($('<td><input type=\'text\' class=\'data3\' id=\'cusMile\' value=\''+mileage+'\'>'))
  		          .appendTo('#aftersearch tbody');
  		      
  		}
- 	
- 	
- 	
- 	
  	//결제하기
  	$(document).on("click","#payment", function(){
 
  		$('#cash').removeAttr('disabled');
  		$('#card').removeAttr('disabled');
+ 		$('#getmoney').val('0');
+ 		$('#resultmoney').val('0');
  		$("#paymentModal").modal('show');
  		$("#payresult").empty();
  		$("#cash").empty();
@@ -425,17 +486,15 @@ footerrow : true});*/
  //		var list =  $("#girdForm").serializeObject();
 
 		var grid = $("#gridlist");
-			var dataIDs =  grid.jqGrid('getDataIDs');
-		
-		//주문한금액 전체 가져오기
-		var PSum = grid.jqGrid('getCol','Price',false,'sum');
-		console.log(PSum);
+		var dataIDs =  grid.jqGrid('getDataIDs');
+		var PSum = $("#gridlist").jqGrid('getCol','Price',false,'sum');
+		var mileage = $('#useMile').val();
 		//		$("#payresult").empty();
-		
+		var sPSum = Number(PSum) - Number(mileage);
 		$("<input>").attr({
 			type:"text",
 			name:"total",
-			value:PSum})
+			value:sPSum})
 			.attr("class","pay")
 			.appendTo("#payresult");
 		
@@ -453,76 +512,69 @@ footerrow : true});*/
 		});
 		//현금 선택시 받으신금액 입력
 		$('input.numOnly').on('keyup',function(){
-			var cnt = $(".exam input.num_sum").length;     
-//	          console.log(cnt);
-	          
+			var cnt = $(".exam input.num_sum").length;            
 			  for( var i=1; i< cnt; i++){
 			     var sum = parseInt($(this).val() || 0 );
 			     sum++
-//			    console.log(sum);
 			  }
 			var minus = parseInt($("#getmoney").val() || 0);
 			var sum = minus-PSum;
-//			console.log(sum);
+
 			$("#resultmoney").val(sum);
 		});
 		
-//		orderLast(selectop);
+
 		
 	});
  	
  	//환불 날짜별 검색
-/* 	function dateSearch() {
+ 	function getCusRefund() {
 		//날짜 데이터 같이 보내기
 		var startDate = jQuery('#startDate').val();
 		var endDate = jQuery('#endDate').val();
-
-		//   		if(startDate == '' || endDate == ''){
-		//   			alert('날짜를 선택해 주세요.');
-		//   			return;
-		//   		}
-
-		//alert(jQuery('#startDate').val());
-		//alert(jQuery('#endDate').val());
-
+		
+		if(startDate > endDate){
+  			alert('검색 날짜를 확인해주세요.');
+  			return;
+  		}else if(startDate == '' || endDate == ''){
+  			alert('날짜를 입력해주세요.');
+  			return;
+  		}
+  		console.log("startDate : "+ startDate);
+  		console.log("endDate : "+ endDate);
+  		
 		$.ajax({
-			url : 'dateSearch',
-			type : 'POST',
+			url : 'searchorder',
+			type : 'GET',
 			dataType : 'json',
-			data : {
-				startDate : startDate,
-				endDate : endDate,
-				sId : sId
-			},
-			
+			data : {startDate : startDate,endDate : endDate,sId : sId},
 			error : function(status, msg) {
 				alert(status + "메세지" + msg);
 			},
 			success : function(data) {
-				warehousingListResult(data);
-				chartData = [];
-				chartData.push([ '재고명', '수량' ])
-				
-				for (i = 0; i < data.length; i++) {
-					var datas = [ data[i].stName, data[i].wareQty ];
-					//							data[i].warePrice, data[i].stLoss];
-					chartData.push(datas);
-					console.log(datas);
-				}
-				if(datas == null){
-					alert("기간에 맞는 데이터가 없습니다.");
-				}
-				drawChart();
+				$('#orderlisttable tbody').empty();
+				$.each(data,function(idx,item){
+					$('<tr>')
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'oNum\' value=\''+item.oNum+'\'>'))
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'oDate\' value=\''+item.oDate+'\'>'))
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'scId\' value=\''+item.cId+'\'>'))
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'paymethod\' value=\''+item.payMethod+'\'>'))
+					.append($('<td><input type=\'text\'class=\'oNum\' id=\'total\' value=\''+item.total+'\'>'))
+					.appendTo('#orderlisttable tbody');
+				});
+
+					
+					
+			//		getorderdetails(item);
 				
 			}
+			
 		});
-	} */
+	} 
 	
 	
 </script>
-<br><br>
-<br><br>
-<div class ="container">
+<div>
 <div class="left">
 <form class="form-borizontal" name="girdForm" action="customerorder" method="POST">
     <table id="gridlist"></table>
@@ -582,23 +634,31 @@ footerrow : true});*/
 
 <hr>
 <div>
-<table id="aftersearch">
+<div id="aftersearch">
+<table>
 <thead>
 <tr>
+	<th>ID</th>
 	<th>NAME</th>
 	<th>TEL</th>
 	<th>MILEAGE</th>
+	
 </tr>
 </thead>
 <tbody>
 </tbody>
 </table>
-
+<a id="insertmileage">사용할 마일리지 : <input type="text" id="useMile" value="0">
+<button type="button" id="reservebtn">사용</button>
+<button type="button" id="reservecancelbtn">취소</button>
+</a>
 </div>
-사용할 마일리지 : <input type="text" id="useMile" value="0">
-<p></p>
+</div>
+
+
+
 	<div style="text-align:left">
-	<input type="button" id="clearRow" value="전체취소">
+	<!-- <input type="button" id="clearRow" value="전체취소"> -->
 	<input type="button" id="deleteRow" value="선택취소">
 	</div>
 			<div style="text-align:right">
@@ -618,6 +678,7 @@ footerrow : true});*/
 						<table id="customertable" class="table">
 							<thead>
 							<tr> 
+								<th>ID</th>
 								<th>NAME</th>
 								<th>TEL</th>
 								<th>MILEAGE</th>
@@ -654,15 +715,16 @@ footerrow : true});*/
 								name="startDate">&nbsp; <input type="date"
 								class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
 							<input type="button" value="검색" class="btn btn-success"
-								id="btnSearch" onclick="dateSearch()">
+								id="btnSearch" onclick="getCusRefund()">
 						</div>
 						<div class="table-responsive">
 						<table id="orderlisttable" class="table">
 							<thead>
 							<tr> 
 								<th>DATE</th>
-								<th>DATE</th>
-								<th>MILEAGE</th>
+								<th>성함</th>
+								<th>결제방식</th>
+								<th>결제금액</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -702,12 +764,12 @@ footerrow : true});*/
 						<input type="text" name="cId"  style="display: none;" >
 						<input type="text" name="optionlist"  style="display: none;" >
 						<input type="text" name="payMethod"  style="display: none;" >
-						
+						<input type="text" name="stMileageService" value="N"  style="display: none;" >
 						
 						<div class="table-responsive" style="text-align:left">
 						<div style="text-align:right">
-							<input type="button" name="payMethod" id="cash" value="현금">
-							<input type="button" name="payMethod"  id="card" value="카드">
+							<input type="button" name="pay" id="cash" value="현금">
+							<input type="button" name="pay"  id="card" value="카드">
 						</div>
 						<table id="payNow" class="exam">
 							<thead>

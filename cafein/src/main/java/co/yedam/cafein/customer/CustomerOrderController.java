@@ -25,6 +25,7 @@ import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
 import co.yedam.cafein.store.info.StoreInfoServiceImpl;
 import co.yedam.cafein.store.menu.MenuServiceImpl;
 import co.yedam.cafein.store.menu.RecipeSerciveImpl;
+import co.yedam.cafein.store.order.StoreOrderServiceImpl;
 import co.yedam.cafein.vo.CartVO;
 import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.MenuOrderVO;
@@ -42,6 +43,8 @@ public class CustomerOrderController {
 	CustomerOrderServiceImpl service;
 	@Autowired
 	StoreInfoServiceImpl service2;
+	@Autowired
+	StoreOrderServiceImpl storeorderservice;
 	@Autowired
 	MenuServiceImpl service3;
 	
@@ -87,6 +90,24 @@ public class CustomerOrderController {
 	public String getstoremileageservice(String sId) {
 		return service.getstoremileageservice(sId);
 	}
+	
+	// 고객이 직접 주문 취소한 경우
+	@ResponseBody
+	@RequestMapping(value = "/updatecusordercancel", method = RequestMethod.GET)
+	public int updatecusordercancel(OrdersVO vo) {
+		
+		// 주문 취소
+		int n = service.updatecusordercancel(vo);
+		String mileageservice = service.getstoremileageservice(vo.getsId());
+		vo.setMileageservice(mileageservice);
+		// 마일리지 수정을 위해서
+		if(n > 0 && mileageservice.equals("Y")) {		
+			n = storeorderservice.updateordermileage(vo);
+
+		}
+		
+		return n;
+	}
 
 	// 고객 주문 페이지로 이동.
 	@RequestMapping("orderlist.do")
@@ -96,11 +117,12 @@ public class CustomerOrderController {
 
 	// 고객 주문 리스트 가져오기
 	@ResponseBody
-	@RequestMapping(value = "/orderlist/{cid}", method = RequestMethod.GET)
-	public List<OrdersVO> getOrderList(@PathVariable("cid") String cId) {
-		OrdersVO vo = new OrdersVO();
-		vo.setcId(cId);
-
+	@RequestMapping(value = "/orderlist", method = RequestMethod.GET)
+	public List<OrdersVO> getOrderList(OrdersVO vo, HttpSession session) {
+		/*
+		 * OrdersVO vo = new OrdersVO(); vo.setcId(cId);
+		 */
+		
 		return service.getOrderList(vo);
 	}
 	
@@ -132,7 +154,7 @@ public class CustomerOrderController {
 
 	// 주문 넣기
 	@RequestMapping(value = "/insertcustomerorder", method = RequestMethod.POST)
-	public ModelAndView insertorder(OrdersVO vo) {
+	public String insertorder(OrdersVO vo) {
 		System.out.println("============주문 :" + vo);
 		ModelAndView mv = new ModelAndView();
 		/*
@@ -248,9 +270,7 @@ public class CustomerOrderController {
 				n = service.insertmileage(info);
 			}
 		}
-		
-		mv.setViewName("customer/delivery");
-		return mv;
+		return "redirect:orderlist.do";
 	}
 
 	// 고객 주문배달 조회

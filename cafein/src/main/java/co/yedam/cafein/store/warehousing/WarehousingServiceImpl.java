@@ -32,6 +32,10 @@ public class WarehousingServiceImpl implements WarehousingService{
 		
 		return wareDao.insertEnter(vo);
 	}
+	@Override
+	public List<WarehousingVO> getWarehousing(WarehousingVO vo) {
+		return wareDao.getWarehousing(vo);
+	}
 	
 
 }

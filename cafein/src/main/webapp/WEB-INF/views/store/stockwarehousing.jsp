@@ -21,20 +21,15 @@
 			packages : [ 'corechart', 'bar' ]
 		});
 		google.charts.setOnLoadCallback(dateSearch);
-	
 		var chartData = []; 
+	
 		
 		var options = {
 			chartArea : {
 				width : '40%'
-			},
-			is3D: true,
-			animation:{
-		        duration: 1000,
-		        easing: 'out',
-		      }
+			}
 		};
-
+		
 		function drawChart() {
 			
 			var wareData = google.visualization.arrayToDataTable(chartData);
@@ -82,16 +77,17 @@
 					warehousingListResult(data);
 					chartData = [];
 					chartData.push([ '재고명', '수량' ])
-					
 					for (i = 0; i < data.length; i++) {
-						var datas = [ data[i].stName, data[i].wareQty ];
+					var	datas = [ data[i].stName, data[i].wareQty ];
 						//							data[i].warePrice, data[i].stLoss];
 						chartData.push(datas);
 						console.log(datas);
 					}
 					if(datas == null){
 						alert("기간에 맞는 데이터가 없습니다.");
-					}
+						return;
+						
+				}
 					drawChart();
 					
 				}

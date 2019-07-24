@@ -165,10 +165,12 @@ $(function(){
         		$("#opName").val("HOT");
         		$("#consum").val(0);
         		$("#opPrice").val(0);
+        		$("#opcaNum").val("CAHT");
         	}else if(obj.value2=='CAIC'){
         		$("#opName").val("ICE");
         		$("#consume").val(0);
         		$("#opPrice").val(0);
+        		$("#opcaNum").val("CAIC");
         	}
         
         $("#opstNum").val(obj.value1);
@@ -208,7 +210,9 @@ function menulist(mNum){
 			$("#cmNum").val(mNum);
 			$("#cmName").val(mName);
 			$("#omNum").val(mNum);
-			
+		
+				$("#ccaNum").val(caNum);
+	
 			
 			if(data.length==0){
 				$("#recipeTable tbody").empty();
@@ -704,8 +708,6 @@ function optionDelete(){
 									<option value="CACO">커피</option>
 									<option value="CADR">음료</option>
 									<option value="CADE">디저트</option>
-
-
 									<option value="CAOP">옵션</option>
 							</select></td>
 						</tr>
@@ -781,31 +783,44 @@ function optionDelete(){
 				<h3>상세 레시피</h3>
 				<table border="1" class = "table table-hover">
 					<tr>
-						<th>메뉴 번호</th>
-						<td><input type="text" id="cmNum" name="mNum" readonly></td>
+						<th>카테고리</th>
+						<td>
+							<input type="hidden" id="cmNum" name="mNum">
+							<input type="text" id = "ccaNum" name = "caNum">
+						</td>
+						
+						<th>조리 시간</th>
+						<td>
+							<input type="text">
+						</td>
+						
 					</tr>
-					<tr>
-						<th>메뉴 이름</th>
-						<td><input type="text" id="cmName" readonly></td>
-					</tr>
-				</table>
-					 
-						<table border="1" class = "table table-hover">
 							<tr>
-								<th>카테고리 선택</th>
+							<th>메뉴 이름</th>
+							<td><input type="text" id="cmName" readonly></td>
+								<th>재료 선택</th>
 								<td><select id="reciSelect"></select></td>
-								<th>적정 수량</th>
-								<td><input type="text" id="recistAqty"></td>
+								
 							
 							</tr>
 							<tr>
+							<!-- <th>적정 수량</th> -->
+								<input type="hidden" id="recistAqty">
 								<th>소모량</th>
-								<td colspan="3"><input type="text" value="0" id="consum" name="consum"></td>
+								<td colspan="3">
+									<input type="text" value="0" id="consum" name="consum">
+									<select id="stUnit" name="stUnit">
+									<option value="">선 택</option>
+									<option value="">ml</option>
+									<option value="">g</option>
+									<option value="">EA</option>
+							</select>
+								</td>
 							</tr>
 							<tr>
-								<td colspan="2"><input type="button" value=" + "
+								<td colspan="2"><input type="button" value=" 재료 추가 "
 									onclick="recipeInsert()"></td>
-								<td colspan="2"><input type="button" value=" - "
+								<td colspan="2"><input type="button" value=" 재료 삭제 "
 									onclick="recipeDelete()"></td>
 							</tr>
 						</table>
@@ -817,9 +832,9 @@ function optionDelete(){
 						-->
 				
 			
-				<br>
+				
 				<table border="1"  id="recipeTable" class = "table table-hover">
-					<thead class = "thead-dark">
+					<thead>
 					<tr>
 						<th>재료명</th>
 						<th>소모량</th>
@@ -866,14 +881,14 @@ function optionDelete(){
 					<tr>
 
 					<tr>
-						<td><input type="button" value=" + " onclick="optionInsert()"></td>
-						<td><input type="button" value=" - " onclick="optionDelete()"></td>
+						<td><input type="button" value=" 옵션 추가 " onclick="optionInsert()"></td>
+						<td><input type="button" value=" 옵션 삭제 " onclick="optionDelete()"></td>
 					</tr>
 
 				</table>
 						<input type="hidden" id="sId" name="sId" value="SH001">
 						<input type="hidden" id="omNum" name="mNum">
-						<input type="hidden" id="opcaNum" value="CAOP" name="caNum">
+						<input type="hidden" id="opcaNum" name="caNum">
 						<input type="hidden" id="opstNum" name="stNum">
 
 			</form>

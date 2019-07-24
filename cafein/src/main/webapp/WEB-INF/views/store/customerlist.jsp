@@ -75,7 +75,7 @@
 		$('input:text[name="cName"]').val(data.cName);
 		$('input:text[name="cTel"]').val(data.cTel);
 		$('input:text[name="cAdd"]').val(data.cAdd);
-		$('input:text[name="cJoin"]').val(data.cJoin);
+		$('input:text[name="cJoin"]').val(data.cJoin); 
 		$('input:text[name="mileage"]').val(data.mileage)
 		
 		history(data.cId);
@@ -293,8 +293,6 @@
 			</div>
 
 		</div>
-
-
 
 	</div>
 
