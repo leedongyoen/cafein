@@ -32,8 +32,20 @@ input {
 	var customerAdd;
 	var checklogin = "<%=(String) session.getAttribute("cId")%>";
 	
+	// 거리를 구하기 위해서 좌표를 저장하는 변수
+	var searchLine;
+	
+	// 기준이 되는 매장 좌표
+	var searchPostion;
+	
+	// 사용자가 입력한 주소가 매장과의 거리를 계산하여 배달이 가능한 지역인지 확인용도
+	var deliverycheck=false;
+	
+	//주소-좌표 변환 객체를 생성
+    var geocoder = new daum.maps.services.Geocoder();
+	
 	$(function(){
-		getCostomerInfo();
+
 		getstoremileageservice();
 		getstoredeliverservice();
 		
@@ -87,11 +99,9 @@ input {
 				console.log(data);
 				if(data == 1){
 					$('.deliverY').show();
-					$('#delivery').attr("checked","checked");
-					
+					$('#deliveryaddress').hide();					
 				}else{
 					$('.deliverN').show();
-					$('#takeout').attr("checked","checked");
 				}
 				
 					
@@ -146,8 +156,84 @@ input {
 		});
 	}
 	
+	// 거리 계산을 위하여
+    function setSearchLine(searchpostion){
+	   	searchLine = new kakao.maps.Polyline({
 	
-	// 고객 주소 가져오기 위한 함수
+	       	path: [searchpostion]
+	       	
+	       });
+    }
+	
+    // DB정보로 거리 계산 3
+    function getDBStoreDistance(sid,sname,saddress){
+    	// 주소로 좌표를 검색합니다
+    	geocoder.addressSearch(saddress, function(result, status) {
+	    	console.log("for문 안 ge "+saddress);
+	    	
+	        // 정상적으로 검색이 완료됐으면 
+	         if (status === kakao.maps.services.Status.OK) {
+	
+	            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	            console.log(saddress+'  : '+coords);
+	            // 거리 계산
+	            var path= searchLine.getPath();
+	            path.push(coords);
+	            searchLine.setPath(path);
+	            
+	            var distance = Math.round(searchLine.getLength());
+	            console.log(sname+' 거리  : '+distance+"m");
+	           
+	            if(distance < 300){
+	            	alert('배달 가능 지역입니다');
+	            	deliverycheck=true;
+	            	$('#deliveryaddress').show();
+	            	$('#delivery').prop("checked", true);
+	            	$('#orderbtn').attr('disabled',false);
+	            	
+	            }else{
+	            	alert('현재 설정된 주소에서는 배달 서비스가 되지 않습니다.');
+	            	deliverycheck=false;
+	            	//$('#delivery').removeAttr("checked");
+	            	$('#deliveryaddress').hide();
+	            	$('#dtakeout').prop("checked", true);
+	            	$('#orderbtn').attr('disabled',false);
+	            	
+	            	$('input:text[name="cAdd"]').val("");
+					$('input:text[name="cAdd2"]').val("");
+	            	
+	            }
+	            
+	            // 다른 매장과 거리 계산을 위해 초기화
+	            searchLine.setMap(null);
+	        	searchLine = null;
+	        	
+	        	// 기준 매장 주소를 다시 넣는다.
+	            setSearchLine(searchPostion);
+	        } 
+	    }); 
+    }
+	
+	
+ // 현재 선택된 매장 주소와 거리 계산 2
+    function getstorelist(){
+    	var v_storeId = $("#storeid").val();
+		$.ajax({
+			url:'getorderstoreaddress',
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			data:{sid: v_storeId},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){
+				getDBStoreDistance(data.sid,data.sname,data.sadd);
+			}
+		});
+    }
+	
+	// 고객 주소 가져오기 위한 함수 1
 	function getCostomerInfo(){
 		
 		var v_storeId = $("#storeid").val();
@@ -162,9 +248,31 @@ input {
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				customerAdd= data.cAdd;
-				$('input:text[name="cAdd"]').val(customerAdd);
-				$('input:text[name="cAdd2"]').val(data.cAdd2);
-				$('input:text[name="cAdd3"]').val(data.cAdd3);
+			
+				geocoder.addressSearch(data.cAdd, function(results, status) {
+                    // 정상적으로 검색이 완료됐으면
+                    if (status === daum.maps.services.Status.OK) {
+
+                        var result = results[0]; //첫번째 결과의 값을 활용
+
+                        // 해당 주소에 대한 좌표를 받아서
+                        searchPostion = new daum.maps.LatLng(result.y, result.x);
+                        
+                             	        	
+                        
+                        // 거리 계산을 위해서 설정.
+                        setSearchLine(searchPostion);  
+                        
+                        // 선택한 매장 위치 기준.
+                        getstorelist();
+                    }
+                });
+				if(deliverycheck){
+					
+					$('input:text[name="cAdd"]').val(customerAdd);
+					$('input:text[name="cAdd2"]').val(data.cAdd2);
+					$('input:text[name="cAdd3"]').val(data.cAdd3);	
+				}
 			}
 		}); 
 		
@@ -202,8 +310,31 @@ input {
 			        oncomplete: function(data) {
 			        	var addr = data.address; 
 			        	var addr2 = data.zonecode;
-			        	$('input:text[name="cAdd"]').val(addr);
-						$('input:text[name="cAdd2"]').val(addr2);		        	
+			        	
+			        	// 주소로 상세 정보를 검색
+		                geocoder.addressSearch(data.address, function(results, status) {
+		                    // 정상적으로 검색이 완료됐으면
+		                    if (status === daum.maps.services.Status.OK) {
+
+		                        var result = results[0]; //첫번째 결과의 값을 활용
+
+		                        // 해당 주소에 대한 좌표를 받아서
+		                        searchPostion = new daum.maps.LatLng(result.y, result.x);
+		                        
+		                    
+		        	        	
+		                        
+		                        // 거리 계산을 위해서 설정.
+		                        setSearchLine(searchPostion);  
+		                        
+		                        // db에서 기준 매장 도시이름으로 검색
+		                        getstorelist();
+		                    }
+		                });
+
+	                	$('input:text[name="cAdd"]').val(data.address);
+						$('input:text[name="cAdd2"]').val(data.zonecode);
+			        		        	
 			        }
 			    }).open();
 		});
@@ -245,8 +376,14 @@ input {
 		$('input[name="receipt"]').change(function() {
 		    // 모든 radio를 순회한다.
 		    if( $('input[name="receipt"]:checked').val() == 'takeout'){
+		    	//$('#delivery').removeAttr("checked");
+		    	$('#orderbtn').attr('disabled',false);
+            	$('#dtakeout').prop("checked", true);
 		    	$('#deliveryaddress').hide();
 		    }else{
+		    	//$('#dtakeout').removeAttr("checked");
+		    	$('#orderbtn').attr('disabled','disabled');
+            	$('#delivery').prop("checked", true);
 		    	$('#deliveryaddress').show();
 		    }
 		});
@@ -354,7 +491,7 @@ input {
 							<input type="radio" name="receipt" value="delivery" id="delivery" > 
 							<label for="delivery">배달로하기</label> 
 							
-							<input type="radio" name="receipt" value="takeout" id="dtakeout"> 
+							<input type="radio" name="receipt" value="takeout" id="dtakeout" checked="checked"> 
 							<label for="dtakeout">직접받아가기</label>
 						</td>
 					</tr>
@@ -369,7 +506,7 @@ input {
 					<tr class="deliverY" id="deliveryaddress" style="display: none;">
 						<th>배 달 주 소</th>
 						<td>
-							<input type="text" placeholder="우편번호" readonly="readonly" > <br>
+							<input type="text" placeholder="우편번호" name="cAdd2" readonly="readonly" > <br>
 							<input type="text" name="cAdd" style="width: 500px;" placeholder="주소" readonly="readonly">	<br>
 							<input type="text" name="cAdd3" style="width: 500px;" placeholder="상세 주소 입력"> <br>					
 							<button type="button" onclick="getCostomerInfo()">현 주소로하기</button>
@@ -399,7 +536,6 @@ input {
 			</div>
 			</form>
 		</div>
-
 
 </body>
 </html>

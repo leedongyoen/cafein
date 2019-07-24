@@ -112,6 +112,12 @@ public class CustomerOrderDAO {
 	public int insertmileage(OrdersVO vo) {
 		return dao.insert("CustomerOrderDAO.insertmileage",vo);
 	}
+	
+	// 주문페이지에서 고객이 입력한 주소와 선택한 매장과의 거리 계산을 위해서
+	public StoreVO getorderstoreaddress(StoreVO vo) {
+		return dao.selectOne("StoremenuDAO.getorderstoreaddress",vo);
+	}
+	
 
 	// 다건주문인데 안겹치려고 잠깐 만들었습니다. order details op_dnum 업데이트
 	public int getodnum2(OrdersVO vo) {
