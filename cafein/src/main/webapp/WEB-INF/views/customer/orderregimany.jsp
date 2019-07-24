@@ -1,3 +1,5 @@
+<%@page import="org.json.simple.parser.JSONParser"%>
+<%@page import="org.json.simple.JSONObject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
@@ -58,27 +60,25 @@ $(function(){
 		});
 		
 		
-		$.ajax({
-			url:'',
-			type:'GET',
-			dataType:'json',
-			data: ,
-			error:function(xhr,status,msg){
-				/* alert("상태값 :" + status + " Http에러메시지 :"+msg); */
-				$('#usermileage').html("0");
-			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				$('#usermileage').html(data.mileAge);
-			}
-		});
+
+
+		var cart = '${cartListsmero}';
+
+		var json = JSON.parse(cart);
 		
+		console.log(json);
+		for(var c = 0;c<json.length;c++){
+			console.log(json[c].cuoptionlist);
+			
+			var coplist = json[c].cuoptionlist;
+			
+			
+			
+			var oplist = coplist.split(",");
+			console.log(oplist);
+			
 		
-		
-		
-		//===================================================
-		var cart = ${cartLists[0]};
-		for(var c = 0;c<cart.length;c++){
-			console.log(cart[c].MenuOrderVO);
+			
 		}
 		//$('input:checkbox[id="checkbox_id"]').attr("checked", true);
 		//============================================
@@ -115,7 +115,7 @@ function getstoremileageservice(){
 		type:'GET',
 		data: {sId: v_storeId},
 		error:function(xhr,status,msg){
-			alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			alert("상태 값 :" + status + " Http에러메시지 :"+msg);
 		},
 		success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 			

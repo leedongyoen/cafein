@@ -54,6 +54,9 @@ public class CustomerCartOrderController {
 	MenuServiceImpl service3;
 
 	
+
+	
+	
 	// 고객장바구니 관리
 		@RequestMapping(value = "cartmng", method = RequestMethod.GET)
 		public ModelAndView cartmng(ModelAndView mv, HttpSession session) {
@@ -109,11 +112,23 @@ public class CustomerCartOrderController {
 	        	List<RecipeVO> opNames = service.getOptionName(vo);
 	        	//System.out.println("opNames: "+opNames);
 	        	
+	        	
+	        	
+	        	
 	        	int totalPrice = 0;
+	        	JSONObject meorvoIn = new JSONObject();
+	        	JSONArray meorvoOut = new JSONArray();
+	        	ArrayList<String> addCuop = new ArrayList<String>();
+	        	
+	        	
 	        	for(int j = 0;j<meorvo.size();j++) {
 	        		
+	        		addCuop.clear();
 	        		String[] stList = meorvo.get(j).getCuoptionlist();
+	        		
+	        		
 	        		if(stList!=null) {
+	        			
 		        		for(int s = 0; s<stList.length;s++) {
 		        			//System.out.println("stList: "+stList[s]);
 		        			
@@ -130,18 +145,47 @@ public class CustomerCartOrderController {
 		        				
 		        			}
 		        		}
+		        		
 		        		meorvo.get(j).setCuoptionlist(stList);
+		        		System.out.println("stLsit: "+stList);
+		        		
+		        		
+		        		for(int d = 0;d<stList.length;d++) {
+		        			addCuop.add(stList[d].toString());
+		        			System.out.println("stList[d]: "+stList[d]);
+		        			
+		        		}
+		        		System.out.println(addCuop.toString());
+		        		
+	        		
 	        		}
+	        		meorvoIn = new JSONObject();
+	        		meorvoIn.put("cuoptionlist", addCuop.toString());
 	        		
 	        		totalPrice = totalPrice + Integer.parseInt(meorvo.get(j).getTotalPrice());
 	        		meorvo.get(0).setTotalPrice( (String.valueOf(totalPrice)));
+	        		
+	        		
+	        		///왜 여기가 바뀌었다고
+	        		meorvoIn.put("cId", meorvo.get(j).getcId());
+	        		meorvoIn.put("mNum", meorvo.get(j).getmNum());
+	        		meorvoIn.put("sId", meorvo.get(j).getsId());
+	        		meorvoIn.put("sName", meorvo.get(j).getsName());
+	        		meorvoIn.put("mPrice", meorvo.get(j).getmPrice());
+	        		meorvoIn.put("mName", meorvo.get(j).getmName());
+	        		meorvoIn.put("orderqty", meorvo.get(j).getOrderqty());
+	        		meorvoIn.put("totalPrice", meorvo.get(j).getTotalPrice());
+	        		
+	        		meorvoOut.add(meorvoIn);
+	        		
 	        	}
 	        	
-	        	System.out.println("수정: "+meorvo);
-	        	
-	        	
-	        	
+	        	System.out.println("menrooo: "+meorvoOut.toJSONString());
+
+
 	        	mv.addObject("cartLists",meorvo);
+	        	mv.addObject("cartListsmero",meorvoOut);
+	        	
 	        	//해당 메뉴별 모든 옵션을 map에다가 넣고map(string,Object)
 	        	//mv addObject에 map 넣고 같이 보내기 
 	        	
