@@ -225,8 +225,9 @@
 					oQty = "0";
 				}else{
 					$.each(data,function(idx,list){
-						 
-						oQty = list.oQty;
+						 if( list.oQty != 0){
+							 oQty = list.oQty;
+						 }
 						if(list.opName == null){
 							list.opName="";
 						}
@@ -308,7 +309,7 @@
 					}
 					
 				}
-				
+				 
 				
 				$('.C0').css({
 					display:"inline"
@@ -324,6 +325,54 @@
 			}
 		});
 	}
+	// 날짜 검색
+	function searchDate(){
+		var startDate = jQuery('#storeorderstartdate').val();
+  		var endDate = jQuery('#storeorderenddate').val();
+  		
+  		
+  		if(startDate > endDate){
+  			alert('검색 날짜를 확인해주세요.');
+  			return;
+  		}else if(startDate == '' || endDate == ''){
+  			alert('날짜를 입력해주세요.');
+  			return;
+  		}
+  		console.log("startDate : "+ startDate);
+  		console.log("endDate : "+ endDate);
+  		var sId = '<%= session.getAttribute("sId") %>';
+		$('#orderlisttable tbody').empty();
+		$.ajax({
+			url: 'getstoreorderlist',
+			type:'GET',
+			data: {sId: sId, startDate: startDate, endDate: endDate},
+			dataType:'json',
+			async: false,
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
+				$('#orderlisttable tbody').empty();
+				$.each(data,function(idx,item){
+					
+					if(item.cAdd == null) item.cAdd="";
+					if(item.cAdd3 == null) item.cAdd3 = "";
+					if(item.payMethod == 'card') item.payMethod="카드결제";
+					if(item.payMethod == 'cash') item.payMethod="현금결제";
+					if(item.receipt == 'delivery') item.receipt="배달";
+					if(item.receipt == 'takeout') item.receipt="직접 수령";
+					
+					
+					getorderdetails(item);
+					
+					
+					
+				});
+			}
+		});
+  		
+	}
 
 </script>
 <body>
@@ -332,19 +381,15 @@
 	<hr>	
 </div>
 <div class = "container" align = "center">
-
-<form id="" action="">
-    
+  
     <div align="right">
-        날짜 입력:
-    <input type="date" id="userdate" name="userdate"
-                value="">~
-    <input type="date" id="userdate" name="userdate"
-                value="">
-    <input type="submit" value="조회">
+
+    <input type="date" class="btn btn-secondary" name="storeorderstartdate" id="storeorderstartdate">~
+    <input type="date" class="btn btn-secondary" name="storeorderenddate" id="storeorderenddate">
+    <input type="button" class="btn btn-success" onclick="searchDate()" value="조회">
+    <input type="button" class="btn btn-success" onclick="getstoreorderlist()" value="초기화">
     </div>
-	
-</form>
+
 
 		<table id="orderlisttable" class="table table-hover">
 

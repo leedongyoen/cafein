@@ -21,7 +21,13 @@
 		ON ORD.M_NUM = M.M_NUM 
 		WHERE O.S_ID=#{sId}
 				AND ORD.CA_NUM NOT IN ('CAOP')
-				AND TO_CHAR(O.O_DATE,'YYYY/MM/DD') BETWEEN TO_CHAR(SYSTIMESTAMP-1,'YYYY/MM/DD') AND TO_CHAR(SYSTIMESTAMP,'YYYY/MM/DD')
+				<if test="startDate != null and endDate != null ">
+					AND TO_CHAR(O.O_DATE,'YYYY-MM-DD') BETWEEN '${startDate}' AND '${endDate}'
+				</if>
+				<if test="startDate == null and endDate ==null">
+					AND TO_CHAR(O.O_DATE,'YYYY/MM/DD') BETWEEN TO_CHAR(SYSTIMESTAMP-1,'YYYY/MM/DD') AND TO_CHAR(SYSTIMESTAMP,'YYYY/MM/DD')
+				</if>
+				
 		ORDER BY O.O_NUM DESC
 	
 	</select>

@@ -52,11 +52,36 @@ public class OrdersVO {
 	private int start;
 	private int end;
 	
+	// 고객 - 주문 조회 페이지
+	private int orderlistcontroller;
+	
+	// 매장 - 주문 조회 페이지 -> 날짜 검색
+	private String startDate;
+	private String endDate;
+	
 	// 해당 매장에서 마일리지 서비스를 이용하는지 여부를 저장하기 위해서
 	private String mileageservice;
 	
+	 
 	
-	
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public int getOrderlistcontroller() {
+		return orderlistcontroller;
+	}
+	public void setOrderlistcontroller(int orderlistcontroller) {
+		this.orderlistcontroller = orderlistcontroller;
+	}
 	public int getStart() {
 		return start;
 	}
@@ -312,6 +337,7 @@ public class OrdersVO {
 				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", refundSum=" + refundSum
 				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
 				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + ", start=" + start + ", end=" + end
+				+ ", orderlistcontroller=" + orderlistcontroller + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", mileageservice=" + mileageservice + "]";
 	}
 
