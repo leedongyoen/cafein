@@ -54,6 +54,9 @@ public class CustomerCartOrderController {
 	MenuServiceImpl service3;
 
 	
+
+	
+	
 	// 고객장바구니 관리
 		@RequestMapping(value = "cartmng", method = RequestMethod.GET)
 		public ModelAndView cartmng(ModelAndView mv, HttpSession session) {
@@ -110,9 +113,22 @@ public class CustomerCartOrderController {
 	        	//System.out.println("opNames: "+opNames);
 	        	
 	        	
+	        	
+	        	
+	        	int totalPrice = 0;
+	        	JSONObject meorvoIn = new JSONObject();
+	        	JSONArray meorvoOut = new JSONArray();
+	        	ArrayList<String> addCuop = new ArrayList<String>();
+	        	
+	        	
 	        	for(int j = 0;j<meorvo.size();j++) {
+	        		
+	        		addCuop.clear();
 	        		String[] stList = meorvo.get(j).getCuoptionlist();
+	        		
+	        		
 	        		if(stList!=null) {
+	        			
 		        		for(int s = 0; s<stList.length;s++) {
 		        			//System.out.println("stList: "+stList[s]);
 		        			
@@ -129,16 +145,47 @@ public class CustomerCartOrderController {
 		        				
 		        			}
 		        		}
+		        		
 		        		meorvo.get(j).setCuoptionlist(stList);
+		        		System.out.println("stLsit: "+stList);
+		        		
+		        		
+		        		for(int d = 0;d<stList.length;d++) {
+		        			addCuop.add(stList[d].toString());
+		        			System.out.println("stList[d]: "+stList[d]);
+		        			
+		        		}
+		        		System.out.println(addCuop.toString());
+		        		
+	        		
 	        		}
+	        		meorvoIn = new JSONObject();
+	        		meorvoIn.put("cuoptionlist", addCuop.toString());
+	        		
+	        		totalPrice = totalPrice + Integer.parseInt(meorvo.get(j).getTotalPrice());
+	        		meorvo.get(0).setTotalPrice( (String.valueOf(totalPrice)));
+	        		
+	        		
+	        		///왜 여기가 바뀌었다고
+	        		meorvoIn.put("cId", meorvo.get(j).getcId());
+	        		meorvoIn.put("mNum", meorvo.get(j).getmNum());
+	        		meorvoIn.put("sId", meorvo.get(j).getsId());
+	        		meorvoIn.put("sName", meorvo.get(j).getsName());
+	        		meorvoIn.put("mPrice", meorvo.get(j).getmPrice());
+	        		meorvoIn.put("mName", meorvo.get(j).getmName());
+	        		meorvoIn.put("orderqty", meorvo.get(j).getOrderqty());
+	        		meorvoIn.put("totalPrice", meorvo.get(j).getTotalPrice());
+	        		
+	        		meorvoOut.add(meorvoIn);
 	        		
 	        	}
 	        	
-	        	System.out.println("수정: "+meorvo);
-	        	
-	        	
-	        	
+	        	System.out.println("menrooo: "+meorvoOut.toJSONString());
+
+
 	        	mv.addObject("cartLists",meorvo);
+	        	mv.addObject("cartListsmero",meorvoOut);
+	        	
 	        	//해당 메뉴별 모든 옵션을 map에다가 넣고map(string,Object)
 	        	//mv addObject에 map 넣고 같이 보내기 
 	        	
@@ -167,6 +214,11 @@ public class CustomerCartOrderController {
 	        
 			return mv;
 		}
+		
+		
+		
+		
+		
 		
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "ordercartmany", method = RequestMethod.POST)
@@ -203,7 +255,12 @@ public class CustomerCartOrderController {
 			  Object insertParam2 =  insertParam.get(cartcnt.get(i).toString());
 			  
 			  System.out.println("===================="+insertParam2);
-			  if(insertParam2.toString().length() > 6) {
+			  if(insertParam2 == null)
+			  {	
+				  //옵션이 없는 메뉴
+				  System.out.println("옵션이 없는 메뉴 입니다.");
+			  }else if(insertParam2.toString().length() > 6) {
+				  //옵션이 여러개인 메뉴
 				  oplistarr =(ArrayList<String>) insertParam2;
 				  System.out.println("::::"+oplistarr.toString());
 				  
@@ -211,7 +268,7 @@ public class CustomerCartOrderController {
 				  oplist= oplistarr.toArray(oplist);
 				  vo.setOptionlist(oplist);
 			  }else {
-				  
+				  //옵션이 하나인 메뉴
 				  System.out.println("===================="+insertParam2);
 				  oplistarr = new ArrayList<String>();
 				  String[] oplist = new String[1];
@@ -392,9 +449,9 @@ x total=1010,
 				
 				// 해당 주문번호의 op_dnum수정
 					
-					
-					// 마일리지 업데이트
-					int n = service.updatemileage(info);
+					int n = service.setcanclemileage(info);
+					//추가된 마일리지 업데이트 
+					n = service.updatemileage(info);
 					
 					// 해당 매장에 대한 마일리지가 없을 경우
 					if(n == 0) {
@@ -417,7 +474,7 @@ x total=1010,
 		  //System.out.println("meorvo: "+meorvo);
 		 
 	        
-		  	mv.setViewName("customer/delivery");
+		  	mv.setViewName("customer/orderCheck");
 			return mv;
 		}
 	

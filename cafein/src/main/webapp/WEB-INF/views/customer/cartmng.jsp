@@ -65,6 +65,7 @@ $(function(){
 			
 			
 			$("#CartList div a").html(local_cart[i].sId);
+			$("#CartList div a").val(local_cart[i].sId);
 			$('<tr>')
 			.append($('<td rowspan="2">').append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i,onClick:"cartlist(this.value)",})))
 			.append($('<td rowspan="2">'))    //.html()
@@ -115,7 +116,7 @@ $(function(){
 						//console.log($test);
 						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
 					
-			$("#CartList div p span strong").html(sumtotalPrice);
+			//$("#CartList div p span strong").html(sumtotalPrice);
 		}
 		
 	}
@@ -126,20 +127,36 @@ $(function(){
 	
 });
 
+
+function allCheck(val){
+	console.log(val);
+}
+
 function cartlist(val){
 	console.log(val);
 	var allPrice = 0;
+	
 	$("input[name=cartnumlist]:checked").each(function() {
+		
+		
 		var test = $(this).val(); 
-		var addNum = $("#orderCartForm div table tbody tr:eq("+(val*2)+") td:eq(6)").html();
-		console.log("test: "+addNum);
-		allPrice = allPrice + (addNum*1);
+		//console.log("test: "+test);
+		for(var t = 0;t<test.length;t++){
+			//console.log("te33st: "+test[t]);
+			var addNum = $("#orderCartForm div table tbody tr:eq("+(test[t]*2)+") td:eq(6)").html();
+			allPrice = allPrice + (addNum*1);
+		}
+		
+		
+		//console.log("test: "+addNum);
+		
 		//sum_optionprice =Number(sum_optionprice)+ Number(price);
 
 	});
 	
 	console.log(allPrice);
-	$("#orderCartForm div p span strong").html(val);
+	$("#orderCartForm div p span strong").html(allPrice);
+	$("#orderCartForm div p span input").val(allPrice);
 }
 
 function orderDeleteClick(){
@@ -231,7 +248,7 @@ function getOptionNaming(mnumber, stnumber){
 	<div
 		style="width: 100%; text-align: center; padding: 3px; border: 1px solid pink;"
 		id="CartListWrapper">
-		<h3 align="center">장바구니</h3>
+		<h3 align="center">장바 구니</h3>
 
 		<c:forEach var="cart" items="${optionname}" varStatus="i">
 			<script>
@@ -259,7 +276,7 @@ function getOptionNaming(mnumber, stnumber){
 			<form id="orderCartForm" name="orderCartForm" action="cartorder" method="POST">
 
 				<div style="background: gray;">
-					<label><input type="checkbox"></label> <a href="#"></a>
+					<label><input type="checkbox" onClick="allCheck(this.value)"></label> <a href="#"></a>
 				</div>
 				<div style="text-align: center;">
 
@@ -284,7 +301,7 @@ function getOptionNaming(mnumber, stnumber){
 
 				<div style="background: orange; padding: 3px;">
 					<p>
-						<span> 주문합계 <strong></strong>원</span>
+						<span> 주문합계 <input type="hidden" name="totalPrice" value="0"><strong>0</strong>원</span>
 					</p>
 				</div>
 				<input type="button" value="주문" id="orderBtn" onclick="orderBtnClick()">

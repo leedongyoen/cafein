@@ -48,9 +48,33 @@ public class OrdersVO {
 	private int cashRefundCnt; 
 	private int cardRefundCnt; 
 	
+	// 페이징 처리
+	private int start;
+	private int end;
+	
+	// 해당 매장에서 마일리지 서비스를 이용하는지 여부를 저장하기 위해서
+	private String mileageservice;
 	
 	
 	
+	public int getStart() {
+		return start;
+	}
+	public void setStart(int start) {
+		this.start = start;
+	}
+	public int getEnd() {
+		return end;
+	}
+	public void setEnd(int end) {
+		this.end = end;
+	}
+	public String getMileageservice() {
+		return mileageservice;
+	}
+	public void setMileageservice(String mileageservice) {
+		this.mileageservice = mileageservice;
+	}
 	public String getDetailNm() {
 		return detailNm;
 	}
@@ -287,9 +311,9 @@ public class OrdersVO {
 				+ ", addcanclemileage=" + addcanclemileage + ", cnt=" + cnt + ", addMileageCnt=" + addMileageCnt
 				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", refundSum=" + refundSum
 				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
-				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + "]";
+				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + ", start=" + start + ", end=" + end
+				+ ", mileageservice=" + mileageservice + "]";
 	}
 
 
-	
 }

@@ -158,5 +158,15 @@
 		FROM STORE
 		WHERE S_ID=#{sId}
 	</select>
+	
+	
+	<select id="getorderstoreaddress" resultMap="storeMap">
+		SELECT S_ID
+		      , S_NAME
+		      , S_ADD
+		FROM STORE
+		WHERE S_ID = #{sid} 
+	
+	</select>
 
 </mapper>

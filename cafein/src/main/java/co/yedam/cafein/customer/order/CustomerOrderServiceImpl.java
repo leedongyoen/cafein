@@ -96,6 +96,11 @@ public class CustomerOrderServiceImpl {
 		return dao.getodnum(vo);
 	}
 	
+	// order details 다중일 경우 op_dnum 업데이트
+	public int getmutilodnum(OrdersVO vo) {
+		return dao.getmutilodnum(vo);
+	}
+	
 	// 주문 끝나고 마일리지 업데이트
 	public int updatemileage(OrdersVO vo) {
 		return dao.updatemileage(vo);
@@ -104,6 +109,11 @@ public class CustomerOrderServiceImpl {
 	// 만약 해당 매장의 마일리지가 없을 경우
 	public int insertmileage(OrdersVO vo) {
 		return dao.insertmileage(vo);
+	}
+	
+	// 주문페이지에서 고객이 입력한 주소와 선택한 매장과의 거리 계산을 위해서
+	public StoreVO getorderstoreaddress(StoreVO vo) {
+		return dao.getorderstoreaddress(vo);
 	}
 
 	public int getodnum2(OrdersVO vo) {
