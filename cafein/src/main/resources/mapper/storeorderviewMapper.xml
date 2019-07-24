@@ -164,7 +164,9 @@
 	</select>
 	
 	<update id="updatecheckordercancel">
-	
+		<selectKey keyProperty="sId" resultType="string" order="AFTER">
+			SELECT S_ID FROM ORDERS WHERE O_NUM = #{oNum}
+		</selectKey>
 		UPDATE ORDERS
 		SET DELIVERY_STATUS = 'C4'
 			, REFUSE_REASON = '주문 확인 시간 초과'

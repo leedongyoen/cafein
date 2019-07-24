@@ -248,6 +248,12 @@
 	
 	</select>
 
+	<update id="updatecusordercancel">
 
+		UPDATE ORDERS
+		SET REFUSE_REASON = '고객이 주문 취소'
+			, DELIVERY_STATUS = 'C4'
+		WHERE O_NUM = #{oNum}	
+	</update>
 
 </mapper>

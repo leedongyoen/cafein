@@ -13,12 +13,25 @@
 		getOrderList();
 	});
 	
-	function refuse(ordernum){
+	function refuse(ordernum,sId){
 		event.stopPropagation();
 		if (confirm("정말 주문을 취소하시겠습니까??") == true){    //확인
-		    console.log(ordernum);
-		
-		    getOrderList();
+		    console.log(ordernum,sId);
+		    $.ajax({
+				url:'updatecusordercancel',
+				type:'GET',
+				dataType:'json',
+				data: {sId: sId, oNum: ordernum},
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){ 
+					
+					alert('주문 취소 되었습니다.');
+					 getOrderList();
+				} 
+			});
+		   
 		}else{   //취소
 			return false;
 		}
@@ -59,7 +72,7 @@
 					.append($('<td>').html(item.detailNm))
 					.append($('<td>').append($('<button>').attr({
 															type:"button",
-															onclick:"refuse('"+item.oNum+"')",										
+															onclick:"refuse('"+item.oNum+"','"+item.sId+"')",										
 															class: item.deliveryStatus
 															}).css("display","none")
 															.append("결제 취소") ))
