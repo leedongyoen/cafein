@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
 import co.yedam.cafein.viewvo.ViewPosVO;
+import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.RecipeVO;
 
 @Service("PosService")
@@ -33,8 +34,9 @@ public class PosServiceImpl implements PosService{
 		return DAO.getCusList(vo);
 	}
 
-	/*
-	 * public List<BoardVO> getBoardList(BoardVO vo) { return
-	 * boardDAO.getBoardList(vo); }
-	 */
+	public List<OrdersVO> getCusRefund(OrdersVO vo){
+		System.out.println(vo.getoNum());
+		return DAO.getCusRefund(vo);
+	
+	}
 }

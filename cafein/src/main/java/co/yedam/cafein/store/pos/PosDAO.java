@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
 import co.yedam.cafein.viewvo.ViewPosVO;
+import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.RecipeVO;
 
 @Repository
@@ -28,5 +29,11 @@ public class PosDAO {
 	public List<ViewPosCusSearchVO> getCusList(ViewPosCusSearchVO vo) {
 		System.out.println("===> Mybatis getCus()");
 		return mybatis.selectList("PosDAO.getCusList", vo);
+	}
+	
+	//환불위한 주문이력조회
+	public List<OrdersVO> getCusRefund(OrdersVO vo){
+		System.out.println("===> Mybatis getCusRefund()");
+		return mybatis.selectList("PosDAO.getCusRefund",vo);
 	}
 }

@@ -27,4 +27,8 @@ public class WarehousingDAO {
 	public int insertEnter(WarehousingVO vo) {
 		return mybatis.insert("WarehousingDAO.insertEnter",vo);
 	}
+	
+	public List<WarehousingVO> getWarehousing(WarehousingVO vo) {
+		return mybatis.selectList("WarehousingDAO.getWarehousing",vo);
+	}
 }

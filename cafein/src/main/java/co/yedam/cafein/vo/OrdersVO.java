@@ -62,8 +62,8 @@ public class OrdersVO {
 	// 해당 매장에서 마일리지 서비스를 이용하는지 여부를 저장하기 위해서
 	private String mileageservice;
 	
-	 
-	
+
+
 	public String getStartDate() {
 		return startDate;
 	}
@@ -81,6 +81,7 @@ public class OrdersVO {
 	}
 	public void setOrderlistcontroller(int orderlistcontroller) {
 		this.orderlistcontroller = orderlistcontroller;
+
 	}
 	public int getStart() {
 		return start;
@@ -337,9 +338,14 @@ public class OrdersVO {
 				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", refundSum=" + refundSum
 				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
 				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + ", start=" + start + ", end=" + end
+<<<<<<< HEAD
 				+ ", orderlistcontroller=" + orderlistcontroller + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", mileageservice=" + mileageservice + "]";
+=======
+				+ ", mileageservice=" + mileageservice + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 	}
+	
 
 
 }
