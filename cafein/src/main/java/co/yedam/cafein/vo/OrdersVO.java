@@ -55,8 +55,27 @@ public class OrdersVO {
 	// 해당 매장에서 마일리지 서비스를 이용하는지 여부를 저장하기 위해서
 	private String mileageservice;
 	
+	//POS기에서 고객주문날짜별조회
+	private String startDate;
+	private String endDate;
 	
 	
+	
+	
+	
+	
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 	public int getStart() {
 		return start;
 	}
@@ -312,8 +331,9 @@ public class OrdersVO {
 				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", refundSum=" + refundSum
 				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
 				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + ", start=" + start + ", end=" + end
-				+ ", mileageservice=" + mileageservice + "]";
+				+ ", mileageservice=" + mileageservice + ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
+	
 
 
 }

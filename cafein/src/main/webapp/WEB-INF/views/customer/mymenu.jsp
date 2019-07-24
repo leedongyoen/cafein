@@ -298,16 +298,24 @@
 		var price = $('#mPrice').val();
 		var v_totalprice = $('#totalPrice').val();
 		var no = $("#ordernum").html();
+		var opt = $("#opPrice").val();
+		var sum_optionprice=0;
+		$("input[name=cuoptionlist]:checked").each(function() {
+			var test = $(this).val(); 
+			var sprice = $('#option'+test).val();
+			sum_optionprice =Number(sum_optionprice)+ Number(sprice);
+
+		});
 		if (num == -1) {
 			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
 				return;
 			}
 			no = Number(no) - 1;
-			v_totalprice = Number(v_totalprice) - Number(price);
+			v_totalprice = Number(v_totalprice) - Number(sum_optionprice)- Number(price);
 		} else if (num == 1) {
 			no = Number(no) + 1;
-			v_totalprice = Number(v_totalprice) + Number(price);
+			v_totalprice = Number(v_totalprice) + Number(sum_optionprice)+ Number(price);
 		}
 		$('#totalPrice').val(v_totalprice);
 		$("#ordernum").html(no);
