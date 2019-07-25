@@ -14,7 +14,21 @@
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">
 <META NAME="Description" CONTENT="">
+<style type="text/css">
 
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 940px;
+  }
+}
+
+</style>
 <script>
 //최소길이 & 최대길이 제한
 var minimum = 8;

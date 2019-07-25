@@ -107,7 +107,8 @@
 		$('#orderstatus').html("");
 		$('#ordertaketime').hide();
 		$('#taketime').html("");
-		
+		$('.postcancel').show();
+		$('#postcancelnumber').html("주문번호");
 		$.ajax({
 			url:'getcustomerordermenudetail',
 			type:'GET',
@@ -192,6 +193,11 @@
 				}else if(data.deliveryStatus == 'C1' && data.receipt == 'takeout'){
 					$('#ordertaketime').show();
 					$('#taketime').html(data.takeTime+" 준비 완료");
+				}else if(data.deliveryStatus == 'C6'){
+					$('.postcancel').hide();
+					var ordernumber = $('#ordernum').html();
+					$('#ordernum').html("주문 번호 : "+ordernumber);
+					$('#postcancelnumber').html("환불");
 				}
 					
 				
@@ -265,7 +271,7 @@
 						<table id="orderdetailtable" class="table">
 						
 							<tr>
-								<th>주문번호</th>
+								<th id="postcancelnumber">주문번호</th>
 								<td id="ordernum"></td>
 							</tr>
 							<tr id="orderstatusview" style="display: none;">
@@ -283,7 +289,7 @@
 			
 							</tr>
 							
-							<tr>
+							<tr class="postcancel">
 								<th>주문 내역</th>
 								<td id="orderdetail"></td>
 							</tr>

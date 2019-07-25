@@ -1,14 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
-@import url('https://fonts.googleapis.com/css?family=Nanum+Myeongjo|Noto+Sans+KR:100,300,400,500,700,900&display=swap&subset=korean');
+@import url('https://fonts.googleapis.com/css?family=Cute+Font|Nanum+Myeongjo|Noto+Sans+KR|Stylish&display=swap');
 
 
 /*  글씨체
 
+	font-family: 'Cute Font', cursive;
+	font-family: 'Stylish', sans-serif;
 	font-family: 'Nanum Myeongjo', serif;
 	font-family: 'Noto Sans KR', sans-serif;
 
+
   */ 
-  
+
+ 
   
 /*  페이지 타이틀을 위한 css  */ 
 .titlefont{
@@ -54,7 +58,8 @@ table tbody tr td,
 	background-color: #E0F8F7
 }
 
-.trC4{
+.trC6,   
+.trC4 {
 	background-color: #FBEFF2
 }
 
