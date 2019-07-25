@@ -16,6 +16,8 @@
       <result column="ST_NAME" property="stName"/>
       <result column="ST_AQTY" property="stAqty"/>
       <result column="STAN_UNIT" property="stanUnit"/>
+      <result column="ST_UNIT" property="stUnit"/>
+      <result column="ST_PRICE" property="stPrice"/>
    </resultMap>
       
 	<resultMap type="stock" id="recistockMap">
@@ -84,6 +86,9 @@
 			,RECIPENO
 			,ST_AQTY
 			,STAN_UNIT
+			,ST_UNIT
+			,ST_PRICE
+			
 		from stock_check_view
 		where s_id=#{sId} and m_num=#{mNum}
 		
@@ -101,8 +106,11 @@
 				,S_ID 
 				,ST_NAME
 				,CA_NUM 
+				,ST_PRICE "stPrice"
+         		,STAN_UNIT "stanUnit"
 				 ,ST_AQTY "stAqty"
 				 ,ST_UNIT "stUnit"
+				 
 			from stock
 			where s_id=#{sId}
 	</select>
@@ -120,7 +128,7 @@
 			 	
 			 	VALUES ( 'RE'||lpad(RECIPE_SEQ.nextval,3,0)
 			 			, #{sId}
-			 			, #{consum}
+			 			, round(#{consum},4)
 			 			, #{stNum}
 			 			, #{mNum}
 			 			, #{caNum}
@@ -136,7 +144,7 @@
 	
 	<update id="stockAqtyUpdate" parameterType="stock">
 	
-		UPDATE STOCK SET ST_AQTY = #{stAqty} 
+		UPDATE STOCK SET ST_AQTY = round(#{stAqty},4) 
 						WHERE ST_NUM=#{stNum}
 	</update>
 	
@@ -157,7 +165,7 @@
 					
 					VALUES ( 'RE'||lpad(RECIPE_SEQ.nextval,3,0)
 							, #{sId}
-							, #{consum}
+							, round(#{consum},4)
 							, #{stNum}
 							, #{mNum}
 							, #{caNum}
@@ -189,5 +197,8 @@
 
 	</select>
 	
+	<delete id="deleteStockWith" parameterType="recipe">
+	DELETE FROM RECIPE WHERE ST_NUM = #{stNum}
+	</delete>
 
 </mapper>

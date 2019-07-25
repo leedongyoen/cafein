@@ -7,9 +7,16 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
-
+<link rel="stylesheet" href="./css/orderlist.css" >
 <title>우리매장 고객</title>
+<style type="text/css">
 
+
+input {
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
+}
+
+</style>
 <script>
 
 	$(function(){
@@ -208,7 +215,7 @@
 	<div style="position: absolute; width: 100%">
 		<div style="overflow: scroll; height: 800px; float: left; width: 30%;">
 			<div class="container">
-				<h2 align="center">우리 매장 고객</h2>
+				<p align="center" class="titlefont">우리 매장 고객</p>
 				<hr>
 			</div>
 			<div class="container" align="center">
@@ -232,50 +239,50 @@
 			id="toggleTable">
 
 			<div class="container">
-				<h2 align="center">고객 상세</h2>
+				<p align="center" class="titlefont">고객 상세</p>
 				<hr>
 			</div>
 			<div>
 				<form id="form1">
-					<table border="1" class="table table-hover">
+					<table border="1" class="table ">
 						<tr>
-							<th>ID</th>
+							<th class="tableth">ID</th>
 							<td><input type="text" id="cId" name="cId" readonly></td>
 						</tr>
 						<tr>
-							<th>NICKNAME</th>
+							<th class="tableth">NICKNAME</th>
 							<td><input type="text" id="cNick" name="cNick" readonly></td>
 						</tr>
 						<tr>
-							<th>NAME</th>
+							<th class="tableth">NAME</th>
 							<td><input type="text" id="cName" name="cName" readonly></td>
 						</tr>
 						<tr>
-							<th>TEL</th>
+							<th class="tableth">TEL</th>
 							<td><input type="text" id="cTel" name="cTel" readonly></td>
 						</tr>
 						<tr>
-							<th>address</th>
+							<th class="tableth">address</th>
 							<td><input type="text" id="cAdd" size=50 name="cAdd"
 								readonly></td>
 						</tr>
 						<tr>
-							<th>loginRoot</th>
+							<th class="tableth">loginRoot</th>
 							<td><input type="text" id="cJoin" name="cJoin" readonly></td>
 						</tr>
 						<tr>
-							<th>MILEAGE</th>
+							<th class="tableth">MILEAGE</th>
 							<td><input type="text" id="mileage" name="mileage" readonly></td>
 						</tr>
 					</table>
 				</form>
 			</div>
 			<div class="container">
-				<h2 align="center">구매이력</h2>
+				<p align="center" class="titlefont">구매이력</p>
 				<hr>
 			</div>
 			<div>
-				<table border="1" class="table table-hover" id="c_history">
+				<table border="1" class="table " id="c_history">
 					<thead>
 						<tr>
 							<th>ID</th>

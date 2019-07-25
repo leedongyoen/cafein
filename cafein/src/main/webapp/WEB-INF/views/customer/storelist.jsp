@@ -8,7 +8,7 @@
 <%@ include file="cushead.jsp" %>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
-
+<link rel="stylesheet" href="./css/orderlist.css" >
 <title>Insert title here</title>
 <style type="text/css">
 input {
@@ -111,9 +111,9 @@ input {
 							</tr>
 							<tr>
 								<th>PRICE</th>
-								<td><input type="text" id="price" name="mPrice" readonly="readonly">&nbsp;&nbsp;
-									<button type="button" onclick="add(1)">+</button> <span id="ordernum">1</span>
-									<button type="button" onclick="add(-1)">-</button>
+								<td><input type="text" id="price" name="mPrice" readonly="readonly" style="width:8ex;"> &nbsp;&nbsp;
+									<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(1)">+</button> <span id="ordernum">1</span>
+									<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(-1)">-</button>
 								</td>
 								
 							</tr>
@@ -573,7 +573,7 @@ input {
 							     id: item.stNum,
 							     value: item.stNum,
 							   	})
-							   	.attr("class","checkoption")
+							   	.attr("class","checkoption checkbox")
 							   	.appendTo("#menudetailoption");			
 							$("<label>").attr("for",item.stNum)
 										.append(item.opName+"("+item.opPrice+"원 추가)")

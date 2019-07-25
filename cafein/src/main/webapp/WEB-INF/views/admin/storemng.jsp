@@ -9,12 +9,13 @@
 <%@ include file="adminhead.jsp"%>
 <title>Insert title here</title>
 <script src="./js/json.min.js"></script>
-
+<link rel="stylesheet" href="./css/orderlist.css" >
 
 <META NAME="Generator" CONTENT="EditPlus">
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">
 <META NAME="Description" CONTENT="">
+
 <script>
 
 	$(function(){
@@ -47,7 +48,7 @@
 								.append($('<td>').html(store.stopentime))
 								.append($('<td>').html(store.stclosetime))
 								.append($('<td>').html(store.stmileservice))
-								.append($('<td>').html('<input type=\'checkbox\' name=\'sid\' value=\'' + store.sid+'\' />'))
+								.append($('<td>').html('<input type=\'checkbox\' name=\'sid\' class=\'checkbox\' value=\'' + store.sid+'\' />'))
 								.appendTo('#storepermissionlist');
 				});
 			}
@@ -90,12 +91,14 @@
 </script>
 </head>
 <body>
-	<h1 align="center">매장등록신청내역</h1>
+	<hr>
+	<p align="center" class="titlefont">매장등록신청내역</p>
+	<hr>
 	<div class="container">
 	<form id="frm">
-		<table class="table">
+		<table class = "table ">
 			
-			<thead>
+			<thead class ="tableth trth">
 				<tr>
 				<th>매장명</th>
 				<th>ID</th>
@@ -109,12 +112,12 @@
 				<th>승인 선택</th>
 			</tr>
 			</thead>
-			<tbody id=storepermissionlist></tbody>
+			<tbody id="storepermissionlist" class="trtd" ></tbody>
 		</table>
 	</form>
 		<div style="text-align: right">
-			<button type="button" id="btnCkPermission">승인</button>
-			<button onclick="location.href='adminMainForm.do'">돌아가기</button>
+			<button class="btn btn-default btn-success" type="button" id="btnCkPermission">승인</button>
+			<button class="btn btn-secondary" onclick="location.href='adminMainForm.do'">돌아가기</button>
 		</div>
 	</div>
 </body>

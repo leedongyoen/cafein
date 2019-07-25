@@ -311,15 +311,23 @@
 				}
 				 
 				
-				$('.C0').css({
+				$('.C0').css({ // 주문 대기
 					display:"inline"
 				});
-				 
-				$('.C4').css({
+				
+				$('.C1').css({ // 베달 대기
+					display:"none"
+				});
+				
+				$('.C3').css({ //배달완료
 					display:"none"
 				});
 				 
-				$('.C5').css({
+				$('.C4').css({ // 주문 취소
+					display:"none"
+				});
+				 
+				$('.C5').css({ // 현장 결제
 					display:"none"
 				});	
 			}
@@ -376,6 +384,7 @@
 
 </script>
 <body>
+<hr>
 <div class = "container" align = "center">
 	<h2 align="center">주문 내역</h2>
 	<hr>	
