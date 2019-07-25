@@ -74,6 +74,16 @@ public class StoreOrderDAO {
 	public int updatecheckordercancel(OrdersVO vo){
 		return template.update("getStoreOrderListDAO.updatecheckordercancel",vo);
 	}
+	
+	// 스케줄러 시 마일리지 서비스 유뮤 판단을 위해서
+	public String getschedulermileageservice(OrdersVO vo) {
+		return template.selectOne("getStoreOrderListDAO.getschedulermileageservice",vo);
+	}
+	
+	// 스케줄러 시 주문 매장ID를 얻기 위해서
+	public String getschedulerordersid(OrdersVO vo) {
+		return template.selectOne("getStoreOrderListDAO.getschedulerordersid",vo);
+	}
 
 	//-------------------------------------------------------------------------------------
 	

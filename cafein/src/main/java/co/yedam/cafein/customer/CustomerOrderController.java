@@ -98,6 +98,7 @@ public class CustomerOrderController {
 		
 		// 주문 취소
 		int n = service.updatecusordercancel(vo);
+		// 마일리지 서비스 여부 확인
 		String mileageservice = service.getstoremileageservice(vo.getsId());
 		vo.setMileageservice(mileageservice);
 		// 마일리지 수정을 위해서

@@ -498,7 +498,7 @@ input {
 					<tr class="deliverN" style="display: none;">
 						<th>수 령 방 식</th>
 						<td>					
-							<input type="radio" name="receipt" value="takeout" id="takeout" > 
+							<input type="radio" name="receipt" value="takeout" id="takeout" checked="checked" > 
 							<label for="takeout">직접 수령</label>
 						</td>
 					</tr>
