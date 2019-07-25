@@ -237,7 +237,7 @@
 			</div>
 			<div>
 				<form id="form1">
-					<table border="1" class="table table-hover">
+					<table border="1" class="table table-striped">
 						<tr>
 							<th>ID</th>
 							<td><input type="text" id="cId" name="cId" readonly></td>
@@ -275,7 +275,7 @@
 				<hr>
 			</div>
 			<div>
-				<table border="1" class="table table-hover" id="c_history">
+				<table border="1" class="table table-striped" id="c_history">
 					<thead>
 						<tr>
 							<th>ID</th>

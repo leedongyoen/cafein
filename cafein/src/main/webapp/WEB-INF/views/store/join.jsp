@@ -22,6 +22,7 @@ $(function(){
 			success: function(data){
 				if(data.cnt == 0){
 					alert("사용 가능한 아이디입니다.");
+					$("#submitt").removeAttr("disabled");
 				}else{
 					alert("사용 중인 아이디입니다.");
 				}
@@ -129,12 +130,12 @@ function execPostCode() {
 <body>
  <div class = "container" align="center">
   <form name = "storejoinForm" action = "storejoin.do" method = "post">
-    <h3>회원가입</h3>
-      <table class = "table table-hover">
+    <h3>매장 가입</h3>
+      <table class = "table table-striped">
         <tr>
           <th>ID</th>
           <td><input type = "text" id="sid" name = "sid">
-          <button type = "button" class="btn btn-default" id="idCheck">중복확인</button>
+          <button type = "button" class="btn btn-default btn-primary" id="idCheck">중복확인</button>
           </td>
         </tr>
         <tr>
@@ -143,20 +144,20 @@ function execPostCode() {
         </tr>
         <tr>
           <th>비밀번호</th>
-          <td><input type = "text" id="spw" name = "spw"></td>
+          <td><input type = "password" id="spw" name = "spw"></td>
         </tr>
         <tr>
           <th>비밀번호 확인</th>
-          <td><input type = "text" id="spwcheck" name = "spwcheck"></td>
+          <td><input type = "password" id="spwcheck" name = "spwcheck"></td>
         </tr>
         <tr>
           <th>매장연락처</th>
           <td><input type = "tel" id="stel" name = "stel"></td>
         </tr>
         <tr>
-          <th>매장주소</th>
+          <th>매장주소</th> 
           <td><input type = "text" id="sadd2" name = "sadd2" placeholder="우편번호">
-          <button type = "button" onclick="execPostCode()">우편번호 찾기</button><br>
+          <button type = "button" class="btn btn-default btn-primary" onclick="execPostCode()">우편번호 찾기</button><br>
           		<input type = "text" id="sadd" name = "sadd" placeholder="주소">
           		<input type = "text" id="sadd3" name = "sadd3" placeholder="상세주소"></td>
         </tr>
@@ -183,8 +184,8 @@ function execPostCode() {
           </td>
         </tr>
       </table>
-      <button type = "submit"  class="btn btn-default " onclick="checkForm()">가입하기</button>
-      <a class="btn btn-default"  href="javascript:history.go(-1)">돌아가기</a>
+      <button type = "submit"  class="btn btn-default btn-success" id="submitt" onclick="checkForm()" disabled="disabled">가입하기</button>
+      <a class="btn btn-secondary"  href="javascript:history.go(-1)">돌아가기</a>
   </form>
   </div>
 </body>

@@ -104,7 +104,7 @@ $(function() {
 			<button>검색</button>
 		</div>
 		
-		<table class="table" id="storeTable">
+		<table class = "table table-striped" id="storeTable">
 			<thead>
 				<tr>
 					<th>매장명</th>
@@ -123,7 +123,7 @@ $(function() {
 
 		</table>
 		<div style="text-align: right">
-			<button onclick="location.href='adminMainForm.do'">돌아가기</button>
+			<button class="btn btn-secondary" onclick="location.href='adminMainForm.do'">돌아가기</button>
 		</div>
 	</div>
 </body>

@@ -385,7 +385,7 @@ function checkpwbtn(){
     <h3 id = "s_info">매장 정보</h3>
     <h3 id = "s_infoedit" style=" display:none ">매장 정보 수정</h3>
   <form id = "storeinfoForm" method = "post">
-      <table class ="table">
+      <table class = "table table-striped">
         <tr>
           <th>ID</th>
           <td><input type = "text" name = "sid" readonly></td>
@@ -398,7 +398,7 @@ function checkpwbtn(){
           <th>비밀번호</th>
           <td>
 <!--           <input type = "text" name = "spw" id = "spw" readonly> -->
-          		<button type="button" id="pwbt" onclick="openModeal()" disabled> 비밀번호 변경하기 </button>
+          		<button type="button" id="pwbt" onclick="openModeal()" class="btn btn-default btn-primary" disabled> 비밀번호 변경하기 </button>
           </td>
         </tr>
         <tr>
@@ -408,7 +408,7 @@ function checkpwbtn(){
         <tr>
           <th>매장주소</th>
         <td><input type = "text" id="sadd2" name = "sadd2" placeholder="우편번호" readonly>
-          <button type = "button" id="addbt"onclick="execPostCode()" disabled>우편번호 찾기</button><br>
+          <button type = "button" id="addbt" class="btn btn-default btn-primary" onclick="execPostCode()" disabled>우편번호 찾기</button><br>
           		<input type = "text" id="sadd" name = "sadd" placeholder="주소" readonly>
           		<input type = "text" id="sadd3" name = "sadd3" placeholder="상세주소" readonly></td>
         </tr>
@@ -435,8 +435,8 @@ function checkpwbtn(){
           </td>
         </tr>
       </table>
-      <a class="btn btn-default  pull-right"  href="javascript:history.go(-1)">돌아가기</a>
-      <input type = "button" id = "edit_before" class="btn btn-default" value = "수정하기" onclick = "edit()">
+      <a class="btn btn-secondary  pull-right"  href="javascript:history.go(-1)">돌아가기</a>
+      <input type = "button" id = "edit_before"  class="btn btn-default btn-success" value = "수정하기" onclick = "edit()">
       <input style=" display:none " type = "button" class="btn btn-default" id = "edit_after" value = "수정완료" onclick = "editok()">
   </form>
   </div>

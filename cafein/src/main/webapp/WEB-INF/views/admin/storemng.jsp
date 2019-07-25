@@ -93,7 +93,7 @@
 	<h1 align="center">매장등록신청내역</h1>
 	<div class="container">
 	<form id="frm">
-		<table class="table">
+		<table class = "table table-striped">
 			
 			<thead>
 				<tr>
@@ -113,8 +113,8 @@
 		</table>
 	</form>
 		<div style="text-align: right">
-			<button type="button" id="btnCkPermission">승인</button>
-			<button onclick="location.href='adminMainForm.do'">돌아가기</button>
+			<button class="btn btn-default btn-success" type="button" id="btnCkPermission">승인</button>
+			<button class="btn btn-secondary" onclick="location.href='adminMainForm.do'">돌아가기</button>
 		</div>
 	</div>
 </body>
