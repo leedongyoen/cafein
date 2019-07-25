@@ -81,4 +81,8 @@ public class StoreCloseDAO {
 		return mybatis.selectList("storeCloseDAO.storeReceipt",vo);
 	}
 	
+	public List<StoreOpenVO> storeReceiptList(StoreOpenVO vo) {
+		return mybatis.selectList("storeCloseDAO.storeReceiptList", vo);
+	}
+	
 }

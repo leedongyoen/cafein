@@ -2,6 +2,7 @@ package co.yedam.cafein.store.close;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -162,8 +163,14 @@ public class StoreCloseServiceImpl implements StoreCloseService {
    
 		return 0;
 	}
+	
+	@Override
+	public List<Map<String, Object>> storeReceipt(StoreOpenVO vo) {
+		return dao.storeReceipt(vo);
+	}
 
-
-
-
+	@Override
+	public List<StoreOpenVO> storeReceiptList(StoreOpenVO vo) {
+		return dao.storeReceiptList(vo);
+	}
 }
