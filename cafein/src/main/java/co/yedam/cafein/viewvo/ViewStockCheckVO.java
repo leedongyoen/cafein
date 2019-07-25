@@ -13,7 +13,22 @@ public class ViewStockCheckVO {
 	private String caNum;
 	private String opName;
 	private int opPrice;
+	private String stUnit;
+	private int stPrice;
 	
+	
+	public int getStPrice() {
+		return stPrice;
+	}
+	public void setStPrice(int stPrice) {
+		this.stPrice = stPrice;
+	}
+	public String getStUnit() {
+		return stUnit;
+	}
+	public void setStUnit(String stUnit) {
+		this.stUnit = stUnit;
+	}
 	public String getCaNum() {
 		return caNum;
 	}
@@ -80,6 +95,14 @@ public class ViewStockCheckVO {
 	public void setStanUnit(double stanUnit) {
 		this.stanUnit = stanUnit;
 	}
+	@Override
+	public String toString() {
+		return "ViewStockCheckVO [recipeNo=" + recipeNo + ", sId=" + sId + ", consum=" + consum + ", mNum=" + mNum
+				+ ", stNum=" + stNum + ", stName=" + stName + ", stAqty=" + stAqty + ", stanUnit=" + stanUnit
+				+ ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice + ", stUnit=" + stUnit
+				+ ", stPrice=" + stPrice + "]";
+	}
+
 	
 	
 	

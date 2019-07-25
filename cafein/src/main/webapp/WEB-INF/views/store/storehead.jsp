@@ -23,15 +23,26 @@
 $(function(){
 	var sId = "<%= (String)session.getAttribute("sId") %>";
 	var sName = "<%= (String)session.getAttribute("sName") %>";
+	var openTime = localStorage.getItem("openTime");
+	
+	console.log("open time localstorage : " + openTime) 
 	console.log("sId = " + sId + "  sName = " + sName );
 	
 	if(sId == "null") {
-		$("#loginbtn").css('display', 'inline');
+		$("#loginbtn").css('display', 'block');
 		$("#logoutbtn").css('display', 'none');
 	}
 	if(sId != "null") {
 		$("#loginbtn").css('display', 'none');
-		$("#logoutbtn").css('display', 'inline');
+		$("#logoutbtn").css('display', 'block');
+	}
+	if(openTime == null) {
+		$("#openbtn").css('display', 'block');
+		$("#closebtn").css('display', 'none');
+	}
+	if(openTime != null) {
+		$("#openbtn").css('display', 'none');
+		$("#closebtn").css('display', 'block');
 	}
 	
 });
@@ -128,7 +139,19 @@ body {
       </li>
       
       <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/storeopen.do" id="openbtn">오픈</a></li>
-      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/daycal.do" id="closebtn">마감</a></li>
+      
+	<li class="nav-item dropdown">
+	    <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">마감</a>
+		<div class="dropdown-menu" aria-labelledby="dropdown03">
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/daycal.do" id="closebtn">마감 정산</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/closedetails.do">마감 내역</a>
+		</div>
+	</li>
+
+
+
+
+
 
     </ul>
 

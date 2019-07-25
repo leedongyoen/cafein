@@ -92,21 +92,25 @@
 	}//init
 	
 	function selectOpen(){
+		var sId = "<%= (String)session.getAttribute("sId") %>";
 		$.ajax({
   			url:'getOpen.do',
   			type: 'POST',
+  			data: JSON.stringify({sId : sId}) ,
   			contentType: 'application/json;charset=utf-8',
 			mimeType : 'application/json',
   			dataType: 'json',
   			success : function(data){
   				var openTimeVal = data.openTime;
+  				
 //   				alert(openTimeVal);
   				localStorage.setItem("openTime",JSON.stringify(openTimeVal));
   				var openTimeLocal = localStorage.getItem("openTime");
-// 				alert(openTimeLocal);
+// 				console.log("오픈시간 스토리지저장 : " +openTimeLocal);
+				location.href="storemainform.do";
   			},
   			error : function(data){
-  				alert("상태값 :" + status + " Http에러메시지 :" + msg);
+  				alert("selectOpen 에러");
   			}
   		});
 		
@@ -117,7 +121,7 @@
 			//객체에 제이슨형태로 담기. 오픈시간/매장아이디/영업준비금
   		var JsonData ={"sId" : sId, "defaultCash" : openTotalCash};
 			
-		//객체를 제이슨으로 변환
+		//제이슨 객체를  스트링으로 변환
   		console.log(JSON.stringify(JsonData));
 		
 //   	ajax로 데이터 전송->insertOpen 으로.
@@ -129,9 +133,12 @@
 			mimeType : 'application/json',
   			dataType: 'json',
   			success : function(data){
-  				alert('오픈 시제가 정상 입금되었습니다.');
-  				selectOpen();
-//   				location.href = "storemainform.do";
+  				if(data == 0){
+  					alert('오픈 시제가 정상 입금되었습니다.');
+  					selectOpen();
+  				}else{
+  					alert('익일 마감하였습니다.'); 					
+  				}
   			},
   			error : function(data){
   				alert("상태값 :" + status + " Http에러메시지 :" + msg);

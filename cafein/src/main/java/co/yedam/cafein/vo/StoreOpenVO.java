@@ -19,7 +19,7 @@ public class StoreOpenVO {
 	private int netIncome;			// 순수익
 	private int usedMile;			// 현금결제 시 사용된 마일리지
 	private int cashSum;			// 현금 매출액
-	
+	private int checkOpen;
 	public String getsId() {
 		return sId;
 	}
@@ -80,11 +80,17 @@ public class StoreOpenVO {
 	public void setCashSum(int cashSum) {
 		this.cashSum = cashSum;
 	}
+	public int getCheckOpen() {
+		return checkOpen;
+	}
+	public void setCheckOpen(int checkOpen) {
+		this.checkOpen = checkOpen;
+	}
+
 	@Override
 	public String toString() {
 		return "StoreOpenVO [sId=" + sId + ", openTime=" + openTime + ", closeTime=" + closeTime + ", cash=" + cash
 				+ ", defaultCash=" + defaultCash + ", orCash=" + orCash + ", difference=" + difference + ", netIncome="
 				+ netIncome + ", usedMile=" + usedMile + ", cashSum=" + cashSum + "]";
 	}
-
 }

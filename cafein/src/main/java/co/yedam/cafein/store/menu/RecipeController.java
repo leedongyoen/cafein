@@ -99,19 +99,25 @@ public class RecipeController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value="/recipes/{stAqty}"
+	@RequestMapping(value="/recipes/{sId}/{stAqty}/{stanUnit}"
 					,method=RequestMethod.POST
 				//	,produces="application/json"     
 				//	,consumes="application/json"
 					,headers = {"Content-type=application/json" }
 			)public Map<String, Boolean> insertRecipe(@RequestBody RecipeVO vo
 														,StockVO vo2
+														,@PathVariable("sId") String sId
 														,@PathVariable("stAqty") String stAqty
+														,@PathVariable("stanUnit") String stanUnit
 														, Model model){
 		
-		vo.setsId("SH001");
-		vo2.setStAqty(Double.parseDouble(stAqty)/1000);
+		vo.setsId(sId);
+		double staaqty = Double.parseDouble(stAqty);
+		int stanuunit = Integer.parseInt(stanUnit);
+		vo2.setStAqty(staaqty/stanuunit);
 		vo2.setStNum(vo.getStNum());
+		vo.setConsum(staaqty/stanuunit);
+		
 		service2.updateStockAqty(vo2);
 		service.insertRecipe(vo);
 		Map<String, Boolean> map = new HashMap<String, Boolean>();

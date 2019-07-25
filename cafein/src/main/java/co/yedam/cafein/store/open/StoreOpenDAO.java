@@ -26,4 +26,8 @@ public class StoreOpenDAO {
 	public StoreOpenVO getOpen(StoreOpenVO vo) {
 		return mybatis.selectOne("storeOpenDAO.getOpen",vo);
 	}
+	
+	public int checkOpen(StoreOpenVO vo) {
+		return mybatis.selectOne("storeOpenDAO.checkOpen", vo);
+	}
 }
