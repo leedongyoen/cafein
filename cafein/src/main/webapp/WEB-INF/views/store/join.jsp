@@ -32,37 +32,45 @@ $(function(){
 });
 
 function checkForm(){
+	
 	form = document.storejoinForm;
-	if (form.sid.value == "") {
-		alert("아이디를 입력하세요.");
-		return form.sid.focus();
-	}
-	if (form.sname.value == "") {
-		alert("매장상호를 입력하세요.");
-		return form.sname.focus();
-	}
-	if (form.spw.value == "") {
-		alert("비밀번호를 입력하세요.");
-		return form.spw.focus();
-	}
-		if (form.spw.value != form.spwcheck.value) {
+	
+	if (form.spw.value != form.spwcheck.value) {
 		alert("비밀번호가 서로 다릅니다. 다시 입력해주세요.");
 		form.spwcheck.focus
-		return false();
-	} 
-	if (form.stel.value == "") {
-		alert("이름을 입력하세요.");
-		return form.stel.focus();
+		return false;
+	} else {
+		
+		if (form.sid.value == "") {
+			alert("아이디를 입력하세요.");
+			return form.sid.focus();
+		}
+		if (form.sname.value == "") {
+			alert("매장상호를 입력하세요.");
+			return form.sname.focus();
+		}
+		if (form.spw.value == "") {
+			alert("비밀번호를 입력하세요.");
+			return form.spw.focus();
+		}
+		
+		if (form.stel.value == "") {
+			alert("이름을 입력하세요.");
+			return form.stel.focus();
+		}
+		if (form.cTel.value == "") {
+			alert("연락처를 입력하세요.");
+			return form.cTel.focus();
+		}
+		if (form.sadd.value == "") {
+			alert("주소를 입력하세요.");
+			return form.sadd.focus();
+		}
+		form.submit();
+		
 	}
-	if (form.cTel.value == "") {
-		alert("연락처를 입력하세요.");
-		return form.cTel.focus();
-	}
-	if (form.sadd.value == "") {
-		alert("주소를 입력하세요.");
-		return form.sadd.focus();
-	}
-	form.submit();
+	
+	
 }
 function post_check(){
 	//비밀번호 유효성체크를 하는 부분, maxlength="16"
@@ -144,7 +152,9 @@ function execPostCode() {
         </tr>
         <tr>
           <th>비밀번호</th>
-          <td><input type = "password" id="spw" name = "spw"></td>
+          <td><input type = "password" id="spw" name = "spw">
+          		
+          </td>
         </tr>
         <tr>
           <th>비밀번호 확인</th>
