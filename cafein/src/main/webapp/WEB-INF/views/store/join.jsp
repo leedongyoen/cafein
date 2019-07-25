@@ -5,9 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp" %>
+
 <title>Store Registration Page</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<link rel="stylesheet" href="./css/orderlist.css" >
 <script type="text/javascript">
 
 var idCheck = 0;
@@ -130,39 +132,41 @@ function execPostCode() {
 <body>
  <div class = "container" align="center">
   <form name = "storejoinForm" action = "storejoin.do" method = "post">
-    <h3>매장 가입</h3>
-      <table class = "table table-striped">
+	<hr>
+    <p align="center" class="titlefont">매장 가입</p>
+	<hr>
+      <table class = "table ">
         <tr>
-          <th>ID</th>
+          <th class="tableth">ID</th>
           <td><input type = "text" id="sid" name = "sid">
           <button type = "button" class="btn btn-default btn-primary" id="idCheck">중복확인</button>
           </td>
         </tr>
         <tr>
-          <th>매장상호</th>
+          <th class="tableth">매장상호</th>
           <td><input type = "text" id="sid" name = "sname"></td>
         </tr>
         <tr>
-          <th>비밀번호</th>
+          <th class="tableth">비밀번호</th>
           <td><input type = "password" id="spw" name = "spw"></td>
         </tr>
         <tr>
-          <th>비밀번호 확인</th>
+          <th class="tableth">비밀번호 확인</th>
           <td><input type = "password" id="spwcheck" name = "spwcheck"></td>
         </tr>
         <tr>
-          <th>매장연락처</th>
+          <th class="tableth">매장연락처</th>
           <td><input type = "tel" id="stel" name = "stel"></td>
         </tr>
         <tr>
-          <th>매장주소</th> 
+          <th class="tableth">매장주소</th> 
           <td><input type = "text" id="sadd2" name = "sadd2" placeholder="우편번호">
           <button type = "button" class="btn btn-default btn-primary" onclick="execPostCode()">우편번호 찾기</button><br>
           		<input type = "text" id="sadd" name = "sadd" placeholder="주소">
           		<input type = "text" id="sadd3" name = "sadd3" placeholder="상세주소"></td>
         </tr>
         <tr>
-          <th>영업시간</th>
+          <th class="tableth">영업시간</th>
           <td>
             <input type = "time" id="stopentime" name = "stopentime" > ~ 
             <input type = "time" id="stopentime" name = "stclosetime"><br>
@@ -170,14 +174,14 @@ function execPostCode() {
           </td>
         </tr>
         <tr>
-          <th>배달유무</th>
+          <th class="tableth">배달유무</th>
           <td>
             <input type = "radio"  id="sid" name= "stdeliservice" value="Y">배달 가능
             <input type = "radio"  id="sid" name= "stdeliservice" value="N" checked> 배달 불가능
           </td>
         </tr>
         <tr>
-          <th>적립금 사용 여부</th>
+          <th class="tableth">적립금 사용 여부</th>
           <td>
             <input type = "radio" name ="stmileservice" id= "stmileservice_y" value="Y" >적립 가능
             <input type = "radio" name ="stmileservice" id= "stmileservice_n" value="N" checked> 적립 불가능

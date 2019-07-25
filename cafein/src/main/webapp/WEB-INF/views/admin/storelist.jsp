@@ -9,7 +9,7 @@
 <%@ include file="adminhead.jsp"%>
 <title>Insert title here</title>
 <script src="./js/json.min.js"></script>
-
+<link rel="stylesheet" href="./css/orderlist.css" >
 
 <META NAME="Generator" CONTENT="EditPlus">
 <META NAME="Author" CONTENT="">
@@ -96,17 +96,19 @@ $(function() {
 
 </head>
 <body>
-	<h1 align="center">매장LIST</h1>
+	<hr>
+	<p align="center" class="titlefont">매장LIST</p>
+	<hr>
 	<div class="container">
 
 		<div style="text-align: right">
 			<input type='text' name='word' value=''>
 			<button>검색</button>
 		</div>
-		
-		<table class = "table table-striped" id="storeTable">
+		<br>
+		<table class = "table" id="storeTable">
 			<thead>
-				<tr>
+				<tr class="tableth">
 					<th>매장명</th>
 					<th>ID</th>
 					<th>주소</th>

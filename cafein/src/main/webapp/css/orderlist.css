@@ -18,21 +18,29 @@
 	 
 }  
 
+table thead tr,
 .tableth{
 	background-color: #848484;
 	color: white;
+
 }
 
 /* 테이블 th, td css */
 
-table tr th{
+table tr th,
+table thead tr th,
+.trth
+{
 	font-family: 'Nanum Myeongjo', serif;
 	font-size: 20px;
 	font-weight: 800;
 	
 }  
 
-table tr td{
+table tr td,
+table tbody tr td,
+.trtd
+{
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 17px;
 } 
@@ -129,7 +137,7 @@ select {
 	transition: all 0.4s ease;
 }
 .checkbox:checked {
-	background: #FA8258;
+	background: #F7BE81;
 }
 .checkbox:checked:after {
 	color: #FFF;
