@@ -12,7 +12,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@ include file="cushead.jsp"%>
-<title>Insert title here</title>
+<title>장 바 구 니</title>
+<style type="text/css">
+input {
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
+	}
+	
+
+
+</style>
 <script>
 
 var arrMenu = new Array();
@@ -188,17 +196,11 @@ function cartlist(val){
 		
 		
 		var test = $(this).val(); 
-		//console.log("test: "+test);
 		for(var t = 0;t<test.length;t++){
-			//console.log("te33st: "+test[t]);
 			var addNum = $("#orderCartForm div table tbody tr:eq("+(test[t]*2)+") td:eq(6)").html();
 			allPrice = allPrice + (addNum*1);
 		}
 		
-		
-		//console.log("test: "+addNum);
-		
-		//sum_optionprice =Number(sum_optionprice)+ Number(price);
 
 	});
 	
@@ -242,32 +244,8 @@ function orderBtnClick(){
 	console.log(JSON.stringify(arr));
 	//alert 로 선택한 리스트와 수량이 넘어옴
 
-	
-	//controller 타고 넘겨주기...... 
-/* 
-	$.ajax({
-		url: 'cartorder',
-		type: "POST",
-		data: JSON.stringify(arr),		
-		dataType: 'json',
-//		processData : false,
-		
-		contentType : "application/json",
-		success: function() {
-			console.log('d');
-		},
-
-		error: function(xhr) {
-		  console.log('실패 - ', xhr);
-		}
-	}); */
-
 $('[name="jsonData"]').val(JSON.stringify(arr));
 	document.fCart.submit();
-	
-	
-	
-	
 	
 }
 
@@ -285,19 +263,22 @@ function getOptionNaming(mnumber, stnumber){
 	return optionName;
 }
 </script>
-
-
 </head>
 <body>
-
+		
 	<form action="cartorder" method="post" name="fCart">
 		<input type="hidden" name="jsonData">
 	</form>
-	<div
-		style="width: 100%; text-align: center; padding: 3px; border: 1px solid pink;"
-		id="CartListWrapper">
-		<h3 align="center">장바 구니</h3>
-
+	<hr>
+	
+	
+	<hr>
+	<p></p>
+	<div style="width: 100%; text-align: center; padding: 3px;  background-color: ivory;" id="CartListWrapper"> <!-- border: 1px solid pink; -->
+		
+		<hr>
+		<h3 align="center">장 바 구 니</h3>
+	<hr>
 		<c:forEach var="cart" items="${optionname}" varStatus="i">
 			<script>
 				arrMenu[${i.index}] = "${cart.mNum}"; arrStock[${i.index}] = "${cart.stNum}"; arropName[${i.index}] = "${cart.opName}";
@@ -316,9 +297,7 @@ function getOptionNaming(mnumber, stnumber){
 			</script>
 		</c:forEach>
 
-		<div
-			style="padding: 3px; border: 1px solid orange; display: inline-block; text-align: center;"
-			id="CartList">
+		<div style="padding: 3px; display: inline-block; text-align: center;" id="CartList"> <!-- border: 1px solid orange; -->
 			<!-- display: inline-block; -->
 
 			<form id="orderCartForm" name="orderCartForm" action="cartorder" method="POST">
@@ -349,22 +328,20 @@ function getOptionNaming(mnumber, stnumber){
 
 				<div style="background: orange; padding: 3px;">
 					<p>
-						<span> 주문합계 <input type="hidden" name="totalPrice" value="0"><strong>0</strong>원</span>
+						<span> 주 문 합 계 <input type="hidden" name="totalPrice" value="0"><strong>0</strong>원</span>
 					</p>
 				</div>
-				<input type="button" value="주문" id="orderBtn" onclick="orderBtnClick()">
+				<input type="button" class="btn btn-default" value="주문" id="orderBtn" onclick="orderBtnClick()">
 			</form>
 		</div>
 
 		<br> <br> <br>
 		<div align="right">
 			<button class="btn btn-default" onclick="orderDeleteClick()">삭제</button>
-			<a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
+			<a class="btn btn-default" href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
 		</div>
 	</div>
-
-
-
-
+	<%-- <img style="width:90%; height:120%; opacity:0.8; position: absolute;" src="${pageContext.request.contextPath}/image/note.jpg">
+	 --%>
 </body>
 </html>
