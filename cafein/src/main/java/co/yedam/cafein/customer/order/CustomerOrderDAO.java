@@ -118,6 +118,11 @@ public class CustomerOrderDAO {
 		return dao.selectOne("StoremenuDAO.getorderstoreaddress",vo);
 	}
 	
+	// 고객이 직접 주문 취소한 경우
+	public int updatecusordercancel(OrdersVO vo) {
+		return dao.update("CustomerOrderDAO.updatecusordercancel",vo);
+	}
+	
 
 	// 다건주문인데 안겹치려고 잠깐 만들었습니다. order details op_dnum 업데이트
 	public int getodnum2(OrdersVO vo) {

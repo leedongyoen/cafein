@@ -448,7 +448,7 @@ x total=1010,
 		}		
 				
 				// 해당 주문번호의 op_dnum수정
-					
+				  if(info.getMileageservice().equals("Y")) {
 					int n = service.setcanclemileage(info);
 					//추가된 마일리지 업데이트 
 					n = service.updatemileage(info);
@@ -457,7 +457,7 @@ x total=1010,
 					if(n == 0) {
 						n = service.insertmileage(info);
 					}
-				
+				  }
 			
 		/*
 		 * JSONParser jsonParser = new JSONParser(); JSONObject cartObj = new

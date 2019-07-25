@@ -6,9 +6,11 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.common.Paging;
+import co.yedam.cafein.customer.order.CustomerOrderDAO;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 
@@ -17,7 +19,8 @@ public class StoreOrderServiceImpl {
 	
 	@Resource
 	StoreOrderDAO dao;
-	
+	@Autowired
+	CustomerOrderDAO cusdao;
 	// 해당 매장의 주문목록 가져오기
 	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
 		
@@ -81,7 +84,19 @@ public class StoreOrderServiceImpl {
 		int result =0;
 		List<OrdersVO> cancellist = dao.getordertimecheck();
 		for(int i=0; i<cancellist.size(); i++) {
-			n = dao.updatecheckordercancel(cancellist.get(i));
+			OrdersVO mileage = new OrdersVO();
+			// 해당 취소 주문내역 가져오기
+			mileage = cancellist.get(i);
+			// 취소하고 해당 매장번호 가져오기
+			n = dao.updatecheckordercancel(mileage);
+			System.out.println("===== 취소 건수의 매장 ID : "+mileage.getsId());
+			/*
+			 * // 해당 매장 번호의 서비스 여부 가져오기 // 이때 해당 메뉴의 마일리지 가져와야되...아나... String
+			 * mileageservice = cusdao.getstoremileageservice(mileage.getsId()); // 만약 해당
+			 * 매장이 마일리지 서비스를 이용한다면 if(mileageservice.equals("Y")) {
+			 * 
+			 * }
+			 */
 			result +=n;
 		}
 		

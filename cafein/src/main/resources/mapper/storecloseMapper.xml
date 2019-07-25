@@ -40,7 +40,7 @@
 			AND 
 			UPPER(PAY_METHOD) = 'CASH'
             AND
-            O.DELIVERY_STATUS = 'C3'
+            O.DELIVERY_STATUS IN ('C3', 'C5')
             AND
             TOTAL > 0
 	</select>
@@ -81,7 +81,7 @@
 		ON O.S_ID = SOP.S_ID
 		AND TO_CHAR(OPENTIME,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
 		WHERE O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP)
-		        AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS ='C3') OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS = 'C3' ) )
+		        AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS IN ('C3', 'C5') ) )
 		AND O.S_ID = #{sId}
 		AND O.TOTAL > 0
 		GROUP BY O.RECEIPT, O.PAY_METHOD  
@@ -100,7 +100,7 @@
 						AND TRUNC(OPENTIME) = #{openTime}) SOP
 		WHERE
     	( O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP))
-	   	AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS ='C3') OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS = 'C3' ) )
+	   	AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS IN ('C3', 'C5') ) )
 		AND O.S_ID = #{sId}
 		AND O.TOTAL > 0
 	</select>
@@ -200,6 +200,15 @@
 		</foreach>
 	</update>
 	
-	
+	<!-- pdf 파일  -->
+	<select id="storeReceipt" resultType="map">
+		SELECT S_ID
+			 , OPENTIME
+			 , CLOSETIME
+		FROM STOREOPEN
+		WHERE S_ID = #{sId}
+		AND OPENTIME IN (SELECT MAX(OPENTIME) 
+						 FROM STOREOPEN)
+	</select>
 	
 </mapper>

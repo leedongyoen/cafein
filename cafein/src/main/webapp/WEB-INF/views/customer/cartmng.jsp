@@ -72,9 +72,11 @@ $(function(){
 			.append($('<td rowspan="2">'))
 			.append($('<td>').html(local_cart[i].mName))   //.html(local_cart[i].mName))
 			.append($('<td rowspan="2">').html(state))    //.html(state))
-			.append($('<td rowspan="2">').append($('<input>').attr({type: "text", name:"orderqty", value:local_cart[i].qty})))   //.append($('<button>').val("-")))      //.html(local_cart[i].qty).append($('<button>').val("-"))))
+			.append($('<td rowspan="2">').append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"})).append($('<input>').attr({type: "text", name:"orderqty", id:"qty"+i,value:local_cart[i].qty})).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"})))
 			.append($('<td rowspan="2">').html(local_cart[i].totalPrice))
+			.append($('<input>').attr({type:"hidden", id:"price"+i, value:local_cart[i].totalPrice}))
 			.appendTo("#CartList table tbody");
+		
 			
 			$('<tr>').append($('<td>').append($('<ul>'))).appendTo("#CartList table tbody");
 			
@@ -126,6 +128,52 @@ $(function(){
 
 	
 });
+
+
+function plus(id_num) {
+	var p_index = id_num.substring(4);	//index 번호 추가
+	var qty_t = $('#qty'+p_index).val();
+	var qty=qty_t*1;
+	
+
+
+		var price = $('#orderCartForm div table tbody tr:eq('+(p_index*2)+') td:eq(6)').text();
+		var mPrice = (price*1)/(qty*1);
+	
+		console.log(mPrice);
+		qty = qty+1;
+	
+	
+		$('#qty'+p_index).val(qty);
+		$('#orderCartForm div table tbody tr:eq('+(p_index*2)+') td:eq(6)').text(mPrice*qty);
+	
+	
+}
+
+function minus(id_num) {
+	var m_index = id_num.substring(5);
+	var qty_m = $('#qty'+m_index).val();
+	console.log(qty_m);
+	
+	if(qty_m=='1'){
+		
+		alert("0이하는 입력할 수 없습니다."); 
+		$('#qty'+m_index).val(1);
+	}else{
+		var qty=qty_m*1;
+		var price = $('#orderCartForm div table tbody tr:eq('+(m_index*2)+') td:eq(6)').text();
+		var mPrice = (price*1)/(qty*1);
+	
+		console.log(mPrice);
+		qty = qty-1;
+	
+	
+		$('#qty'+m_index).val(qty);
+		$('#orderCartForm div table tbody tr:eq('+(m_index*2)+') td:eq(6)').text(mPrice*qty);
+	}
+	
+
+}
 
 
 function allCheck(val){
@@ -286,7 +334,7 @@ function getOptionNaming(mnumber, stnumber){
 						<thead>
 							<tr>
 								<th rowspan="1"></th>
-								<th rowspan="1">매장 명</th>
+								<th rowspan="1">매 장 명</th>
 								<th colspan="2">상품/옵션정보</th>
 								<th rowspan="1">ICE/HOT</th>
 								<th rowspan="1">수 량</th>

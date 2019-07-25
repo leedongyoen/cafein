@@ -711,7 +711,9 @@ p {
 					console.log("마감 정산 후 closetime: "+storeCloseTime);
 
 					$('#opentime').text(opentime);
-				//	$('#closetime').text(storeCloseTime);
+					
+					// 모달창의 배경을 눌렀을 때 닫히는 이벤트를 막아준다
+					$('#receiptmodal').modal({backdrop: 'static', keyboard: false}) ;
 					// 마감 내역 모달창 show
 					$("#receiptmodal").modal('show');
 					console.log('store : '+data.store)
@@ -730,6 +732,11 @@ p {
 		}
 
 	}
+	
+	$('#receiptSave').on("click",function(){
+		window.open('report.do','report','width=500,height=1000');
+	})
+	
 
 //---------------------------------------------------------------------------------------------------------------------
 	// 숫자 3단위마다 콤마 생성
@@ -786,7 +793,7 @@ p {
 			</div><br><br>
 			<div class="col-4">
 				<button type="button" onclick = "closeCheck()">마감정산</button>
-				<button type="button" >PDF저장</button>
+				<button type="button" id = "receiptSave">PDF 조회 및 저장</button>
 			</div>
 			<div class="col-7">
 				<!-- <table>

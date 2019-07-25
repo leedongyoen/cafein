@@ -1,37 +1,49 @@
 package co.yedam.cafein.store.close;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.OutputStream;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
 import co.yedam.cafein.vo.StoreCloseDataInsertVO;
 import co.yedam.cafein.vo.StoreOpenVO;
-import co.yedam.cafein.vo.WarehousingVO;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 
 @Controller
 public class StoreCloseController {
 	
 	@Autowired
 	StoreCloseService service;
-	
+	/*
+	@Autowired
+	BasicDataSource dataSource;
+	*/
 	// 매장 마감 정산
 	@RequestMapping("daycal.do")
 	public String daycal() {
@@ -119,5 +131,39 @@ public class StoreCloseController {
 		service.storeCloseDataImsert(vo);
 		return map;
 	}
-
+	
+	//----------------------------------------------------------------------------
+	// 마감 정산 내역 PDF 파일로 저장
+	/*
+	@ResponseBody
+	@RequestMapping("report.do")
+	public void report(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+		try {
+			String sId = (String) session.getAttribute("sId");
+			//String openTime = (String) session.getAttribute("openTime");
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("p_store", sId);
+			//map.put("p_opentime", openTime);
+			JasperReport report = JasperCompileManager
+					.compileReport(request.getSession().getServletContext().getRealPath("reports/receipt.jrxml"));
+			// 커넥션만 넘겨주기, sId와 날짜별로 데이터 다르게 나오게 하기, 이전의 마감 내역 조회
+			Connection conn= dataSource.getConnection();
+			JasperPrint print = JasperFillManager.fillReport(report, map, conn);
+			JRExporter exporter = new JRPdfExporter();
+			OutputStream out;
+			response.reset();
+			out = response.getOutputStream();
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, "storeReceipt.pdf");
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
+			exporter.exportReport();
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+*/
 }

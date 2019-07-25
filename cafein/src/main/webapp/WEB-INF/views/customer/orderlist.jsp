@@ -13,12 +13,25 @@
 		getOrderList();
 	});
 	
-	function refuse(ordernum){
+	function refuse(ordernum,sId){
 		event.stopPropagation();
-		if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-		    console.log(ordernum);
-		
-		    getOrderList();
+		if (confirm("정말 주문을 취소하시겠습니까??") == true){    //확인
+		    console.log(ordernum,sId);
+		    $.ajax({
+				url:'updatecusordercancel',
+				type:'GET',
+				dataType:'json',
+				data: {sId: sId, oNum: ordernum},
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){ 
+					
+					alert('주문 취소 되었습니다.');
+					 getOrderList();
+				} 
+			});
+		   
 		}else{   //취소
 			return false;
 		}
@@ -27,11 +40,14 @@
 	function getOrderList(){
 		var checklogin = "<%=(String) session.getAttribute("cId")%>";
 		var orderdate;
+		var controller = $('[name="controlllist"]').val(); 
+		console.log(controller);
 		$.ajax({
-			url:'orderlist/'+checklogin,
+			url:'orderlist',
 			type:'GET',
 			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
+			data: {cId: checklogin, orderlistcontroller:controller},
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
@@ -56,7 +72,7 @@
 					.append($('<td>').html(item.detailNm))
 					.append($('<td>').append($('<button>').attr({
 															type:"button",
-															onclick:"refuse('"+item.oNum+"')",										
+															onclick:"refuse('"+item.oNum+"','"+item.sId+"')",										
 															class: item.deliveryStatus
 															}).css("display","none")
 															.append("결제 취소") ))
@@ -176,21 +192,23 @@
 
 </script>
 <body>
-	<form action="updateBoard.do" method="post">
+	
 		<h2 align="center">주문 목록</h2>
 		<br>
 		<br>
 		<div class="container">
+			<form name="searchForm">
 			<p align="right">
-				<b>등록순</b> <select name="선택">
+				<b>등록순</b> <select name="controlllist" onchange="getOrderList()">
 					<optgroup>
-						<option value="1" selected>일주일 이내</option>
-						<option value="2">1개월 이내</option>
+						<option value="7" selected>일주일 이내</option>
+						<option value="1">1개월 이내</option>
 						<option value="3">3개월 이내</option>
-						<option value="4">6개월 이내</option>
+						<option value="6">6개월 이내</option>
 					</optgroup>
 				</select>
 			</p>
+			</form>
 			<hr>
 
 			<table id="orderlist" class="table table-hover">
@@ -213,7 +231,7 @@
 			<hr>
 			<br>
 		</div>
-		</form>
+	
 		
 		
 		
@@ -238,7 +256,7 @@
 								<th>주문 취소 사유</th>
 								<td id="orderstatus"></td>
 							</tr>
-							
+	
 							<tr>
 								<th>매장명</th>
 								<td id="storename"></td>

@@ -35,6 +35,12 @@ public class PosController {
 	@Autowired
 	CustomerOrderServiceImpl cusService;
 	
+	//매장 주문하기
+	@RequestMapping("/pos.do")
+	public String pos() {
+		return "store/pos";
+	}
+	
 	//메뉴조회
 	@ResponseBody
 	@RequestMapping(value="/pos/{sId}", method=RequestMethod.GET)
@@ -57,9 +63,18 @@ public class PosController {
 		System.out.println("고객조회");
 		return posService.getCusList(vo);
 	}
+	//pos기 이전 주문조회
 	@ResponseBody
+	@RequestMapping (value = "/searchorder", method = RequestMethod.GET)
+	public List<OrdersVO> getCusRefund(OrdersVO vo){
+		System.out.println("이전주문 조회");
+		return posService.getCusRefund(vo);
+	}
+	
+	
+	//pos기 주문
 	@RequestMapping(value = "/posorder", method = RequestMethod.POST)
-	public ModelAndView posOrder(@RequestParam String jsonData) throws ParseException {
+	public String posOrder(@RequestParam String jsonData) throws ParseException {
 		ModelAndView mv = new ModelAndView();
 
 		OrdersVO ordervo = new OrdersVO();
@@ -85,12 +100,11 @@ public class PosController {
 		  ordervo.setMileage(Integer.parseInt(mileage));
 		  ordervo.setsId((String) insertParam.get("sId"));
 		  ordervo.setTotal(Integer.parseInt((String) insertParam.get("total")));
-		  ordervo.setcId("");
 		  ordervo.setcAdd("");
 		  ordervo.setcAdd3("");
   
 		  ordervo.setPayMethod((String) insertParam.get("payMethod"));
-		  // 배송상태 부분 메퍼수정해야됨
+		  
 		  ordervo.setDeliveryStatus("C5");
 		  
 		  
@@ -98,7 +112,7 @@ public class PosController {
 		  if(insertParam.get("cId").equals("")) {
 			  ordervo.setcId("");
 		  }else {
-			
+			  ordervo.setcId((String) insertParam.get("cId"));
 		  }
 		  
 		  System.out.println("===== ordersVO "+ ordervo);
@@ -108,6 +122,11 @@ public class PosController {
 		  // 마일리지 업데이트는 
 		  // 해당 매장의 마일리지 서비스를 하는 경우!!!!
 		  // 넣어줘야됨.
+		  if(ordervo.getMileage() > 0) {
+			  ordervo.setoNum(ordervo.getoNum());
+				int n = cusService.setcanclemileage(ordervo);
+				
+			}
 		  
 		  
 		  
@@ -269,18 +288,30 @@ public class PosController {
 			  ordervo.setmNum(v_mNum); 
 			  result = cusService.getmutilodnum(ordervo); 
 			  
-			
+			int mileageresult;
+			// 해당 매장의 마일리지 서비스를 할 경우에만.
+			ordervo.setMileageservice((String) insertParam.get("stMileageService"));
+			if(ordervo.getMileageservice().equals("Y")) {
+				
+				// 마일리지 업데이트
+				mileageresult = cusService.updatemileage(ordervo);
+				
+				// 해당 매장에 대한 마일리지가 없을 경우
+				if(mileageresult == 0) {
+					mileageresult = cusService.insertmileage(ordervo);
+				}
+			}
+			  
+			  
 			/*
 			 * for(int i=0; i<opdnum_menulist.size();i++) {
 			 * ordervo.setmNum(opdnum_menulist.get(i)); result =
 			 * cusService.getmutilodnum(ordervo); }
 			 */
-		  }
+		  }  
+		     
 		
-		
-		
-		mv.setViewName("store/pos");
-		return mv;
+		  return "redirect:/pos.do";
 	}
 	
 }
