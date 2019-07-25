@@ -41,6 +41,7 @@ var currNo=0;
 var valNo;
 var lastSel;
 var editableCells = ['oQty'];
+var ordernum ="";
    $(document).ready(function() {
 
 	   $("#gridlist").jqGrid({
@@ -552,27 +553,88 @@ footerrow : true});*/
 				alert(status + "메세지" + msg);
 			},
 			success : function(data) {
-				$('#orderlisttable tbody').empty();
+				
+				
 				$.each(data,function(idx,item){
-					$('<tr>')
-					.append($('<td><input type=\'text\'class=\'oNum\' id=\'oNum\' value=\''+item.oNum+'\'>'))
-					.append($('<td><input type=\'text\'class=\'oNum\' id=\'oDate\' value=\''+item.oDate+'\'>'))
-					.append($('<td><input type=\'text\'class=\'oNum\' id=\'scId\' value=\''+item.cId+'\'>'))
-					.append($('<td><input type=\'text\'class=\'oNum\' id=\'paymethod\' value=\''+item.payMethod+'\'>'))
-					.append($('<td><input type=\'text\'class=\'oNum\' id=\'total\' value=\''+item.total+'\'>'))
+					
+					if(item.cId == null) item.cId="";
+					$('<tr>').attr({
+						onclick:"menudetail('"+item.oNum+"')",
+						id: "table"+item.oNum
+					})
+					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.oNum+'\'>'))
+					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.oDate+'\'>'))
+					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.cId+'\'>'))
+					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.payMethod+'\'>'))
+					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.total+'\'>'))
 					.appendTo('#orderlisttable tbody');
 				});
-
+				}
+		});	
 					
-					
-			//		getorderdetails(item);
 				
+			} 
+ 	function menudetail(orderNum){ 
+ 		var menu_qty="0";
+		var menunum="";
+		var test="";
+		console.log(orderNum);
+ 		$.ajax({
+			url: 'searchdetails',
+			type:'GET',
+			dataType:'json',
+			data: {oNum: orderNum},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success: function (data){
+		 		console.log(data);
+		 		$("#op_tr"+orderNum).empty();
+		 		$.each(data,function(idx,item){
+		 			console.log(item);
+					if(menunum == ""){
+						menunum = item.oDnum;
+						test = item.mName+" - ";
+						menu_qty="0";
+					}
+					if(menunum == item.opDnum){
+						if(menu_qty == "0" && item.oQty != "0"){
+							test = test+" "+item.oQty+" 개 - ";
+							menu_qty=item.oQty;
+						}
+						test = test +" "+ item.opName;
+						console.log("--- "+test);
+						
+					}
+					if(menunum != item.opDnum){
+						menunum = item.oDnum;
+						menu_qty="0";
+						test = test + "<br>" +item.mName+" - ";
+						test = test +" " +item.opName;
+						console.log(test);
+					}
+				}); 
+		 		console.log(test);
+		 			$('#table'+orderNum).after($('<tr>').attr("class","optiontable").attr("id","op_tr"+orderNum)
+		 					.append($('<td>').html("메뉴명 : <br>"+test).attr("colspan","2"))
+							.append($('<td>').html("고객성함 : " +data[0].cName))
+							.append($('<td>').html("사용한 마일리지 : " +data[0].mileage))
+							.append($('<td>').html("총 금액 : "+data[0].total+"원"))
+							.append($('<button>').attr({
+								type:"button",
+								onclick:"refund('"+orderNum+"')"
+							}).append("환불하기"))
+							);
 			}
-			
-		});
-	} 
-	
-	
+			});	
+			}
+ 	
+ 	function refund(orderNum){
+ 		
+ 	}
+ 	
+ 	
+
 </script>
 <div>
 <div class="left">
@@ -701,8 +763,8 @@ footerrow : true});*/
 	
 	<button id="orderList">결제정보</button>
 	<!-- 결제내역조회 모달 -->
-	<div class="modal fade" id="orderListModal" role="dialog">
-		<div class="modal-dialog">		
+	<div class="modal fade" id="orderListModal" role="dialog" >
+		<div class="modal-dialog" style="width: 100px; display: table;">		
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">ORDER LIST</h5>
@@ -717,12 +779,13 @@ footerrow : true});*/
 							<input type="button" value="검색" class="btn btn-success"
 								id="btnSearch" onclick="getCusRefund()">
 						</div>
-						<div class="table-responsive">
+						<div class="table-responsive" style="text-align:left">
 						<table id="orderlisttable" class="table">
 							<thead>
 							<tr> 
+								<th>주문번호</th>
 								<th>DATE</th>
-								<th>성함</th>
+								<th>고객 아이디</th>
 								<th>결제방식</th>
 								<th>결제금액</th>
 							</tr>

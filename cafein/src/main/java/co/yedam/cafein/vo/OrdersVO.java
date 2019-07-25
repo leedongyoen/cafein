@@ -3,10 +3,13 @@ package co.yedam.cafein.vo;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class OrdersVO {
 
 	private String oNum;
 	private String cId;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // 환불검색할때 날짜랑 시간 포맷
 	private Timestamp oDate;
 	private int total;
 	private String receipt;

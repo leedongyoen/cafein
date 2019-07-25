@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
+import co.yedam.cafein.viewvo.ViewPosOrdetailsVO;
 import co.yedam.cafein.viewvo.ViewPosVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.RecipeVO;
@@ -39,4 +40,13 @@ public class PosServiceImpl implements PosService{
 		return DAO.getCusRefund(vo);
 	
 	}
+	public List<ViewPosOrdetailsVO> getOrDetails(ViewPosOrdetailsVO vo){
+		System.out.println(vo.getoNum());
+		return DAO.getOrDetails(vo);
+	
+	} 
+	public int refoundcall(OrdersVO vo) {
+		System.out.println(vo.getoNum());
+		return DAO.refoundcall(vo);
+	};
 }

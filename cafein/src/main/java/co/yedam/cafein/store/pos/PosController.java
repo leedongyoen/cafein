@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
 import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
+import co.yedam.cafein.viewvo.ViewPosOrdetailsVO;
 import co.yedam.cafein.viewvo.ViewPosVO;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
@@ -70,7 +71,20 @@ public class PosController {
 		System.out.println("이전주문 조회");
 		return posService.getCusRefund(vo);
 	}
-	
+	//pos기 이전 주문 디테일
+	@ResponseBody
+	@RequestMapping (value = "/searchdetails", method = RequestMethod.GET)
+	public List<ViewPosOrdetailsVO> getOrDetails(ViewPosOrdetailsVO vo){
+		System.out.println("이전주문 상세 조회");
+		return posService.getOrDetails(vo);
+	}
+	//pos기 환불
+	@ResponseBody
+	@RequestMapping (value = "/refoundsuccess", method = RequestMethod.POST)
+	public String refoundcall(OrdersVO vo) {
+		System.out.println("환불");
+		return "redirect:/pos.do";
+	}
 	
 	//pos기 주문
 	@RequestMapping(value = "/posorder", method = RequestMethod.POST)
