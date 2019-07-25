@@ -763,7 +763,7 @@ p {
 	<div class="row border align-items-start" >
 		<div class="row justify-content-around">
 			<div class="col-12" style="text-align:center;">
-				<h3>카페 린 영업 마감</h3><br>
+				<h3><%= request.getAttribute("sName") %> 영업 마감</h3><br>
 			</div>
 			<div class="col-4">
 				<table class="table table-hover">

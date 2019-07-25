@@ -19,14 +19,14 @@
 		console.log("customer id = " + id);
 		
 		if(id == "null") {
-			$("#loginbtn").css('display', 'inline');
+			$("#loginbtn").css('display', 'block');
 			$("#logoutbtn").css('display', 'none');
 			$("#dropdown01").css('display', 'none');
 		}
 		if(id != "null") {
 			$("#loginbtn").css('display', 'none');
-			$("#logoutbtn").css('display', 'inline');
-			$("#dropdown01").css('display', 'inline');
+			$("#logoutbtn").css('display', 'block');
+			$("#dropdown01").css('display', 'block');
 		}
 	});
 </script>
