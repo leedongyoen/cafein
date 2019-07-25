@@ -13,7 +13,7 @@
 background-color:#424242;
 color:pink;
 }
- 
+     
 .left {
   position:absolute;
   width:900px;
