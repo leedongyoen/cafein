@@ -39,7 +39,8 @@ function checkForm(){
 	
 	if (form.spw.value != form.spwcheck.value) {
 		alert("비밀번호가 서로 다릅니다. 다시 입력해주세요.");
-		form.spwcheck.focus
+		//event.stopPropagation();
+		form.spwcheck.focus();
 		return false;
 	} else {
 		
@@ -55,14 +56,9 @@ function checkForm(){
 			alert("비밀번호를 입력하세요.");
 			return form.spw.focus();
 		}
-		
 		if (form.stel.value == "") {
-			alert("이름을 입력하세요.");
-			return form.stel.focus();
-		}
-		if (form.cTel.value == "") {
 			alert("연락처를 입력하세요.");
-			return form.cTel.focus();
+			return form.stel.focus();
 		}
 		if (form.sadd.value == "") {
 			alert("주소를 입력하세요.");
@@ -155,10 +151,7 @@ function execPostCode() {
           <td><input type = "text" id="sid" name = "sname"></td>
         </tr>
         <tr>
-          <th>비밀번호</th>
-          <td><input type = "password" id="spw" name = "spw">
-          		
-          </td>
+          
           <th class="tableth">비밀번호</th>
           <td><input type = "password" id="spw" name = "spw"></td>
         </tr>
@@ -200,7 +193,7 @@ function execPostCode() {
           </td>
         </tr>
       </table>
-      <button type = "submit"  class="btn btn-default btn-success" id="submitt" onclick="checkForm()" disabled="disabled">가입하기</button>
+      <button type = "button"  class="btn btn-default btn-success" id="submitt" onclick="checkForm()" disabled="disabled">가입하기</button>
       <a class="btn btn-secondary"  href="javascript:history.go(-1)">돌아가기</a>
   </form>
   </div>
