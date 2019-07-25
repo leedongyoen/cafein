@@ -65,26 +65,11 @@ public class StoreOrderDAO {
 		return template.update("getStoreOrderListDAO.updatedeliverystatus",vo);
 	}
 	
-	// 모든 매장에서 주문이 들어온지 5문이 지난 주문이 있는지 확인
-	public List<OrdersVO> getordertimecheck(){
-		return template.selectList("getStoreOrderListDAO.getordertimecheck");
+	// 모든 매장에 주문이 들어온지 5분이 지났는지 프로시절 호출
+	public void schedulerordertimecheck() {
+		template.selectOne("getStoreOrderListDAO.schedulerordertimecheck");
 	}
 	
-	// 주문이 들어온지 5분이 지난 주문들을 주문 취소로 바뀜
-	public int updatecheckordercancel(OrdersVO vo){
-		return template.update("getStoreOrderListDAO.updatecheckordercancel",vo);
-	}
-	
-	// 스케줄러 시 마일리지 서비스 유뮤 판단을 위해서
-	public String getschedulermileageservice(OrdersVO vo) {
-		return template.selectOne("getStoreOrderListDAO.getschedulermileageservice",vo);
-	}
-	
-	// 스케줄러 시 주문 매장ID를 얻기 위해서
-	public String getschedulerordersid(OrdersVO vo) {
-		return template.selectOne("getStoreOrderListDAO.getschedulerordersid",vo);
-	}
-
 	//-------------------------------------------------------------------------------------
 	
 	// 사용 미정

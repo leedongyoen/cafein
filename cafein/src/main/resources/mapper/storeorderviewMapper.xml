@@ -153,37 +153,10 @@
 
 	</update>
 	
-	
-	<select id="getordertimecheck" resultType="order">
-	
-		SELECT O_NUM
-				, S_ID
-		FROM ORDERS
-		WHERE DELIVERY_STATUS = 'C0'
-		    AND TO_CHAR(SYSDATE,'HH24:MI') > TO_CHAR(O_DATE+(5/24/60),'HH24:MI')
-			
-	</select>
-	
-	<update id="updatecheckordercancel">
-
-		UPDATE ORDERS
-		SET DELIVERY_STATUS = 'C4'
-			, REFUSE_REASON = '주문 확인 시간 초과'
-		WHERE O_NUM = #{oNum}
-	
-	</update>
-	
-	<select id="getschedulerordersid" resultType="string">
-		
-		SELECT S_ID FROM ORDERS WHERE O_NUM = #{oNum}
-	</select>
-	
-	<select id="getschedulermileageservice" resultType="string">
-	
-		SELECT ST_MILE_SERVICE
-		FROM STORE
-		WHERE S_ID = #{sId}
-	
+	<select id="schedulerordertimecheck" statementType="CALLABLE">
+				{
+						call ORDER_CANCEL_PRO()
+				}
 	</select>
 
 </mapper>

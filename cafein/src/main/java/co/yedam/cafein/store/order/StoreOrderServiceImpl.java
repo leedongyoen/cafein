@@ -81,33 +81,10 @@ public class StoreOrderServiceImpl {
 	// 모든 매장에서 주문이 들어온지 5문이 지난 주문이 있는지 확인하고
 	// 있으면 주문 취솔 바뀜.
 
-	public int getordertimecheck(){
-		int n=0;
-		int result =0;
-		List<OrdersVO> cancellist = dao.getordertimecheck();
-		System.out.println(cancellist);
-		for(int i=0; i<cancellist.size(); i++) {
-			
-			OrdersVO mileage = new OrdersVO();
-			// 해당 취소 주문내역 가져오기
-			mileage = cancellist.get(i);
-			
-			//주문 취소
-			n = dao.updatecheckordercancel(mileage);
-			String oNum = mileage.getoNum();
-			
-			System.out.println(mileage);
-	
-			String mileageservice = dao.getschedulermileageservice(mileage);
-			mileage.setoNum(oNum);
-			if(mileageservice.equals("Y")) {
-				result = dao.updateordermileage(mileage);
-			}
-  
-			result +=n;
-		}
+	public void getordertimecheck(){
 		
-		return result;
+		dao.schedulerordertimecheck();
+		
 	}
 
 //-------------------------------------------------------------------------------------
