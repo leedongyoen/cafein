@@ -12,5 +12,5 @@ public interface StoreOpenService {
 
 	public StoreOpenVO getOpen(StoreOpenVO vo);
 	
-	
+	public int checkOpen(StoreOpenVO vo);
 }

@@ -30,5 +30,9 @@ public class StoreOpenServiceImpl implements StoreOpenService {
 		return storeOpenDAO.getOpen(vo);
 	}
 
+	@Override
+	public int checkOpen(StoreOpenVO vo) {
+		return storeOpenDAO.checkOpen(vo);
+	}
 	
 }
