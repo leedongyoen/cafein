@@ -9,12 +9,26 @@
 <title>Customer Information Edit Page</title>
 <script src="./js/json.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-
+<link rel="stylesheet" href="./css/orderlist.css" >
 <META NAME="Generator" CONTENT="EditPlus">
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">
 <META NAME="Description" CONTENT="">
+<style type="text/css">
 
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 940px;
+  }
+}
+
+</style>
 <script>
 //최소길이 & 최대길이 제한
 var minimum = 8;
@@ -392,20 +406,21 @@ function chkPwContinuity(paramObj) {
 		<!-- 수정완료 버튼에 .do 보내기 -->
 		<form name="customerinfoForm" id="customerinfoForm"
 			action="${pageContext.request.contextPath}/infoedit.do" method="post">
-			<h3 id="c_info">회원 정보</h3>
-
-			<h3 id="c_infoedit" style="display: none">회원 정보 수정</h3>
+			<hr>
+			<p id="c_info" align="center" class="titlefont">회원 정보</p>
+			<p id="c_infoedit" align="center" class="titlefont" style=" display:none ">회원 정보 수정</p>
+			<hr>
 			<table class="table">
 				<tr class="notweb">
-					<th>ID</th>
+					<th class="tableth">ID</th>
 					<td><input type="text" name="cId" readonly></td>
 				</tr>
 				<tr class="notweb">
-					<th>닉네임</th>
+					<th class="tableth">닉네임</th>
 					<td><input type="text" id="c_nick" name="cNick" readonly></td>
 				</tr>
 				<tr class="notweb">
-					<th>비밀번호</th>
+					<th class="tableth">비밀번호</th>
 					<td>
 						<!-- 					<input type="text" id="c_pw" name="cPw" readonly> -->
 						<button type="button" id="pwbt" onclick="openModeal()" disabled>비밀번호 변경하기</button>
@@ -413,22 +428,22 @@ function chkPwContinuity(paramObj) {
 					</td>
 				</tr>
 				<tr>
-					<th>이름</th>
+					<th class="tableth">이름</th>
 					<td><input type="text" id="c_name" name="cName" readonly></td>
 				</tr>
 				<tr>
-					<th>연락처</th>
+					<th class="tableth">연락처</th>
 					<td><input type="tel" id="c_tel" name="cTel" readonly></td>
 				</tr>
 				<tr>
-					<th>주소</th>
+					<th class="tableth">주소</th>
 					  <td><input type = "text" id="cAdd2" name = "cAdd2" placeholder="우편번호" readonly>
           <button type = "button" onclick="execPostCode()"id="c_addbt" disabled>우편번호 찾기</button><br>
           		<input type = "text" id="cAdd" name = "cAdd" size=30 placeholder="주소" readonly>
           		<input type = "text" id="cAdd3" name = "cAdd3" placeholder="상세주소" readonly></td>
 				</tr>
 				<tr>
-					<th>생년월일</th>
+					<th class="tableth">생년월일</th>
 					<td><input type="date" id="dob" name="dob" readonly></td>
 				</tr>
 			</table>

@@ -136,8 +136,15 @@ public class StoreCloseController {
 	
 	// 마감 내역 조회
 	@RequestMapping("closedetails.do")
-	public String closeDetails() {
+	public String storeReceipt() {
 		return "store/closingdetails";
+	}
+	
+	// storeopen 테이블에서 기본준비금, 오픈시간을 읽어와야한다
+	@ResponseBody
+	@RequestMapping(value="/closedetailslist", method=RequestMethod.GET)
+	public List<StoreOpenVO> storeReceiptList(StoreOpenVO vo) {
+		return service.storeReceiptList(vo);
 	}
 	
 	
@@ -146,10 +153,13 @@ public class StoreCloseController {
 	public void report(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
 		try {
 			String sId = (String) session.getAttribute("sId");
-			//String openTime = (String) session.getAttribute("openTime");
+			String openTime = request.getParameter("openTime");
+			//String closeTime = request.getParameter("closeTime");
 			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("p_store", sId);
+			map.put("openTime", openTime);
+			
 			//map.put("p_opentime", openTime);
 			JasperReport report = JasperCompileManager
 					.compileReport(request.getSession().getServletContext().getRealPath("reports/receipt.jrxml"));

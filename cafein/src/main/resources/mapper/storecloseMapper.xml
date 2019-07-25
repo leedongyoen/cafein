@@ -75,8 +75,8 @@
 	<select id="getCloseReceiptCash" resultType="order">
 		SELECT O.RECEIPT "receipt"
 			 , O.PAY_METHOD "payMethod"
-			 , SUM(O.TOTAL) "total"
-			 , count(*)  "cnt"
+			 , NVL(SUM(O.TOTAL),0) "total"
+			 , NVL(COUNT(*),0)  "cnt"
 		FROM ORDERS O JOIN STOREOPEN SOP
 		ON O.S_ID = SOP.S_ID
 		AND TO_CHAR(OPENTIME,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
@@ -89,11 +89,11 @@
 	
 	<!-- 마감 영수증을 위한 결제내역(마일리지 및 총금액) 조회 -->
 	<select id="getCloseReceiptMileage" resultType="order">
-		SELECT SUM(O.MILEAGE) "mileage"
-			 , SUM(O.TOTAL)*0.01 "addmileage"
-			 , SUM(O.TOTAL) "total"
-			 , COUNT(*) "addMileageCnt"
-       		 , COUNT(CASE WHEN MILEAGE > 0 THEN 1 ELSE NULL END) "minusMileageCnt"
+		SELECT NVL(SUM(O.MILEAGE),0) "mileage"
+			 , NVL(SUM(O.TOTAL)*0.01,0) "addmileage"
+			 , NVL(SUM(O.TOTAL),0) "total"
+			 , NVL(COUNT(*),0) "addMileageCnt"
+       		 , NVL(COUNT(CASE WHEN MILEAGE > 0 THEN 1 ELSE NULL END),0) "minusMileageCnt"
 		FROM ORDERS O ,(SELECT CLOSETIME, OPENTIME
 						FROM STOREOPEN
 						WHERE S_ID = #{sId}
@@ -107,12 +107,12 @@
 	
 	<!-- 마감 영수증을 위한 환불내역(결제방식 별 금액, 마일리지, 건수) 조회 -->
 	<select id="getRefundInfo" resultType="order">
-		SELECT SUM(TOTAL) "refundSum"
-			 , SUM(MILEAGE) "refundMileage"
+		SELECT NVL(SUM(TOTAL),0) "refundSum"
+			 , NVL(SUM(MILEAGE),0) "refundMileage"
 			 , PAY_METHOD "refundMethod"
-			 , COUNT(CASE WHEN MILEAGE <![CDATA[ < ]]> 0 THEN 1 ELSE NULL END) "mileage"
-			 , COUNT(CASE WHEN PAY_METHOD = 'cash' THEN 1 ELSE NULL END) "cashRefundCnt"
-			 , COUNT(CASE WHEN PAY_METHOD = 'card' THEN 1 ELSE NULL END) "cardRefundCnt"
+			 , NVL(COUNT(CASE WHEN MILEAGE <![CDATA[ < ]]> 0 THEN 1 ELSE NULL END),0) "mileage"
+			 , NVL(COUNT(CASE WHEN PAY_METHOD = 'cash' THEN 1 ELSE NULL END),0) "cashRefundCnt"
+			 , NVL(COUNT(CASE WHEN PAY_METHOD = 'card' THEN 1 ELSE NULL END),0) "cardRefundCnt"
 		FROM ORDERS O JOIN STOREOPEN SOP
 	    ON O.S_ID = SOP.S_ID 
 	    AND TO_CHAR(OPENTIME,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
@@ -209,6 +209,15 @@
 		WHERE S_ID = #{sId}
 		AND OPENTIME IN (SELECT MAX(OPENTIME) 
 						 FROM STOREOPEN)
+	</select>
+	
+	<!-- pdf 파일 목록 -->
+	<select id="storeReceiptList" resultType="storeOpen">
+		SELECT OPENTIME	"openTime"
+			 , CLOSETIME "closeTime"
+		FROM STOREOPEN 
+		WHERE S_ID = #{sId}
+		ORDER BY OPENTIME DESC
 	</select>
 	
 </mapper>

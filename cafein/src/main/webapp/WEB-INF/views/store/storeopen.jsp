@@ -137,7 +137,8 @@
   					alert('오픈 시제가 정상 입금되었습니다.');
   					selectOpen();
   				}else{
-  					alert('익일 마감하였습니다.'); 					
+  					alert('익일 마감하였습니다.');
+  					location.href="storemainform.do";
   				}
   			},
   			error : function(data){

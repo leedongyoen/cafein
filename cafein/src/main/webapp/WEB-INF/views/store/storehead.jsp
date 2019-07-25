@@ -44,6 +44,7 @@ $(function(){
 		$("#openbtn").css('display', 'none');
 		$("#closebtn").css('display', 'block');
 	}
+
 	
 });
 	

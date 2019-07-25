@@ -197,5 +197,8 @@
 
 	</select>
 	
+	<delete id="deleteStockWith" parameterType="recipe">
+	DELETE FROM RECIPE WHERE ST_NUM = #{stNum}
+	</delete>
 
 </mapper>
