@@ -91,12 +91,27 @@
 		});
 	}//init
 	
-// 	function insertOpen(){
-// 		$('#openInsert').on('click', function(){
-// 			$
-// 		})
+	function selectOpen(){
+		$.ajax({
+  			url:'getOpen.do',
+  			type: 'POST',
+  			contentType: 'application/json;charset=utf-8',
+			mimeType : 'application/json',
+  			dataType: 'json',
+  			success : function(data){
+  				var openTimeVal = data.openTime;
+//   				alert(openTimeVal);
+  				localStorage.setItem("openTime",JSON.stringify(openTimeVal));
+  				var openTimeLocal = localStorage.getItem("openTime");
+// 				alert(openTimeLocal);
+  			},
+  			error : function(data){
+  				alert("상태값 :" + status + " Http에러메시지 :" + msg);
+  			}
+  		});
 		
-// 	}
+	
+	}
 	
 	function makeData(){
 			//객체에 제이슨형태로 담기. 오픈시간/매장아이디/영업준비금
@@ -115,12 +130,13 @@
   			dataType: 'json',
   			success : function(data){
   				alert('오픈 시제가 정상 입금되었습니다.');
-  				location.href = "storemainform.do";
+  				selectOpen();
+//   				location.href = "storemainform.do";
   			},
   			error : function(data){
   				alert("상태값 :" + status + " Http에러메시지 :" + msg);
   			}
-  		})
+  		});
 	
 		
 	}

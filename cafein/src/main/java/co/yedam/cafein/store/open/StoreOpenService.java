@@ -9,6 +9,8 @@ public interface StoreOpenService {
 	public List<StoreOpenVO> getOpenList(StoreOpenVO vo);
 	
 	public int insertOpen(StoreOpenVO vo);
+
+	public StoreOpenVO getOpen(StoreOpenVO vo);
 	
 	
 }

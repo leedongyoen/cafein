@@ -36,4 +36,17 @@
 	FROM STOREOPEN
 
 </select>
+<select id="getOpen" resultMap="openMap">
+	SELECT S_ID,
+			CLOSETIME,
+			CASH,
+			DEFAULT_CASH,
+			OR_CASH,
+			DIFFERENCE,
+			NET_INCOME,
+			OPENTIME
+	FROM STOREOPEN
+	WHERE TRUNC(OPENTIME) = TRUNC(SYSDATE)
+
+</select>
 </mapper>
