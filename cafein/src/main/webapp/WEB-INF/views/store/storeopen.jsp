@@ -102,10 +102,12 @@
   			dataType: 'json',
   			success : function(data){
   				var openTimeVal = data.openTime;
+  				
 //   				alert(openTimeVal);
   				localStorage.setItem("openTime",JSON.stringify(openTimeVal));
   				var openTimeLocal = localStorage.getItem("openTime");
-// 				alert(openTimeLocal);
+// 				console.log("오픈시간 스토리지저장 : " +openTimeLocal);
+				location.href="storemainform.do";
   			},
   			error : function(data){
   				alert("selectOpen 에러");
@@ -133,6 +135,7 @@
   			success : function(data){
   				if(data == 0){
   					alert('오픈 시제가 정상 입금되었습니다.');
+  					selectOpen();
   				}else{
   					alert('익일 마감하였습니다.'); 					
   				}
