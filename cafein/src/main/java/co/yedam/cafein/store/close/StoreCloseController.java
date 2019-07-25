@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,10 +40,10 @@ public class StoreCloseController {
 	
 	@Autowired
 	StoreCloseService service;
-	/*
+
 	@Autowired
 	BasicDataSource dataSource;
-	*/
+	
 	// 매장 마감 정산
 	@RequestMapping("daycal.do")
 	public String daycal() {
@@ -133,9 +133,15 @@ public class StoreCloseController {
 	}
 	
 	//----------------------------------------------------------------------------
+	
+	// 마감 내역 조회
+	@RequestMapping("closedetails.do")
+	public String closeDetails() {
+		return "store/closingdetails";
+	}
+	
+	
 	// 마감 정산 내역 PDF 파일로 저장
-	/*
-	@ResponseBody
 	@RequestMapping("report.do")
 	public void report(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
 		try {
@@ -164,6 +170,5 @@ public class StoreCloseController {
 			e.printStackTrace();
 		}
 	}
-	
-*/
+
 }
