@@ -18,7 +18,8 @@
 	
 	<select id="getEnteredList" resultType="warehousing">
 		SELECT W.ST_NUM "STNUM",
-	      S.ST_NAME "STNAME",
+	      CASE WHEN S.ST_NAME IS NULL THEN '기타 재고'
+			ELSE S.ST_NAME  END "stName",
 	      SUM(W.WARE_PRICE) "WAREPRICE",
 	      SUM(W.WARE_QTY) "WAREQTY"
 		FROM WAREHOUSING W LEFT OUTER JOIN STOCK S
@@ -35,7 +36,8 @@
 	 
 	<select id="getReleasedList" resultType="warehousing">
 		SELECT w.st_num "stNum",
-	      s.st_name "stName",
+	      CASE WHEN S.ST_NAME IS NULL THEN '기타 재고'
+			ELSE S.ST_NAME  END "stName",
 	      sum(w.ware_price) "warePrice",
 	      sum(w.ware_qty) "wareQty"
 		FROM warehousing w left outer join stock s
@@ -53,10 +55,11 @@
 	
 	<select id="getWarehousingList" resultType="warehousing">
 		SELECT w.st_num 	"stNum",
-	      s.st_name 		"stName",
-	      sum(w.ware_price) "warePrice",
-	      sum(w.ware_qty)	"wareQty",
-	      sum(w.st_loss)	"stLoss"
+		    CASE WHEN S.ST_NAME IS NULL THEN '기타 재고'
+			ELSE S.ST_NAME  END "stName",
+		    sum(w.ware_price) "warePrice",
+		    sum(w.ware_qty)	"wareQty",
+		    sum(w.st_loss)	"stLoss"
 		FROM warehousing w left outer join stock s
 		ON w.st_num = s.st_num
 		<where>
@@ -91,11 +94,12 @@
 	
 	<select id="getWarehousing" resultType="warehousing">
 		SELECT W.WARE_DATE "wareDate",
-			 W.ST_NUM 	"stNum",
-		     S.ST_NAME 		"stName",
-		     W.WARE_PRICE "warePrice",
-		     W.WARE_QTY	"wareQty",
-		     W.ST_LOSS	"stLoss"
+			W.ST_NUM 	"stNum",
+			CASE WHEN S.ST_NAME IS NULL THEN '기타 재고'
+			ELSE S.ST_NAME  END "stName",
+		    W.WARE_PRICE "warePrice",
+		    W.WARE_QTY	"wareQty",
+		    W.ST_LOSS	"stLoss"
 		FROM WAREHOUSING W LEFT OUTER JOIN STOCK S
 		ON W.ST_NUM = S.ST_NUM
 		<where>
