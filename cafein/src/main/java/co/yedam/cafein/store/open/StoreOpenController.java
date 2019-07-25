@@ -40,10 +40,18 @@ public class StoreOpenController {
 	
 	//오픈 목록 리스트
 	@ResponseBody
-	@RequestMapping(value = "/getOpenList")
+	@RequestMapping(value = "/getOpenList.do")
 	public List<StoreOpenVO> getOpenList(Model model, StoreOpenVO vo) {
 		
 		return storeOpenService.getOpenList(vo);
 
 	}
+	//오픈 목록 단건검색
+		@ResponseBody
+		@RequestMapping(value = "/getOpen.do")
+		public StoreOpenVO getOpen(Model model, StoreOpenVO vo) {
+			
+			return storeOpenService.getOpen(vo);
+
+		}
 }

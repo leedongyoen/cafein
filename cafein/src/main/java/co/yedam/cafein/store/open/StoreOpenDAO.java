@@ -22,4 +22,8 @@ public class StoreOpenDAO {
 		
 		return mybatis.insert("storeOpenDAO.insertOpen", vo);
 	}
+	
+	public StoreOpenVO getOpen(StoreOpenVO vo) {
+		return mybatis.selectOne("storeOpenDAO.getOpen",vo);
+	}
 }
