@@ -13,8 +13,8 @@
 		, M_PRICE "mPrice"
 		,CA_NUM "caNum"
 		 FROM MENU
-		 WHERE S_ID= #{sId} 
-	</select>
+		 WHERE S_ID= #{sId} AND MENUSALE != 'N'
+	</select> 
 	<!-- 메뉴선택시 옵션 가져오기 -->
 	<select id="getOptionList" resultType="recipe">
 		SELECT
