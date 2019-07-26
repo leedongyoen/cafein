@@ -34,4 +34,8 @@ public class StoreStockDAO {
 	public int updateEnterQty(StockVO vo) {
 		return mybatis.update("StockDAO.updateEnterQty",vo);
 	}
+	//재고삭제시 레시피 체크
+		public int checkStock(StockVO vo) {
+			return mybatis.selectOne("StockDAO.checkStock",vo);
+		}
 }

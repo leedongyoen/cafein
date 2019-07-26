@@ -81,7 +81,7 @@ public class StoreController {
 	}
 
 	//매장 로그인 처리
-	@RequestMapping("storeloginresult.do")
+	@RequestMapping(value = "storeloginresult.do", method = RequestMethod.GET)
 	public String storeloginResult(StoreVO vo, HttpSession session, Model model, HttpServletResponse response) throws IOException {
 		
 		StoreVO store = storeLoginService.getStore(vo);

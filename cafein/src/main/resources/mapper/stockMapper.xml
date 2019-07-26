@@ -128,7 +128,32 @@
 		WHERE S_ID = #{sId}
 		AND ST_NUM = #{stNum}
 	</update>
-
+	
+		<!--재고삭제되면 레시피도 같이 삭제 -->
+<!-- 	<delete id="deleteStockWith" parameterType="recipe"> -->
+<!-- 	DELETE FROM RECIPE WHERE ST_NUM = #{stNum} -->
+<!-- 	</delete> -->
+	
+	<!-- 재고 삭제를 위해 레시피에 존재여부 체크 -->
+	<select id="checkStock" resultType="int" parameterType="stock">
+	      SELECT COUNT(*) "recipeCnt"
+	      FROM RECIPE
+	      <where>
+	         <choose>
+	            <when test="stNumList != null and stNumList.length>0">
+	               st_num in
+	               <foreach collection="stNumList" open="(" close=")"
+	                  separator="," item="item">
+	                  #{item}
+	               </foreach>
+	            </when>
+	            <otherwise>
+	               st_num = #{stNum}
+	               
+	            </otherwise>
+	         </choose>
+		</where>
+	</select>
 </mapper>
 
  

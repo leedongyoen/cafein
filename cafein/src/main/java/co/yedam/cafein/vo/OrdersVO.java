@@ -39,10 +39,12 @@ public class OrdersVO {
 	private String detailNm;
 	
 	private int addcanclemileage;
-	private int cnt;		// 주문 건수를 알기위함
+	private int cnt;					// 주문 건수를 알기위함
 	private int addMileageCnt;			// 사용한 적립금 건수
 	private int minusMileageCnt;		// 마일리지를 적립해준 주문 건수
 	private String openTime;			// 마일리지 검색 할 때 where 절에 필요
+	
+	private int rank;					// 판매순위
 	
 	// 환불내역 조회
 	private int refundSum;
@@ -328,6 +330,13 @@ public class OrdersVO {
 	public void setCardRefundCnt(int cardRefundCnt) {
 		this.cardRefundCnt = cardRefundCnt;
 	}
+	public int getRank() {
+		return rank;
+	}
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+	
 	@Override
 	public String toString() {
 		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
@@ -338,14 +347,10 @@ public class OrdersVO {
 				+ receipno + ", caNum=" + caNum + ", optionlist=" + Arrays.toString(optionlist) + ", hotice_option="
 				+ hotice_option + ", addmileage=" + addmileage + ", mName=" + mName + ", detailNm=" + detailNm
 				+ ", addcanclemileage=" + addcanclemileage + ", cnt=" + cnt + ", addMileageCnt=" + addMileageCnt
-				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", refundSum=" + refundSum
-				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
+				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", rank=" + rank + ", refundSum="
+				+ refundSum + ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
 				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + ", start=" + start + ", end=" + end
 				+ ", orderlistcontroller=" + orderlistcontroller + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", mileageservice=" + mileageservice + "]";
 	}
-
-	
-
-
 }
