@@ -9,7 +9,6 @@
 <title>Customer Information Edit Page</title>
 <script src="./js/json.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-<link rel="stylesheet" href="./css/orderlist.css" >
 <META NAME="Generator" CONTENT="EditPlus">
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">

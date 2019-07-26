@@ -7,7 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
-<link rel="stylesheet" href="./css/orderlist.css" >
 <title>우리매장 고객</title>
 <style type="text/css">
 

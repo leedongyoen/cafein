@@ -392,8 +392,10 @@
 <body>
 <hr>
 <div class = "container" align = "center">
-	<h2 align="center">주문 내역</h2>
-	<hr>	
+	<hr>
+	   	<p align="center" class="titlefont">주문 내역</p>
+	<hr>
+
 </div>
 <div class = "container" align = "center">
   
@@ -405,7 +407,8 @@
     <input type="button" class="btn btn-success" onclick="getstoreorderlist()" value="초기화">
     </div>
 
-
+	<hr>
+		
 		<table id="orderlisttable" class="table table-hover">
 
 			<thead>
