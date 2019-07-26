@@ -81,10 +81,7 @@ public class MenuController {
 	public Map<String,Boolean> insertUser(@RequestBody MenuVO vo, Model model) throws IllegalStateException, IOException {
 
 		
-		
-		
-		//vo.setsId("SH001");
-
+	
 		//insert 후에 mnum받아와야함......
 		service.insertMenuProc1(vo);
 		

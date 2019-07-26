@@ -24,31 +24,6 @@ public class RecipeController {
 	@Autowired
 	RecipeSerciveImpl service,service2;
 	
-	
-	
-	/*
-	 * @RequestMapping(value="/storerecipemenuoption/{sId}/{mNum}",
-	 * method=RequestMethod.GET) public ModelAndView getRecipeList(
-	 * 
-	 * @PathVariable("sId") String sId , @PathVariable("mNum") String mNum
-	 * //,ViewStockCheckVO vo ,Model model){
-	 * 
-	 * 
-	 * ModelAndView mv = new ModelAndView(); ViewStockCheckVO vo = new
-	 * ViewStockCheckVO(); RecipeVO vo2 = new RecipeVO(); StockVO vo3 = new
-	 * StockVO();
-	 * 
-	 * vo.setsId(sId); vo.setmNum(mNum); vo2.setsId(sId); vo2.setmNum(mNum);
-	 * vo3.setsId(sId); //
-	 * mv.addObject("recipedetail",service.getRecipeDetailList(vo2));
-	 * mv.addObject("recipelist",service.getRecipeList(vo)); //모든 레시피 정보 가져옴
-	 * mv.addObject("stocklist",service.getRecipeStockList(vo3)); //stock caNum 가져옴
-	 * 
-	 * mv.setViewName("store/menulist"); return mv;
-	 * 
-	 * }
-	 */
-	
 	//조건있는 전체조회
 	
 	  @RequestMapping(value="/recipes/{sId}/{mNum}",
@@ -129,7 +104,16 @@ public class RecipeController {
 	
 
 	
-	
+	@ResponseBody
+	@RequestMapping(value="/recipes/{sId}"
+					, method=RequestMethod.PUT
+					,consumes="application/json" 
+					)
+	public RecipeVO updateRecipe(@RequestBody RecipeVO vo,@PathVariable("sId") String sId , Model model) {
+		vo.setsId(sId);
+		service.recipeUpdateProc1(vo);
+		return vo;
+	}
 	
 	
 	//stock caNum List 받아옴

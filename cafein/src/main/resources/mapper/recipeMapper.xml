@@ -157,7 +157,18 @@
 						WHERE ST_NUM=#{stNum}
 	</update>
 	
-	
+	<update id = "recipeUpdateProc1" parameterType="recipe" statementType="CALLABLE">
+			{			
+				call RECIEPE_STOCK_UPDATE(
+					#{consum, mode=IN, javaType=double,jdbcType=NUMERIC,numericScale=4},
+					#{caNum, mode=IN, jdbcType=VARCHAR, javaType=string},
+					#{turnNo,  mode=IN, jdbcType=NUMERIC, javaType=java.lang.Integer},
+					#{recipeDetail, mode=IN, jdbcType=VARCHAR, javaType=string},
+					#{stNum, mode=IN, jdbcType=VARCHAR, javaType=string},					
+					#{recipeno, mode=IN, jdbcType=VARCHAR, javaType=string}
+				)
+			}	
+	</update>
 	
 	
 	<!-- option CRUD -->

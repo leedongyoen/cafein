@@ -41,6 +41,12 @@ public class RecipeDAO {
 		return mybatis.delete("RecipeDAO.deleteRecipe",vo);
 	}
 	
+	public int recipeUpdateProc1(RecipeVO vo) {
+		System.out.println("mybatis recipeUpdateProc1");
+		return mybatis.update("RecipeDAO.recipeUpdateProc1",vo);
+	}
+	
+	
 	public int updateAqty(StockVO vo) {
 		System.out.println("mybatis updateAqty");
 		return mybatis.update("RecipeDAO.stockAqtyUpdate",vo);

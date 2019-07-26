@@ -33,6 +33,10 @@ public class RecipeSerciveImpl {
 	public int insertRecipe(RecipeVO vo) {
 		return recipeDao.insertRecipe(vo);
 	}
+	
+	public int recipeUpdateProc1(RecipeVO vo) {
+		return recipeDao.recipeUpdateProc1(vo);
+	}
 
 	public int deleteRecipe(RecipeVO vo) {
 		return recipeDao.deleteRecipe(vo);

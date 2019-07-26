@@ -56,6 +56,13 @@ p {
 	margin: 0;
 	padding: 20%;
 }
+
+
+html, body { height:100%; overflow:hidden } 
+.h-div {height:88%;}
+
+
+
 </style>
 
 
@@ -108,9 +115,9 @@ $(function(){
 		mName = td.eq(1).text();
 		mPrice = td.eq(2).text();
 		mCate = td.eq(3).text();
-		saleState = td.eq(4).text();
-		menuState = td.eq(5).text();
-		menuImg = td.eq(6).text();
+		saleState = td.eq(5).text();
+		menuState = td.eq(7).text();
+		menuImg = td.eq(8).text();
 		
 		if(mCate=='CACO'){mCate="CACO";}
 		else if(mCate=='CADR'){mCate="CADR";}
@@ -157,8 +164,12 @@ $(function(){
 		var tr = $(this);
 		var td = tr.children();
 		
-		selRecinum = td.eq(4).text();
-		console.log(selRecinum);
+		selRecinum = td.eq(6).text();
+		var tturnNo = td.eq(0).text();
+		selStanunit
+		console.log(selRecinum +" :: "+tturnNo);
+		$("#recipeNum").val(selRecinum);
+		$("#turnNo").val(tturnNo);
 		 });
 	
 	
@@ -562,9 +573,22 @@ function optionDelete(){
 		$("#fileForm").submit();
 
 	}
-	
-
-	
+	//--------------------------
+	function recipeUpdate(){
+		var menuId = $("#mNum").val();
+		$.ajax({
+			url: "recipes/"+storeid,
+			type: 'PUT',
+			dataType: 'json',
+			data: JSON.stringify($("#recipeTableForm").serializeObject()),
+			contentType: 'application/json',
+			success: function(data) { 
+				menulist(menuId);
+			}
+			
+		});
+	}
+	////////////////////////
 	
 	function insertMenu(){
 		
@@ -579,11 +603,11 @@ function optionDelete(){
 </head>
 <body>
 
-	<div style="position: absolute; width: 100%">
+	<div style="position: absolute; width: 100%" class="h-div">
 		<div style="background-color: black; color: #92B3B7">
 			<h3>[메뉴 관리]</h3>
 		</div>
-		<div style="overflow: scroll; height: 800px; float: left; width: 45%;">
+		<div style="overflow: scroll; height: 100%; float: left; width: 45%;">
 			<!-- 메뉴 List-->
 			<div class="container" style="width: 100%">
 
@@ -594,9 +618,9 @@ function optionDelete(){
 							<tr>
 								<th>메뉴 번호</th>
 								<th>메뉴 이름</th>
-								<th>메뉴 가격</th>
-								<th>카테고리</th>
-								<th>판매 상태</th>
+								<th>메뉴가격</th>
+								<th colspan = "2">카테고리</th>
+								<th colspan = "2">판매 상태</th>
 								<!-- 메뉴 판매 가능상태?(ex,계절메뉴) -->
 								<th>메뉴 상태</th>
 								<!-- sold out -->
@@ -604,18 +628,32 @@ function optionDelete(){
 						</thead>
 						<tbody>
 							<c:forEach items="${storemenu}" var="menu">
-								<tr>
+
+								<c:choose>
+								<c:when test="${menu.mStat eq 'A2'}">
+									<tr style="color:red;">
+								</c:when>
+									<c:otherwise>
+									<tr style="color:black;">
+									</c:otherwise>
+								</c:choose>
 									<!-- ****tr 1번 클릭 시, 레시피 상세조회 페이지가 등장 -->
 									<!-- ****tr 2번 더블 클릭 시, 메뉴 상세조회 페이지가 등장 -->
 									<td>${menu.mNum}</td>
 									<td>${menu.mName}</td>
 									<td>${menu.mPrice}</td>
 									<td>${menu.caNum}</td>
+									<td>${menu.ca_num_nm}</td>
 									<td>${menu.mStat}</td>
+									<td>${menu.m_stat_nm}</td>
 									<td>${menu.menuSale}</td>
 									<td style="display: none;">${menu.uploadFileName}</td>
+								
 								</tr>
 
+
+
+								
 							</c:forEach>
 
 						</tbody>
@@ -629,7 +667,7 @@ function optionDelete(){
 			</div>
 		</div>
 		<div
-			style="overflow: scroll; height: 800px; float: right; width: 55%;">
+			style="overflow: scroll; height: 100%; float: right; width: 55%;">
 
 
 			<div id="backgroundCoffee" style="width: 100%; height: 100%;">
@@ -744,13 +782,17 @@ function optionDelete(){
 
 							</table>
 						</div>
-						<input type="text" id="recipeMsg"
-							style="text-align: right; width: 300px;" value="">
+							<input type="text" id="recipeMsg" style="text-align: right; width: 300px;" value="">
 						<!-- <th>적정 수량</th> 레시피 추가하면서 필요시 update-->
-						<input type="hidden" id="recistAqty"> <input type="hidden"
-							id="recistStanunit"> <br> <br>
+							<input type="text" id="recistAqty">
+							<input type="text" id="recistStanunit" name = "stanUnit">
+							<input type="text" id="recipeNum" name="recipeno">
+							<input type="text" id="turnNo" name = "turnNo">
+							<input type="text" id = "stanUnit" name="stanUnit">
+							 <br> <br>
 						<!-- 레시피 추가 테이블 -->
 						<input type="button" value=" 재료 추가 " onclick="recipeInsert()">
+						<input type="button" value=" 레시피 수정 " onclick="recipeUpdate()">
 						<input type="button" value=" 재료 삭제 " onclick="recipeDelete()"><br>
 						<table border="1" class="table table-hover">
 							<tr>
@@ -774,9 +816,10 @@ function optionDelete(){
 
 							<tr>
 								<th>제 작 방 법</th>
-								<td colspan="3"><textarea
-										style="width: 100%; border: 1; overflow: visible; text-overflow: ellipsis;"
-										rows=3></textarea></td>
+								<td colspan="3">
+								<textarea style="width: 100%; border: 1; overflow: visible; text-overflow: ellipsis;"
+										rows=3 name="recipeDetail">
+										</textarea></td>
 							</tr>
 
 						</table>
