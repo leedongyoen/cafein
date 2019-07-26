@@ -139,6 +139,7 @@ table {
 </div>
 <br><br>
 
+<div align = "center">
 <div style = "float:left;margin-right:10px;">
   <table border = "1" id="mainlikestorelist"
   	onclick = "location.href='${pageContext.request.contextPath}/likestorelist.do'">
@@ -189,9 +190,9 @@ table {
 	</tbody>
   </table>
 </div>
+</div>
 
-
-<br><br><br><br><br><br><br><br>
+<!-- <br><br><br><br><br><br><br><br>
 <div id="map" style="width:100%;height:400px;margin:auto;"></div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ae2e6275133a2bf25fe30fba002ced8d&libraries=services"></script>
 	<script>
@@ -203,6 +204,6 @@ table {
 
 		var map = new daum.maps.Map(container, options);
 	</script>
-<br><br>
+<br><br> -->
 </body>
 </html>

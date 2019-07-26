@@ -17,7 +17,7 @@
 
 	<!-- 일별 통계 쿼리 -->
 	<select id="getDaySales" resultType="salessum">
-		SELECT
+		<!-- SELECT
 		A.WEEK,
 		NVL(B.TOTALQTY, 0) CNT,
 		NVL(B.TOTALS, 0) ATOTAL
@@ -28,7 +28,7 @@
 		0 DAY
 		FROM
 		DUAL
-		CONNECT BY 		<!-- 부등호 기호 들어가면 CDATA로 감싸주어야됨. -->
+		CONNECT BY 		부등호 기호 들어가면 CDATA로 감싸주어야됨.
 			 <![CDATA[ 
 			LEVEL <= 7
 			]]>
@@ -41,10 +41,11 @@
 		FROM
 		(
 		SELECT
+		DISTINCT
 		O.S_ID,
 		O.O_DATE,
 		OD.O_QTY,
-		<!-- week = D일때는 일별 M일때 월별 Y는 사용 X -->
+		week = D일때는 일별 M일때 월별 Y는 사용 X
 		<choose>
 			<when test='week == "D" '>
 				TO_CHAR(O_DATE, 'D') WEEK,
@@ -59,7 +60,8 @@
 				TO_CHAR(O_DATE, 'YY') WEEK,
 			</otherwise>
 		</choose>
-		O.TOTAL
+		O.TOTAL,
+		OD.OP_DNUM
 		FROM
 		ORDER_DETAILS OD,
 		MENU M,
@@ -67,10 +69,13 @@
 		WHERE
 		OD.O_NUM = O.O_NUM
 		AND OD.M_NUM = M.M_NUM
-		AND O.S_ID = #{sId} <!-- sid 의 Keyword 값   -->
+		AND O.S_ID = #{sId} sid 의 Keyword 값  
+		AND O.DELIVERY_STATUS  NOT IN ('C4','C0')
+        AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
+		
 		<choose>
 			<when test='week == "D" '>
-				AND TO_CHAR(O_DATE, 'YYMMW') = #{dates} <!--  dates Keyword 값   -->
+				AND TO_CHAR(O_DATE, 'YYMMW') = #{dates}  dates Keyword 값  
 			</when>
 			<when test='week == "M" '>
 				AND TO_CHAR(O_DATE, 'YYMM') = #{dates}
@@ -89,7 +94,52 @@
 		WHERE
 		A.WEEK = B.WEEK(+)
 		ORDER BY
-		A.WEEK
+		A.WEEK -->
+
+		SELECT A.WEEK,
+			 NVL(B.TOTALQTY, 0) CNT, 
+			 NVL(B.TOTALS, 0) ATOTAL
+		FROM (
+				SELECT LEVEL WEEK,
+					   0 DAY
+				FROM DUAL
+				CONNECT BY LEVEL <![CDATA[ <= ]]> 7 ) A,
+				( SELECT WEEK, SUM(O_QTY) TOTALQTY, SUM(TOTAL) TOTALS
+				FROM 
+					(
+					SELECT DISTINCT O.S_ID,
+							 O.O_DATE, 
+							 TO_CHAR(O_DATE, 'D') WEEK, 
+							 OD.O_QTY,
+							 O.TOTAL, 
+							 OD.OP_DNUM, 
+							 OD.M_NUM
+					FROM ORDER_DETAILS OD, 
+						MENU M, 
+						ORDERS O				
+				<where>
+						OD.O_NUM = O.O_NUM
+						AND OD.M_NUM = M.M_NUM
+						AND O.S_ID = #{sId}
+						AND O.DELIVERY_STATUS NOT IN ('C4','C0')
+						AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
+						AND
+				 	<choose>
+					<when test="startDate != null and startDate !='' "> 				
+						O_DATE BETWEEN TRUNC(TO_DATE(#{startDate},'YYYY-MM-DD')+1)-TO_CHAR(TO_DATE(#{startDate},'YYYY-MM-DD'),'D')
+						AND 
+						TRUNC(TO_DATE(#{startDate},'YYYY-MM-DD')+1)-TO_CHAR(TO_DATE(#{startDate},'YYYY-MM-DD'),'D') + 7 )
+					</when>
+					<otherwise>
+						O_DATE BETWEEN TRUNC(SYSDATE+1)-TO_CHAR(SYSDATE,'D')
+						AND 
+						TRUNC(SYSDATE+1)-TO_CHAR(SYSDATE,'D') + 7 )
+					</otherwise>
+					</choose>	
+				</where>	          
+		GROUP BY WEEK ) B
+		WHERE A.WEEK = B.WEEK(+)
+		ORDER BY A.WEEK
 	</select>
 	<!-- 월별 매출 통계 쿼리. -->
 	<select id="getMonthSales" resultType="salessum">
@@ -118,10 +168,10 @@
 		FROM
 		(
 		SELECT
+		DISTINCT
 		O.S_ID,
 		O.O_DATE,
 		OD.O_QTY,
-
 		<choose>
 			<when test='week == "D" '>
 				TO_CHAR(O_DATE, 'D') WEEK,
@@ -136,7 +186,8 @@
 				TO_CHAR(O_DATE, 'YY') WEEK,
 			</otherwise>
 		</choose>
-		O.TOTAL
+		O.TOTAL,
+		OD.OP_DNUM
 		FROM
 		ORDER_DETAILS OD,
 		MENU M,
@@ -145,6 +196,8 @@
 		OD.O_NUM = O.O_NUM
 		AND OD.M_NUM = M.M_NUM
 		AND O.S_ID = #{sId}
+		AND O.DELIVERY_STATUS  NOT IN ('C4','C0')
+        AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
 		<choose>
 			<when test='week == "D" '>
 				AND TO_CHAR(O_DATE, 'YYMMW') = #{dates}
@@ -170,70 +223,98 @@
 	</select>
 	<!-- 연별 매출 통계 쿼리. -->
 	<select id="getYearSales" resultType="salessum">
-		SELECT WEEK
-		, SUM(O_QTY) CNT
-		, SUM(TOTAL) ATOTAL
-		FROM (SELECT S_ID
-		,O_DATE
-		, O_QTY
-		, TO_CHAR(O_DATE, 'YYYY') WEEK
-		, TOTAL
-		FROM ORDERS O JOIN ORDER_DETAILS OD
-		ON O.O_NUM = OD.O_NUM
-		)
+	SELECT WEEK ,
+			  SUM(O_QTY) CNT ,
+			  SUM(TOTAL) ATOTAL
+		FROM 
+			(SELECT DISTINCT OD.OP_DNUM,
+			 		S_ID ,
+			 		O_DATE, 
+			 		O_QTY, 
+			 		TO_CHAR(O_DATE,'YYYY') WEEK, 
+			 		TOTAL
+			FROM 
+				ORDERS O JOIN ORDER_DETAILS OD
+				ON O.O_NUM = OD.O_NUM
+			WHERE
+			O.DELIVERY_STATUS NOT IN ('C4','C0')
+			AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
+			)
 		WHERE S_ID = #{sId}
 		GROUP BY WEEK
 	</select>
 	<!-- 메뉴별 통계 쿼리  -->
 	<select id="getMenuSales" resultType="salessum">
-		SELECT M.M_NAME,
-			 SUM(O_QTY) CNT, 
-			 SUM(M_PRICE*O_QTY) ATOTAL
-		FROM MENU M JOIN ORDER_DETAILS OD
+			SELECT AB.M_NAME,
+			SUM(AB.O_QTY) CNT,
+			SUM(AB.M_PRICE*AB.O_QTY) ATOTAL
+			FROM
+			(
+			SELECT DISTINCT OD.OP_DNUM ,O.S_ID, OD.O_QTY, O.TOTAL ,OD.OP_DNUM , OD.M_NUM
+			, M.M_NAME, M.M_PRICE
+			FROM MENU M JOIN ORDER_DETAILS OD
 			ON M.M_NUM = OD.M_NUM JOIN ORDERS O
 			ON O.O_NUM = OD.O_NUM
-		WHERE M.S_ID = #{sId}
-		GROUP BY M.M_NAME
+			WHERE M.S_ID = #{sId}
+			AND O.DELIVERY_STATUS NOT IN ('C4','C0')
+			AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
+			) AB
+			GROUP BY AB.M_NAME
+			ORDER BY CNT DESC
 	</select>
+	
+	<!-- 시간별 통계 -->
 	<select id="getTimeSales" resultType="salessum"> 
-	SELECT DECODE(GROUPING(CD.TM1)
-		,1,'합계',CD.TM1||'~'||CD.TM2) WEEK
-		, SUM(AB.OTY) CNT
-		, SUM(AB.TOT) ATOTAL
-	FROM
+		SELECT
+			 DECODE(GROUPING(CD.TM1),1,'토탈',CD.TM1||'~'||CD.TM2) WEEK
+			, SUM(AB.CNT) CNT
+			, SUM(AB.TOTAL) ATOTAL
+			FROM
+   		(
+        SELECT 
+           TO_CHAR(KIN.O_DATE ,'HH24') TM
+          , SUM(KIN.O_QTY) CNT 
+          , SUM(KIN.TOTAL) TOTAL
+          FROM (
+                    select DISTINCT O.O_NUM
+                              , O.O_DATE
+                              , O.TOTAL
+                              ,OD.OP_DNUM
+                              ,OD.M_NUM
+                              ,OD.O_QTY
+                    FROM ORDERS O JOIN ORDER_DETAILS OD
+                          ON O.O_NUM = OD.O_NUM JOIN MENU M
+                          ON M.M_NUM = OD.M_NUM
+			<where>
+			 	<choose>
+				<when test="startDate != null and startDate !='' "> 
+					O_DATE <![CDATA[ >= ]]> TO_DATE(#{startDate},'YYYY-MM-DD')+1/(24*60)/60		
+					AND 
+					O_DATE <![CDATA[ <= ]]> TO_DATE(#{startDate},'YYYY-MM-DD')+(23/24)+(59/(24*60))+(59/(24*60)/60)	
+				</when>
+				<otherwise>
+					O_DATE 	<![CDATA[ >= ]]> TRUNC(SYSDATE)+1/(24*60)/60
+					AND 
+					O_DATE <![CDATA[ <= ]]> TRUNC(SYSDATE)+(23/24)+(59/(24*60))+(59/(24*60)/60)
+				</otherwise>
+				</choose>
+					 AND
+					 M.S_ID = #{sId}
+					 AND O.DELIVERY_STATUS  NOT IN ('C4','C0')
+                     AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')					 	
+			</where>	          
+                ) KIN 
+                group by  TO_CHAR(KIN.O_DATE ,'HH24')
+        )AB
+    	,
 		(
-	SELECT TO_CHAR(O_DATE, 'HH24') TM
-		, SUM(O_QTY) OTY
-		, SUM(TOTAL) TOT
-	FROM ORDERS O JOIN ORDER_DETAILS OD
-			ON O.O_NUM = OD.O_NUM JOIN MENU M
-			ON M.M_NUM = OD.M_NUM
-	WHERE <!--  TO_DATE 형식으로 년도 요일 시 분 초 -->
-		 <![CDATA[ 
-		 O_DATE >= TO_DATE('20190703 100000','YYYYMMDDHH24MISS')
-		]]>
-		AND
-		<![CDATA[
-		 O_DATE <= TO_DATE('20190703 225959','YYYYMMDDHH24MISS')
-		]]>
-		AND 	
-		M.S_ID = #{sId}
-	GROUP BY TO_CHAR(O_DATE, 'HH24')
-	) AB
-	,
-	(
-	SELECT  <!-- LPAD를 이용하여 ex) 10 ~ 11... 로 나누는 과정 -->
-		  LPAD(LEVEL + 8, 2, '1') TM1
-		, LPAD(LEVEL + 9, 2, '1') TM2
-	FROM 
-		DUAL  <!--  13개 의 컬럼까지 만듦. -->
-		<![CDATA[
-		CONNECT BY LEVEL <= 13
-		]]>
+		SELECT LPAD(LEVEL + 9, 2, '0') TM1
+		, LPAD(LEVEL + 10, 2, '0') TM2
+		FROM DUAL 
+		CONNECT BY LEVEL  <![CDATA[<= ]]>14	 
 		) CD
-	WHERE 
-		CD.TM1 = AB.TM(+)
-	GROUP BY ROLLUP((CD.TM1, CD.TM2))
-	ORDER BY CD.TM1
+		WHERE CD.TM1 = AB.TM(+)
+		GROUP BY ROLLUP((CD.TM1, CD.TM2))
+		ORDER BY CD.TM1
 	</select>
 </mapper>

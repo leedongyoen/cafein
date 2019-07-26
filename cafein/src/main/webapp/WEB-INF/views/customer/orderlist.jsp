@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp"%>
-<link rel="stylesheet" href="./css/orderlist.css" >
 <title>주문 목록</title>
 </head>
 <script>
@@ -62,8 +61,12 @@
 						item.payMethod = '카드';
 					if(item.payMethod == 'cash')
 						item.payMethod = '현금';
+					
+					if(item.receipt == 'takeout' && item.deliveryStatus == 'C1'){
+						item.detailNm = ' 주문 준비중 ( 직접 수령 )';
+					}
 					if(item.receipt == 'takeout' && item.deliveryStatus == 'C3'){
-						item.detailNm = '주문 완료 ( 직접 수령 )';
+						item.detailNm = ' 주문 준비 완료 ( 직접 수령 )';
 					}
 					
 					$('<tr>').attr("onclick","orderDetail('"+item.oNum+"')").attr("class","tr"+item.deliveryStatus)

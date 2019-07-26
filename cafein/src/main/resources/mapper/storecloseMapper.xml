@@ -217,6 +217,9 @@
 			 , CLOSETIME "closeTime"
 		FROM STOREOPEN 
 		WHERE S_ID = #{sId}
+			<if test="startDate != null and endDate != null ">
+				AND TO_CHAR(OPENTIME,'YYYY-MM-DD') BETWEEN '${startDate}' AND '${endDate}'
+			</if>
 		ORDER BY OPENTIME DESC
 	</select>
 	

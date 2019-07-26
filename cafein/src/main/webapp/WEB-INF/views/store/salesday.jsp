@@ -5,6 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -14,10 +17,15 @@
 	var daystring = ["일","월","화","수","목","금","토"]; // week에 요일을 붙여줄 배열.
 	var daydata; //
 	
+	var sId = '<%= session.getAttribute("sId") %>';
+	
 	function drawBasic() {
+		var startDate = $('#startDate').val();
+		var endDate = $('#endDate').val();
+		
 		$.ajax({
 			url : "./getsalesday.do",
-			data : { sId : "SH001", week : "D", dates : "19071"}, // JSON에서 받아올 데이터
+			data : { sId : sId, startDate : startDate, endDate : endDate}, // JSON에서 받아올 데이터
 			type : "POST",
 		//	async : false,
 			datatype : "json",
@@ -68,6 +76,11 @@
 	<h2 align="center">매출</h2>
 	<h3 align="center">일별 통계</h3>
 	<div id="chart_div"></div>
+	<p align="center">
+		<input type ="date" name ="startDate" id="startDate">&nbsp;
+		<!-- <input type ="date" name ="endDate" id="endDate">&nbsp; -->
+		<input type="button" value= "검색" class="btn btn-primary btn-sm" onclick="drawBasic()">
+	</p>
 	<div align="center" id="test_dataview"></div><br>
 	<table align="center">
 		<tr>

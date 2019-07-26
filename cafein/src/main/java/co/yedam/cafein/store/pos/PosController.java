@@ -81,9 +81,10 @@ public class PosController {
 	//pos기 환불
 	@ResponseBody
 	@RequestMapping (value = "/refoundsuccess", method = RequestMethod.POST)
-	public String refoundcall(OrdersVO vo) {
+	public OrdersVO refoundcall(OrdersVO vo) {
 		System.out.println("환불");
-		return "redirect:/pos.do";
+		posService.refoundcall(vo);
+		return vo;
 	}
 	
 	//pos기 주문

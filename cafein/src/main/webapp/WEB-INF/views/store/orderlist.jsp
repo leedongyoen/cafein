@@ -239,10 +239,16 @@
 				
 				if(item.deliveryStatus == 'C0') deliverstatus="주문확인";
 				if(item.deliveryStatus == 'C1') deliverstatus="배달준비";
-				if(item.deliveryStatus == 'C2') deliverstatus="배달 중";
+				if(item.deliveryStatus == 'C1' && item.receipt == '직접 수령') deliverstatus="메뉴 준비 ( web - 직접 수령 )";
+
 				if(item.deliveryStatus == 'C3') deliverstatus="배달완료";
-				if(item.deliveryStatus == 'C4') deliverstatus="주문취소";
-				if(item.deliveryStatus == 'C5') deliverstatus="현장결제"; 
+				if(item.deliveryStatus == 'C3' && item.receipt == '직접 수령') deliverstatus="주문 완료 ( web - 직접 수령 )";
+				
+				if(item.deliveryStatus == 'C4') deliverstatus="주문취소"; 
+				if(item.deliveryStatus == 'C5') deliverstatus="POS 결제"; 
+				if(item.deliveryStatus == 'C6') deliverstatus="POS 환불"; 
+				
+				//console.log(item.oNum+"  "+item.receipt+" : "+deliverstatus);
 				
 				if(ordernum == ""){
 					ordernum = item.oNum;
@@ -386,8 +392,10 @@
 <body>
 <hr>
 <div class = "container" align = "center">
-	<h2 align="center">주문 내역</h2>
-	<hr>	
+	<hr>
+	   	<p align="center" class="titlefont">주문 내역</p>
+	<hr>
+
 </div>
 <div class = "container" align = "center">
   
@@ -399,7 +407,8 @@
     <input type="button" class="btn btn-success" onclick="getstoreorderlist()" value="초기화">
     </div>
 
-
+	<hr>
+		
 		<table id="orderlisttable" class="table table-hover">
 
 			<thead>
