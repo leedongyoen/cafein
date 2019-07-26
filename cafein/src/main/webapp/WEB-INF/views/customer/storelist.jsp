@@ -8,7 +8,7 @@
 <%@ include file="cushead.jsp" %>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
-<link rel="stylesheet" href="./css/orderlist.css" >
+
 <title>Insert title here</title>
 <style type="text/css">
 input {

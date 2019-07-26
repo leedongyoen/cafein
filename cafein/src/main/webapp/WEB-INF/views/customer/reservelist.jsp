@@ -43,11 +43,13 @@
 				$("#reservetable tbody").empty();
 				console.log(data);
 				$.each(data,function(idx,item){
-				orderdate = new Date(item.dates);			
+				orderdate = new Date(item.dates);
+				enddates = new Date(item.enddate);
 					$('<tr>')
 					.append($('<td>').html(orderdate.toLocaleDateString()))
 					.append($('<td>').html(item.sName))
 					.append($('<td>').html(item.mileAge))
+					.append($('<td>').html(enddates.toLocaleDateString()))
 					.appendTo('#reservetable tbody');
 				});
 				
@@ -93,6 +95,7 @@
 				<th width=250>날짜</th>
 				<th width=250>매장명</th>
 				<th width=250>마일리지 내역</th>
+				<th width=250>만료날짜</th>
 			</tr> 
 			</thead>
 			<tbody>

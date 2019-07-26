@@ -121,7 +121,7 @@
 <div class="container">
 		<h2>재고 목록</h2>
 		<!-- 	<form action="deleteStock.do"> -->
-		<table class="table text-center">
+		<table class="table text-cente	r">
 			<thead>
 				<tr>
 					<th class="text-center">재고 명</th>

@@ -7,7 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
-<link rel="stylesheet" href="./css/orderlist.css" >
 <title>우리매장 고객</title>
 <style type="text/css">
 
@@ -21,13 +20,47 @@ input {
 
 	$(function(){
 		customerList();
-		
+		dateSearch();
 		
 		$("#customerTable tbody tr").click(function(){
 			$('#toggleTable').show();
 			
 		})
 	});
+	
+	 //날짜검새
+  	function dateSearch(){    	  													
+  		var startDate = jQuery('#startDate').val();
+  		var endDate = jQuery('#endDate').val();
+  		var sId = "<%= (String)session.getAttribute("sId") %>";	
+  		var cId = "<%= (String)session.getAttribute("cId") %>";	
+  		if(startDate != "" && endDate != ""){
+  			alert("기간검색이 되었습니다.");
+  		}
+  		
+  		$.ajax({
+    		  url:'datesearch',
+    		  type:'POST',
+    		  dataType:'json',
+    		data : {startDate : startDate,
+    				endDate : endDate,
+    				sId : sId,
+    				cId : cId
+    				},
+    		  error:function(status,msg){
+    			  alert(status+"메세지"+msg);
+    		  },
+    		  success:function(){
+    			  alert('통신성공');
+    			  $.each(data,function(idx, user){
+    					console.log(data)
+    					$('#c_history tbody').empty();
+    						
+    			});
+    		  }
+    	  });
+	}
+	
 	
 	
 	//매장 고객 리스트 요청
@@ -281,7 +314,11 @@ input {
 				<p align="center" class="titlefont">구매이력</p>
 				<hr>
 			</div>
-			<div>
+			<div class="btn-group">
+				<input type="date" class="btn btn-secondary" id="startDate" name="startDate">&nbsp; 
+					<input type="date" class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
+				<input type="button" value="검색" class="btn btn-success" id="btnSearch" onclick="dateSearch()">
+			</div>
 				<table border="1" class="table " id="c_history">
 					<thead>
 						<tr>

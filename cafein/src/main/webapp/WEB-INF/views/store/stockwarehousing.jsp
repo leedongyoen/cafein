@@ -68,7 +68,7 @@
 					startDate : startDate,
 					endDate : endDate,
 					sId : sId
-				},
+		 		},
 				
 				error : function(status, msg) {
 					alert(status + "메세지" + msg);

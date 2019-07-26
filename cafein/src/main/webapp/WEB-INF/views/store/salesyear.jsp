@@ -6,17 +6,22 @@
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
 <title>연별 통계</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 	  google.charts.load('current', {'packages':['table','corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
+      var sId = '<%= session.getAttribute("sId") %>';
+      
   	  var daydata;
       function drawChart() {
     	  $.ajax({
     		  url : "./getsalesyear.do",
-    		  data : { sId : "SH001" },
+    		  data : { sId : sId },
     		  type : "POST",
     		  datatype: "json",
     		  success : function(days) {

@@ -5,6 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <title>월별 통계</title>
@@ -14,11 +17,14 @@
 	});
 	google.charts.setOnLoadCallback(drawBasic);
 
+	var sId = '<%= session.getAttribute("sId") %>';
+
+	
 	var daydata;
 	function drawBasic() {
 		$.ajax({
 			url : "./getsalesmonth.do",
-			data : { sId : "SH001", week : "M", dates : "19"},
+			data : { sId : sId, week : "M", dates : "19"},
 			type : "POST",
 			datatype : "json",
 			success : function(days) {

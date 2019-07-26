@@ -20,7 +20,7 @@ public class StockVO {
 	private int enterQty;
 	private int lackQty;
 	
-	
+	private int recipeCnt;
 	private String[] stNumList;
 	private String stStatusNm;
 	private String caNm;
@@ -135,6 +135,14 @@ public class StockVO {
 	}
 	public void setLackQty(int lackQty) {
 		this.lackQty = lackQty;
+	}
+	
+
+	public int getRecipeCnt() {
+		return recipeCnt;
+	}
+	public void setRecipeCnt(int recipeCnt) {
+		this.recipeCnt = recipeCnt;
 	}
 	@Override
 	public String toString() {

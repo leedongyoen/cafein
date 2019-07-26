@@ -55,7 +55,6 @@ public class StoreStockController {
 	public List<StockVO> getStockList(@PathVariable String sId, Model model, StockVO vo) {
 		vo.setsId(sId);
 		return storeStockService.getStockList(vo);
-
 	}
 	
 	// 단건조회
@@ -70,11 +69,16 @@ public class StoreStockController {
 	// 삭제
 	@ResponseBody
 	@RequestMapping(value = "/stocks", method = RequestMethod.DELETE, consumes = "application/json")
-	public Map<String, Object> getStockList(@RequestBody StockVO vo, Model model) {
-		storeStockService.deleteStock(vo);
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("result", Boolean.TRUE);
-		return result;
+	public int deleteStockList(@RequestBody StockVO vo, Model model) {
+		int n = storeStockService.checkStock(vo);
+		System.out.println("레시피 갯수 : "+ n);
+		
+		if(n == 0) {
+			storeStockService.deleteStock(vo);
+			System.out.println("삭제처리");
+		}
+		System.out.println("삭제취소 !!");
+		return n; 
 	}
 
 	// 등록

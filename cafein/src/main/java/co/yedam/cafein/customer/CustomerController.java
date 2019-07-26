@@ -67,7 +67,7 @@ public class CustomerController {
 	private String apiResult = null;
 	private CustomerJoinDAO customerJoinDAO;
 	private CustomerLoginDAO loginDAO;
-	
+
 	@Autowired
 	CustomerLoginService customerLoginService;
 
@@ -76,7 +76,7 @@ public class CustomerController {
 
 	@Autowired
 	CustomerJoinService customerjoinService;
-	
+
 	@Autowired
 	BCryptPasswordEncoder passEncoder;
 
@@ -102,13 +102,16 @@ public class CustomerController {
 	@RequestMapping("customerloginresult.do")
 	public String loginResult(CustomerVO vo, HttpSession session, Model model, HttpServletResponse response)
 			throws IOException {
-		
+
 //		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
 //		//암호화  하기전
 //		String scPw = scpwd.encode(vo.getcPw());
 //		//암호화 후 db저장
-		
+
+
+
 		PrintWriter out = response.getWriter();
+
 		
 		int n = 0;
 		CustomerVO customer = customerLoginService.getCustomer(vo);
@@ -121,9 +124,11 @@ public class CustomerController {
 					+ "location.href = 'customerjoinForm.do'"
 					+ "}"
 					+ "</script>");
+
 			out.flush();
 			return "customer/login";
 			
+			// 현재 암호화된 비밀번호와 db에 저장된 암호화 비밀번호와 비교
 		} else if(passEncoder.matches(vo.getcPw(), customer.getcPw())) {		// 아이디와 비밀번호가 일치하는 경우
 			
 			out.println("<script>alert('" + customer.getcName() + "님 반갑습니다. 로그인 되었습니다.');</script>");
@@ -225,31 +230,31 @@ public class CustomerController {
 		return map;
 	}
 
-	//랜덤함수를 발생 시키는 메소드
-		public String RandomNum() {
-			StringBuffer buffer = new StringBuffer();
-			for (int i = 0; i<=5; i++) {
-				int n  = (int) (Math.random()*10);
-				buffer.append(n);
-			}
-			return buffer.toString();
+	// 랜덤함수를 발생 시키는 메소드
+	public String RandomNum() {
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i <= 5; i++) {
+			int n = (int) (Math.random() * 10);
+			buffer.append(n);
 		}
-		
-	//이메일 보내는 메소드
-	@RequestMapping(value="sendmail.do")
+		return buffer.toString();
+	}
+
+	// 이메일 보내는 메소드
+	@RequestMapping(value = "sendmail.do")
 	public String sendEmail(String email, String authNum) {
 		String host = "smtp.gmail.com";
 		String subject = "<관리자>인증번호 입니다.";
 		String from = "bnghty22@gmail.com"; // 보내는 메일
-		String to = "bnghty5798@naver.com"; //받는 메일
-		
-		authNum = RandomNum();	
-		
+		String to = "bnghty5798@naver.com"; // 받는 메일
+
+		authNum = RandomNum();
+
 		CustomerVO vo = new CustomerVO();
-		
+
 		vo.setAuthNum(authNum);
 		System.out.println(vo.getAuthNum());
-		
+
 		customerjoinService.authKey(authNum);
 		String content = "인증번호 " + authNum + "";
 
@@ -270,7 +275,7 @@ public class CustomerController {
 		try {
 			// Create a default MimeMessage object.
 			Message message = new MimeMessage(session);
-		
+
 			message.setFrom(new InternetAddress(from));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject(subject);
@@ -281,9 +286,10 @@ public class CustomerController {
 			throw new RuntimeException(e);
 		}
 		return "customer/emailauth";
-		
+
 	}
-	// 회원가입 인증번호 인증키를 체크할 컨트롤러 
+
+	// 회원가입 인증번호 인증키를 체크할 컨트롤러
 	@RequestMapping(value = "/getauthjoin/{authNum}", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<Object, Object> authkeyCheck(@PathVariable("authNum") String authNum) {
@@ -295,33 +301,33 @@ public class CustomerController {
 		map.put("cnt", n);
 		return map;
 	}
-	
-	//ID/PW 찾기
+
+	// ID/PW 찾기
 	@RequestMapping("customerfindidpw.do")
 	public String findidpw() {
 		return "customer/findidpw";
 
 	}
-	
-	//회원의 아이디를 찾을 컨트롤러.
-	@RequestMapping(value="idfind.do")
+
+	// 회원의 아이디를 찾을 컨트롤러.
+	@RequestMapping(value = "idfind.do")
 	public String idFind(CustomerVO vo, String cId, String cTel, String cName, HttpServletRequest requset) {
 		String host = "smtp.gmail.com";
 		String subject = "<관리자>회원님의 아이디 발송 입니다.";
 		String from = "bnghty22@gmail.com"; // 보내는 메일
-		String to = "bnghty5798@naver.com"; //받는 메일
-	//	String Id = requset.getParameter("cId");
-	
+		String to = "bnghty5798@naver.com"; // 받는 메일
+		// String Id = requset.getParameter("cId");
+
 		vo.setcName(cName);
 		vo.setcTel(cTel);
 		vo.setcId(cId);
 
 		vo = customerLoginService.idFind(vo);
-		
+
 		System.out.println(vo.getcName());
 		System.out.println(vo.getcTel());
 		System.out.println(vo.getcId());
-		
+
 		String content = "회원님의 아이디는 " + vo.getcId() + " 입니다.";
 
 		final String username = "bnghty22@gmail.com"; // change accordingly
@@ -341,7 +347,7 @@ public class CustomerController {
 		try {
 			// Create a default MimeMessage object.
 			Message message = new MimeMessage(session);
-		
+
 			message.setFrom(new InternetAddress(from));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject(subject);
@@ -352,29 +358,28 @@ public class CustomerController {
 			throw new RuntimeException(e);
 		}
 		return "customer/login";
-		
+
 	}
-	
-	//비밀번호 찾기 컨트롤러 
-	@RequestMapping(value="pwfind.do")
+
+	// 비밀번호 찾기 컨트롤러
+	@RequestMapping(value = "pwfind.do")
 	public String pwFind(CustomerVO vo, String cId, String cTel, String authNum) {
 		String host = "smtp.gmail.com";
 		String subject = "<관리자>----임시 비밀번호 발송-----";
 		String from = "bnghty22@gmail.com"; // 보내는 메일
-		String to = "bnghty5798@naver.com"; //받는 메일
-		
-		authNum = RandomNum();	
+		String to = "bnghty5798@naver.com"; // 받는 메일
+
+		authNum = RandomNum();
 		vo.setcPw(authNum);
 		System.out.println(vo);
 
 		customerLoginService.pwFind(vo);
-		
+
 		System.out.println(vo.getcId());
 		System.out.println(vo.getcTel());
-	//	customerjoinService.authKey(authNum);
-	//	customerjoinService.authKey(authNum);	
+		// customerjoinService.authKey(authNum);
+		// customerjoinService.authKey(authNum);
 
-		
 		String content = "임시비밀번호  =" + authNum + "";
 
 		final String username = "bnghty22@gmail.com"; // change accordingly
@@ -394,7 +399,7 @@ public class CustomerController {
 		try {
 			// Create a default MimeMessage object.
 			Message message = new MimeMessage(session);
-		
+
 			message.setFrom(new InternetAddress(from));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject(subject);
@@ -405,8 +410,7 @@ public class CustomerController {
 			throw new RuntimeException(e);
 		}
 		return "customer/login";
-		
-		
+
 	}
 
 	// 카카오 로그인
@@ -440,8 +444,8 @@ public class CustomerController {
 		session.setAttribute("cId", customer.getcId());
 		session.setAttribute("cJoin", customer.getcJoin());
 		session.setAttribute("token", access_token);
-		
-		//return kakaoName;
+
+		// return kakaoName;
 		return "customer/main";
 	}
 
