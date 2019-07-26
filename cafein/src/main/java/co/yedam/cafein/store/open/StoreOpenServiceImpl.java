@@ -25,5 +25,14 @@ public class StoreOpenServiceImpl implements StoreOpenService {
 		return storeOpenDAO.getStoreOpenList(vo);
 	}
 
+	@Override
+	public StoreOpenVO getOpen(StoreOpenVO vo) {
+		return storeOpenDAO.getOpen(vo);
+	}
+
+	@Override
+	public int checkOpen(StoreOpenVO vo) {
+		return storeOpenDAO.checkOpen(vo);
+	}
 	
 }

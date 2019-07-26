@@ -40,18 +40,23 @@ public class StoreController {
 		return "store/join";
 	}
 	//고객회원가입 insert
+	
 	@RequestMapping(value="/storejoin.do", method=RequestMethod.POST)
 	public String insertJoin(StoreVO vo, HttpServletResponse response) throws IOException {
 		System.out.println(vo);
 		PrintWriter out = response.getWriter();
-		
+	
+        response.setCharacterEncoding("UTF-8");
 		int n = storejoinService.insertJoin(vo);
-		ModelAndView mv = new ModelAndView();
+
 		if(n== 1) {
-			out.println("<script>alert('가입이 완료되었습니다. 승인 완료시 로그인 가능합니다.');</script>");
-			return("store/login");
+			out.println("<script>alert('가입이 완료되었습니다. 관리자 승인 완료 시 이용가능합니다.');"
+					+ "location.href = 'storelogin.do'"
+					+ "</script>");
+			out.flush();
+			return "store/login";
 		}else {
-			return("store/join");
+			return "store/join";
 		}
 	}
 	

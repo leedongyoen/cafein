@@ -7,15 +7,64 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp"%>
-<title>Insert title here</title>
+<title>메 뉴 관 리</title>
+<style type="text/css">
+input {
+	border: none;
+	border-right: 0px;
+	border-top: 0px;
+	boder-left: 0px;
+	boder-bottom: 0px;
+}
 
+ul {
+	list-style: none;
+	width: 450px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+li {
+	width: 450px;
+}
+
+hr {
+	width: 400;
+	align: left;
+}
+
+span {
+	display: inline-block;
+	width: 300px;
+}
+
+.sales {
+	width: 175px;
+}
+
+p {
+	text-align: center;
+}
+
+.truthlist {
+	background-color: white;
+}
+
+.modal-dialog.modal-80size {
+	width: 50%;
+	height: 80%;
+	margin: 0;
+	padding: 20%;
+}
+</style>
 
 
 <script>
 
 var selRecinum = "";
+var selStanunit = 0;
 var aQty=0.0;
-//c태그 받기 연습
+
 var storeid = "SH001";
 <%-- var storeid = "<%= (String)session.getAttribute("sid") %>";  --%>
 
@@ -30,10 +79,9 @@ var menuImg = "";
 
 $(function(){
 	  
-	
-	//조회, 등록, 수정 폼 처음에 숨기기
 	$('#toggleTable').hide();
-	$('#insertMenuFormTable').hide();
+	$('#backgroundCoffee').show();
+	
 	$('#recipeTablediv').hide();
 	$('#optionDiv').hide();
 	
@@ -42,8 +90,7 @@ $(function(){
 		//tr 누를때 session에서 sid가져옴
 		
 		
-		
-		$('#insertMenuFormTable').hide();
+		$('#backgroundCoffee').hide();
 		$('#toggleTable').show();
 		$('#recipeTablediv').show();
 		$('#optionDiv').show();
@@ -84,17 +131,7 @@ $(function(){
 		
 		$("#fileupdateName").val(mNum);
 	
-		
 		menulist(mNum);
-		
-		
-		
-		/*		
-
-		
-	*/	
-		
-		
 		
 	})
 	
@@ -113,8 +150,6 @@ $(function(){
 		});
 
 	
-	
-	
 	$(document).on("click","#recipeTable tbody tr",function(){ 
 		var str="";
 		var tdArr = new Array();
@@ -124,7 +159,6 @@ $(function(){
 		
 		selRecinum = td.eq(4).text();
 		console.log(selRecinum);
-		
 		 });
 	
 	
@@ -134,7 +168,6 @@ $(function(){
 		
 		var tr = $(this);
 		var td = tr.children();
-		
 		
 		selRecinum = td.eq(3).text();
 		console.log(selRecinum);
@@ -148,10 +181,13 @@ $(function(){
 		var json = $(this).val();
 		var obj=JSON.parse(json);
 		aQty=obj.value3;
-        console.log(obj.value1+" : "+obj.value2+" : "+obj.value3);
+		selStanunit = obj.value4;
+        console.log(obj.value1+" : "+obj.value2+" : "+obj.value3+" : "+obj.value4);
         $("#recistNum").val(obj.value1);
 		$("#recicaNum").val(obj.value2);
 		$("#recistAqty").val(obj.value3);
+		$("#recistStanunit").val(obj.value4);
+		
 		
 	});
 	
@@ -165,34 +201,21 @@ $(function(){
         		$("#opName").val("HOT");
         		$("#consum").val(0);
         		$("#opPrice").val(0);
+        		$("#opcaNum").val("CAHT");
         	}else if(obj.value2=='CAIC'){
         		$("#opName").val("ICE");
         		$("#consume").val(0);
         		$("#opPrice").val(0);
+        		$("#opcaNum").val("CAIC");
         	}
         
         $("#opstNum").val(obj.value1);
 		//$("#opcaNum").val(obj.value2);
 		
-		
 	});
 	
-	
-	
-	
-	
-	 
 });
 
-
-
-function insertMenuForm(){
-	$('#toggleTable').hide();
-	$('#recipeTablediv').hide();
-	$('#optionDiv').hide();
-	$('#insertMenuFormTable').show();
-	
-}
 
 function menulist(mNum){
 	$.ajax({
@@ -208,7 +231,9 @@ function menulist(mNum){
 			$("#cmNum").val(mNum);
 			$("#cmName").val(mName);
 			$("#omNum").val(mNum);
-			
+			$("#cmCate").val(mCate);	
+			//전역변수의 값들 넣음
+			$("#cPrice").val(mPrice);
 			
 			if(data.length==0){
 				$("#recipeTable tbody").empty();
@@ -216,9 +241,9 @@ function menulist(mNum){
 			}
 			else
 				{
-				console.log(data);
-				
-				
+					console.log(data);
+					var totalWon = 0;
+					
 					$("#recipeTable tbody").empty();
 					for(var i = 0;i<data.length;i++){
 					
@@ -226,19 +251,21 @@ function menulist(mNum){
 						{
 							$('<tr>')
 							.append($('<td>').html(data[i].stName))
-							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
-							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].stAqty)))
-							.append($('<td>').html(data[i].stanUnit))
+							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum*data[i].stanUnit)))
+							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].stUnit)))
+							.append($('<td>').html(Math.floor((data[i].stPrice*data[i].consum))+'원'))
 							.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
+							.append($('<td style="visibility:hidden;">').html(data[i].stanUnit))
 							.appendTo("#recipeTable tbody");
+							
+							totalWon = totalWon + (data[i].stPrice*data[i].consum);
 						}
-						
-						
 					}
-			
-				
+					
+					var msg = data.length +"개의 재료. 원가 : "+totalWon+"원. 수익: "+(mPrice-totalWon)+"원.";
 					
 					
+					$("#recipeMsg").val(msg);
 				}
 		}
 	});
@@ -260,7 +287,6 @@ function menulist(mNum){
 				}
 				else{
 					
-					
 					$("#optionTable tbody").empty();
 					for(var i = 0;i<data.length;i++){
 						console.log("dad: "+data[i].caNum);
@@ -278,10 +304,6 @@ function menulist(mNum){
 					}
 					
 				}
-				
-									
-				
-
 		}
 	}); 
 
@@ -289,7 +311,7 @@ function menulist(mNum){
 	
 	
 	$.ajax({
-		url:'recipes/'+'SH001',
+		url:'recipes/'+storeid,
 		type:'GET',
 		//contentType:'application/json;charset=utf-8',
 		dataType:'json',
@@ -316,7 +338,7 @@ function menulist(mNum){
 	               // $('#opSelct').append(option); 
 
 
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum+" : "+data[i].stAqty + '</option>').appendTo('#reciSelect');
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum+" : "+data[i].stAqty +" : "+data[i].stanUnit+ '</option>').appendTo('#reciSelect');
 						
 
 
@@ -325,13 +347,13 @@ function menulist(mNum){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CAJP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum +" : "+data[i].stanUnit+ '</option>').appendTo('#reciSelect');
 					
 				}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CADP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#reciSelect');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum +" : "+data[i].stanUnit+ '</option>').appendTo('#reciSelect');
 					}
 				}
 			
@@ -371,31 +393,13 @@ function menulist(mNum){
 					}
 				}
 			}
-			
-		
 	});
-	
-
 }
 
 
 
 function menuInsert(){
 
-	
-/* 	
-	$.ajaxForm({ //보내기전 validation check가 필요할경우 
-		url: "menues",
-		beforeSubmit: function (data, frm, opt) { alert("전송전!!"); return true; }, 
-		dataType: 'json',
-		data: JSON.stringify($("#insertmenudetail").serializeObject()),
-		contentType: 'application/json',
-		//submit이후의 처리 
-		success: function(responseText, statusText){ alert("전송성공!!"); }, 
-		//ajax error 
-		error: function(){ alert("에러발생!!"); } }); 
-	 */
-	
 	 $.ajax({
 		url: "menues",
 		type: 'POST',
@@ -450,7 +454,8 @@ function menuUpdate() {
 function recipeInsert(){
 	var menuId = $("#mNum").val();
 	var reQty1 = $("#consum").val();
-	var reQty2 = aQty;
+	
+	var reQty2 = aQty*selStanunit;
 		//$("#recistAqty").val();
 	
 	if(reQty1 >= reQty2){
@@ -466,7 +471,7 @@ function recipeInsert(){
 	alert(JSON.stringify($("#recipeTableForm").serializeObject()));
 	//=====================================================================================
  	$.ajax({
-		url: "recipes/"+(reQty2),
+		url: "recipes/"+storeid+'/'+(reQty1)+'/'+(selStanunit),   
 		type: 'POST',
 		dataType: 'json',
 		data: JSON.stringify($("#recipeTableForm").serializeObject()),
@@ -541,28 +546,16 @@ function optionDelete(){
 	 
 }
 
-
-/* javascript */
-
-
 	function fileUpload() {
 
 		$('#fileForm').ajaxForm({
-
 			url : "/testFile.do",
-
-			enctype : "multipart/form-data", // 여기에 url과 enctype은 꼭 지정해주어야 하는 부분이며 multipart로 지정해주지 않으면 controller로 파일을 보낼 수 없음
-
+			enctype : "multipart/form-data",
 			success : function(result) {
-
 				alert(result);
-
 			}
-
 		});
-
-		// 여기까지는 ajax와 같다. 하지만 아래의 submit명령을 추가하지 않으면 백날 실행해봤자 액션이 실행되지 않는다.
-
+		
 		$("#fileForm").submit();
 
 	}
@@ -570,29 +563,31 @@ function optionDelete(){
 
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	function insertMenu(){
+		
+		// 모달창의 배경을 눌렀을 때 닫히는 이벤트를 막아준다
+		$('#menuModal').modal({keyboard: false}) ;
+		// 마감 내역 모달창 show
+		$("#menuModal").modal('show');
+		
+	}
 	
 </script>
 </head>
 <body>
 
-<div style="position: absolute; width:100%">
-<div style="overflow:scroll; height:800px;float: left; width: 50%;">
-<!-- 메뉴 List-->
-			<div class = "container" style="width:100%">
-				
+	<div style="position: absolute; width: 100%">
+		<div style="background-color: black; color: #92B3B7">
+			<h3>[메뉴 관리]</h3>
+		</div>
+		<div style="overflow: scroll; height: 800px; float: left; width: 45%;">
+			<!-- 메뉴 List-->
+			<div class="container" style="width: 100%">
+
 				<form action="#">
-					<table border="1" id="menuTable" class = "table table-hover" style="width:100%" >
-						<thead class = "thead-dark">
+					<table border="1" id="menuTable" class="table table-hover"
+						style="width: 100%">
+						<thead class="thead-dark">
 							<tr>
 								<th>메뉴 번호</th>
 								<th>메뉴 이름</th>
@@ -615,7 +610,7 @@ function optionDelete(){
 									<td>${menu.caNum}</td>
 									<td>${menu.mStat}</td>
 									<td>${menu.menuSale}</td>
-									<td style="display:none;">${menu.uploadFileName}</td>
+									<td style="display: none;">${menu.uploadFileName}</td>
 								</tr>
 
 							</c:forEach>
@@ -623,65 +618,29 @@ function optionDelete(){
 						</tbody>
 					</table>
 
-					<input type="button" value="추가" onclick="insertMenuForm()">
+					<input type="button" value="추가" onclick="insertMenu()">
 
 
 
 				</form>
 			</div>
-</div>
-<div style="overflow:scroll; height:800px;float: right; width: 50%;">
-		<!-- 등록폼 사진 추가 작업-->
-			<div style="width: 100%;"
-				id="insertMenuFormTable">
-				<h3>[메뉴 추가]</h3>
-
-				<form id="insertmenudetail" encType="multipart/form-data" method="post">
-					<table border="1" class = "table">
+		</div>
+		<div
+			style="overflow: scroll; height: 800px; float: right; width: 55%;">
 
 
-						<tr>
-							<th>메뉴 이름</th>
-							<td><input type="text" id="mmName" name="mName"></td>
-						</tr>
-						<tr>
-							<th>메뉴 가격(원)</th>
-							<td><input type="text" id="mmPrice" name="mPrice"></td>
-						</tr>
-						<tr>
-							<th>카테고리</th>
-							<td><select id="mmCategory" name="caNum">
-									<option value="">선 택</option>
-									<option value="CACO">커피</option>
-									<option value="CADR">음료</option>
-									<option value="CADE">디저트</option>
-									<option value="CAOP">옵션</option>
-							</select></td>
-						</tr>
-
-						<tr>
-							<th>메뉴 사진</th>
-
-							<td>
-						</tr>
-						
-					</table>
-					<!-- hidden 으로 sId 넘기기 -->
-
-					<input type="hidden" id="sId" name="sId" value="SH001"> <input
-						type="button" value="등록" id="btnInsert">
-				</form>
-				
-				
-				
+			<div id="backgroundCoffee" style="width: 100%; height: 100%;">
+				<img id="backImg" style="width: 100%; height: 100%; opacity: 0.2;"
+					src="${pageContext.request.contextPath}/image/backcoffee.jpg">
 			</div>
-<!-- 메뉴 상세조회&수정 -->
+
+			<!-- 메뉴 상세조회&수정 -->
 			<div style="width: 100%;" id="toggleTable">
 
 				<form id="menudetail">
-					<input type="button" value="확정" id="btnUpdate"> 
+					<input type="button" value="확정" id="btnUpdate">
 					<!-- <input type="button" value="삭제" id="btnMenuDelete" onclick="menuDelete()"> -->
-					<input type="hidden" id="sId" name="sId" value="SH001"> 
+					<input type="hidden" id="sId" name="sId" value="SH001">
 					<table border="1" class="table table-hover">
 
 
@@ -704,8 +663,6 @@ function optionDelete(){
 									<option value="CACO">커피</option>
 									<option value="CADR">음료</option>
 									<option value="CADE">디저트</option>
-
-
 									<option value="CAOP">옵션</option>
 							</select></td>
 						</tr>
@@ -726,8 +683,7 @@ function optionDelete(){
 						<tr>
 							<th rowspan="2">메뉴 사진</th>
 							<td>
-							
-							<!-- <form id="fileForm" action="/imgUpload.do"
+								<!-- <form id="fileForm" action="/imgUpload.do"
 									enctype="multipart/form-data">
 
 									form에 두껍게 처리 된 부분은 ajaxForm에서 설정해주어도 괜찮지만 여기에 이렇게 명시해주어도 괜찮다
@@ -735,165 +691,208 @@ function optionDelete(){
 									<input type="file" name="testFile" id="testFile" />
 
 								</form>
- -->								<img id="menuImg" style="width:200px; height:200px;">
+ --> 
+ 									<img id="menuImg" style="width: 200px; height: 200px;">
 							</td>
 							</form>
-							
+
 						</tr>
-						
-							<tr>
-							
-								
-							
+
+						<tr>
 							<form action="imgUpdate.do" encType="multipart/form-data" method="post">
-							<td>
-							<input id = "fileupdateName" type="hidden" name="mNum">
-								<input type="file" name="uploadFile" />
-								<input type="submit" value="사진제출">
-							</td>
+								<td>
+									<input id="fileupdateName" type="hidden" name="mNum">
+									<input type="file" name="uploadFile" /> <input type="submit" value="사진제출">
+									</td>
 							</form>
-							
-							</tr>
-						
-						
+
+						</tr>
 					</table>
 					<!-- hidden 으로 sId 넘기기 -->
-
-					
-
-				
-				
-				
-				
-				
-				
-				
 			</div>
 			<!-- 레시피 CRUD-->
-		<div style="float: left;width: 100%;" >
-		
-			<!-- 레시피 등록, 메뉴 하나 Select된 상태에서 레시피 레시피 조회가능, 등록 버튼 활성화 -->
+			<div style="float: left; width: 100%;">
 
-		<form id="recipeTableForm">
-			<!-- Recipe Detail List로 표현-->
-			<div id="recipeTablediv" style="border: 1px solid gray;">
+				<!-- 레시피 등록, 메뉴 하나 Select된 에서 레시피 레시피 조회가능, 등록 버튼 활성화 -->
 
-				<h3>상세 레시피</h3>
-				<table border="1" class = "table table-hover">
-					<tr>
-						<th>메뉴 번호</th>
-						<td><input type="text" id="cmNum" name="mNum" readonly></td>
-					</tr>
-					<tr>
-						<th>메뉴 이름</th>
-						<td><input type="text" id="cmName" readonly></td>
-					</tr>
-				</table>
-					 
-						<table border="1" class = "table table-hover">
+				<form id="recipeTableForm">
+					<!-- Recipe Detail List로 표현-->
+					<div id="recipeTablediv" style="padding: 5px;">
+						<hr>
+						<h3 align="center">
+							<input type="text" id="cmName" readonly>
+						</h3>
+						<h5 align="right">상세 레시피</h5>
+						<hr>
+						<input type="hidden" id="cPrice" readonly>
+						<div text-align="center">
+							<table border="1" id="recipeTable" class="table table-hover">
+								<thead>
+									<tr>
+										<th>제 작 순 번</th>
+										<th>재 료</th>
+										<th>사 용 량</th>
+										<th>단 위</th>
+										<th>원 가</th>
+										<th>제 작 방 법</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+
+							</table>
+						</div>
+						<input type="text" id="recipeMsg"
+							style="text-align: right; width: 300px;" value="">
+						<!-- <th>적정 수량</th> 레시피 추가하면서 필요시 update-->
+						<input type="hidden" id="recistAqty"> <input type="hidden"
+							id="recistStanunit"> <br> <br>
+						<!-- 레시피 추가 테이블 -->
+						<input type="button" value=" 재료 추가 " onclick="recipeInsert()">
+						<input type="button" value=" 재료 삭제 " onclick="recipeDelete()"><br>
+						<table border="1" class="table table-hover">
 							<tr>
-								<th>카테고리 선택</th>
+								<th>카테고리</th>
+								<td><input type="hidden" id="cmNum" name="mNum"> <input
+									type="text" id="cmCate"></td>
+								<th>재료 선택</th>
 								<td><select id="reciSelect"></select></td>
-								<th>적정 수량</th>
-								<td><input type="text" id="recistAqty"></td>
-							
+
 							</tr>
 							<tr>
 								<th>소모량</th>
-								<td colspan="3"><input type="text" value="0" id="consum" name="consum"></td>
+								<td colspan="3"><input type="text" value="0" id="consum"
+									name="consum"> <select id="stUnit" name="stUnit">
+										<option value="">선 택</option>
+										<option value="ML">ml</option>
+										<option value="G">g</option>
+										<option value="EA">EA</option>
+								</select></td>
 							</tr>
+
 							<tr>
-								<td colspan="2"><input type="button" value=" + "
-									onclick="recipeInsert()"></td>
-								<td colspan="2"><input type="button" value=" - "
-									onclick="recipeDelete()"></td>
+								<th>제 작 방 법</th>
+								<td colspan="3"><textarea
+										style="width: 100%; border: 1; overflow: visible; text-overflow: ellipsis;"
+										rows=3></textarea></td>
 							</tr>
+
 						</table>
-
-
-						<input type="hidden" id="recicaNum" name="caNum">
-						<input type="hidden" id="recistNum" name="stNum">
+						<input type="hidden" id="recicaNum" name="caNum"> <input
+							type="hidden" id="recistNum" name="stNum">
 						<!--  <input type="hidden" id="reciAqty" name="stAqty">
 						-->
-				
-			
-				<br>
-				<table border="1"  id="recipeTable" class = "table table-hover">
-					<thead class = "thead-dark">
-					<tr>
-						<th>재료명</th>
-						<th>소모량</th>
-						<th>재료 적정수량</th>
-						<th>기준 단위</th>
-					</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
+					</div>
+				</form>
 			</div>
-			
-			
-			
-        </form>
 
 
 
+			<!-- 메뉴 옵션 추가 CRUD -->
+			<div style="float: left; padding: 5px; width: 100%;" id="optionDiv">
 
-		</div>
-		<!-- 메뉴 옵션 추가 CRUD -->
-		<div style="float: left; border: 1px solid black; padding: 3px; width: 100%;" id="optionDiv">
+				<hr>
+				<h4 align="center">옵션 추가</h4>
+				<hr>
+				<form id="optionTableForm">
+					<table border="1" class="table table-hover">
+						<tr>
+							<th>재고 이름</th>
+							<td><select id="opSelct">
+							</select></td>
+						</tr>
+						<tr>
+							<th>옵션 이름</th>
+							<td><input type="text" id="opName" name="opName"></td>
+						</tr>
+						<tr>
+							<th>소모량</th>
+							<td><input type="text" id="consume" name="consum"></td>
+						</tr>
+						<tr>
+							<th>옵션 가격</th>
+							<td><input type="text" id="opPrice" name="opPrice">원</td>
+						</tr>
+						<tr>
+						<tr>
+							<td><input type="button" value=" 옵션 추가 "
+								onclick="optionInsert()"></td>
+							<td><input type="button" value=" 옵션 삭제 "
+								onclick="optionDelete()"></td>
+						</tr>
 
+					</table>
+					<input type="hidden" id="sId" name="sId" value="SH001"> <input
+						type="hidden" id="omNum" name="mNum"> <input type="hidden"
+						id="opcaNum" name="caNum"> <input type="hidden"
+						id="opstNum" name="stNum">
 
-				<h4>옵션 추가</h4>
-			<form id="optionTableForm">
-				<table border="1" class = "table table-hover">
-					<tr>
-						<th>재고 이름</th>
-						<td><select id="opSelct">
-						</select></td>
-					</tr>
-					<tr>
-						<th>옵션 이름</th>
-						<td><input type="text" id="opName" name="opName"></td>
-					</tr>
-					<tr>
-						<th>소모량</th>
-						<td><input type="text" id="consume"  name="consum"></td>
-					</tr>
-					<tr>
-						<th>옵션 가격</th>
-						<td><input type="text" id="opPrice" name="opPrice">원</td>
-					</tr>
-					<tr>
-
-					<tr>
-						<td><input type="button" value=" + " onclick="optionInsert()"></td>
-						<td><input type="button" value=" - " onclick="optionDelete()"></td>
-					</tr>
-
-				</table>
-						<input type="hidden" id="sId" name="sId" value="SH001">
-						<input type="hidden" id="omNum" name="mNum">
-						<input type="hidden" id="opcaNum" value="CAOP" name="caNum">
-						<input type="hidden" id="opstNum" name="stNum">
-
-			</form>
+				</form>
 
 
 
-				<table border="1"  id="optionTable" class = "table table-hover">
-					<thead class = "thead-dark">
-					<tr>
-						<th>옵션 이름</th>
-						<th>소모량</th>
-						<th>옵션 가격</th>
-					</tr>
+				<table border="1" id="optionTable" class="table table-hover">
+					<thead>
+						<tr>
+							<th>옵션 이름</th>
+							<th>소모량</th>
+							<th>옵션 가격</th>
+						</tr>
 					</thead>
 					<tbody></tbody>
 				</table>
-		
+
+			</div>
+
+
+			<div class="modal fade" id="menuModal" role="dialog">
+				<div class="modal-dialog" style="max-width: 40%; width: auto;">
+					<div class="modal-content">
+						<div class="modal-body">
+
+							<!-- 등록폼 사진 추가 작업-->
+							<div style="width: 100%;" id="insertMenuFormTable">
+
+
+
+								<h3>[메뉴 추가]</h3>
+
+								<form id="insertmenudetail" encType="multipart/form-data"
+									method="post">
+									<table border="1" class="table">
+
+
+										<tr>
+											<th>메뉴 이름</th>
+											<td><input type="text" id="mmName" name="mName"></td>
+										</tr>
+										<tr>
+											<th>메뉴 가격(원)</th>
+											<td><input type="text" id="mmPrice" name="mPrice"></td>
+										</tr>
+										<tr>
+											<th>카테고리</th>
+											<td><select id="mmCategory" name="caNum">
+													<option value="">선 택</option>
+													<option value="CACO">커피</option>
+													<option value="CADR">음료</option>
+													<option value="CADE">디저트</option>
+											</select></td>
+										</tr>
+
+									</table>
+									<!-- hidden 으로 sId 넘기기 -->
+
+									<input type="hidden" id="sId" name="sId" value="SH001">
+									<input type="button" value="등록" id="btnInsert">
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-</div>
-</div>
+	</div>
 
 
 </body>

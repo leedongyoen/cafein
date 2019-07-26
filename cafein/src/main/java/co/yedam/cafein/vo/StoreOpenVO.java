@@ -19,6 +19,11 @@ public class StoreOpenVO {
 	private int netIncome;			// 순수익
 	private int usedMile;			// 현금결제 시 사용된 마일리지
 	private int cashSum;			// 현금 매출액
+	private int checkOpen;
+	
+	// 매장 마감 내역 조회 페이지 -> 날짜 검색
+	private String startDate;
+	private String endDate;
 	
 	public String getsId() {
 		return sId;
@@ -80,11 +85,29 @@ public class StoreOpenVO {
 	public void setCashSum(int cashSum) {
 		this.cashSum = cashSum;
 	}
+	public int getCheckOpen() {
+		return checkOpen;
+	}
+	public void setCheckOpen(int checkOpen) {
+		this.checkOpen = checkOpen;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 	@Override
 	public String toString() {
 		return "StoreOpenVO [sId=" + sId + ", openTime=" + openTime + ", closeTime=" + closeTime + ", cash=" + cash
 				+ ", defaultCash=" + defaultCash + ", orCash=" + orCash + ", difference=" + difference + ", netIncome="
-				+ netIncome + ", usedMile=" + usedMile + ", cashSum=" + cashSum + "]";
+				+ netIncome + ", usedMile=" + usedMile + ", cashSum=" + cashSum + ", checkOpen=" + checkOpen
+				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
-
 }

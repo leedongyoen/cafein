@@ -25,7 +25,9 @@ import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
 import co.yedam.cafein.store.info.StoreInfoServiceImpl;
 import co.yedam.cafein.store.menu.MenuServiceImpl;
 import co.yedam.cafein.store.menu.RecipeSerciveImpl;
+import co.yedam.cafein.store.order.StoreOrderServiceImpl;
 import co.yedam.cafein.vo.CartVO;
+import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.MenuVO;
 import co.yedam.cafein.vo.MyMenuVO;
@@ -42,10 +44,20 @@ public class CustomerOrderController {
 	@Autowired
 	StoreInfoServiceImpl service2;
 	@Autowired
+	StoreOrderServiceImpl storeorderservice;
+	@Autowired
 	MenuServiceImpl service3;
 	
-	// 주문으로 넘어가는 부분
+	
+	// 주문 페이지에서 고객이 입력한 주소와 선택한 매장과의 거리 계산을 위해서
+	@ResponseBody
+	@RequestMapping(value = "/getorderstoreaddress", method = RequestMethod.GET)
+	public StoreVO getorderstoreaddress(StoreVO vo) {
 
+		return service.getorderstoreaddress(vo);
+	}
+	
+	// 주문으로 넘어가는 부분 
 	@RequestMapping(value = "/customerorder", method = RequestMethod.POST)
 	public ModelAndView customerorder(MenuOrderVO vo) {
 		ModelAndView mv = new ModelAndView();
@@ -54,6 +66,14 @@ public class CustomerOrderController {
 		mv.addObject("option", service.getorderrecipeno(vo));
 		mv.setViewName("customer/orderregi");
 		return mv;
+	}
+	
+	// 자주 이용하는 매장목록
+	@ResponseBody
+	@RequestMapping(value = "/gettopstorelist", method = RequestMethod.GET)
+	public List<StoreVO> gettopstorelist(CustomerVO vo) {
+
+		return service.gettopstorelist(vo);
 	}
 
 	// 배달서비스 여부
@@ -70,6 +90,25 @@ public class CustomerOrderController {
 	public String getstoremileageservice(String sId) {
 		return service.getstoremileageservice(sId);
 	}
+	
+	// 고객이 직접 주문 취소한 경우
+	@ResponseBody
+	@RequestMapping(value = "/updatecusordercancel", method = RequestMethod.GET)
+	public int updatecusordercancel(OrdersVO vo) {
+		
+		// 주문 취소
+		int n = service.updatecusordercancel(vo);
+		// 마일리지 서비스 여부 확인
+		String mileageservice = service.getstoremileageservice(vo.getsId());
+		vo.setMileageservice(mileageservice);
+		// 마일리지 수정을 위해서
+		if(n > 0 && mileageservice.equals("Y")) {		
+			n = storeorderservice.updateordermileage(vo);
+
+		}
+		
+		return n;
+	}
 
 	// 고객 주문 페이지로 이동.
 	@RequestMapping("orderlist.do")
@@ -79,11 +118,12 @@ public class CustomerOrderController {
 
 	// 고객 주문 리스트 가져오기
 	@ResponseBody
-	@RequestMapping(value = "/orderlist/{cid}", method = RequestMethod.GET)
-	public List<OrdersVO> getOrderList(@PathVariable("cid") String cId) {
-		OrdersVO vo = new OrdersVO();
-		vo.setcId(cId);
-
+	@RequestMapping(value = "/orderlist", method = RequestMethod.GET)
+	public List<OrdersVO> getOrderList(OrdersVO vo, HttpSession session) {
+		/*
+		 * OrdersVO vo = new OrdersVO(); vo.setcId(cId);
+		 */
+		
 		return service.getOrderList(vo);
 	}
 	
@@ -115,7 +155,7 @@ public class CustomerOrderController {
 
 	// 주문 넣기
 	@RequestMapping(value = "/insertcustomerorder", method = RequestMethod.POST)
-	public ModelAndView insertorder(OrdersVO vo) {
+	public String insertorder(OrdersVO vo) {
 		System.out.println("============주문 :" + vo);
 		ModelAndView mv = new ModelAndView();
 		/*
@@ -220,16 +260,18 @@ public class CustomerOrderController {
 		// 해당 주문번호의 op_dnum수정
 		n = service.getodnum(info);
 		
-		// 마일리지 업데이트
-		n = service.updatemileage(info);
-		
-		// 해당 매장에 대한 마일리지가 없을 경우
-		if(n == 0) {
-			n = service.insertmileage(info);
+		// 해당 매장의 마일리지 서비스를 할 경우에만.
+		if(info.getMileageservice().equals("Y")) {
+			
+			// 마일리지 업데이트
+			n = service.updatemileage(info);
+			
+			// 해당 매장에 대한 마일리지가 없을 경우
+			if(n == 0) {
+				n = service.insertmileage(info);
+			}
 		}
-		
-		mv.setViewName("customer/delivery");
-		return mv;
+		return "redirect:orderlist.do";
 	}
 
 	// 고객 주문배달 조회

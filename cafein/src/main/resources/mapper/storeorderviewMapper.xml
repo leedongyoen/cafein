@@ -8,6 +8,7 @@
 		SELECT DISTINCT O.O_NUM
 					, M.M_NUM 
 					, M.M_NAME 
+					, ORD.OP_DNUM
 					, O.TOTAL
 					, O.RECEIPT
 					, O.PAY_METHOD
@@ -20,6 +21,13 @@
 		ON ORD.M_NUM = M.M_NUM 
 		WHERE O.S_ID=#{sId}
 				AND ORD.CA_NUM NOT IN ('CAOP')
+				<if test="startDate != null and endDate != null ">
+					AND TO_CHAR(O.O_DATE,'YYYY-MM-DD') BETWEEN '${startDate}' AND '${endDate}'
+				</if>
+				<if test="startDate == null and endDate ==null">
+					AND TO_CHAR(O.O_DATE,'YYYY/MM/DD') BETWEEN TO_CHAR(SYSTIMESTAMP-1,'YYYY/MM/DD') AND TO_CHAR(SYSTIMESTAMP,'YYYY/MM/DD')
+				</if>
+				
 		ORDER BY O.O_NUM DESC
 	
 	</select>
@@ -37,11 +45,13 @@
 		  FROM ORDER_DETAILS
 		  WHERE O_NUM = #{oNum}
 		        AND M_NUM = #{mNum}
+		        AND OP_DNUM = #{opDnum}
 		  GROUP BY M_NUM
 		)QTY
 		on QTY.M_NUM = ORD.M_NUM
 		WHERE ORD.O_NUM = #{oNum}
 		     AND ORD.M_NUM = #{mNum}
+		     AND OP_DNUM = #{opDnum}
 		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE','CAJP')
     
 
@@ -49,24 +59,36 @@
 	
 	
 	<select id="getmenuoptionlist" resultType="orderdt">
-	
-		SELECT DNUM.O_DNUM,O.O_NUM, ORD.M_NUM, M.M_NAME ,ORD.OP_DNUM , ORD.RECIPENO, RE.OP_NAME
+	 
+		SELECT DNUM.OP_DNUM "O_DNUM"
+			      , O.O_NUM
+			      , ORD.M_NUM
+			      , M.M_NAME 
+			      , ORD.OP_DNUM 
+			      , ORD.O_QTY 
+			      , ORD.RECIPENO
+			      , RE.OP_NAME
 		FROM ORDERS O JOIN ORDER_DETAILS ORD
 		ON O.O_NUM = ORD.O_NUM
 		JOIN RECIPE RE
 		ON ORD.RECIPENO = RE.RECIPENO
 		JOIN (
-		  SELECT M_NUM,O_NUM, MIN(O_DNUM) O_DNUM
+		  SELECT DISTINCT
+                 O_NUM
+                , M_NUM
+                , CASE WHEN O_DNUM = OP_DNUM THEN OP_DNUM 
+                    ELSE OP_DNUM
+                END "OP_DNUM"
 				  FROM ORDER_DETAILS
-				  GROUP BY M_NUM,O_NUM
 		) DNUM
-		ON DNUM.M_NUM =  ORD.M_NUM AND DNUM.O_NUM = ORD.O_NUM AND DNUM.O_DNUM = ORD.OP_DNUM
+		ON DNUM.M_NUM =  ORD.M_NUM AND DNUM.O_NUM = ORD.O_NUM AND DNUM.OP_DNUM = ORD.OP_DNUM
 		JOIN MENU M
     	ON ORD.M_NUM = M.M_NUM
 		WHERE O.S_ID=#{sId}
 		    AND ORD.O_NUM = #{oNum}
-		    AND ORD.CA_NUM ='CAOP'
-		ORDER BY ORD.M_NUM
+		    AND ORD.CA_NUM IN ('CAOP','CAIC','CAHT')
+		ORDER BY DNUM.OP_DNUM,RE.OP_NAME
+ 
 
 	</select>
 	
@@ -82,6 +104,7 @@
 
 
 	<update id="updateordercancel">
+
 		UPDATE ORDERS
 		SET REFUSE_REASON = #{refuseReason} 
 			, DELIVERY_STATUS = 'C4'
@@ -90,14 +113,14 @@
 	
 	<update id="updateordermileage">
 		<selectKey keyProperty="addcanclemileage,addmileage,sId,cId" resultType="order" order="BEFORE">
-			SELECT MILEAGE+TOTAL*0.01*-1 as addcanclemileage
+			SELECT (TOTAL*0.01*-1) as addcanclemileage
 					, MILEAGE as addmileage
 					, S_ID as sId
 					, C_ID as cId
 			FROM ORDERS
 			WHERE O_NUM = #{oNum}
 		</selectKey>
-			UPDATE RESERVE SET MILEAGE = MILEAGE + #{addmileage} - #{addcanclemileage}
+			UPDATE RESERVE SET MILEAGE = MILEAGE + #{addmileage} + #{addcanclemileage}
 			WHERE S_ID= #{sId} 
 				AND C_ID=#{cId}
 	</update>
@@ -130,23 +153,10 @@
 
 	</update>
 	
-	
-	<select id="getordertimecheck" resultType="order">
-	
-		SELECT O_NUM
-		FROM ORDERS
-		WHERE DELIVERY_STATUS = 'C0'
-		    AND TO_CHAR(SYSDATE,'HH24:MI') > TO_CHAR(O_DATE+(5/24/60),'HH24:MI')
-			
+	<select id="schedulerordertimecheck" statementType="CALLABLE">
+				{
+						call ORDER_CANCEL_PRO()
+				}
 	</select>
-	
-	<update id="updatecheckordercancel">
-	
-		UPDATE ORDERS
-		SET DELIVERY_STATUS = 'C4'
-			, REFUSE_REASON = '주문 확인 시간 초과'
-		WHERE O_NUM = #{oNum}
-	
-	</update>
 
 </mapper>

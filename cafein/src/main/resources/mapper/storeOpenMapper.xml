@@ -12,6 +12,7 @@
 	<result column="DIFFERENCE" property="difference"/>
 	<result column="NET_INCOME" property="netIncome"/>
 	<result column="OPENTIME" property="openTime"/>
+	
 </resultMap>
 
 <insert id="insertOpen" parameterType="storeOpen">
@@ -34,6 +35,27 @@
 			NET_INCOME,
 			OPENTIME
 	FROM STOREOPEN
+	WHERE S_ID = #{sId}
 
+</select>
+<select id="getOpen" resultMap="openMap">
+	SELECT S_ID,
+			CLOSETIME,
+			CASH,
+			DEFAULT_CASH,
+			OR_CASH,
+			DIFFERENCE,
+			NET_INCOME,
+			OPENTIME
+	FROM STOREOPEN
+	WHERE TRUNC(OPENTIME) = TRUNC(SYSDATE)
+	AND S_ID = #{sId}
+</select>
+
+<select id="checkOpen" resultType="int">
+	SELECT COUNT(*)
+	FROM STOREOPEN
+	WHERE TRUNC(OPENTIME) = TRUNC(SYSDATE)
+	AND S_ID = #{sId}
 </select>
 </mapper>

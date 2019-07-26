@@ -26,7 +26,7 @@
 	text-decoration: none;
 	cursor: pointer;
 }
-}
+
 </style>
 
 </head>
@@ -37,11 +37,10 @@
 	<div class="container">
 		<div id="play" align="right">
 		<form name="searchFrm">
-		정렬기준<select name="sort" >
+		정렬기준<select name="sort" onchange="myMenuList()" >
 			<option value="S_NAME">상호명
 			<option value="M_NAME">메뉴명
 		</select>
-		<input type="button" onclick="myMenuList()" id="search" value="정렬">
 		</form>
 		<script type="text/javascript">
 		searchFrm.sort.value = "${ViewMymenuVO.sort}" == "" ? searchFrm.sort.options[0].value
@@ -57,10 +56,9 @@
 			</div>
 
 		</div>
-		<table class="table text-center">
 
-			<tbody id="GoToDetail"></tbody>
-</table>
+			<div class ="row" id="GoToDetail"></div>
+
 <div class="deleteCheckon" align="right">
 <a class="deletetest btn" href="javascript:deleteMymenu()" id="deletemymenuon">삭제하기</a>
 <a class="offtest btn" href="javascript:deleteMymenu()" id="offtest">돌아가기</a>
@@ -80,7 +78,7 @@
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-borizontal" name="mymenudetailForm" action="customerorder" method="POST">
+					<form class="form-borizontal" name="mymenudetailForm" id="mymenudetailcart" action="customerorder" method="POST">
 						<div class="table-responsive">
 						<input type="text" name="mNum" style="display: none;" >
 						<input type="text" name="sId" style="display: none;" >
@@ -167,16 +165,18 @@
 				$.each(data, function(idx, item) {
 					console.log(item.cuNum);
 					var imgurl = "${pageContext.request.contextPath}/image/"+item.uploadFileName;
-				$("#GoToDetail").append("<td onclick=detailmyMenuList('"+item.cuNum+"')><div class='container'><img src='"+imgurl+"' style=\"width:200px; height:200px;\"></div><div class='container'>"
-									+item.mName+"</div><div class='container'>"+item.sName
-									+"</div></td><td><div class=\"deleteCheck\"><input type='checkbox' name=\"checkDel\" id='hidden_cuNum"+idx+"'value='"
-									+item.cuNum+"'></div></td>");
+				$("#GoToDetail").append("<div class=\"col-md-4\"><div><img src='"+imgurl+"' onclick=detailmyMenuList('"+item.cuNum+"')  style=\"width:200px; height:200px;\"></div><div>"
+									+item.mName+"</div><div>"+item.sName
+									+"</div><div class=\"deleteCheck\"><input type='checkbox' name=\"checkDel\" id='hidden_cuNum"+idx+"'value='"
+									+item.cuNum+"'></div></div>");
 				})
 				$(".deleteCheck").hide();
 				$(".deleteCheckon").hide();
 			}
 		});
 	}
+	
+
 	// 세부화면 모달창
 	function detailmyMenuList(cuNum) {
 		console.log(cuNum);
@@ -193,10 +193,12 @@
 	}
 						
 		function detailmyMenuListResult(datas){
+			console.log(datas);
 			$("#myModal").modal('show');
 		$("#detailtable table").empty();
 		$("#menudetailoption").html("");
 		var pl = 0;
+		var mP;
 		$.each(datas, function(data, item) {
 			console.log(item);
 			$('input:text[name="sId"]').val(item.sId);
@@ -205,7 +207,8 @@
 			$('input:text[name="cuNum"]').val(item.cuNum);
 			$('input:text[name="sName"]').val(item.sName);
 			$('input:text[name="mName"]').val(item.mName);
-
+			mP = item.mPrice;
+			console.log(mP);
 				if(item.opName =="ICE"){
  
 					$("#ice").attr("checked","checked");
@@ -213,7 +216,7 @@
 				}else if(item.opName =="HOT"){
 					$("#hot").attr("checked","checked");	
 				}
-				if(item.caNum =="CAOP"){
+				else if(item.caNum =="CAOP"){
 					
 					$("<input>").attr({ 
 					     type: "checkbox",
@@ -235,20 +238,25 @@
 					}).appendTo("#menudetailoption");
 					$("<br>").appendTo("#menudetailoption");
 					
-					
-					/* $("#selecOp").append("<input type='checkbox' name='checkbox' id='"
+					pl = Number(pl) + Number(item.opPrice);
+							/* $("#selecOp").append("<input type='checkbox' name='checkbox' id='"
 							+item.stNum+"' value='"+item.stNum+"'><label for='"+item.stNum+"'><input type='text' name='"+item.opPrice+"' value='"+item.opPrice+"'>"+
 							"<input type='hidden' name='cuoptionlist' value='"+item.stNum+"'>");	 */
-					pl += item.opPrice;
+
 				}
-				else{
-					$("#mPrice").val(item.mPrice);
-					pl += item.mPrice;
+				else if(item.caNum =="CACP" || item.caNum =="CACM"){
+
+					/* $("#mPrice").val(item.mPrice);
+					pl += item.mPrice; */
+
 				}
-				
-		
+
+			
 		});
-		$("#totalPrice").val(pl);
+		$("#mPrice").val(mP);
+		var totalprice = Number(mP)+Number(pl);	
+		console.log(totalprice);
+		$("#totalPrice").val(totalprice);
 	}; 
 	//삭제창
 	function deleteMymenu(cuNum) {
@@ -290,16 +298,24 @@
 		var price = $('#mPrice').val();
 		var v_totalprice = $('#totalPrice').val();
 		var no = $("#ordernum").html();
+		var opt = $("#opPrice").val();
+		var sum_optionprice=0;
+		$("input[name=cuoptionlist]:checked").each(function() {
+			var test = $(this).val(); 
+			var sprice = $('#option'+test).val();
+			sum_optionprice =Number(sum_optionprice)+ Number(sprice);
+
+		});
 		if (num == -1) {
 			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
 				return;
 			}
 			no = Number(no) - 1;
-			v_totalprice = Number(v_totalprice) - Number(price);
+			v_totalprice = Number(v_totalprice) - Number(sum_optionprice)- Number(price);
 		} else if (num == 1) {
 			no = Number(no) + 1;
-			v_totalprice = Number(v_totalprice) + Number(price);
+			v_totalprice = Number(v_totalprice) + Number(sum_optionprice)+ Number(price);
 		}
 		$('#totalPrice').val(v_totalprice);
 		$("#ordernum").html(no);
@@ -310,7 +326,7 @@
 $(function(){
 //장바구니
 	$("#cartbtn").on("click",function(){
-		var list =  $("#mymenudetailForm").serializeObject();
+		var list =  $("#mymenudetailcart").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
 
@@ -347,7 +363,7 @@ $(function(){
 	});
 	//주문하기
 	$("#cu_orderbtn").on("click",function(){
-		var list =  $("#menudetailForm").serializeObject();
+		var list =  $("#mymenudetailForm").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
 		$('[name=cuoptionlist]:checked').each(function(){

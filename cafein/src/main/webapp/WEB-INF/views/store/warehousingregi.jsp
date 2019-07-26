@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="storehead.jsp" %>
-<title>재고</title>
+<title>재고 입고</title>
 <script>
 	var sId = "<%= (String)session.getAttribute("sId") %>";
 	$(function() {
@@ -52,7 +52,7 @@
 				var obj = {};
 				var td = $(this).children();
 				var enterQty = td.eq(4).find("input").val();
-				 
+				var stPayMethod = $("input[name=payRadio]:checked").val();
 			if (enterQty == '') {
 				
 			}else{
@@ -65,6 +65,7 @@
 				obj["stNum"] = stNum;
 				obj["sId"] = sId;
 				obj["warePrice"] = warePrice;
+				obj["stPayMethod"] = stPayMethod;
 				//목록에 담기
 				list.push(obj);
 	      		}
@@ -132,9 +133,21 @@
 			<tbody id="stockTbody"></tbody>
 
 		</table>
+		
 		<div class="btn-group" style="float:right;">
-			<button type="button" class="btn btn-primary" onclick="location.href='stocklist.do'">재고 변경</button>
+		<div class="custom-control custom-radio">
+			<input type="radio" name="payRadio" id="jb-radio-1" class="custom-control-input" 
+				value="CASH" >
+			<label class="custom-control-label" for="jb-radio-1" >현금 결제</label>
+		</div>
+		<div class="custom-control custom-radio">
+			<input type="radio" name="payRadio" id="jb-radio-2" class="custom-control-input"
+			 value="CARD" checked="checked" >
+			<label class="custom-control-label" for="jb-radio-2">카드 결제</label>
+		</div>
+			&nbsp;
 			<button type="button" class="btn btn-success" id="enterStock" onclick="makeData();">입고 등록</button>
+			<button type="button" class="btn btn-primary" onclick="location.href='stocklist.do'">재고 변경</button>
 		</div>
 	</div>
 

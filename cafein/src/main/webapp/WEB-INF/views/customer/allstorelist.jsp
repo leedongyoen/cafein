@@ -7,12 +7,12 @@
 <%@ include file="cushead.jsp" %>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
+
 <title>매장</title>
 </head>
 <body>
 <p></p>
 
-	
 <div class="container" align="center">
 	<!-- <div id="map" style="width:500px;height:400px;" ></div> -->
 
@@ -130,9 +130,8 @@
 					
 				
 				</div>
-				<div class="modal-footer">	
-		
-					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+				<div class="modal-footer">		
+					<button type="button" class="btn modalbottom" data-dismiss="modal">Close</button>
 				</div>
 				</form>
 			</div>

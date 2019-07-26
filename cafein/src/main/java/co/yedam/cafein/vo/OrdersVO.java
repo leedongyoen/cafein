@@ -3,10 +3,13 @@ package co.yedam.cafein.vo;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class OrdersVO {
 
 	private String oNum;
 	private String cId;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // 환불검색할때 날짜랑 시간 포맷
 	private Timestamp oDate;
 	private int total;
 	private String receipt;
@@ -48,9 +51,59 @@ public class OrdersVO {
 	private int cashRefundCnt; 
 	private int cardRefundCnt; 
 	
+	// 페이징 처리
+	private int start;
+	private int end;
 	
+	// 고객 - 주문 조회 페이지
+	private int orderlistcontroller;
 	
+	// 매장 - 주문 조회 페이지 -> 날짜 검색
+	private String startDate;
+	private String endDate;
 	
+	// 해당 매장에서 마일리지 서비스를 이용하는지 여부를 저장하기 위해서
+	private String mileageservice;
+	
+
+
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public int getOrderlistcontroller() {
+		return orderlistcontroller;
+	}
+	public void setOrderlistcontroller(int orderlistcontroller) {
+		this.orderlistcontroller = orderlistcontroller;
+
+	}
+	public int getStart() {
+		return start;
+	}
+	public void setStart(int start) {
+		this.start = start;
+	}
+	public int getEnd() {
+		return end;
+	}
+	public void setEnd(int end) {
+		this.end = end;
+	}
+	public String getMileageservice() {
+		return mileageservice;
+	}
+	public void setMileageservice(String mileageservice) {
+		this.mileageservice = mileageservice;
+	}
 	public String getDetailNm() {
 		return detailNm;
 	}
@@ -287,9 +340,12 @@ public class OrdersVO {
 				+ ", addcanclemileage=" + addcanclemileage + ", cnt=" + cnt + ", addMileageCnt=" + addMileageCnt
 				+ ", minusMileageCnt=" + minusMileageCnt + ", openTime=" + openTime + ", refundSum=" + refundSum
 				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
-				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + "]";
+				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + ", start=" + start + ", end=" + end
+				+ ", orderlistcontroller=" + orderlistcontroller + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", mileageservice=" + mileageservice + "]";
 	}
 
-
 	
+
+
 }

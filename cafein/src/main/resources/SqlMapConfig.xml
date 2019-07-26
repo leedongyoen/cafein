@@ -28,7 +28,7 @@
 		<typeAlias type="co.yedam.cafein.viewvo.ViewWarehousingVO" alias="viewwarehousing"/>
 		<typeAlias type="co.yedam.cafein.viewvo.ViewPosVO" alias="viewpos"/>
 		<typeAlias type="co.yedam.cafein.viewvo.ViewPosCusSearchVO" alias="viewposcussearch"/>
-		
+		<typeAlias type="co.yedam.cafein.viewvo.ViewPosOrdetailsVO" alias="Viewposordetails"/>
 	</typeAliases>
 	
 

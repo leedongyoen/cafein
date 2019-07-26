@@ -82,13 +82,12 @@
 					
 					for (i = 0; i < data.length; i++) {
 						var datas = [ data[i].stName, data[i].wareQty ];
-						//							data[i].warePrice, data[i].stLoss];
-// 						chartData.shift(datas);
 						chartData.push(datas);
 						console.log(datas);
 					}
 					if(datas == null){
 						alert("기간에 맞는 데이터가 없습니다.");
+						return;
 					}
 					drawChart();
 					
@@ -102,6 +101,11 @@
 // 			$('#pieChart_div').empty();
 			$("thead").empty();
 			$("tbody").empty();
+			if($('#endDate').val() =='' || $('#startDate').val()==''){
+				$("#divDate").html('전체 기간');
+				}else{
+				$('#divDate').html($('#startDate').val()+' ~ '+$('#endDate').val());
+				}
 			$('<tr>').append($('<th>').html('재고 명'))
 					 .append($('<th>').html('총 가격'))
 					 .append($('<th>').html('총 수량'))
@@ -142,7 +146,7 @@
 			<input type="button" value="전체 통계" class="btn btn-primary"
 				id="btnwarehousing" onclick="location.href='stockwarehousing.do'">
 		</div>
-
+	<div><h5 id="divDate"></h5></div>
 	</div>
 	<br>
 

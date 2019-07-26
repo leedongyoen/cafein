@@ -64,10 +64,11 @@
 	function cancelorder(){
 		var ordern = $('#cancelordernumber').val(); //
 		var cancelreason = $('input:text[name="refuseReason"]').val();
+		var sId = '<%= session.getAttribute("sId") %>';
 		$.ajax({
 			url: 'updateordercancel',
 			type:'POST',
-			data: {oNum : ordern , refuseReason: cancelreason},
+			data: {oNum : ordern , refuseReason: cancelreason,sId:sId},
 			dataType:'json',
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
@@ -118,20 +119,26 @@
 							);	
 						
 				}else{ //있을 경우
-
+					var menu_qty="0";
 					$.each(data,function(idx,item){
 						console.log(idx);
 						if(menunum == ""){
 							menunum = item.oDnum;
 							test = item.mName+"-";
+							menu_qty="0";
 						}
 						if(menunum == item.opDnum){
+							if(menu_qty == "0" && item.oQty != "0"){
+								test = test+"( "+item.oQty+" )개 - ";
+								menu_qty=item.oQty;
+							}
 							test = test +" "+ item.opName;
 							console.log("--- "+test);
 							
 						}
 						if(menunum != item.opDnum){
 							menunum = item.oDnum;
+							menu_qty="0";
 							test = test + "<br>" +item.mName+"-";
 							test = test +" " +item.opName;
 							console.log(test);
@@ -192,13 +199,14 @@
 		var ordernumber = item.oNum;
 		var ordermnum = item.mNum;
 		var ordermenuname = item.mName;
+		var orderopdnum = item.opDnum;
 		var deliverstatus;
 		
 		//console.log(item);
 		$.ajax({
 			url: 'getstoreorderdetails',
 			type:'GET',
-			data: {oNum: ordernumber, mNum: ordermnum},
+			data: {oNum: ordernumber, mNum: ordermnum, opDnum: orderopdnum},
 			dataType:'json',
 			async: false,
 			error:function(xhr,status,msg){
@@ -217,8 +225,9 @@
 					oQty = "0";
 				}else{
 					$.each(data,function(idx,list){
-						 
-						oQty = list.oQty;
+						 if( list.oQty != 0){
+							 oQty = list.oQty;
+						 }
 						if(list.opName == null){
 							list.opName="";
 						}
@@ -230,10 +239,17 @@
 				
 				if(item.deliveryStatus == 'C0') deliverstatus="주문확인";
 				if(item.deliveryStatus == 'C1') deliverstatus="배달준비";
-				if(item.deliveryStatus == 'C2') deliverstatus="배달 중";
+				if(item.deliveryStatus == 'C1' && item.receipt == '직접 수령') deliverstatus="메뉴 준비 ( web - 직접 수령 )";
+
 				if(item.deliveryStatus == 'C3') deliverstatus="배달완료";
-				if(item.deliveryStatus == 'C4') deliverstatus="주문취소";
-			
+				if(item.deliveryStatus == 'C3' && item.receipt == '직접 수령') deliverstatus="주문 완료 ( web - 직접 수령 )";
+				
+				if(item.deliveryStatus == 'C4') deliverstatus="주문취소"; 
+				if(item.deliveryStatus == 'C5') deliverstatus="POS 결제"; 
+				if(item.deliveryStatus == 'C6') deliverstatus="POS 환불"; 
+				
+				//console.log(item.oNum+"  "+item.receipt+" : "+deliverstatus);
+				
 				if(ordernum == ""){
 					ordernum = item.oNum;
 					$('<tr>').attr({
@@ -299,44 +315,100 @@
 					}
 					
 				}
+				 
 				
-				
-				$('.C0').css({
+				$('.C0').css({ // 주문 대기
 					display:"inline"
 				});
-				 
-				$('.C4').css({
+				
+				$('.C1').css({ // 베달 대기
+					display:"none"
+				});
+				
+				$('.C3').css({ //배달완료
 					display:"none"
 				});
 				 
-				$('.C5').css({
+				$('.C4').css({ // 주문 취소
+					display:"none"
+				});
+				 
+				$('.C5').css({ // 현장 결제
 					display:"none"
 				});	
 			}
 		});
 	}
+	// 날짜 검색
+	function searchDate(){
+		var startDate = jQuery('#storeorderstartdate').val();
+  		var endDate = jQuery('#storeorderenddate').val();
+  		
+  		
+  		if(startDate > endDate){
+  			alert('검색 날짜를 확인해주세요.');
+  			return;
+  		}else if(startDate == '' || endDate == ''){
+  			alert('날짜를 입력해주세요.');
+  			return;
+  		}
+  		console.log("startDate : "+ startDate);
+  		console.log("endDate : "+ endDate);
+  		var sId = '<%= session.getAttribute("sId") %>';
+		$('#orderlisttable tbody').empty();
+		$.ajax({
+			url: 'getstoreorderlist',
+			type:'GET',
+			data: {sId: sId, startDate: startDate, endDate: endDate},
+			dataType:'json',
+			async: false,
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
+				$('#orderlisttable tbody').empty();
+				$.each(data,function(idx,item){
+					
+					if(item.cAdd == null) item.cAdd="";
+					if(item.cAdd3 == null) item.cAdd3 = "";
+					if(item.payMethod == 'card') item.payMethod="카드결제";
+					if(item.payMethod == 'cash') item.payMethod="현금결제";
+					if(item.receipt == 'delivery') item.receipt="배달";
+					if(item.receipt == 'takeout') item.receipt="직접 수령";
+					
+					
+					getorderdetails(item);
+					
+					
+					
+				});
+			}
+		});
+  		
+	}
 
 </script>
 <body>
+<hr>
 <div class = "container" align = "center">
-	<h2 align="center">주문 내역</h2>
-	<hr>	
+	<hr>
+	   	<p align="center" class="titlefont">주문 내역</p>
+	<hr>
+
 </div>
 <div class = "container" align = "center">
-
-<form id="" action="">
-    
+  
     <div align="right">
-        날짜 입력:
-    <input type="date" id="userdate" name="userdate"
-                value="">~
-    <input type="date" id="userdate" name="userdate"
-                value="">
-    <input type="submit" value="조회">
-    </div>
-	
-</form>
 
+    <input type="date" class="btn btn-secondary" name="storeorderstartdate" id="storeorderstartdate">~
+    <input type="date" class="btn btn-secondary" name="storeorderenddate" id="storeorderenddate">
+    <input type="button" class="btn btn-success" onclick="searchDate()" value="조회">
+    <input type="button" class="btn btn-success" onclick="getstoreorderlist()" value="초기화">
+    </div>
+
+	<hr>
+		
 		<table id="orderlisttable" class="table table-hover">
 
 			<thead>

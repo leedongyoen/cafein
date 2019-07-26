@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.MenuOrderVO;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
@@ -46,6 +47,11 @@ public class CustomerOrderServiceImpl {
 	
 	public List<RecipeVO> getorderrecipeno(MenuOrderVO vo){
 		return dao.getorderrecipeno(vo);
+	}
+	
+	// 자주 이용하는 매장
+	public List<StoreVO> gettopstorelist(CustomerVO vo){
+		return dao.gettopstorelist(vo);
 	}
 	
 	// 배달서비스 여부
@@ -90,6 +96,11 @@ public class CustomerOrderServiceImpl {
 		return dao.getodnum(vo);
 	}
 	
+	// order details 다중일 경우 op_dnum 업데이트
+	public int getmutilodnum(OrdersVO vo) {
+		return dao.getmutilodnum(vo);
+	}
+	
 	// 주문 끝나고 마일리지 업데이트
 	public int updatemileage(OrdersVO vo) {
 		return dao.updatemileage(vo);
@@ -98,6 +109,16 @@ public class CustomerOrderServiceImpl {
 	// 만약 해당 매장의 마일리지가 없을 경우
 	public int insertmileage(OrdersVO vo) {
 		return dao.insertmileage(vo);
+	}
+	
+	// 주문페이지에서 고객이 입력한 주소와 선택한 매장과의 거리 계산을 위해서
+	public StoreVO getorderstoreaddress(StoreVO vo) {
+		return dao.getorderstoreaddress(vo);
+	}
+	
+	// 고객이 직접 주문 취소한 경우
+	public int updatecusordercancel(OrdersVO vo) {
+		return dao.updatecusordercancel(vo);
 	}
 
 	public int getodnum2(OrdersVO vo) {

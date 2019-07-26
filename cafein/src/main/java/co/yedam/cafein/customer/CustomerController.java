@@ -107,13 +107,18 @@ public class CustomerController {
 //		//암호화  하기전
 //		String scPw = scpwd.encode(vo.getcPw());
 //		//암호화 후 db저장
+<<<<<<< HEAD
 
 		CustomerVO customers = new CustomerVO();
 		customers.setcId(vo.getcId()); // 암호화한 아이디를 불러와 비교
 		System.out.println(customers);
 
 		CustomerVO customer = customerLoginService.getCustomer(customers);
+=======
+		
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 		PrintWriter out = response.getWriter();
+<<<<<<< HEAD
 		System.out.println(customer);
 
 		// 현재 암호화된 비밀번호와 db에 저장된 암호화 비밀번호와 비교
@@ -121,13 +126,38 @@ public class CustomerController {
 
 		if (customer == null && mathes == false) {
 			out.println("<script>alert('입력하신 아이디와 비밀번호를 다시 확인해주세요.');</script>");
+=======
+		
+		int n = 0;
+		CustomerVO customer = customerLoginService.getCustomer(vo);
+		System.out.println("customer 단건조회 : " + customer);
+		
+		
+		if(customer == null) {		// 아이디가 없는 경우
+			out.println("<script>var result = confirm('등록되지 않은 고객입니다. 회원가입을 하시겠습니까?');"
+					+"if(result) {"
+					+ "location.href = 'customerjoinForm.do'"
+					+ "}"
+					+ "</script>");
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 			out.flush();
 			return "customer/login";
-		} else {
+			
+		} else if(passEncoder.matches(vo.getcPw(), customer.getcPw())) {		// 아이디와 비밀번호가 일치하는 경우
+			
+			out.println("<script>alert('" + customer.getcName() + "님 반갑습니다. 로그인 되었습니다.');</script>");
+			out.flush();
+			
 			session.setAttribute("cId", customer.getcId());
 			// 가입경로를 알기위해 세션에 담음(로그아웃시 필요!)
 			session.setAttribute("cJoin", customer.getcJoin());
 			return "customer/main";
+			
+		} else {		// 아이디와 비밀번호가 일치하지 않는 경우
+			
+			out.println("<script>alert('입력하신 비밀번호를 다시 확인해주세요.');</script>");
+			out.flush();
+			return "customer/login";
 		}
 
 	}

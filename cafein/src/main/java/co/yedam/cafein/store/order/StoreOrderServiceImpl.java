@@ -3,12 +3,15 @@ package co.yedam.cafein.store.order;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.cafein.common.Paging;
+import co.yedam.cafein.customer.order.CustomerOrderDAO;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 
@@ -17,10 +20,12 @@ public class StoreOrderServiceImpl {
 	
 	@Resource
 	StoreOrderDAO dao;
-	
+	@Autowired
+	CustomerOrderDAO cusdao;
 	// 해당 매장의 주문목록 가져오기
 	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
-		return dao.getstoreorderlist(vo);
+		
+		return  dao.getstoreorderlist(vo);
 	}
 	
 	// 해당 매장의 주문상세 가져오기
@@ -75,16 +80,11 @@ public class StoreOrderServiceImpl {
 
 	// 모든 매장에서 주문이 들어온지 5문이 지난 주문이 있는지 확인하고
 	// 있으면 주문 취솔 바뀜.
-	public int getordertimecheck(){
-		int n=0;
-		int result =0;
-		List<OrdersVO> cancellist = dao.getordertimecheck();
-		for(int i=0; i<cancellist.size(); i++) {
-			n = dao.updatecheckordercancel(cancellist.get(i));
-			result +=n;
-		}
+
+	public void getordertimecheck(){
 		
-		return result;
+		dao.schedulerordertimecheck();
+		
 	}
 
 //-------------------------------------------------------------------------------------

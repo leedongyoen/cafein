@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
 <%@ include file="storehead.jsp" %>
 <title>Store Closing Page</title>
 <style>
@@ -44,7 +43,6 @@ p {
 </style>
 <script>
 
-
 	//영업 지출금 페이지 호출
 	$(function startOperatingReserve() {
 		$.ajax({
@@ -59,7 +57,7 @@ p {
 		});
 	});
 
-	var sId = "<%= (String)session.getAttribute("sid") %>";			// 로그인 한 매장 아이디(세션값 받아와야함) 
+	var sId = "<%= (String)session.getAttribute("sId") %>";			// 로그인 한 매장 아이디(세션값 받아와야함) 
 	var sum, listSum=0, totalSum=0, addTotalSum=0,i;	// 합계(row별), session의 합계(row별 총 합계), db의 총 합계, operatingreserve.jsp에서 추가하는 항목의 합계
 	var addDataList, cashDataList, stockTruthList = new Array(), jsonStockList;			// sessionStorage 가 담길 배열 x 3
 	var stockList = new Array(), truthQty; 		// 재고수량과 실수량이 들어갈 list, list 내의 실수량
@@ -210,25 +208,28 @@ p {
 //---------------------------------------------------------------------------------------------------------------------
 	
 	var cashSum=0, usedMile=0, totalcash=0;		// 현금 매출액, 사용된 마일리지, 총 현금 시재
-	var defaultcash=50000, totalcashsales=0;	// 기본준비금, 총 현금 매출액
+	var defaultcash, totalcashsales=0;	// 기본준비금, 총 현금 매출액
 	
 	function getStoreOpen() {
 		$.ajax({
 			url:"storeopen",		// request 보낼 서버경로
 			type:'GET',			
 			data:{sId:sId},				// 보낼 데이터 (매장id 보내야함)
+			dataType:'json',
 			error:function(){
 				alert('통신 실패');
 			},
-			success:function(data){
-				console.log(data)
-				jsonString = JSON.stringify(data);
-				jsonData = JSON.parse(jsonString);
-				console.log('store open data parse : ' + jsonData.defaultCash)
+			success:function(jsonData){
+				//console.log(jsonData)
+				/* jsonString = JSON.stringify(data);
+				jsonData = JSON.parse(jsonString); */
+				//console.log('store open data parse : ' + jsonData.defaultCash)
 				
 				DBdefaultCash = jsonData.defaultCash;
 				storeOpenTime = jsonData.openTime;
 				storeCloseTime= jsonData.closeTime;
+				//storeCloseTime= data.closeTime;
+				$('#closetime').text(storeCloseTime);
 				
 				$('#defaultCash').val(DBdefaultCash);
 				$('#defaultCash').text(addCommas(DBdefaultCash)+'원');
@@ -253,8 +254,9 @@ p {
 					usedMile += item.mileage;
 					
 				});
-				// 총 현금 매출액 = 현금 매출액 - 마일리지 - 영업준비금 ..?
-				totalcashsales = cashSum - usedMile - operatingreserveSum;
+				console.log(data)
+				// 총 현금 매출액 = 기본 준비금 + 현금 매출액 - 마일리지 - 영업준비금 ..?
+				totalcashsales = DBdefaultCash + cashSum - usedMile - operatingreserveSum;
 				console.log('cashSum : '+cashSum+', usedMile : '+usedMile+', operatingreserveSum : '+operatingreserveSum)
 				
 				$('#cashSales').text(addCommas(cashSum)+'원');
@@ -685,6 +687,7 @@ p {
 					getCloseReceiptCash();
 					getCloseReceiptMileage();
 					getRefundInfo();
+					getStoreOpen();
 					
 					console.log("마감 정산 후 data : "+data);
 					console.log("마감 정산 후 data.store : "+data.store);
@@ -705,18 +708,19 @@ p {
 						$('#storeDefference').text(addCommas(data.store[i].difference)+'원');
 					}
 					console.log("마감 정산 후 opentime: "+opentime);
-					console.log("마감 정산 후 closetime: "+closetime);
+					console.log("마감 정산 후 closetime: "+storeCloseTime);
 
 					$('#opentime').text(opentime);
-					$('#closetime').text(closetime);
-					console.log('addmileage : '+addmileage)
-					console.log('addMileageCnt : '+addMileageCnt)
-					console.log('minusmileage : '+minusmileage)
-					console.log('minusMileageCnt : '+minusMileageCnt)
+					
+					// 모달창의 배경을 눌렀을 때 닫히는 이벤트를 막아준다
+					$('#receiptmodal').modal({backdrop: 'static', keyboard: false}) ;
 					// 마감 내역 모달창 show
 					$("#receiptmodal").modal('show');
 					console.log('store : '+data.store)
 					console.log('warehousing : '+data.warehousing)
+					
+					// 오픈 시 localstorage에 담아뒀던 openTime을 지워준다
+					localStorage.removeItem("openTime");
 					
 					console.log(data)
 				}
@@ -731,6 +735,11 @@ p {
 		}
 
 	}
+	
+	$('#receiptSave').on("click",function(){
+		window.open('report.do','report','width=500,height=1000');
+	})
+	
 
 //---------------------------------------------------------------------------------------------------------------------
 	// 숫자 3단위마다 콤마 생성
@@ -757,7 +766,7 @@ p {
 	<div class="row border align-items-start" >
 		<div class="row justify-content-around">
 			<div class="col-12" style="text-align:center;">
-				<h3>카페 린 영업 마감</h3><br>
+				<h3><%= session.getAttribute("sName") %> 영업 마감</h3><br>
 			</div>
 			<div class="col-4">
 				<table class="table table-hover">
@@ -787,7 +796,7 @@ p {
 			</div><br><br>
 			<div class="col-4">
 				<button type="button" onclick = "closeCheck()">마감정산</button>
-				<button type="button" >PDF저장</button>
+				<button type="button" id = "receiptSave">PDF 조회 및 저장</button>
 			</div>
 			<div class="col-7">
 				<!-- <table>

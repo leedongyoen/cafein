@@ -8,8 +8,16 @@ public class ViewPosCusSearchVO {
 	private String cName;
 	private int mileage;
 	private String sId;
+	private String stMileService;
+	
 	
 
+	public String getStMileService() {
+		return stMileService;
+	}
+	public void setStMileService(String stMileService) {
+		this.stMileService = stMileService;
+	}
 	public String getcId() {
 		return cId;
 	}
@@ -48,11 +56,9 @@ public class ViewPosCusSearchVO {
 	}
 	@Override
 	public String toString() {
-		return "ViewposCusSearchVO [cId=" + cId + ", cNick=" + cNick + ", cTel=" + cTel + ", cName=" + cName
-				+ ", mileage=" + mileage + ", sId=" + sId + "]";
+		return "ViewPosCusSearchVO [cId=" + cId + ", cNick=" + cNick + ", cTel=" + cTel + ", cName=" + cName
+				+ ", mileage=" + mileage + ", sId=" + sId + ", stMileService=" + stMileService + "]";
 	}
-	
-	
 	
 
 }

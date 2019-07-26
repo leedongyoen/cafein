@@ -12,7 +12,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@ include file="cushead.jsp"%>
-<title>Insert title here</title>
+<title>장 바 구 니</title>
+<style type="text/css">
+input {
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
+	}
+	
+
+
+</style>
 <script>
 
 var arrMenu = new Array();
@@ -65,15 +73,18 @@ $(function(){
 			
 			
 			$("#CartList div a").html(local_cart[i].sId);
+			$("#CartList div a").val(local_cart[i].sId);
 			$('<tr>')
-			.append($('<td rowspan="2">').append($('<input>').attr({type: "checkbox", name:"cartnumlist", value:i,})))
+			.append($('<td rowspan="2">').append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i,onClick:"cartlist(this.value)",})))
 			.append($('<td rowspan="2">'))    //.html()
 			.append($('<td rowspan="2">'))
 			.append($('<td>').html(local_cart[i].mName))   //.html(local_cart[i].mName))
 			.append($('<td rowspan="2">').html(state))    //.html(state))
-			.append($('<td rowspan="2">').append($('<input>').attr({type: "text", name:"orderqty", value:local_cart[i].qty})))   //.append($('<button>').val("-")))      //.html(local_cart[i].qty).append($('<button>').val("-"))))
+			.append($('<td rowspan="2">').append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"})).append($('<input>').attr({type: "text", name:"orderqty", id:"qty"+i,value:local_cart[i].qty})).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"})))
 			.append($('<td rowspan="2">').html(local_cart[i].totalPrice))
+			.append($('<input>').attr({type:"hidden", id:"price"+i, value:local_cart[i].totalPrice}))
 			.appendTo("#CartList table tbody");
+		
 			
 			$('<tr>').append($('<td>').append($('<ul>'))).appendTo("#CartList table tbody");
 			
@@ -115,13 +126,88 @@ $(function(){
 						//console.log($test);
 						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
 					
-			$("#CartList div p span strong").html(sumtotalPrice);
+			//$("#CartList div p span strong").html(sumtotalPrice);
 		}
 		
 	}
 	
+	
+	
+
+	
 });
 
+
+function plus(id_num) {
+	var p_index = id_num.substring(4);	//index 번호 추가
+	var qty_t = $('#qty'+p_index).val();
+	var qty=qty_t*1;
+	
+
+
+		var price = $('#orderCartForm div table tbody tr:eq('+(p_index*2)+') td:eq(6)').text();
+		var mPrice = (price*1)/(qty*1);
+	
+		console.log(mPrice);
+		qty = qty+1;
+	
+	
+		$('#qty'+p_index).val(qty);
+		$('#orderCartForm div table tbody tr:eq('+(p_index*2)+') td:eq(6)').text(mPrice*qty);
+	
+	
+}
+
+function minus(id_num) {
+	var m_index = id_num.substring(5);
+	var qty_m = $('#qty'+m_index).val();
+	console.log(qty_m);
+	
+	if(qty_m=='1'){
+		
+		alert("0이하는 입력할 수 없습니다."); 
+		$('#qty'+m_index).val(1);
+	}else{
+		var qty=qty_m*1;
+		var price = $('#orderCartForm div table tbody tr:eq('+(m_index*2)+') td:eq(6)').text();
+		var mPrice = (price*1)/(qty*1);
+	
+		console.log(mPrice);
+		qty = qty-1;
+	
+	
+		$('#qty'+m_index).val(qty);
+		$('#orderCartForm div table tbody tr:eq('+(m_index*2)+') td:eq(6)').text(mPrice*qty);
+	}
+	
+
+}
+
+
+function allCheck(val){
+	console.log(val);
+}
+
+function cartlist(val){
+	console.log(val);
+	var allPrice = 0;
+	
+	$("input[name=cartnumlist]:checked").each(function() {
+		
+		
+		var test = $(this).val(); 
+		for(var t = 0;t<test.length;t++){
+			var addNum = $("#orderCartForm div table tbody tr:eq("+(test[t]*2)+") td:eq(6)").html();
+			allPrice = allPrice + (addNum*1);
+		}
+		
+
+	});
+	
+	console.log(allPrice);
+	$("#orderCartForm div p span strong").html(allPrice);
+	$("#orderCartForm div p span input").val(allPrice);
+}
 
 function orderDeleteClick(){
 	
@@ -158,32 +244,8 @@ function orderBtnClick(){
 	console.log(JSON.stringify(arr));
 	//alert 로 선택한 리스트와 수량이 넘어옴
 
-	
-	//controller 타고 넘겨주기...... 
-/* 
-	$.ajax({
-		url: 'cartorder',
-		type: "POST",
-		data: JSON.stringify(arr),		
-		dataType: 'json',
-//		processData : false,
-		
-		contentType : "application/json",
-		success: function() {
-			console.log('d');
-		},
-
-		error: function(xhr) {
-		  console.log('실패 - ', xhr);
-		}
-	}); */
-
 $('[name="jsonData"]').val(JSON.stringify(arr));
 	document.fCart.submit();
-	
-	
-	
-	
 	
 }
 
@@ -201,19 +263,22 @@ function getOptionNaming(mnumber, stnumber){
 	return optionName;
 }
 </script>
-
-
 </head>
 <body>
-
+		
 	<form action="cartorder" method="post" name="fCart">
 		<input type="hidden" name="jsonData">
 	</form>
-	<div
-		style="width: 100%; text-align: center; padding: 3px; border: 1px solid pink;"
-		id="CartListWrapper">
-		<h3 align="center">장바 구니</h3>
-
+	<hr>
+	
+	
+	<hr>
+	<p></p>
+	<div style="width: 100%; text-align: center; padding: 3px;  background-color: ivory;" id="CartListWrapper"> <!-- border: 1px solid pink; -->
+		
+		<hr>
+		<h3 align="center">장 바 구 니</h3>
+	<hr>
 		<c:forEach var="cart" items="${optionname}" varStatus="i">
 			<script>
 				arrMenu[${i.index}] = "${cart.mNum}"; arrStock[${i.index}] = "${cart.stNum}"; arropName[${i.index}] = "${cart.opName}";
@@ -232,15 +297,13 @@ function getOptionNaming(mnumber, stnumber){
 			</script>
 		</c:forEach>
 
-		<div
-			style="padding: 3px; border: 1px solid orange; display: inline-block; text-align: center;"
-			id="CartList">
+		<div style="padding: 3px; display: inline-block; text-align: center;" id="CartList"> <!-- border: 1px solid orange; -->
 			<!-- display: inline-block; -->
 
 			<form id="orderCartForm" name="orderCartForm" action="cartorder" method="POST">
 
 				<div style="background: gray;">
-					<label><input type="checkbox"></label> <a href="#"></a>
+					<label><input type="checkbox" onClick="allCheck(this.value)"></label> <a href="#"></a>
 				</div>
 				<div style="text-align: center;">
 
@@ -250,10 +313,10 @@ function getOptionNaming(mnumber, stnumber){
 						<thead>
 							<tr>
 								<th rowspan="1"></th>
-								<th rowspan="1">z   2z2  장 명</th>
-								<th colspan="2">상e품/ 옵션정보</th>
+								<th rowspan="1">매 장 명</th>
+								<th colspan="2">상품/옵션정보</th>
 								<th rowspan="1">ICE/HOT</th>
-								<th rowspan="1">수e량</th>
+								<th rowspan="1">수 량</th>
 								<th rowspan="1">구매 금액</th>
 
 							</tr>
@@ -265,22 +328,20 @@ function getOptionNaming(mnumber, stnumber){
 
 				<div style="background: orange; padding: 3px;">
 					<p>
-						<span> 주문합계 <strong></strong>원</span>
+						<span> 주 문 합 계 <input type="hidden" name="totalPrice" value="0"><strong>0</strong>원</span>
 					</p>
 				</div>
-				<input type="button" value="주문" id="orderBtn" onclick="orderBtnClick()">
+				<input type="button" class="btn btn-default" value="주문" id="orderBtn" onclick="orderBtnClick()">
 			</form>
 		</div>
 
 		<br> <br> <br>
 		<div align="right">
 			<button class="btn btn-default" onclick="orderDeleteClick()">삭제</button>
-			<a href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
+			<a class="btn btn-default" href="javascript:history.go(-1)" class="btn btn-default ">돌아가기</a>
 		</div>
 	</div>
-
-
-
-
+	<%-- <img style="width:90%; height:120%; opacity:0.8; position: absolute;" src="${pageContext.request.contextPath}/image/note.jpg">
+	 --%>
 </body>
 </html>

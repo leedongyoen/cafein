@@ -12,9 +12,16 @@ public class ViewPosVO {
 	private String opName;
 	private int opPrice;
 	private int mPrice;
+	private String stMileService;
 	
 	
 	
+	public String getStMileService() {
+		return stMileService;
+	}
+	public void setStMileService(String stMileService) {
+		this.stMileService = stMileService;
+	}
 	public String getRecipeno() {
 		return recipeno;
 	}
@@ -79,7 +86,7 @@ public class ViewPosVO {
 	public String toString() {
 		return "ViewPosVO [recipeno=" + recipeno + ", sId=" + sId + ", mName=" + mName + ", stNum=" + stNum + ", mNum="
 				+ mNum + ", stName=" + stName + ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice
-				+ ", mPrice=" + mPrice + "]";
+				+ ", mPrice=" + mPrice + ", stMileService=" + stMileService + "]";
 	}
 	
 	

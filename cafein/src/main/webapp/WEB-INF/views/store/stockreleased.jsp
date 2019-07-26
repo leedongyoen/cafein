@@ -87,6 +87,7 @@
 					}
 					if(datas == null){
 						alert("기간에 맞는 데이터가 없습니다.");
+						return;
 					}
 					drawChart();
 					
@@ -98,6 +99,11 @@
 		//입출고 리스트 뿌리기
 		function warehousingListResult(data) {
 // 			$('#pieChart_div').empty();
+			if($('#endDate').val() =='' || $('#startDate').val()==''){
+				$("#divDate").html('전체 기간');
+				}else{
+				$('#divDate').html($('#startDate').val()+' ~ '+$('#endDate').val());
+				}
 			$("thead").empty();
 			$("tbody").empty();
 			$('<tr>').append($('<th>').html('재고 명'))
@@ -140,6 +146,7 @@
 			<input type="button" value="전체 통계" class="btn btn-primary"
 				id="btnwarehousing" onclick="location.href='stockwarehousing.do'">
 		</div>
+				<div><h5 id="divDate"></h5></div>
 
 	</div>
 	<br>

@@ -1,6 +1,7 @@
 package co.yedam.cafein.store.close;
 
 import java.util.List;
+import java.util.Map;
 
 import co.yedam.cafein.viewvo.ViewWarehousingVO;
 import co.yedam.cafein.vo.OrdersVO;
@@ -36,4 +37,8 @@ public interface StoreCloseService {
 	public List<OrdersVO> getRefundInfo(OrdersVO vo);
 	
 	public int storeCloseDataImsert(StoreCloseDataInsertVO vo);
+	
+	public List<Map<String, Object>> storeReceipt(StoreOpenVO vo);
+	
+	public List<StoreOpenVO> storeReceiptList(StoreOpenVO vo);
 }

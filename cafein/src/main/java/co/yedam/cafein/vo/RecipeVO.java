@@ -61,11 +61,12 @@ public class RecipeVO {
 	public void setmNum(String mNum) {
 		this.mNum = mNum;
 	}
-	
 	@Override
 	public String toString() {
 		return "RecipeVO [recipeno=" + recipeno + ", sId=" + sId + ", consum=" + consum + ", stNum=" + stNum + ", mNum="
-				+ mNum + "]";
+				+ mNum + ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice + "]";
 	}
+	
+	
 	
 }

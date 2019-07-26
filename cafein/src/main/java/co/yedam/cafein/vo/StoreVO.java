@@ -12,12 +12,25 @@ public class StoreVO {
 	private String stclosetime;
 	private String stappstat;
 	private String stmileservice;
-	
+	private String opencheck;
+	private String rank;
 	private String sadd2;
 	private String sadd3;
 	
 	
 	
+	public String getRank() {
+		return rank;
+	}
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
+	public String getOpencheck() {
+		return opencheck;
+	}
+	public void setOpencheck(String opencheck) {
+		this.opencheck = opencheck;
+	}
 	public String getSadd3() {
 		return sadd3;
 	}
@@ -96,10 +109,10 @@ public class StoreVO {
 	public String toString() {
 		return "StoreVO [sid=" + sid + ", spw=" + spw + ", sname=" + sname + ", sadd=" + sadd + ", stel=" + stel
 				+ ", stdeliservice=" + stdeliservice + ", stopentime=" + stopentime + ", stclosetime=" + stclosetime
-				+ ", stappstat=" + stappstat + ", stmileservice=" + stmileservice + ", sadd2=" + sadd2 + ", sadd3="
-				+ sadd3 + "]";
+				+ ", stappstat=" + stappstat + ", stmileservice=" + stmileservice + ", opencheck=" + opencheck
+				+ ", rank=" + rank + ", sadd2=" + sadd2 + ", sadd3=" + sadd3 + "]";
 	}
-	
-	
+
+
 	
 }

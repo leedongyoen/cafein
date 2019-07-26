@@ -40,7 +40,7 @@
 			AND 
 			UPPER(PAY_METHOD) = 'CASH'
             AND
-            O.DELIVERY_STATUS = 'C3'
+            O.DELIVERY_STATUS IN ('C3', 'C5')
             AND
             TOTAL > 0
 	</select>
@@ -75,12 +75,13 @@
 	<select id="getCloseReceiptCash" resultType="order">
 		SELECT O.RECEIPT "receipt"
 			 , O.PAY_METHOD "payMethod"
-			 , SUM(O.TOTAL) "total"
-			 , count(*)  "cnt"
+			 , NVL(SUM(O.TOTAL),0) "total"
+			 , NVL(COUNT(*),0)  "cnt"
 		FROM ORDERS O JOIN STOREOPEN SOP
 		ON O.S_ID = SOP.S_ID
-		WHERE O.O_DATE BETWEEN SOP.OPENTIME AND SOP.CLOSETIME
-		        AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS ='C3') OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS = 'C3' ) )
+		AND TO_CHAR(OPENTIME,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+		WHERE O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP)
+		        AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS IN ('C3', 'C5') ) )
 		AND O.S_ID = #{sId}
 		AND O.TOTAL > 0
 		GROUP BY O.RECEIPT, O.PAY_METHOD  
@@ -88,38 +89,40 @@
 	
 	<!-- 마감 영수증을 위한 결제내역(마일리지 및 총금액) 조회 -->
 	<select id="getCloseReceiptMileage" resultType="order">
-		SELECT SUM(O.MILEAGE) "mileage"
-			 , SUM(O.TOTAL)*0.01 "addmileage"
-			 , SUM(O.TOTAL) "total"
-			 , COUNT(*) "addMileageCnt"
-       		 , COUNT(CASE WHEN MILEAGE > 0 THEN 1 ELSE NULL END) "minusMileageCnt"
+		SELECT NVL(SUM(O.MILEAGE),0) "mileage"
+			 , NVL(SUM(O.TOTAL)*0.01,0) "addmileage"
+			 , NVL(SUM(O.TOTAL),0) "total"
+			 , NVL(COUNT(*),0) "addMileageCnt"
+       		 , NVL(COUNT(CASE WHEN MILEAGE > 0 THEN 1 ELSE NULL END),0) "minusMileageCnt"
 		FROM ORDERS O ,(SELECT CLOSETIME, OPENTIME
 						FROM STOREOPEN
 						WHERE S_ID = #{sId}
 						AND TRUNC(OPENTIME) = #{openTime}) SOP
 		WHERE
-    	( O.O_DATE BETWEEN SOP.OPENTIME AND NVL(SOP.CLOSETIME,SYSTIMESTAMP))
-	   	AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS ='C3') OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS = 'C3' ) )
+    	( O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP))
+	   	AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS IN ('C3', 'C5') ) )
 		AND O.S_ID = #{sId}
 		AND O.TOTAL > 0
 	</select>
 	
 	<!-- 마감 영수증을 위한 환불내역(결제방식 별 금액, 마일리지, 건수) 조회 -->
 	<select id="getRefundInfo" resultType="order">
-		SELECT SUM(TOTAL) "refundSum"
-			 , SUM(MILEAGE) "refundMileage"
+		SELECT NVL(SUM(TOTAL),0) "refundSum"
+			 , NVL(SUM(MILEAGE),0) "refundMileage"
 			 , PAY_METHOD "refundMethod"
-			 , COUNT(CASE WHEN MILEAGE > 0 THEN 1 ELSE NULL END) "mileage"
-			 , COUNT(CASE WHEN PAY_METHOD = 'cash' THEN 1 ELSE NULL END) "cashRefundCnt"
-			 , COUNT(CASE WHEN PAY_METHOD = 'card' THEN 1 ELSE NULL END) "cardRefundCnt"
+			 , NVL(COUNT(CASE WHEN MILEAGE <![CDATA[ < ]]> 0 THEN 1 ELSE NULL END),0) "mileage"
+			 , NVL(COUNT(CASE WHEN PAY_METHOD = 'cash' THEN 1 ELSE NULL END),0) "cashRefundCnt"
+			 , NVL(COUNT(CASE WHEN PAY_METHOD = 'card' THEN 1 ELSE NULL END),0) "cardRefundCnt"
 		FROM ORDERS O JOIN STOREOPEN SOP
-		ON O.S_ID = SOP.S_ID
-		WHERE O.O_DATE BETWEEN SOP.OPENTIME AND SOP.CLOSETIME
+	    ON O.S_ID = SOP.S_ID 
+	    AND TO_CHAR(OPENTIME,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+	    WHERE O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP)
 		AND O.TOTAL <![CDATA[ < ]]> 0
 		AND O.S_ID = #{sId}
 		GROUP BY PAY_METHOD
 	</select>
 	
+	<!-- *********************************** insert or update *********************************** -->
 	  
 	<!-- 재고입고 테이블에 추가 재고 입고 내역 insert -->
 	<insert id="warehousingInsertAddStock">
@@ -197,6 +200,27 @@
 		</foreach>
 	</update>
 	
+	<!-- pdf 파일  -->
+	<select id="storeReceipt" resultType="map">
+		SELECT S_ID
+			 , OPENTIME
+			 , CLOSETIME
+		FROM STOREOPEN
+		WHERE S_ID = #{sId}
+		AND OPENTIME IN (SELECT MAX(OPENTIME) 
+						 FROM STOREOPEN)
+	</select>
 	
+	<!-- pdf 파일 목록 -->
+	<select id="storeReceiptList" resultType="storeOpen">
+		SELECT OPENTIME	"openTime"
+			 , CLOSETIME "closeTime"
+		FROM STOREOPEN 
+		WHERE S_ID = #{sId}
+			<if test="startDate != null and endDate != null ">
+				AND TO_CHAR(OPENTIME,'YYYY-MM-DD') BETWEEN '${startDate}' AND '${endDate}'
+			</if>
+		ORDER BY OPENTIME DESC
+	</select>
 	
 </mapper>

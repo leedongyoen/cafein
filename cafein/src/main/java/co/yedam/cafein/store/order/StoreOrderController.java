@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import co.yedam.cafein.customer.CustomerOrderController;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 
@@ -21,14 +23,14 @@ public class StoreOrderController {
 	
 	@Autowired
 	StoreOrderServiceImpl service;
-	
+	@Autowired
+	CustomerOrderController cus_order_service;
 	
 	// 해당 매장의 주문 목록
 	@ResponseBody
 	@RequestMapping(value="getstoreorderlist", method=RequestMethod.GET)
-	public List<OrdersVO> getstoreorderlist(String sId){
-		OrdersVO vo = new OrdersVO();
-		vo.setsId(sId);
+	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
+		
 		
 		return service.getstoreorderlist(vo);
 	}
@@ -36,11 +38,11 @@ public class StoreOrderController {
 	// 해당 매장의 주문 상세
 	@ResponseBody
 	@RequestMapping(value="getstoreorderdetails", method=RequestMethod.GET)
-	public List<OrderDetailsVO> getstoreorderdetails(String oNum, String mNum){
+	public List<OrderDetailsVO> getstoreorderdetails(String oNum, String mNum, String opDnum){
 		OrdersVO vo = new OrdersVO();
 		vo.setoNum(oNum);
 		vo.setmNum(mNum);
-		
+		vo.setOpDnum(opDnum);  
 		return service.getstoreorderdetails(vo);
 	}
 	
@@ -61,12 +63,19 @@ public class StoreOrderController {
 	// 해당 주문번호 취소
 	@ResponseBody
 	@RequestMapping(value="updateordercancel", method=RequestMethod.POST)
-	public int updateordercancel(String oNum, String refuseReason) {
+	public int updateordercancel(String oNum, String refuseReason,String sId) {
 		OrdersVO vo = new OrdersVO();
+		
+		String mileageservice = cus_order_service.getstoremileageservice(sId);
+		
 		vo.setoNum(oNum);
 		vo.setRefuseReason(refuseReason);
+		
+		
 		int n = service.updateordercancel(vo);
-		if(n > 0 ) {
+		
+		System.out.println("============ mileage service "+mileageservice);
+		if(n > 0 && mileageservice.equals("Y") ) {
 			n = service.updateordermileage(vo);
 		}
 		return n;
@@ -88,6 +97,8 @@ public class StoreOrderController {
 //-------------------------------------------------------------------------------------
 	
 	
+	
+//-------------------------------------------------------------------------------------
 	// 미정
 	// 옵션 묶기
 	@ResponseBody

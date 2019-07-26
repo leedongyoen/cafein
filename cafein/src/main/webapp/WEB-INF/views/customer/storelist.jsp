@@ -22,10 +22,13 @@ input {
 <div class="container">
 
 	<button id="selectStore" class="btn btn-outline-info" >매장 선택</button>
+	<h3 align="center" id="selectstorename"></h3>
+	<br><hr>
+	<div id="topstorebtn"></div>
 	<hr>
 	
 	<input class="form-control" id="myInput" type="text" placeholder="Search..">
-	
+	 
 	<hr>
 	
 	<!-- 메뉴 선택 -->
@@ -88,6 +91,7 @@ input {
 					<h5 class="modal-title">메뉴</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
+				<h5 id="menumodaltitle" align="center"></h5>
 				<form class="form-borizontal" id="menudetailForm" name="menudetailForm" action="customerorder" method="POST">
 				<div class="modal-body">
 						<input type="text" name="mNum" style="display: none;" >
@@ -107,9 +111,9 @@ input {
 							</tr>
 							<tr>
 								<th>PRICE</th>
-								<td><input type="text" id="price" name="mPrice" readonly="readonly">&nbsp;&nbsp;
-									<button type="button" onclick="add(1)">+</button> <span id="ordernum">1</span>
-									<button type="button" onclick="add(-1)">-</button>
+								<td><input type="text" id="price" name="mPrice" readonly="readonly" style="width:8ex;"> &nbsp;&nbsp;
+									<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(1)">+</button> <span id="ordernum">1</span>
+									<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(-1)">-</button>
 								</td>
 								
 							</tr>
@@ -225,11 +229,47 @@ input {
 	//주소-좌표 변환 객체를 생성
     var geocoder = new daum.maps.services.Geocoder();
 	
+	function gettopstorelist(){
+		var checklogin = "<%=(String) session.getAttribute("cId")%>";
+		$.ajax({
+			url:'gettopstorelist',
+			type:'GET',
+			//contentType:'application/json;charset=utf-8',
+			dataType:'json',
+			data: {cId: checklogin},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){
+				console.log(data);
+			
+				$.each(data,function(idx,item){
+					if(item.opencheck == '1'){
+						
+						$('#topstorebtn').append($('<button>').attr({
+														type:"button"
+														, onclick:"menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')"
+														, class :"btn btn-outline-info"											
+													}).append(item.sname+"(주문가능)"));
+					}else{
+						$('#topstorebtn').append($('<button>').attr({
+							type:"button"
+							, onclick:"menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')"
+							, class :"btn btn-outline-info"
+							, "disabled":"disabled"
+						}).append(item.sname+"(오픈준비중)"));
+						//$('.orderno').attr('onclick','').unbind('click'); 
+					}
+				});
+			}
+		});
+	}
 	
 	function menuList(sid,sname,stdeliservice){
 		selectstoreid = sid;
 		storename=sname;
 		storedeliservice = stdeliservice;
+		$('#selectstorename').html(sname);
 		console.log(sid,sname)
 		$.ajax({
 			url:'storelistmenu/'+sid,
@@ -289,7 +329,7 @@ input {
     }
     
     // DB정보로 거리 계산
-    function getDBStoreDistance(sid,sname,saddress,stdeliservice){
+    function getDBStoreDistance(sid,sname,saddress,stdeliservice,opencheck){
     	// 주소로 좌표를 검색합니다
     	geocoder.addressSearch(saddress, function(result, status) {
 	    	console.log("for문 안 ge "+saddress);
@@ -308,14 +348,21 @@ input {
 	            console.log(sname+' 거리  : '+distance+"m");
 	           
 	            if(distance < 300){
-	            	
-	            	$('<tr>').attr("onclick","menuList('"+sid+"','"+sname+"','"+stdeliservice+"')")
+	            	if(opencheck == '1'){
+	            		stdeliservice = '주문가능';
+						v_open = 'orderok';
+					}else{
+						stdeliservice = '준비중';
+						v_open = 'orderno';
+					}
+	            	$('<tr>').attr("onclick","menuList('"+sid+"','"+sname+"','"+stdeliservice+"')").attr("class",v_open)
 					.append($('<td>').html(sname))
 					.append($('<td>').html(saddress))
 					.append($('<td>').html(distance+"m"))
 					.append($('<td>').html(stdeliservice))
 					.appendTo('#storetable tbody');
-						
+	            	$('.orderno').attr('onclick','').unbind('click'); 
+	            	
 	            }
 	            
 	            // 다른 매장과 거리 계산을 위해 초기화
@@ -344,8 +391,10 @@ input {
 				$("#storetable tbody").empty();
 				$("#storemodalminititle").html("주변매장");
 				$.each(list,function(idx,item){
-					getDBStoreDistance(item.sid,item.sname,item.sadd,item.stdeliservice);
+					getDBStoreDistance(item.sid,item.sname,item.sadd,item.stdeliservice,item.opencheck);
 				});
+				
+			
 			}
 		});
     }
@@ -391,10 +440,11 @@ input {
 			alert('로그인이 필요합니다.');
 		}else{
 			$.ajax({
-				url:'customerinfo/'+checklogin,
+				url:'customerinfo',
 				type:'GET',
 				//contentType:'application/json;charset=utf-8',
 				dataType:'json',
+				data: {cId:checklogin },
 				error:function(xhr,status,msg){
 					alert("상태값 :" + status + " Http에러메시지 :"+msg);
 				},
@@ -437,12 +487,20 @@ input {
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				var v_open;
 				standardsearchAddress="";
 				$("#storetable tbody").empty();
 				$("#storemodalminititle").html("모든매장");
 				$("#customerAddress").html("");
 				$.each(data,function(idx,item){
-					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')")
+					if(item.opencheck == '1'){
+						item.stdeliservice = '주문가능';
+						v_open = 'orderok';
+					}else{
+						item.stdeliservice = '준비중';
+						v_open = 'orderno';
+					}
+					$('<tr>').attr("onclick","menuList('"+item.sid+"','"+item.sname+"','"+item.stdeliservice+"')").attr("class",v_open)
 					.append($('<td>').html(item.sname))
 					.append($('<td>').html(item.sadd))
 					.append($('<td>').html("-"))
@@ -451,6 +509,8 @@ input {
 					.appendTo('#storetable tbody');
 					
 				});
+			
+				$('.orderno').attr('onclick','').unbind('click'); 
 			}
 		});
 	}
@@ -513,7 +573,7 @@ input {
 							     id: item.stNum,
 							     value: item.stNum,
 							   	})
-							   	.attr("class","checkoption")
+							   	.attr("class","checkoption checkbox")
 							   	.appendTo("#menudetailoption");			
 							$("<label>").attr("for",item.stNum)
 										.append(item.opName+"("+item.opPrice+"원 추가)")
@@ -581,15 +641,22 @@ input {
 	}
 
 $(function(){
-
+	gettopstorelist();
+	//$('.orderno').attr('onclick','').unbind('click'); 
 	// 로그인시에만 나만의 메뉴 등록 가능하게 
 	mymenu_login_check = "<%= (String)session.getAttribute("cId") %>";
 	if(mymenu_login_check == "null" || mymenu_login_check == ""){
 		$("#mymenuInsertbtn").hide();
 		$("#cartbtn").hide();
+		$("#cu_orderbtn").hide();
+		$("#storelistbtn1").attr("disabled","disabled");
+		$("#storelistbtn2").attr("disabled","disabled");
+		$("#menumodaltitle").html("로그인 시에만 주문가능합니다.");
 	}else{
 		$("#mymenuInsertbtn").show();
 		$("#cartbtn").show();
+		$("#cu_orderbtn").show();
+		$("#storemodalminititle").html("");
 	}
 	
 	// 커피 메뉴 선택시 모달창
@@ -684,7 +751,7 @@ $(function(){
 		}else{
 			list.cuNumList = null;
 		}
-		
+		console.log(JSON.stringify(list));
 		
 		$.ajax({
 			url : 'insertmymenu',
@@ -693,7 +760,10 @@ $(function(){
 			dataType : 'json',
 			data : JSON.stringify(list),
 			success : function(data) {
-				console.log(data);
+				var result = confirm('나만의 메뉴로 이동하시겠습니까?'); 
+				if(result) { //yes 
+					location.replace("${pageContext.request.contextPath}/mymenu.do"); 
+				} 
 
 			},
 			error : function(request,status,error) {
@@ -740,6 +810,10 @@ $(function(){
 //localStorage.setItem("cartlist",insert_session);
 		localStorage.setItem("cartlist",JSON.stringify(local_cart));
 		console.log("localStorage : "+localStorage.getItem("cartlist"));
+		var result = confirm('장바구니로 이동하시겠습니까?'); 
+		if(result) { //yes 
+			location.replace("${pageContext.request.contextPath}/cartmng"); 
+		} 
 
 	});
 	

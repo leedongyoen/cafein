@@ -1,7 +1,7 @@
 package co.yedam.cafein.store.close;
 
 import java.util.List;
-
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +74,15 @@ public class StoreCloseDAO {
 	// 재고 수량이 변경되었다면 수량과 재고수량에 따른 재고상태를 update
 	public int storeUpdate(List<StoreOpenVO> vo) {
 		return mybatis.insert("storeCloseDAO.storeUpdate", vo);
+	}
+	
+	//----------------마감 정산 내역 PDF 조회 및 저장-----------------
+	public List<Map<String, Object>> storeReceipt(StoreOpenVO vo){
+		return mybatis.selectList("storeCloseDAO.storeReceipt",vo);
+	}
+	
+	public List<StoreOpenVO> storeReceiptList(StoreOpenVO vo) {
+		return mybatis.selectList("storeCloseDAO.storeReceiptList", vo);
 	}
 	
 }

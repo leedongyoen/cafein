@@ -9,7 +9,7 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" media="screen" href="./css/jqgrid/jquery-ui.theme.css" />
-
+<link rel="stylesheet" href="./css/orderlist.css" >
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -23,16 +23,28 @@
 $(function(){
 	var sId = "<%= (String)session.getAttribute("sId") %>";
 	var sName = "<%= (String)session.getAttribute("sName") %>";
+	var openTime = localStorage.getItem("openTime");
+	
+	console.log("open time localstorage : " + openTime) 
 	console.log("sId = " + sId + "  sName = " + sName );
 	
 	if(sId == "null") {
-		$("#loginbtn").css('display', 'inline');
+		$("#loginbtn").css('display', 'block');
 		$("#logoutbtn").css('display', 'none');
 	}
 	if(sId != "null") {
 		$("#loginbtn").css('display', 'none');
-		$("#logoutbtn").css('display', 'inline');
+		$("#logoutbtn").css('display', 'block');
 	}
+	if(openTime == null) {
+		$("#openbtn").css('display', 'block');
+		$("#closebtn").css('display', 'none');
+	}
+	if(openTime != null) {
+		$("#openbtn").css('display', 'none');
+		$("#closebtn").css('display', 'block');
+	}
+
 	
 });
 	
@@ -118,16 +130,29 @@ body {
         <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">재고</a>
 
         <div class="dropdown-menu" aria-labelledby="dropdown02">
-         <a class="dropdown-item" href="${pageContext.request.contextPath}/stocklist.do">재고 목록</a>
-		  <a class="dropdown-item" href="${pageContext.request.contextPath}/stockwarehousing.do">재고 통계</a>
           <a class="dropdown-item" href="${pageContext.request.contextPath}/warehousingregi.do">재고 입고</a>
+         <a class="dropdown-item" href="${pageContext.request.contextPath}/stocklist.do">재고 목록</a>
+         <a class="dropdown-item" href="${pageContext.request.contextPath}/warehousinglist.do">입출고 내역</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/stockwarehousing.do">재고 통계</a>
 
         </div>
 
       </li>
       
       <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/storeopen.do" id="openbtn">오픈</a></li>
-      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/daycal.do" id="closebtn">마감</a></li>
+      
+	<li class="nav-item dropdown">
+	    <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">마감</a>
+		<div class="dropdown-menu" aria-labelledby="dropdown03">
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/daycal.do" id="closebtn">마감 정산</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/closedetails.do">마감 내역</a>
+		</div>
+	</li>
+
+
+
+
+
 
     </ul>
 

@@ -68,7 +68,7 @@ table {
 	<div align="center" id="test_dataview3"></div>
 <!-- 판매율 -->
 <div style = "float:left;margin-right:10px;">
-<table border = "1" onclick = "location.href='menuInquiry.jsp'">
+<table border = "1">
 	<tr>
 		<th colspan = "3">판매율 TOP3 메뉴</th>
 	</tr>

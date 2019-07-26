@@ -7,7 +7,7 @@
 <%@ include file="storehead.jsp" %>
 <title>Store Information Edit Page</title>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
- 
+
  <META NAME="Generator" CONTENT="EditPlus">
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">
@@ -235,15 +235,19 @@ function checkpwbtn(){
 //         $("#sname").removeAttr("readonly");
 //         $("#spw").removeAttr("readonly");
         $("#stel").removeAttr("readonly");
+        $("#pwbt").removeAttr("disabled");
         $("#sadd").removeAttr("readonly");
         $("#sadd2").removeAttr("readonly");
         $("#sadd3").removeAttr("readonly");
         $("#stopentime").removeAttr("readonly");
         $("#stclosetime").removeAttr("readonly");
+        $("#addbt").removeAttr("disabled");
         $("#stdeliservice_y").removeAttr("disabled");
         $("#stdeliservice_n").removeAttr("disabled");
 //         $("#savings_service_y").removeAttr("disabled");
 //         $("#savings_service_n").removeAttr("disabled");
+		
+		alert("수정이 가능합니다.");
 
 		
 	}
@@ -271,9 +275,11 @@ function checkpwbtn(){
         $("#sname").attr("readonly",true);
         $("#spw").attr("readonly",true);
         $("#stel").attr("readonly",true);
+        $("#pwbt").attr("disabled","disabled");
         $("#sadd").attr("readonly",true);
         $("#sadd2").attr("readonly",true);
         $("#sadd3").attr("readonly",true);
+        $("#addbt").attr("disabled","disabled");
         $("#stopentime").attr("readonly",true);
         $("#stclosetime").attr("readonly",true);
         $("#stdeliservice_y").attr("disabled",true);
@@ -376,38 +382,40 @@ function checkpwbtn(){
 
 
 <div class = "container" align="center">
-    <h3 id = "s_info">매장 정보</h3>
-    <h3 id = "s_infoedit" style=" display:none ">매장 정보 수정</h3>
+	<hr>
+	<p id = "s_info" align="center" class="titlefont">매장 정보</p>
+	<p id = "s_infoedit" style=" display:none " align="center" class="titlefont">매장 정보 수정</p>
+	<hr>
   <form id = "storeinfoForm" method = "post">
-      <table class ="table">
+      <table class = "table">
         <tr>
-          <th>ID</th>
+          <th class="tableth">ID</th>
           <td><input type = "text" name = "sid" readonly></td>
         </tr>
         <tr>
-          <th>매장상호</th>
+          <th class="tableth">매장상호</th>
           <td><input type = "text" name = "sname" id = "sname" readonly></td>
         </tr>
         <tr>
-          <th>비밀번호</th>
+          <th class="tableth">비밀번호</th>
           <td>
 <!--           <input type = "text" name = "spw" id = "spw" readonly> -->
-          		<button type="button" onclick="openModeal()"> 비밀번호 변경하기 </button>
+          		<button type="button" id="pwbt" onclick="openModeal()" class="btn btn-default btn-primary" disabled> 비밀번호 변경하기 </button>
           </td>
         </tr>
         <tr>
-          <th>매장연락처</th>
+          <th class="tableth">매장연락처</th>
           <td><input type = "tel" name = "stel" id = "stel" readonly></td>
         </tr>
         <tr>
-          <th>매장주소</th>
-        <td><input type = "text" id="sadd2" name = "sadd2" placeholder="우편번호">
-          <button type = "button" onclick="execPostCode()">우편번호 찾기</button><br>
-          		<input type = "text" id="sadd" name = "sadd" placeholder="주소">
-          		<input type = "text" id="sadd3" name = "sadd3" placeholder="상세주소"></td>
+          <th class="tableth">매장주소</th>
+        <td><input type = "text" id="sadd2" name = "sadd2" placeholder="우편번호" readonly>
+          <button type = "button" id="addbt" class="btn btn-default btn-primary" onclick="execPostCode()" disabled>우편번호 찾기</button><br>
+          		<input type = "text" id="sadd" name = "sadd" placeholder="주소" readonly>
+          		<input type = "text" id="sadd3" name = "sadd3" placeholder="상세주소" readonly></td>
         </tr>
         <tr>
-          <th>영업시간</th>
+          <th class="tableth">영업시간</th>
           <td>
             <input type = "time" name = "stopentime" id = "stopentime"  readonly> ~ 
             <input type = "time" name = "stclosetime" id = "stclosetime" readonly><br>
@@ -415,22 +423,22 @@ function checkpwbtn(){
           </td>
         </tr>
         <tr>
-          <th>배달유무</th>
+          <th class="tableth">배달유무</th>
           <td>
             <input type = "radio" name = "stdeliservice" id = "stdeliservice_y" value = 'Y' disabled>배달 가능
             <input type = "radio" name = "stdeliservice" id = "stdeliservice_n" value = 'N' checked="checked" disabled> 배달 불가능
           </td>
         </tr>
         <tr>
-          <th>적립금 사용 유무</th>
+          <th class="tableth">적립금 사용 유무</th>
           <td>
             <input type = "radio" name = "stmileservice" id = "savings_service_y" value = 'Y' disabled>적립 가능
             <input type = "radio" name = "stmileservice" id = "savings_service_n" value = 'N' checked="checked" disabled>적립 불가능
           </td>
         </tr>
       </table>
-      <a class="btn btn-default  pull-right"  href="javascript:history.go(-1)">돌아가기</a>
-      <input type = "button" id = "edit_before" class="btn btn-default" value = "수정하기" onclick = "edit()">
+      <a class="btn btn-secondary  pull-right"  href="javascript:history.go(-1)">돌아가기</a>
+      <input type = "button" id = "edit_before"  class="btn btn-default btn-success" value = "수정하기" onclick = "edit()">
       <input style=" display:none " type = "button" class="btn btn-default" id = "edit_after" value = "수정완료" onclick = "editok()">
   </form>
   </div>

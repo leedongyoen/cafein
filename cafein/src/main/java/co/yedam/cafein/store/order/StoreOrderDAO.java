@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
+import co.yedam.cafein.common.Paging;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 
@@ -19,6 +21,11 @@ public class StoreOrderDAO {
 	// 해당 매장의 주문목록 가져오기
 	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
 		return template.selectList("getStoreOrderListDAO.getstoreorderlist",vo);
+	}
+	
+	// 전체건수
+	public int getstoreorderlistCount(OrdersVO vo) {
+		return template.selectOne("getStoreOrderListDAO.getstoreorderlistCount",vo);
 	}
 	
 	// 해당 매장의 주문상세 가져오기
@@ -58,16 +65,11 @@ public class StoreOrderDAO {
 		return template.update("getStoreOrderListDAO.updatedeliverystatus",vo);
 	}
 	
-	// 모든 매장에서 주문이 들어온지 5문이 지난 주문이 있는지 확인
-	public List<OrdersVO> getordertimecheck(){
-		return template.selectList("getStoreOrderListDAO.getordertimecheck");
+	// 모든 매장에 주문이 들어온지 5분이 지났는지 프로시절 호출
+	public void schedulerordertimecheck() {
+		template.selectOne("getStoreOrderListDAO.schedulerordertimecheck");
 	}
 	
-	// 주문이 들어온지 5분이 지난 주문들을 주문 취소로 바뀜
-	public int updatecheckordercancel(OrdersVO vo){
-		return template.update("getStoreOrderListDAO.updatecheckordercancel",vo);
-	}
-
 	//-------------------------------------------------------------------------------------
 	
 	// 사용 미정

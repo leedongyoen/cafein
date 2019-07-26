@@ -13,6 +13,7 @@
 		, M_PRICE "mPrice"
 		,CA_NUM "caNum"
 		 FROM MENU
+		 WHERE S_ID= #{sId} 
 	</select>
 	<!-- 메뉴선택시 옵션 가져오기 -->
 	<select id="getOptionList" resultType="recipe">
@@ -21,6 +22,7 @@
 		, OP_NAME "opName"
 		, OP_PRICE "opPrice"
 		, RECIPENO "recipeno"
+		, CA_NUM "caNum"
 		FROM RECIPE
 		WHERE S_ID= #{sId}
 		AND M_NUM = #{mNum}
@@ -44,5 +46,49 @@
 	AND (C_TEL like '%' || #{cTel} || '%'
 	OR C_NAME like '%' || #{cTel} || '%')
 	</select>
-
+<!-- 환불위한 주문내역 조회 -->
+	<select id="getCusRefund" resultType="order">
+	SELECT
+			O_NUM "oNum"
+		   , C_ID "cId"
+		   , O_DATE "oDate"
+		   , TOTAL "total"
+		   , PAY_METHOD "payMethod"
+		   , MILEAGE "mileage"
+	FROM ORDERS
+	<where>
+	S_ID=#{sId}
+	<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
+			AND	 O_DATE BETWEEN #{startDate} AND #{endDate}
+			</if>
+	AND DELIVERY_STATUS IN ('C5','C6')
+	</where>
+	</select> 
+<!-- 환불 주문건 상세내역 -->
+	<select id="getOrDetails" resultType="co.yedam.cafein.viewvo.ViewPosOrdetailsVO">
+	SELECT 
+			O_NUM "oNum"
+			, O_DNUM "oDnum"
+			, OP_DNUM "opDnum"
+			,OP_NAME "opName"
+			, CA_NUM "caNum"
+			, M_NAME "mName"
+			, O_QTY "oQty"
+			, C_NAME "cName"
+			, MILEAGE "mileage"
+			, TOTAL "total"
+	FROM ORDETAILS_VIEW
+	WHERE O_NUM= #{oNum}
+	AND CA_NUM IN ('CAOP','CAHT','CAIC','CADR','CADE','CAJP')
+	</select>
+	
+	<!-- 환불하기 -->
+	<insert id="refoundcall" statementType="CALLABLE" parameterType="order">
+	{ 	
+		call POSREPOUND_PRO(
+		#{P_ONUM, mode=IN, jdbcType=VARCHAR, javaType=string}
+		)
+	}
+	
+	</insert>
 </mapper>

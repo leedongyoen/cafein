@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.cafein.vo.CustomerVO;
+import co.yedam.cafein.vo.StockVO;
 
 @Controller
 public class StoreMainController {
@@ -24,7 +25,17 @@ public class StoreMainController {
 	public String storemainform() {
 		return "store/main";
 	}
+	/*
+	// 매장 메인 판매율 TOP3 메뉴 조회
+	@ResponseBody
+	@RequestMapping(value="/menuTop3", method=RequestMethod.GET)
+	public List<StockVO> getStockTruthList(StockVO vo) {
+		return null;
+	}
+	*/
+
 	
+	// -------------------------------------------------------------------------------------------------------------
 	//매장 우리매장 고객 조회
 	@RequestMapping("customerlist.do")
 	public String customerlist() {
@@ -66,11 +77,7 @@ public class StoreMainController {
 		return "store/orderlist";
 	}
 	
-	//매장 주문하기
-		@RequestMapping("pos.do")
-		public String pos() {
-			return "store/pos";
-		}
+
 	
 
 }

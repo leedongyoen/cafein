@@ -13,13 +13,18 @@
 		      , S.S_NAME
 		      , O.PAY_METHOD
 		      , O.DELIVERY_STATUS
-		      ,O.DELIVERY_STATUS
 		      , CO.DETAIL_NM
 		FROM ORDERS O JOIN STORE S
 		ON O.S_ID = S.S_ID
 		JOIN CONDITION CO
 		ON O.DELIVERY_STATUS = CO.DETAIL_CD
 		WHERE O.C_ID= #{cId}
+		<if test="orderlistcontroller == 7">
+			AND O.O_DATE > SYSTIMESTAMP-7
+		</if> 
+		<if test="orderlistcontroller != 7">
+			AND O.O_DATE > SYSTIMESTAMP - (INTERVAL '${orderlistcontroller}' MONTH)
+		</if>
 		ORDER BY O.O_DATE DESC
 	
 	
@@ -34,6 +39,7 @@
 				, O.PAY_METHOD
 				, O.DELIVERY_STATUS
 				, O.REFUSE_REASON
+				, TO_CHAR(O.DE_APPLY_TIME+(O.TAKE_TIME/60/24),'YYYY-MM-DD HH24:MI') "TAKE_TIME"
 		from ORDERS O JOIN STORE S
 		ON O.S_ID = S.S_ID
 		where O_NUM=#{oNum}
@@ -83,6 +89,7 @@
 								, MILEAGE
 								, C_ADD
 								, C_ADD3
+								, DELIVERY_STATUS
 							)
 		VALUES (
 				#{oNum}
@@ -95,6 +102,7 @@
 				, #{mileage}
 				, #{cAdd}
 				, #{cAdd3}
+				, #{deliveryStatus}
 				)
 	
 	</insert>
@@ -152,6 +160,19 @@
 		WHERE O_NUM= #{oNum}
 	
 	</update>
+	
+	<update id="getmutilodnum">
+		<selectKey keyProperty="opDnum" resultType="string" order="BEFORE">
+			SELECT MIN(O_DNUM) OP_DNUM
+			FROM ORDER_DETAILS 
+			WHERE O_NUM =#{oNum} AND M_NUM =#{mNum} AND OP_DNUM = 0
+		</selectKey>
+		  
+		UPDATE ORDER_DETAILS SET OP_DNUM=#{opDnum} 
+		WHERE O_NUM= #{oNum} AND M_NUM =#{mNum} AND OP_DNUM = 0 
+	
+	</update>
+	
 	
 	<insert id="insertmileage">
 		<selectKey keyProperty="addmileage" resultType="int" order="BEFORE">
@@ -220,7 +241,18 @@
 	
 	</update>
 
+	<select id="getstoreorderlistCount" resultType="int">
+		SELECT COUNT(*)
+		FROM ORDERS;
+	
+	</select>
 
+	<update id="updatecusordercancel">
 
+		UPDATE ORDERS
+		SET REFUSE_REASON = '고객이 주문 취소'
+			, DELIVERY_STATUS = 'C4'
+		WHERE O_NUM = #{oNum}	
+	</update>
 
 </mapper>
