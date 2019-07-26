@@ -10,7 +10,7 @@
 
 	var sId = "<%= (String)session.getAttribute("sId") %>";	
 	//var storeOpenTime, storeCloseTime;
-	var storeTime = new Array(), storeTimeList = new Array(), len;		// 매장의 오픈/마감 시간을 담을 list, list를 담을 배열
+	var len;		
 	
 	$(function(){
 		// PDF 볼 수 있는 이벤트
@@ -33,12 +33,11 @@
 				console.log("상태값 :" + status + ", Http에러메시지 :"+msg)
 			},
 			success:function(data){
-				len = data.length;
+				//len = data.length;
 				$.each(data,function(idx,item){	
 					//$('#storeList tbody').empty();
 					if(item.openTime != null && item.closeTime != null) {
 						$('<tr>')
-						.append($('<th>').html(len))
 						.append($('<th>').html("<span>"+item.openTime + '</span> ~ <span>' + item.closeTime+"</span>"))
 						.append($('<th>').append($('<input>').attr({
 							type:'button',
@@ -47,30 +46,77 @@
 						.appendTo('#storeList tbody');
 					}
 					
-					storeTime = {
-							openTime:item.openTime,
-							closeTime:item.closeTime
-					}
-					storeTimeList.push(storeTime);
-					len = len - 1;
+					
 				});
-				
-				console.log(data)
-				console.log('storeTimeList : ' + JSON.stringify(storeTimeList))
+				len = data.length;
 			}
 		});
 		
 	});
+	
+	
+	// 날짜 검색
+	function searchDate(){
+		var startDate = jQuery('#startdate').val();
+  		var endDate = jQuery('#enddate').val();
+  		
+  		
+  		if(startDate > endDate){
+  			alert('검색 날짜를 확인해주세요.');
+  			return;
+  		}else if(startDate == '' || endDate == ''){
+  			alert('날짜를 입력해주세요.');
+  			return;
+  		}
+  		console.log("startDate : "+ startDate);
+  		console.log("endDate : "+ endDate);
+  		
+		
+		$.ajax({
+			url: 'closedetailslist',
+			type:'GET',
+			data: {sId: sId, startDate: startDate, endDate: endDate},
+			dataType:'json',
+			//async: false,		// 비동기식 으로 설정
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
+				$('#storeList tbody').empty();
+				$.each(data,function(idx,item){	
+					//$('#storeList tbody').empty();
+					if(item.openTime != null && item.closeTime != null) {
+						$('<tr>')
+						.append($('<th>').html("<span>"+item.openTime + '</span> ~ <span>' + item.closeTime+"</span>"))
+						.append($('<th>').append($('<input>').attr({
+							type:'button',
+							value:'PDF 보기'
+						}).addClass('pdfbtn')))
+						.appendTo('#storeList tbody');
+					}
+					
+					len = len - 1;
+				});
+			}
+		});
+  		
+	}
+	
 </script>
 </head>
 <body>
 <br><br>
 <div class = "container" align="center">
-	<h3><%= session.getAttribute("sName") %> 마감 내역</h3><br><br>
+	<h3><%= session.getAttribute("sName") %> 마감 내역</h3><hr>
+	
+	<input type="date" class="btn btn-secondary" name="startdate" id="startdate">~
+    <input type="date" class="btn btn-secondary" name="enddate" id="enddate">
+    <input type="button" class="btn btn-success" onclick="searchDate()" value="조회"><br><br>
+	
 	<table class="table table-hover" id="storeList">
 		<thead>
 		<tr>
-			<th>순번</th>
 			<th>날짜</th>
 			<th>PDF 보기</th>
 		</tr>
