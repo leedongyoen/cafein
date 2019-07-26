@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.cafein.store.main.StoreMainService;
 import co.yedam.cafein.vo.CustomerVO;
-import co.yedam.cafein.vo.StockVO;
+import co.yedam.cafein.vo.OrdersVO;
 
 @Controller
 public class StoreMainController {
@@ -19,20 +19,22 @@ public class StoreMainController {
 	@Autowired
 	StoreCustomerListServiceImpl storeCustomerListService;
 	
+	@Autowired
+	StoreMainService service;
 	
 	//매장 메인화면
 	@RequestMapping("storemainform.do")
 	public String storemainform() {
-		return "store/main";
+		return "store/login";
 	}
-	/*
+	
 	// 매장 메인 판매율 TOP3 메뉴 조회
 	@ResponseBody
-	@RequestMapping(value="/menuTop3", method=RequestMethod.GET)
-	public List<StockVO> getStockTruthList(StockVO vo) {
-		return null;
+	@RequestMapping(value="/salesrank", method=RequestMethod.GET)
+	public List<OrdersVO> getSalesRank(OrdersVO vo) {
+		return service.getSalesRank(vo);
 	}
-	*/
+	
 
 	
 	// -------------------------------------------------------------------------------------------------------------
