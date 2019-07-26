@@ -18,6 +18,8 @@
       <result column="STAN_UNIT" property="stanUnit"/>
       <result column="ST_UNIT" property="stUnit"/>
       <result column="ST_PRICE" property="stPrice"/>
+      <result column="TURN_NO" property="turnNo"/>
+      <result column="RECIPE_DETAIL" property="recipeDetail"/>
    </resultMap>
       
 	<resultMap type="stock" id="recistockMap">
@@ -36,6 +38,8 @@
       <result column="CA_NUM" property="caNum"/>
       <result column="OP_NAME" property="opName"/>
       <result column="OP_PRICE" property="opPrice"/>
+      <result column="TURN_NO" property="turnNo"/>
+      <result column="RECIPE_DETAIL" property="recipeDetail"/>
    </resultMap>
 
  
@@ -63,6 +67,9 @@
 					, CA_NUM
 					, OP_NAME 
 					, OP_PRICE
+					, TURN_NO
+         			, RECIPE_DETAIL
+         			
 			from recipe 
 			where s_id=#{sId} and m_num=#{mNum}
 
@@ -88,6 +95,8 @@
 			,STAN_UNIT
 			,ST_UNIT
 			,ST_PRICE
+			, TURN_NO
+         	, RECIPE_DETAIL
 			
 		from stock_check_view
 		where s_id=#{sId} and m_num=#{mNum}

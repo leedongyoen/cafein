@@ -15,6 +15,8 @@ public class ViewStockCheckVO {
 	private int opPrice;
 	private String stUnit;
 	private int stPrice;
+	private int turnNo;
+	private String recipeDetail;
 	
 	
 	public int getStPrice() {
@@ -95,12 +97,24 @@ public class ViewStockCheckVO {
 	public void setStanUnit(double stanUnit) {
 		this.stanUnit = stanUnit;
 	}
+	public int getTurnNo() {
+		return turnNo;
+	}
+	public void setTurnNo(int turnNo) {
+		this.turnNo = turnNo;
+	}
+	public String getRecipeDetail() {
+		return recipeDetail;
+	}
+	public void setRecipeDetail(String recipeDetail) {
+		this.recipeDetail = recipeDetail;
+	}
 	@Override
 	public String toString() {
 		return "ViewStockCheckVO [recipeNo=" + recipeNo + ", sId=" + sId + ", consum=" + consum + ", mNum=" + mNum
 				+ ", stNum=" + stNum + ", stName=" + stName + ", stAqty=" + stAqty + ", stanUnit=" + stanUnit
 				+ ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice + ", stUnit=" + stUnit
-				+ ", stPrice=" + stPrice + "]";
+				+ ", stPrice=" + stPrice + ", turnNo=" + turnNo + ", recipeDetail=" + recipeDetail + "]";
 	}
 
 	

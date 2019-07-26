@@ -39,4 +39,9 @@ public class MenuDAO {
 		return mybatis.selectList("MenuDAO.getMenuList", vo);
 	}
 	
+	public int insertMenuProc1(MenuVO vo) {
+		System.out.println("-> mybatis insertMenuProc1()");
+		return mybatis.insert("MenuDAO.insertMenuProc1",vo);
+	}
+	
 }

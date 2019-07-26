@@ -21,6 +21,7 @@ input {
 
 
 </style>
+
 <script>
 
 var arrMenu = new Array();
@@ -126,7 +127,7 @@ $(function(){
 						//console.log($test);
 						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
 					
-			//$("#CartList div p span strong").html(sumtotalPrice);
+						//$("#CartList div p span strong").html(sumtotalPrice);
 		}
 		
 	}
@@ -269,12 +270,8 @@ function getOptionNaming(mnumber, stnumber){
 	<form action="cartorder" method="post" name="fCart">
 		<input type="hidden" name="jsonData">
 	</form>
-	<hr>
-	
-	
-	<hr>
-	<p></p>
-	<div style="width: 100%; text-align: center; padding: 3px;  background-color: ivory;" id="CartListWrapper"> <!-- border: 1px solid pink; -->
+
+	<div style="width: 100%; text-align: center; padding: 3px;" id="CartListWrapper"> <!-- border: 1px solid pink; -->
 		
 		<hr>
 		<h3 align="center">장 바 구 니</h3>

@@ -250,10 +250,12 @@ function menulist(mNum){
 						if(data[i].caNum!='CAOP')
 						{
 							$('<tr>')
+							.append($('<td>').html(data[i].turnNo))
 							.append($('<td>').html(data[i].stName))
 							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum*data[i].stanUnit)))
 							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].stUnit)))
 							.append($('<td>').html(Math.floor((data[i].stPrice*data[i].consum))+'원'))
+							.append($('<td>').html(data[i].recipeDetail))
 							.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
 							.append($('<td style="visibility:hidden;">').html(data[i].stanUnit))
 							.appendTo("#recipeTable tbody");
@@ -403,6 +405,7 @@ function menuInsert(){
 	 $.ajax({
 		url: "menues",
 		type: 'POST',
+		data:{sId:storeid},
 		dataType: 'json',
 		data: JSON.stringify($("#insertmenudetail").serializeObject()),
 		contentType: 'application/json',

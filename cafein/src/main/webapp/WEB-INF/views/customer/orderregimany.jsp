@@ -515,7 +515,7 @@ $(function(){
 					<c:forEach items="${optionname}" var="recipeList">
 						<c:if test="${recipeList.mNum eq cartlist.mNum}">
 							${recipeList.opName}
-							<input type="checkbox" value="${recipeList.recipeno}" id="${recipeList.recipeno}" name="${recipeList.recipeno}" class="checkoption">
+							<input type="checkbox" value="${recipeList.recipeno}" id="${recipeList.recipeno}" name="${recipeList.mNum}" class="checkoption">
 							<br>
 						</c:if>
 					</c:forEach>

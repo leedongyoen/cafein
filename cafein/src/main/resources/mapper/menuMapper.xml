@@ -42,7 +42,20 @@
 		UPDATE MENU SET UPLOADFILE = #{uploadFileName} WHERE m_num = #{mNum}
 	</update>
 	
-	<insert id="insertMenu" parameterType="menu">
+		<insert id="insertMenuProc1" parameterType="menu" statementType="CALLABLE">
+			{
+				call MENU_HITICE_INSERT(
+					#{mName, mode=IN,jdbcType=VARCHAR, javaType=string},
+					#{mPrice, mode=IN, jdbcType=NUMERIC, javaType=java.lang.Integer},
+					#{sId, mode=IN, jdbcType=VARCHAR, javaType=string},
+					#{caNum, mode=IN, jdbcType=VARCHAR, javaType=string}
+					
+				)
+			}					
+	
+	</insert>
+	
+ 	<insert id="insertMenu" parameterType="menu">
 		INSERT INTO MENU (M_NUM
 					, M_NAME
 					, M_PRICE
@@ -67,7 +80,7 @@
 					)
 					
 	
-	</insert>
+	</insert> 
 	<delete id = "deleteMenu" parameterType="menu">
 		DELETE FROM MENU 
 			WHERE M_NUM = #{mNum}
