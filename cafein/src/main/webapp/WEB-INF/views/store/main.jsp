@@ -7,51 +7,53 @@
 <%@ include file="storehead.jsp" %>
 <title>Store Main Page</title>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script>
-google.charts.load('current', {	packages : [ 'table','corechart', 'line' ]});
-google.charts.setOnLoadCallback(drawBasic);
-
-var daydata;
-function drawBasic() {
-	$.ajax({
-		url : "./getsalestime.do",
-		data : { sId : "SH001"},
-		type : "POST",
-		datatype : "json",
-		success : function(days) {
-			var chartData = [];
-			chartData.push(['시간별','수량','금액'])
-				for(i=0; i<days.length; i++) {		
-					var dayss = [days[i].week, parseInt(days[i].cnt), parseInt(days[i].atotal)];
-					chartData.push(dayss);
-					console.log(dayss);
+	<script>
+		google.charts.load('current', {	packages : [ 'table','corechart', 'line' ]});
+		google.charts.setOnLoadCallback(drawBasic);
+		
+		var sId = '<%= session.getAttribute("sId") %>';
+		
+		var daydata;
+		function drawBasic() {
+			$.ajax({
+				url : "./getsalestime.do",
+				data : { sId : sId},
+				type : "POST",
+				datatype : "json",
+				success : function(days) {
+					var chartData = [];
+					chartData.push(['시간별','수량','금액'])
+						for(i=0; i<days.length; i++) {		
+							var dayss = [days[i].week, parseInt(days[i].cnt), parseInt(days[i].atotal)];
+							chartData.push(dayss);
+							console.log(dayss);
+							
+					}
 					
-			}
-			
-			daydata = google.visualization.arrayToDataTable(chartData);	
-			var options = {
-					width : '100%'
-			};
-
-			var table = new google.visualization.Table(document
-						.getElementById('test_dataview3'))
-
-			table.draw(daydata, {
-				 width: '30%', height: '30%'
+					daydata = google.visualization.arrayToDataTable(chartData);	
+					var options = {
+							width : '100%'
+					};
+		
+					var table = new google.visualization.Table(document
+								.getElementById('test_dataview3'))
+		
+					table.draw(daydata, {
+						 width: '30%', height: '30%'
+					});
+		
+					var chart = new google.visualization.LineChart(document
+								.getElementById('chart_div'));
+		
+					chart.draw(daydata, options);
+				}
 			});
-
-			var chart = new google.visualization.LineChart(document
-						.getElementById('chart_div'));
-
-			chart.draw(daydata, options);
-		}
-	});
-
-};
-	$(window).resize(function() {
-		drawBasic();
-});
-</script>
+		
+		};
+			$(window).resize(function() {
+				drawBasic();
+		});
+	</script>
 <style>
 table {
 	width : 350px;

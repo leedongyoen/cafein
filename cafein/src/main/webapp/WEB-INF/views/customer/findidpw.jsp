@@ -9,13 +9,40 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		
-		function pwfine(){		
-			alert("메일로 비밀번호가 전송되었습니다.");
-	
-		}
+// 		var cName = $('#cName').val();
+// 		var cTel = $('#cTel').val();
+// 		var cId = $('#cId').val();
+		
 		
 		function idfine() {
-			alert("메일로 아이디가 전송되었습니다.");
+			var form = document.idfindform;
+			if(form.cName.value ==""){
+				alert("이름을 입력해주세요.");
+				return form.cName.focus();
+			}
+			if (form.cTel.value == "") {
+				alert("연락처를 입력해주세요.");
+				return form.cTel.focus();
+			} 
+			alert("에일로 아이디를 발송했습니다.")	
+			form.submit();		
+				
+			}
+				
+		function pwfine(){		
+			var form = document.pwfindform;
+			if(form.cId.value ==""){
+				alert("ID를 입력해주세요.");
+				return form.cId.focus();
+			}
+		
+			if (form.cTel.value == "") {
+				alert("연락처를 입력해주세요.");
+				return form.cTel.focus();
+			} 
+				alert("메일로 비밀번호가 전송되었습니다.");
+				form.submit();		
+				
 		}
 	</script>
 </head>
@@ -37,13 +64,13 @@
       	  </tr>
       	  <tr>
       	    <th colspan = "2">
-      	    <button type ="submit" class="btn btn-default"
+      	    <button type ="button" class="btn btn-default"
       	    	onclick="idfine()">아이디 찾기</button></th>
       	  </tr>
       	</table>
       </form>
       
-      <form method = "post" action="pwfind.do" id="pwfindform">
+      <form method = "post" action="pwfind.do" name="pwfindform">
         <table class = "table table">
       	  <tr>
       	    <th colspan = "2">비밀번호 찾기</th>
@@ -58,7 +85,7 @@
       	  </tr>
       	  <tr>
       	    <th colspan = "2">
-      	    <button class="btn btn-default " type ="submit"
+      	    <button class="btn btn-default " type ="button"
       	     onclick = "pwfine()">비밀번호 찾기</button></th>
       	  </tr>
       	</table>
