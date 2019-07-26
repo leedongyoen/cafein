@@ -14,5 +14,5 @@ public interface PosService {
 	List<ViewPosCusSearchVO> getCusList(ViewPosCusSearchVO vo);
 	List<OrdersVO> getCusRefund(OrdersVO vo);
 	List<ViewPosOrdetailsVO> getOrDetails(ViewPosOrdetailsVO vo);
-	int refoundcall(OrdersVO vo);
+	void refoundcall(OrdersVO vo);
 }

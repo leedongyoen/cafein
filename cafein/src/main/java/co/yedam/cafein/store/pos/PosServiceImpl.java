@@ -19,34 +19,34 @@ public class PosServiceImpl implements PosService{
 
 	
 	@Resource(name="posDAO")
-	private PosDAO DAO;
+	private PosDAO dao;
 	
 	public List<ViewPosVO> getStoreMenuList(ViewPosVO vo){
 		System.out.println(vo.getsId());
-		return DAO.getStoreMenuList(vo);
+		return dao.getStoreMenuList(vo);
 	}
 	
 	public List<RecipeVO> getOptionList(RecipeVO vo){
 		System.out.println(vo.getmNum());
-		return DAO.getOptionList(vo);
+		return dao.getOptionList(vo);
 	}
 	
 	public List<ViewPosCusSearchVO> getCusList(ViewPosCusSearchVO vo) {
-		return DAO.getCusList(vo);
+		return dao.getCusList(vo);
 	}
 
 	public List<OrdersVO> getCusRefund(OrdersVO vo){
 		System.out.println(vo.getoNum());
-		return DAO.getCusRefund(vo);
+		return dao.getCusRefund(vo);
 	
 	}
 	public List<ViewPosOrdetailsVO> getOrDetails(ViewPosOrdetailsVO vo){
 		System.out.println(vo.getoNum());
-		return DAO.getOrDetails(vo);
+		return dao.getOrDetails(vo);
 	
 	} 
-	public int refoundcall(OrdersVO vo) {
+	public void refoundcall(OrdersVO vo) {
 		System.out.println(vo.getoNum());
-		return DAO.refoundcall(vo);
+		dao.refoundcall(vo);
 	};
 }
