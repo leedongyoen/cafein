@@ -40,13 +40,15 @@
 
 	//재고 삭제 요청
 	function stockDelete() {
+		
+		var ckStockDelete =  [];
+		var result;
 		//삭제 버튼 클릭
 		$('body').on('click', '#btnCkStockDel', function() {
-			var result = confirm("체크된 재고를 정말로 삭제하시겠습니까?");
-			var ckStockDelete =  [];
+			result = confirm("체크된 재고를 정말로 삭제하시겠습니까?");
 			$('input[name=ckDelete]:checked').each(function(idx, item){
 				ckStockDelete.push(item.value);
-			});
+		});
 // 				console.log(ckStockDelete);
 			if (result) {
 				$.ajax({
@@ -62,8 +64,13 @@
 						console.log("상태값 :" + status + " Http에러메시지 :" + msg);
 					},
 					success : function(data) {
+						if(data == 0){
 // 						console.log(data.result);
 						alert("정상 삭제되었습니다.");
+							
+						}else{
+							alert("재고가 레시피에 사용중입니다. 레시피를 삭제하고 다시 시도해주십시오")
+						}
 						stockList();
 					}
 				});

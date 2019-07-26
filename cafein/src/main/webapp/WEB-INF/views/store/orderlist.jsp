@@ -8,9 +8,44 @@
 <title>Insert title here</title>
 </head>
 <script>
-	
+	var checked;
 	$(function(){
 		getstoreorderlist();
+		
+		
+		// 주문 취소 제외시 
+		$('#ordercancel').change(function() {
+		    var value = $(this).val();              // value
+		    checked = $(this).prop('checked');  // checked 상태 (true, false)
+		    var $label = $(this).next();            // find a label element
+		 
+			var startDate = jQuery('#storeorderstartdate').val();
+	  		var endDate = jQuery('#storeorderenddate').val();
+		    
+	  		// 날짜 검색 시 주문 취소 제외할때
+	  		if(startDate > endDate){
+	  			alert('검색 날짜를 확인해주세요.');
+	  			return;
+	  		}else if((startDate != '' || endDate != '') && checked ){
+	  			// 검색 날짜가 있고, 주문 취소 제외햇을때
+	  			searchdate_nocancelview(startDate,endDate);
+	  			return;
+	  		}else if( (startDate != '' || endDate != '') && !checked  ){
+	  			// 날짜 검색이 있고, 주문 취소 제외는 없다.
+	  			searchDate();
+	  			
+	  		}
+	  		
+	  		// 날짜 검색 없이 주문 취소만 볼때.
+		    if((startDate == '' || endDate == '') && checked){
+		    	cancelorderno();
+		    }else if((startDate == '' || endDate == '') && !checked){
+		    	// 날짜 검색이 없고, 주문 취소도 같이 볼라면.
+		    	getstoreorderlist();
+		    }
+		    	
+		});
+		
 	});
 
 	// 주문번호
@@ -18,6 +53,89 @@
 	
 	// 주문번호의 메뉴번호
 	var ordermnum="";
+	
+	// 날짜 검색 중에 주문 취소 제외시키는 경우
+	function searchdate_nocancelview(startDate,endDate){
+		
+		var sId = '<%= session.getAttribute("sId") %>';
+		$('#orderlisttable tbody').empty();
+		$.ajax({
+			url: 'getstoreorderlist',
+			type:'GET',
+			data: {sId: sId, startDate: startDate, endDate: endDate, nocancelview: 'Y'},
+			dataType:'json',
+			async: false,
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
+				$('#orderlisttable tbody').empty();
+				console.log(data);
+				if(data.length == 0){
+					
+					$('<tr>').append($('<td>').html("해당 기간에는 주문이 없습니다.").attr("colspan","12").attr("rowspan","3"))
+					.appendTo('#orderlisttable tbody');
+
+					return;
+				
+				}
+				$.each(data,function(idx,item){
+					
+					if(item.cAdd == null) item.cAdd="";
+					if(item.cAdd3 == null) item.cAdd3 = "";
+					if(item.payMethod == 'card') item.payMethod="카드결제";
+					if(item.payMethod == 'cash') item.payMethod="현금결제";
+					if(item.receipt == 'delivery') item.receipt="배달";
+					if(item.receipt == 'takeout') item.receipt="직접 수령";
+					
+					
+					getorderdetails(item);
+					
+					
+					
+				});
+			}
+		});
+	}
+	
+	
+	// 주문 취소 제외시
+	function cancelorderno(){
+		var sId = '<%= session.getAttribute("sId") %>';
+		$('#orderlisttable tbody').empty();
+		$.ajax({
+			url: 'getstoreorderlist',
+			type:'GET',
+			data: {sId: sId, nocancelview: 'Y'},
+			dataType:'json',
+			async: false,
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
+				$('#orderlisttable tbody').empty();
+				
+				$.each(data,function(idx,item){
+					
+					if(item.cAdd == null) item.cAdd="";
+					if(item.cAdd3 == null) item.cAdd3 = "";
+					if(item.payMethod == 'card') item.payMethod="카드결제";
+					if(item.payMethod == 'cash') item.payMethod="현금결제";
+					if(item.receipt == 'delivery') item.receipt="배달";
+					if(item.receipt == 'takeout') item.receipt="직접 수령";
+			
+					
+					getorderdetails(item);
+					
+					
+					
+				});
+			}
+		});
+	}
+	
 	
 	// 승인 버튼 클릭 시 모달창 띄우기
 	function apply(ordern){
@@ -110,7 +228,7 @@
 				// 옵션이 없을 경우
 				if(data.length == 0){ 
 				
-					$('#table'+order_n).after($('<tr>').attr("class","optiontable").attr("id","op_tr"+order_n)
+					$('#table'+order_n).after($('<tr>').attr("class","optiontable").attr("id","op_tr"+order_n).css("background-color","#F6D8CE")
 							.append($('<td>').html("해당 메뉴에는 옵션이 없습니다.").attr("colspan","6"))
 							.append($('<button>').attr({
 								type:"button",
@@ -145,7 +263,7 @@
 						}
 					}); 
 				
-					$('#table'+order_n).after($('<tr>').attr("class","optiontable").attr("id","op_tr"+order_n)
+					$('#table'+order_n).after($('<tr>').attr("class","optiontable").attr("id","op_tr"+order_n).css("background-color","#F6D8CE")
 							.append($('<td>').html(test).attr("colspan","6"))
 							.append($('<button>').attr({
 								type:"button",
@@ -160,6 +278,7 @@
 	
 	function getstoreorderlist(){
 		
+		
 		var sId = '<%= session.getAttribute("sId") %>';
 		$('#orderlisttable tbody').empty();
 		$.ajax({
@@ -173,8 +292,8 @@
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				
-				//console.log(data);
 				$('#orderlisttable tbody').empty();
+				
 				$.each(data,function(idx,item){
 					
 					if(item.cAdd == null) item.cAdd="";
@@ -183,7 +302,7 @@
 					if(item.payMethod == 'cash') item.payMethod="현금결제";
 					if(item.receipt == 'delivery') item.receipt="배달";
 					if(item.receipt == 'takeout') item.receipt="직접 수령";
-					
+			
 					
 					getorderdetails(item);
 					
@@ -201,7 +320,7 @@
 		var ordermenuname = item.mName;
 		var orderopdnum = item.opDnum;
 		var deliverstatus;
-		
+		var orderdate;
 		//console.log(item);
 		$.ajax({
 			url: 'getstoreorderdetails',
@@ -235,7 +354,7 @@
 						option = option+" "+list.opName;	
 					});	 
 				}
-				
+				orderdate= new Date(item.oDate);
 				
 				if(item.deliveryStatus == 'C0') deliverstatus="주문확인";
 				if(item.deliveryStatus == 'C1') deliverstatus="배달준비";
@@ -254,8 +373,10 @@
 					ordernum = item.oNum;
 					$('<tr>').attr({
 						onclick:"menudetail('"+item.oNum+"')",
-						id: "table"+item.oNum
+						id: "table"+item.oNum,
+						class:"tr"+item.deliveryStatus
 					})
+					.append($('<td>').html(orderdate.toLocaleDateString() ))
 					.append($('<td>').html(item.oNum))
 				//	.append($('<td>').attr("id",""+item.oNum+"").html(item.mName+"-"+ oQty +"개-("+option+")"))
 					.append($('<td>').attr("id",""+item.oNum+"").html(item.mName+"("+ oQty +"개)"+option))
@@ -289,8 +410,10 @@
 						ordermnum= item.mNum;
 						$('<tr>').attr({
 							onclick:"menudetail('"+item.oNum+"')",
-							id: "table"+item.oNum
+							id: "table"+item.oNum,
+							class:"tr"+item.deliveryStatus
 						})
+						.append($('<td>').html(orderdate.toLocaleDateString()))
 						.append($('<td>').html(item.oNum))
 						//	.append($('<td>').attr("id",""+item.oNum+"").html(item.mName+"-"+ oQty +"개-("+option+")"))
 						.append($('<td>').attr("id",""+item.oNum+"").html(item.mName+"("+ oQty +"개)"+option))
@@ -327,6 +450,7 @@
 				
 				$('.C3').css({ //배달완료
 					display:"none"
+						
 				});
 				 
 				$('.C4').css({ // 주문 취소
@@ -352,6 +476,12 @@
   			alert('날짜를 입력해주세요.');
   			return;
   		}
+  		
+  		// 날짜검색시 주문 취소 제외 선택 시
+  		if(checked){
+  			searchdate_nocancelview(startDate,endDate);
+  			return;
+  		}
   		console.log("startDate : "+ startDate);
   		console.log("endDate : "+ endDate);
   		var sId = '<%= session.getAttribute("sId") %>';
@@ -368,6 +498,15 @@
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				
 				$('#orderlisttable tbody').empty();
+				console.log(data);
+				if(data.length == 0){
+					
+					$('<tr>').append($('<td>').html("해당 기간에는 주문이 없습니다.").attr("colspan","12").attr("rowspan","3"))
+					.appendTo('#orderlisttable tbody');
+
+					return;
+				
+				}
 				$.each(data,function(idx,item){
 					
 					if(item.cAdd == null) item.cAdd="";
@@ -397,7 +536,7 @@
 	<hr>
 
 </div>
-<div class = "container" align = "center">
+<div class = "container-fluid" align = "center">
   
     <div align="right">
 
@@ -406,6 +545,14 @@
     <input type="button" class="btn btn-success" onclick="searchDate()" value="조회">
     <input type="button" class="btn btn-success" onclick="getstoreorderlist()" value="초기화">
     </div>
+	<div align="left">
+
+  		<input type="checkbox" id="ordercancel" value="Y" class="checkbox">
+  		<label for="ordercancel" style="font-size: 17px;">주문 취소 제외</label>
+  	
+  	</div>
+	
+  	
 
 	<hr>
 		
@@ -413,6 +560,7 @@
 
 			<thead>
 				<tr>
+					<th>주문시간</th>
 					<th>주문번호</th>
 					<th>주문 메뉴</th>
 					<th>총 금액</th>

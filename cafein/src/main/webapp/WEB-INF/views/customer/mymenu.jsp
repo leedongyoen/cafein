@@ -47,7 +47,7 @@
 				: "${ViewMymenuVO.sort}";
 		</script>
 		<br>
-			<a href="${pageContext.request.contextPath}/customerstorelist.do"
+			<a href="${pageContext.request.contextPath}/customerstorelist.do" id="addddd"
 				class="test btn">추가</a>
 				<a class="test btn" href="javascript:deleteMymenu()" id="deletemymenu">삭제</a>
 				<br>
@@ -149,6 +149,7 @@
 	});
 	//화면에 뿌리기.
 	function myMenuList() {
+		
 		$("#myModal").modal('hide');
 		$.ajax({
 			url : 'customer/',
@@ -172,6 +173,8 @@
 				})
 				$(".deleteCheck").hide();
 				$(".deleteCheckon").hide();
+				$("#addddd").show();
+				$("#deletemymenu").show();
 			}
 		});
 	}
@@ -262,6 +265,9 @@
 	function deleteMymenu(cuNum) {
 		$(".deleteCheckon").show();
 		$(".deleteCheck").show();
+		$("#addddd").hide();
+		$("#deletemymenu").hide();
+		
 		$("#deletemymenuon").on("click",function(){
 			if(confirm("삭제하시겠습니까??")){
 				var checked = [];
@@ -359,6 +365,10 @@ $(function(){
 
 		localStorage.setItem("cartlist",JSON.stringify(local_cart));
 		console.log("localStorage : "+localStorage.getItem("cartlist"));
+		var result = confirm('장바구니로 이동하시겠습니까?'); 
+		if(result) { //yes 
+			location.replace("${pageContext.request.contextPath}/cartmng"); 
+		} 
 
 	});
 	//주문하기

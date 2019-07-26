@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="storehead.jsp" %>
+<%-- <%@ include file="storehead.jsp" %> --%>
 <title>Store Login Page</title>
 <script>
 		

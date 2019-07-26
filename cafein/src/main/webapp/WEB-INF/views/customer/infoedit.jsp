@@ -165,7 +165,7 @@ function chkPwContinuity(paramObj) {
 
 
 
-////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
 
 	//다음 API 주소를 넣는 부분.
 	function execPostCode() {
@@ -218,15 +218,10 @@ function chkPwContinuity(paramObj) {
 	}
 	
 	$(function(){
-		
-		
-		
 		readcustomerinfo();
 	});
 
 	function edit() {
-		
-		
 		$("#edit_after").css('display', 'inline');
 		$("#edit_before").css('display', 'none');
 		$("#c_infoedit").css('display', 'inline');
@@ -248,11 +243,9 @@ function chkPwContinuity(paramObj) {
 		$("#dob").removeAttr("readonly");
 		
 		alert("수정이 가능합니다.")
-
 	}
 
 	function editok() {
-
 		$.ajax({
 			url : 'customerinfo',
 			type : 'PUT',
@@ -284,7 +277,6 @@ function chkPwContinuity(paramObj) {
 		$("#cAdd3").attr("readonly", true);
 		$("#c_addbt").attr("disabled","disabled");
 		$("#dob").attr("readonly", true);
- 
 	}
 	
 	function readcustomerinfo(){
@@ -318,10 +310,7 @@ function chkPwContinuity(paramObj) {
 					$('.notweb').hide();
 				}
 			}
-	
 		});
-	
-		
 	}
 
 	

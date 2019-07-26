@@ -17,16 +17,139 @@ input {
 
 </style>
 <script>
-
+	var sId = "<%= (String)session.getAttribute("sId") %>";	
+	var customerId = '';	
 	$(function(){
 		customerList();
-		
 		
 		$("#customerTable tbody tr").click(function(){
 			$('#toggleTable').show();
 			
 		})
 	});
+	
+	 //날짜검색
+  	function dateSearch(){    	  													
+  		var startDate = jQuery('#startDate').val();
+  		var endDate = jQuery('#endDate').val();
+  		
+  		if(startDate != "" && endDate != ""){
+  			alert("기간검색이 되었습니다.");
+  		}
+  		
+  		$.ajax({
+    		  url:'datesearch',
+    		  type:'POST',
+    		  dataType:'json',
+    		data : {startDate : startDate,
+    				endDate : endDate,
+    				sId : sId,
+    				cId : customerId
+    				},
+    		  error:function(status,msg){
+    			  alert(status+"메세지"+msg);
+    		  },
+    		  success:function(data){
+    			  alert('통신성공');
+    					$('#historyTbody').empty();
+    					
+    					let oNumArr 	= [];
+    					let ototalArr 	= [];
+    					
+    					var cId 		= "";
+    					var oNum 		= "";
+    					var mName 		= "총합";
+    					var total 		= 0;
+    					var payMethod 	= "";
+    					var receipt 	= "";
+    					
+    					$.each(data,function(idx, user){
+    						var isOverlap = false;
+    						for(var i = 0; i < oNumArr.length; ++i){
+    							if(oNumArr[i] == user.oNum){
+    								isOverlap = true;
+    								cId 		= user.cId;
+    								oNum 		= user.oNum;
+    								mName 		= "총합";
+    								total 		+= user.total;
+    								payMethod 	= user.payMethod;
+    								receipt 	= user.receipt;
+    								break;
+    							}
+    						}
+    						
+    						//중복되는지 IF
+    						if(isOverlap == false){
+    							oNumArr.push(user.oNum);
+    							ototalArr.push(0);
+    							//아이디가 같지않으면-
+    							if(cId != ""){
+    								console.log("총합");
+    								$('<tr>')
+    								.append($('<td>').html(cId))
+    								.append($('<td>').html(oNum))
+//    			 					.append($('<td>').html(user.gd))
+    								.append($('<td>').html(mName))
+    								.append($('<td>').html(total))
+    								.append($('<td>').html(payMethod))
+    								.append($('<td>').html(receipt))
+    								.append($('<td>').html())
+    								.appendTo('#historyTbody');
+    								
+    								cId 		= "";
+    								oNum 		= "";
+    								mName 		= "총합";
+    								total 		= 0;
+    								payMethod 	= "";
+    								receipt 	= "";
+    							}
+    							
+    							cId 		= user.cId;
+    							oNum 		= user.oNum;
+    							mName 		= "총합";
+    							total 		+= user.total;
+    							payMethod 	= user.payMethod;
+    							receipt 	= user.receipt;
+    						}
+    						
+    						for(var i = 0; i < oNumArr.length; ++i){
+    							if(oNumArr[i] == user.oNum){
+    								isOverlap = true;
+    								ototalArr[i] += user.total;
+    							}
+    						}
+    						
+    						$('<tr>')
+    								.append($('<td>').html(user.cId))
+    								.append($('<td>').html(user.oNum))
+//    			 					.append($('<td>').html(user.gd))
+    								.append($('<td>').html(user.mName))
+    								.append($('<td>').html(user.total))
+    								.append($('<td>').html(user.payMethod))
+    								.append($('<td>').html(user.receipt))
+    								.append($('<td>').html())
+    								.appendTo('#historyTbody');
+    					});
+    					
+    					if(cId != ""){
+    						console.log("총합1");
+    						$('<tr>')
+    						.append($('<td>').html(cId))
+    						.append($('<td>').html(oNum))
+//    						.append($('<td>').html(user.gd))
+    						.append($('<td>').html(mName))
+    						.append($('<td>').html(total))
+    						.append($('<td>').html(payMethod))
+    						.append($('<td>').html(receipt))
+    						.append($('<td>').html())
+    						.appendTo('#historyTbody');
+    						console.log(ototalArr + "------");
+    					}
+    			
+    		  }
+    	  });
+	}
+	
 	
 	
 	//매장 고객 리스트 요청
@@ -59,9 +182,10 @@ input {
 		});
 					
 	}
-	//매장 고객 단건 조회 요청
+	//매장- 선택한 고객  조회 요청
 	function customerSelect(cId){
 		var storelogin = '<%=session.getAttribute("sId")%>';
+		customerId = cId;
 		$('#toggleTable').show();
 		console.log(cId);
 		$.ajax({
@@ -280,7 +404,11 @@ input {
 				<p align="center" class="titlefont">구매이력</p>
 				<hr>
 			</div>
-			<div>
+			<div class="btn-group">
+				<input type="date" class="btn btn-secondary" id="startDate" name="startDate">&nbsp; 
+					<input type="date" class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
+				<input type="button" value="검색" class="btn btn-success" id="btnSearch" onclick="dateSearch()">
+			</div>
 				<table border="1" class="table " id="c_history">
 					<thead>
 						<tr>
@@ -293,14 +421,12 @@ input {
 							<th>수령방식</th>
 						</tr>
 					</thead>
-					<tbody id=historyTbody>
+					<tbody id="historyTbody">
 					</tbody>
 				</table>
 			</div>
 
 		</div>
-
-	</div>
 
 </body>
 </html>

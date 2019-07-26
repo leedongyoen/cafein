@@ -107,9 +107,28 @@
 </head>
 <body>
 <br><br>
+<style>
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 940px;
+  }
+}
+
+
+table tbody th{
+	text-align: center;
+}
+</style>
+
 <div class = "container" align="center">
 	<h3><%= session.getAttribute("sName") %> 마감 내역</h3><hr>
-	
+
 	<input type="date" class="btn btn-secondary" name="startdate" id="startdate">~
     <input type="date" class="btn btn-secondary" name="enddate" id="enddate">
     <input type="button" class="btn btn-success" onclick="searchDate()" value="조회"><br><br>
@@ -117,8 +136,8 @@
 	<table class="table table-hover" id="storeList">
 		<thead>
 		<tr>
-			<th>날짜</th>
-			<th>PDF 보기</th>
+			<th style="text-align: center;" class="col-md-8">날짜</th>
+			<th class="col-md-4">PDF 보기</th>
 		</tr>
 		</thead>
 		<tbody>
