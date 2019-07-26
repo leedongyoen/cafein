@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp"%>
-<link rel="stylesheet" href="./css/orderlist.css" >
 <title>주문 목록</title>
 </head>
 <script>

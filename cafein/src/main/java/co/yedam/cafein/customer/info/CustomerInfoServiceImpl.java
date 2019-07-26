@@ -1,6 +1,7 @@
 package co.yedam.cafein.customer.info;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import co.yedam.cafein.vo.CustomerVO;
@@ -9,7 +10,7 @@ import co.yedam.cafein.vo.CustomerVO;
 public class CustomerInfoServiceImpl implements CustomerInfoService{
 	@Autowired
 	CustomerInfoDAO customerDAO;
-	
+		
 	//회원 단건조회
 	@Override
 	public CustomerVO getCustomer(CustomerVO vo) {
@@ -19,13 +20,19 @@ public class CustomerInfoServiceImpl implements CustomerInfoService{
 	// 회원 정보 수정
 	@Override
 	public int infoedit(CustomerVO vo){
-		
 		return customerDAO.infoedit(vo);
 	}
 	
 	// 비밀번호 변경
 		@Override
 		public int checkpw(CustomerVO vo){
+			BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+			//암호화  하기전
+			String scPw = scpwd.encode(vo.getcPw());
+			//암호화 후 db저장
+			vo.setcPw(scPw);
+			System.out.println(vo.toString());
+			
 			
 			return customerDAO.checkpw(vo);
 		}

@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +23,9 @@ public class CustomerInfoController {
 	
 	@Autowired
 	CustomerInfoService customService;
+	
+	@Autowired
+	BCryptPasswordEncoder passEncoder;
 	
 	// 회원 단건 조회
 	@ResponseBody
@@ -66,6 +70,9 @@ public class CustomerInfoController {
 	public CustomerVO checkpw(@PathVariable("cId") String id,@RequestBody CustomerVO vo, Model model,HttpServletRequest req) {
 		System.out.println(vo+"==============================");
 		vo.setcId(id);
+		CustomerVO customer = customService.getCustomer(vo);
+		boolean mathes = passEncoder.matches(vo.getcPw(), customer.getcPw()); 
+
 		customService.checkpw(vo);
 		return vo;
 	}

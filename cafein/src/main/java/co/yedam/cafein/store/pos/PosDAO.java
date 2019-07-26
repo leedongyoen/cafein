@@ -44,9 +44,9 @@ public class PosDAO {
 		return mybatis.selectList("PosDAO.getOrDetails",vo);
 	}
 	//환불
-	public int refoundcall(OrdersVO vo) {
+	public void refoundcall(OrdersVO vo) {
 		System.out.println("===> Mybatis refoundcall()");
-		return mybatis.insert("PosDAO.refoundcall",vo);
+		mybatis.insert("PosDAO.refoundcall",vo);
 	}
 	
 }

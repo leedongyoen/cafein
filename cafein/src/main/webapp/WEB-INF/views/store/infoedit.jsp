@@ -7,7 +7,7 @@
 <%@ include file="storehead.jsp" %>
 <title>Store Information Edit Page</title>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
- <link rel="stylesheet" href="./css/orderlist.css" >
+
  <META NAME="Generator" CONTENT="EditPlus">
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">

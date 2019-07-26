@@ -55,11 +55,12 @@
 		   , TOTAL "total"
 		   , PAY_METHOD "payMethod"
 		   , MILEAGE "mileage"
+		   , REFUSE_REASON "refuseReason"
 	FROM ORDERS
 	<where>
 	S_ID=#{sId}
 	<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
-			AND	 O_DATE BETWEEN #{startDate} AND #{endDate}
+			AND	 TRUNC(O_DATE) BETWEEN #{startDate} AND #{endDate}
 			</if>
 	AND DELIVERY_STATUS IN ('C5','C6')
 	</where>
@@ -86,7 +87,7 @@
 	<insert id="refoundcall" statementType="CALLABLE" parameterType="order">
 	{ 	
 		call POSREPOUND_PRO(
-		#{P_ONUM, mode=IN, jdbcType=VARCHAR, javaType=string}
+		#{oNum, mode=IN, jdbcType=VARCHAR, javaType=string}
 		)
 	}
 	

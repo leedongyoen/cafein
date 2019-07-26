@@ -20,10 +20,26 @@ public class SalesSumVO {
 	private int cnt;
 	private int atotal;
 	private int yee;
+	private String startDate;
+	private String endDate;
+	
+	
 
 	
 	
 	
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
 	public int getYee() {
 		return yee;
 	}
@@ -111,9 +127,13 @@ public class SalesSumVO {
 	@Override
 	public String toString() {
 		return "SalesSumVO [oNum=" + oNum + ", oDnum=" + oDnum + ", mNum=" + mNum + ", mName=" + mName + ", oDate="
-				+ oDate + ", total=" + total + ", oQty=" + oQty + "]";
+				+ oDate + ", total=" + total + ", oQty=" + oQty + ", mPrice=" + mPrice + ", week=" + week + ", sId="
+				+ sId + ", dates=" + dates + ", cnt=" + cnt + ", atotal=" + atotal + ", yee=" + yee + ", startDate="
+				+ startDate + ", endDate=" + endDate + "]";
 	}
 	
+	
+
 	
 	
 }

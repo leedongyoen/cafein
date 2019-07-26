@@ -22,12 +22,35 @@ color:pink;
 }
 .content {
   position:relative;
-  width:1000px;
+  width:740px;
   left:900px;
   height:600px;
   border: 1px solid;
 }
+.grid-container {
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto;
+  background-color: #424242;
+  padding: 1px;
+  grid-column-gap:25px;
+  grid-row-gap: 25px;
+}
 
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+
+  text-align: center;
+}
+.mbutton{
+	font-size: 1.3em;
+	width:150px;
+  height:100px;
+}
+.opbutton{
+	width:150px;
+  height:60px;
+}
 
 </style>
 </head>
@@ -112,8 +135,7 @@ var ordernum ="";
 	   
 	   //그리드내 행 삭제
 	   $("#deleteRow").on("click",function(){
-			var grid = $("#gridlist");
-			
+			var grid = $("#gridlist");		
 			var rowKey = grid.getGridParam("selrow");
 			var sonMNum =  grid.jqGrid("getCell",rowKey,"sonMNum");
 			var parentMNum = grid.jqGrid("getCell",rowKey,"parentMNum");
@@ -160,7 +182,7 @@ footerrow : true});*/
  //메뉴탭에서 매장메뉴 나오기
  $(document).ready(function(){
 	 $("#aftersearch").hide();
-	 
+	
 	 $("#paymentModal").modal('hide');
 	 $("#cusSearchModal").modal('hide');
 	 $("#orderListModal").modal('hide');
@@ -321,43 +343,46 @@ footerrow : true});*/
 			document.posorderinsert.submit();
 	 });
 	});	
-	
-  function orderLast(data){
-}
+	//탭키 누를 때 옵션 empty
+	$(document).on("click","#click", function(){
+		$("#coffeetableoption").empty();
+ 		$("#beveragetableoption").empty();
+ 		$("#desserttableoption").empty();	
+	});
+
 //매장별 메뉴출력
  function posMenuListResult(data) {
 		console.log(sId);
 		console.log(data);
-		$("#coffeetable tbody tr").empty();
-		$("#beveragetable tbody tr").empty();
-		$("#desserttable tbody tr").empty();
+ 		
+		$("#coffeetable").empty();
+		$("#beveragetable").empty();
+		$("#desserttable").empty();
+
 		$.each(data,function(idx,item){
 			// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
 			if(item.caNum == "CACO" && item.opName == null){
-				$('<td>')
-				.append($('<br>'))
-				.append($('<input type=\'button\'class=\'mbutton\'  id=\'coffee\'>').val(item.mName))
+				$('<div class="grid-item">')
+				.append($('<input type=\'button\'class=\'mbutton btn btn-warning\'  id=\'coffee\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_mNum\'>').val(item.mNum))
 				.append($('<input type=\'hidden\' id=\'hidden_mPrice\'>').val(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_recipeno\'>').val(item.recipeno))
-				.appendTo('#coffeetable tbody tr');
+				.appendTo('#coffeetable');
 			}
 			else if(item.caNum == "CADR" && item.opName == null){
-				$('<td>')
-				.append($('<br>'))
+				$('<div class="grid-item">')
 				.append($('<input type=\'button\' class=\'mbutton\' id=\'beverage\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId2\'>').val(item.mNum))
 				.append($('<input type=\'hidden\' id=\'hidden_mPrice2\'>').val(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_recipeno2\'>').val(item.recipeno))
-				.appendTo('#beveragetable tbody tr');
+				.appendTo('#beveragetable');
 			}else if(item.caNum == "CADE" && item.opName == null){
-				$('<td>')
-				.append($('<br>'))
+				$('<div class="grid-item">')
 				.append($('<input type=\'button\' class=\'mbutton\' id=\'dessert\'>').val(item.mName))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId3\'>').val(item.mNum))
 				.append($('<input type=\'hidden\' id=\'hidden_mPrice3\'>').val(item.mPrice))
 				.append($('<input type=\'hidden\' id=\'hidden_recipeno3\'>').val(item.recipeno))
-				.appendTo('#desserttable tbody tr');
+				.appendTo('#desserttable');
 			}
 		});
 	}
@@ -392,18 +417,34 @@ footerrow : true});*/
 	});
  //메뉴 옵션 나타내기
  	function getOptionList(data){
-	 
+ 		$("#coffeetableoption").empty();
+ 		$("#beveragetableoption").empty();
+ 		$("#desserttableoption").empty();
  		var mNum = $('#hidden_mNum').val();
- 		$("#coffeetableoption tbody").empty();
+
 	    $.each(data, function(idx,item){
-	    	 $('<tr>')
-	          .append($('<br>'))
+	    	 $('<div class="grid-item">')
 	          .append($('<input type=\'button\'class=\'opbutton\' id=\''+item.opName+'\'>').val(item.opName))
 	          .append($('<input type=\'hidden\' id=\'hidden_menuId4\'>').val(item.mNum))
 	          .append($('<input type=\'hidden\' id=\'hidden_mPrice4\'>').val(item.opPrice))
 	          .append($('<input type=\'hidden\' id=\'hidden_recipeno4\'>').val(item.recipeno))
 	          .append($('<input type=\'hidden\' id=\'hotice_option\'>').val(""))
-	          .appendTo('#coffeetableoption tbody');
+	          .appendTo('#coffeetableoption');
+	    	 $('<div class="grid-item">')
+	          .append($('<input type=\'button\'class=\'opbutton\' id=\''+item.opName+'\'>').val(item.opName))
+	          .append($('<input type=\'hidden\' id=\'hidden_menuId4\'>').val(item.mNum))
+	          .append($('<input type=\'hidden\' id=\'hidden_mPrice4\'>').val(item.opPrice))
+	          .append($('<input type=\'hidden\' id=\'hidden_recipeno4\'>').val(item.recipeno))
+	          .append($('<input type=\'hidden\' id=\'hotice_option\'>').val(""))
+	          .appendTo('#beveragetableoption tbody');
+	    	 $('<div class="grid-item">')
+	          .append($('<input type=\'button\'class=\'opbutton\' id=\''+item.opName+'\'>').val(item.opName))
+	          .append($('<input type=\'hidden\' id=\'hidden_menuId4\'>').val(item.mNum))
+	          .append($('<input type=\'hidden\' id=\'hidden_mPrice4\'>').val(item.opPrice))
+	          .append($('<input type=\'hidden\' id=\'hidden_recipeno4\'>').val(item.recipeno))
+	          .append($('<input type=\'hidden\' id=\'hotice_option\'>').val(""))
+	          .appendTo('#desserttableoption');
+	    	 
 	    });
 	    
  	}
@@ -530,6 +571,7 @@ footerrow : true});*/
  	
  	//환불 날짜별 검색
  	function getCusRefund() {
+ 		 
 		//날짜 데이터 같이 보내기
 		var startDate = jQuery('#startDate').val();
 		var endDate = jQuery('#endDate').val();
@@ -543,7 +585,7 @@ footerrow : true});*/
   		}
   		console.log("startDate : "+ startDate);
   		console.log("endDate : "+ endDate);
-  		
+  		$('#orderlisttable tbody').empty();
 		$.ajax({
 			url : 'searchorder',
 			type : 'GET',
@@ -558,26 +600,39 @@ footerrow : true});*/
 				$.each(data,function(idx,item){
 					
 					if(item.cId == null) item.cId="";
+					if(item.refuseReason == null) item.refuseReason="";
+					
 					$('<tr>').attr({
 						onclick:"menudetail('"+item.oNum+"')",
+						name:"really",
 						id: "table"+item.oNum
 					})
-					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.oNum+'\'>'))
-					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.oDate+'\'>'))
-					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.cId+'\'>'))
-					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.payMethod+'\'>'))
-					.append($('<td><input type=\'text\'id=\'oNum\' value=\''+item.total+'\'>'))
+					.append($('<td><input type=\'text\'id=\'oNum4\' value=\''+item.oNum+'\'>'))
+					.append($('<td><input type=\'text\'id=\'oDate4\' value=\''+item.oDate+'\'>'))
+					.append($('<td><input type=\'text\'id=\'cId4\' value=\''+item.cId+'\'>'))
+					.append($('<td><input type=\'text\'id=\'payMethod4\' value=\''+item.payMethod+'\'>'))
+					.append($('<td><input type=\'text\'id=\'total4\' value=\''+item.total+'\'>'))
+					.append($('<td><input type=\'text\'id=\'refuseReason4\' value=\''+item.refuseReason+'\'>'))
 					.appendTo('#orderlisttable tbody');
+					
+					if(item.refuseReason != "") $('.really').css("background-color", "pink");
 				});
+				
 				}
 		});	
 					
 				
 			} 
  	function menudetail(orderNum){ 
+ 		var reason = $('#refuseReason4').val();
  		var menu_qty="0";
 		var menunum="";
 		var test="";
+		console.log(reason);
+		if(reason != ""){
+			alert("취소된 주문건 입니다.")
+		}else{
+
 		console.log(orderNum);
  		$.ajax({
 			url: 'searchdetails',
@@ -628,8 +683,24 @@ footerrow : true});*/
 			}
 			});	
 			}
+ 	}
  	
  	function refund(orderNum){
+ 		$.ajax({
+			url: 'refoundsuccess',
+			type:'POST',
+			dataType:'json',
+			data: {oNum: orderNum},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success: function (data){
+				console.log(data);
+				alert("환불이 완료되었습니다.");
+			}
+				
+			});
+ 		
  		
  	}
  	
@@ -647,13 +718,13 @@ footerrow : true});*/
 <!-- 메뉴 선택 창 -->
   <div id="btn_group" class="content">
 	<ul id="topclick" class="nav nav-tabs">
-    <li class="nav-item">
+    <li class="nav-item" id="click">
       <a class="nav-link active" data-toggle="tab" href="#coffee">커피</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" id="click">
       <a class="nav-link" data-toggle="tab" href="#beverage">음료</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" id="click">
       <a class="nav-link" data-toggle="tab" href="#dessert">디저트</a>
     </li>
   </ul>
@@ -662,34 +733,20 @@ footerrow : true});*/
 	<div class="tab-content">
 		<div id="coffee" class="container tab-pane active"><br>
 			<div class="table-responsive">
-			<table id="coffeetable" class="table">
-				<tbody>
-				<tr></tr>
-			</tbody>
-			
-			</table>
-			<table id="coffeetableoption" class="table">
-			<thead></thead>
-				<tbody>
-				
-				</tbody>
-				
-			</table>
+			<div id="coffeetable" class="grid-container"></div>
+			<hr>
+			<div id="coffeetableoption" class="grid-container"></div>
 			</div>
   		</div>
    		<div id="beverage" class="container tab-pane fade"><br>
-    		<table id="beveragetable" class="table">
-				<tbody>
-				<tr></tr>
-				</tbody>
-			</table>
+   		<div id="beveragetable" class="grid-container"></div>
+   		<hr>
+   		<div id="beveragetableoption" class="grid-container"></div>
    		</div>
    		<div id="dessert" class="container tab-pane fade"><br>
-     		<table id="desserttable" class="table">
-				<tbody>
-				<tr></tr>
-				</tbody>
-			</table>
+   		<hr>
+   		<div id="desserttable" class="grid-container"></div>
+   		<div id="desserttableoption" class="grid-container"></div>
    		</div>
  	</div>
   </div>
@@ -780,7 +837,7 @@ footerrow : true});*/
 								id="btnSearch" onclick="getCusRefund()">
 						</div>
 						<div class="table-responsive" style="text-align:left">
-						<table id="orderlisttable" class="table">
+						<table id="orderlisttable" class="table" >
 							<thead>
 							<tr> 
 								<th>주문번호</th>
@@ -788,6 +845,7 @@ footerrow : true});*/
 								<th>고객 아이디</th>
 								<th>결제방식</th>
 								<th>결제금액</th>
+								<th>비고</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -797,8 +855,7 @@ footerrow : true});*/
 					</form>
 				
 				</div>
-				<div class="modal-footer">
-					<input type="button" value="환불하기">		
+				<div class="modal-footer">	
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 			</div>
