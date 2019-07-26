@@ -9,7 +9,7 @@ public class OrdersVO {
 
 	private String oNum;
 	private String cId;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // 환불검색할때 날짜랑 시간 포맷
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone ="Asia/Seoul") // 환불검색할때 날짜랑 시간 포맷
 	private Timestamp oDate;
 	private int total;
 	private String receipt;

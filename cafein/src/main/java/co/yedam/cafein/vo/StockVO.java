@@ -25,7 +25,7 @@ public class StockVO {
 	private String stStatusNm;
 	private String caNm;
 	private int truthQty;		// 입력받은 실수량이 담길 변수(테이블 컬럼은 없어졌지만 변수는 필요함)
-	
+	private int rank;			// 재고 소모율에 따른 순위
 	
 	
 	public double getStAqty() {
@@ -144,12 +144,21 @@ public class StockVO {
 	public void setRecipeCnt(int recipeCnt) {
 		this.recipeCnt = recipeCnt;
 	}
+	
+	public int getRank() {
+		return rank;
+	}
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
 	@Override
 	public String toString() {
 		return "StockVO [stNum=" + stNum + ", sId=" + sId + ", stName=" + stName + ", stQty=" + stQty + ", stAqty="
 				+ stAqty + ", stPrice=" + stPrice + ", caNum=" + caNum + ", stanUnit=" + stanUnit + ", stStatus="
-				+ stStatus + ", stUnit=" + stUnit + ", lackQty=" + lackQty + ", stNumList=" + Arrays.toString(stNumList)
-				+ ", stStatusNm=" + stStatusNm + ", caNm=" + caNm + ", truthQty=" + truthQty + "]";
+				+ stStatus + ", stUnit=" + stUnit + ", enterQty=" + enterQty + ", lackQty=" + lackQty + ", recipeCnt="
+				+ recipeCnt + ", stNumList=" + Arrays.toString(stNumList) + ", stStatusNm=" + stStatusNm + ", caNm="
+				+ caNm + ", truthQty=" + truthQty + ", rank=" + rank + "]";
 	}
+	
 	
 }

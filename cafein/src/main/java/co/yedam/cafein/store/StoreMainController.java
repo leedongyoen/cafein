@@ -38,6 +38,21 @@ public class StoreMainController {
 		return service.getSalesRank(vo);
 	}
 	
+	// 매장 메인 재고 소모량 TOP3 조회
+	@ResponseBody
+	@RequestMapping(value="/stockless", method=RequestMethod.GET)
+	public List<StockVO> getStockLess(StockVO vo) {
+		return service.getStockLess(vo);
+	}
+	
+
+	// 매장 메인 마일리지 현황 조회
+	@ResponseBody
+	@RequestMapping(value="/mileageinfo", method=RequestMethod.GET)
+	public List<OrdersVO> getMileageInfo(OrdersVO vo) {
+		return service.getMileageInfo(vo);
+	}
+
 
 	
 	// -------------------------------------------------------------------------------------------------------------
