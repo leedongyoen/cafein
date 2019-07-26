@@ -107,26 +107,11 @@ public class CustomerController {
 //		//암호화  하기전
 //		String scPw = scpwd.encode(vo.getcPw());
 //		//암호화 후 db저장
-<<<<<<< HEAD
 
-		CustomerVO customers = new CustomerVO();
-		customers.setcId(vo.getcId()); // 암호화한 아이디를 불러와 비교
-		System.out.println(customers);
 
-		CustomerVO customer = customerLoginService.getCustomer(customers);
-=======
-		
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
+
 		PrintWriter out = response.getWriter();
-<<<<<<< HEAD
-		System.out.println(customer);
 
-		// 현재 암호화된 비밀번호와 db에 저장된 암호화 비밀번호와 비교
-		boolean mathes = passEncoder.matches(vo.getcPw(), customer.getcPw());
-
-		if (customer == null && mathes == false) {
-			out.println("<script>alert('입력하신 아이디와 비밀번호를 다시 확인해주세요.');</script>");
-=======
 		
 		int n = 0;
 		CustomerVO customer = customerLoginService.getCustomer(vo);
@@ -139,10 +124,11 @@ public class CustomerController {
 					+ "location.href = 'customerjoinForm.do'"
 					+ "}"
 					+ "</script>");
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
+
 			out.flush();
 			return "customer/login";
 			
+			// 현재 암호화된 비밀번호와 db에 저장된 암호화 비밀번호와 비교
 		} else if(passEncoder.matches(vo.getcPw(), customer.getcPw())) {		// 아이디와 비밀번호가 일치하는 경우
 			
 			out.println("<script>alert('" + customer.getcName() + "님 반갑습니다. 로그인 되었습니다.');</script>");

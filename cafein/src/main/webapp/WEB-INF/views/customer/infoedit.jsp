@@ -236,16 +236,15 @@ function chkPwContinuity(paramObj) {
 		$("#c_name").removeAttr("readonly");
 		$("#pwbt").removeAttr("disabled");;
 		$("#c_tel").removeAttr("readonly");
-<<<<<<< HEAD
-		$("#c_add").removeAttr();
-		$("#c_add2").removeAttr();
-		$("#c_add3").removeAttr();
-=======
-// 		$("#cAdd").removeAttr("readonly");
-// 		$("#cAdd2").removeAttr("readonly");
+
+// 		$("#c_add").removeAttr();
+// 		$("#c_add2").removeAttr();
+// 		$("#c_add3").removeAttr();
+
+ 		$("#cAdd").removeAttr("readonly");
+ 		$("#cAdd2").removeAttr("readonly");
 		$("#cAdd3").removeAttr("readonly");
 		$("#c_addbt").removeAttr("disabled");
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 		$("#dob").removeAttr("readonly");
 		
 		alert("수정이 가능합니다.")
@@ -275,16 +274,15 @@ function chkPwContinuity(paramObj) {
 		$("#c_name").attr("readonly", true);
 		$("#pwbt").attr("disabled","disabled");
 		$("#c_tel").attr("readonly", true);
-<<<<<<< HEAD
+
 // 		$("#c_add").attr("readonly", true);
 // 		$("#c_add2").attr("readonly", true);
 // 		$("#c_add3").attr("readonly", true);
-=======
-// 		$("#cAdd").attr("readonly", true);
-// 		$("#cAdd2").attr("readonly", true);
+
+ 		$("#cAdd").attr("readonly", true);
+ 		$("#cAdd2").attr("readonly", true);
 		$("#cAdd3").attr("readonly", true);
 		$("#c_addbt").attr("disabled","disabled");
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
 		$("#dob").attr("readonly", true);
  
 	}
@@ -489,21 +487,12 @@ function chkPwContinuity(paramObj) {
 					<th class="tableth">연락처</th>
 					<td><input type="tel" id="c_tel" name="cTel" readonly></td>
 				</tr>
-				<tr>
-<<<<<<< HEAD
-					<th>주소</th>
-					<td><input type="text" name="cAdd2" id="cAdd2"
-						placeholder="우편번호">
-						<button type="button" onclick="execPostCode()">우편번호 찾기</button>
-						<br> <input type="text" name="cAdd" id="cAdd"
-						placeholder="주소"> <input type="text" name="cAdd3" id="cAdd3" placeholder="상세주소"></td>
-=======
-					<th class="tableth">주소</th>
-					  <td><input type = "text" id="cAdd2" name = "cAdd2" placeholder="우편번호" readonly>
-          <button type = "button" onclick="execPostCode()"id="c_addbt" disabled>우편번호 찾기</button><br>
-          		<input type = "text" id="cAdd" name = "cAdd" size=30 placeholder="주소" readonly>
-          		<input type = "text" id="cAdd3" name = "cAdd3" placeholder="상세주소" readonly></td>
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein.git
+				<tr>		
+				<th class="tableth">주소</th>
+					<td><input type = "text" id="cAdd2" name = "cAdd2" placeholder="우편번호" readonly>
+	          		<button type = "button" onclick="execPostCode()"id="c_addbt" disabled>우편번호 찾기</button><br>
+	          		<input type = "text" id="cAdd" name = "cAdd" size=30 placeholder="주소" readonly>
+	          		<input type = "text" id="cAdd3" name = "cAdd3" placeholder="상세주소" readonly></td>
 				</tr>
 				<tr>
 					<th class="tableth">생년월일</th>
