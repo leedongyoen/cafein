@@ -26,4 +26,8 @@ public class StoreCustomerListServiceImpl implements StoreCustomerListService{
 		return storecustomerDao.getCustomerhistory(vo);
 	}
 
+	public List<CustomerVO> getWarehousing(CustomerVO vo) {
+		return storecustomerDao.getWarehousing(vo);
+	}
+
 }

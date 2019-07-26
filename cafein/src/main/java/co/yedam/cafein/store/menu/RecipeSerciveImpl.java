@@ -50,5 +50,4 @@ public class RecipeSerciveImpl {
 		return recipeDao.updateAqty(vo);
 		
 	}
-	
 }

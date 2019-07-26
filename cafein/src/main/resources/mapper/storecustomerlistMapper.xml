@@ -47,5 +47,29 @@
   ORDER by  o.O_NUM DESC, od.O_DNUM
 	</select>
 	
+	<select id="getWarehousing" resultType="customer">
+	SELECT 
+   		o.c_id, o.o_num,
+  		CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+			 '↳'||r.OP_NAME ELSE m.m_name END m_name , 
+ 		CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+			r.op_price ELSE m.m_price END total,
+  		CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+			' '	ELSE o.pay_method  END payMethod,
+    	CASE WHEN od.ca_num='CAOP' OR od.ca_num='CAIC' OR od.ca_num='CAHT' THEN
+			' '	ELSE o.receipt  END receipt  
+  	FROM
+   ORDERS o JOIN order_details od ON od.o_num = o.o_num
+   JOIN menu m on od.M_NUM = m.M_NUM
+   JOIN recipe r on od.RECIPENO = r.RECIPENO
+   WHERE o.c_id = #{cId} 
+  AND o.S_ID= #{sId}
+  AND o.o_date between #{startDate} AND #{endDate} 
+  ORDER by  o.O_NUM DESC, od.O_DNUM
+	
+	
+	
+	</select>
+	
 
 </mapper>

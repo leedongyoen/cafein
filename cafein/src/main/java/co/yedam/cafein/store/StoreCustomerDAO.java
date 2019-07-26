@@ -31,6 +31,10 @@ public class StoreCustomerDAO {
 	public List<CustomerVO> getCustomerhistory(CustomerVO vo) {
 		return mybatis.selectList("CustomerlistDAO.getCustomerhistory",vo);
 	}
+
+	public List<CustomerVO> getWarehousing(CustomerVO vo) {
+		return mybatis.selectList("CustomerlistDAO.getWarehousing",vo);
+	}
 	
 	
 

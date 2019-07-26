@@ -17,9 +17,19 @@ public class ReserveVO {
 	private String toto;
 	private String uuu;
 	private String rere;
+	private String enddate;
 	
 	
 	
+	
+	public String getEnddate() {
+		return enddate;
+	}
+
+	public void setEnddate(String enddate) {
+		this.enddate = enddate;
+	}
+
 	public String getRere() {
 		return rere;
 	}

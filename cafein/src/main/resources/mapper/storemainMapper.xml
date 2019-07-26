@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="storeMainDAO">
+
+	<!-- 판매율 top3 메뉴 조회 -->
+	<select id="getSalesRank" resultType="order">
+		SELECT *
+		FROM (
+		        SELECT M.M_NAME
+		             , SUM(OD.O_QTY) "cnt"
+		             , ROW_NUMBER() OVER (ORDER BY SUM(OD.O_QTY) DESC) "rank"
+		        FROM ORDER_DETAILS OD JOIN ORDERS O
+		        ON O.O_NUM = OD.O_NUM
+		        JOIN MENU M
+		        ON OD.M_NUM = M.M_NUM
+		        WHERE O.S_ID = #{sId}
+		        AND O.DELIVERY_STATUS IN ('C3','C5')
+		        AND OD.CA_NUM IN ('CACO','CADR','CADE')
+		        AND O.O_DATE > ADD_MONTHS(TRUNC(SYSDATE), -1)
+		        GROUP BY M.M_NUM, M.M_NAME
+		) MENURANK
+		WHERE MENURANK."rank" <![CDATA[ < ]]> 4
+	</select>
+	
+	<!-- 재고 소모율 top3  조회 -->
+	<select id="getStockLess" resultType="stock">
+		SELECT *
+		FROM( SELECT  S.ST_NAME "stName"
+		            , S.ST_UNIT "stUnit"
+		            , ABS(SUM(W.WARE_QTY)) "stQty"
+		            , ROW_NUMBER() OVER(ORDER BY ABS(SUM(W.WARE_QTY)) DESC) "rank"
+		      FROM STOCK S JOIN WAREHOUSING W
+		      ON S.ST_NUM = W.ST_NUM
+		      WHERE S.S_ID = #{sId}
+		      AND TO_CHAR(W.WARE_DATE,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+		      AND (W.WARE_QTY <![CDATA[ < ]]> 0 OR W.ST_LOSS <![CDATA[ < ]]> 0) 
+		      GROUP BY S.ST_NAME, S.STAN_UNIT, S.ST_UNIT) STOCKRANK
+		WHERE STOCKRANK."rank" <![CDATA[ < ]]> 4
+	</select>
+	
+	<!-- 마일리지 현황 조회 -->
+	<select id="mileageinfo" resultType="order">
+		SELECT  NVL(SUM(CASE WHEN TOTAL>0 THEN TOTAL*0.01 ELSE 0 END),0) "addmileage"
+		      , NVL(SUM(CASE WHEN MILEAGE>0 THEN MILEAGE ELSE NULL END),0) "mileage"
+		FROM ORDERS O JOIN STOREOPEN SOP 
+    	ON O.S_ID = SOP.S_ID AND TO_CHAR(OPENTIME,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+    	WHERE O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP)
+		AND O.S_ID = #{sId}
+		AND DELIVERY_STATUS IN ('C3','C5')
+	</select>
+
+</mapper>
