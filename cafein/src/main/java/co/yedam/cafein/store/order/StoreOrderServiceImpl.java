@@ -88,7 +88,16 @@ public class StoreOrderServiceImpl {
 	}
 
 //-------------------------------------------------------------------------------------
+
 	
+	public void stockupdate() {
+		dao.stockupdate();
+	}
+
+	
+	
+//-------------------------------------------------------------------------------------
+		
 		// 사용미정
 	// 해당 매장의 주문메뉴의 옵션을 묶기 위해
 	public OrderDetailsVO getmenunumber(OrderDetailsVO vo){

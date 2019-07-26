@@ -70,7 +70,14 @@ public class StoreOrderDAO {
 		template.selectOne("getStoreOrderListDAO.schedulerordertimecheck");
 	}
 	
-	//-------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
+
+
+	public void stockupdate() {
+		template.selectOne("getStoreOrderListDAO.stockupdate");
+	}
+	
+//-------------------------------------------------------------------------------------
 	
 	// 사용 미정
 	// 해당 매장의 주문메뉴의 옵션을 묶기 위해

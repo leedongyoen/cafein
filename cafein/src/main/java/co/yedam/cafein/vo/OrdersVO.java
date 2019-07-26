@@ -9,7 +9,7 @@ public class OrdersVO {
 
 	private String oNum;
 	private String cId;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // 환불검색할때 날짜랑 시간 포맷
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone ="Asia/Seoul") // 환불검색할때 날짜랑 시간 포맷
 	private Timestamp oDate;
 	private int total;
 	private String receipt;
@@ -44,6 +44,8 @@ public class OrdersVO {
 	private int minusMileageCnt;		// 마일리지를 적립해준 주문 건수
 	private String openTime;			// 마일리지 검색 할 때 where 절에 필요
 	
+	private int rank;					// 판매순위
+	
 	// 환불내역 조회
 	private int refundSum;
 	private int refundMileage; 
@@ -62,11 +64,21 @@ public class OrdersVO {
 	private String startDate;
 	private String endDate;
 	
+	// 매장 - 주문 조회 페이지 취소주문 제외하기 위한 변수
+	private String nocancelview;
+	
 	// 해당 매장에서 마일리지 서비스를 이용하는지 여부를 저장하기 위해서
 	private String mileageservice;
 	
+	
 
 
+	public String getNocancelview() {
+		return nocancelview;
+	}
+	public void setNocancelview(String nocancelview) {
+		this.nocancelview = nocancelview;
+	}
 	public String getStartDate() {
 		return startDate;
 	}
@@ -328,6 +340,13 @@ public class OrdersVO {
 	public void setCardRefundCnt(int cardRefundCnt) {
 		this.cardRefundCnt = cardRefundCnt;
 	}
+	public int getRank() {
+		return rank;
+	}
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+	
 	@Override
 	public String toString() {
 		return "OrdersVO [oNum=" + oNum + ", cId=" + cId + ", oDate=" + oDate + ", total=" + total + ", receipt="
@@ -342,10 +361,6 @@ public class OrdersVO {
 				+ ", refundMileage=" + refundMileage + ", refundMethod=" + refundMethod + ", cashRefundCnt="
 				+ cashRefundCnt + ", cardRefundCnt=" + cardRefundCnt + ", start=" + start + ", end=" + end
 				+ ", orderlistcontroller=" + orderlistcontroller + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", mileageservice=" + mileageservice + "]";
+				+ ", nocancelview=" + nocancelview + ", mileageservice=" + mileageservice + "]";
 	}
-
-	
-
-
 }
