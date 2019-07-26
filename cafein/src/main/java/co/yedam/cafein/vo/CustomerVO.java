@@ -33,8 +33,27 @@ public class CustomerVO {
 	private String receipt;
 	
 	
+	private String startDate;
+	private String endDate;
+	
+	
+	
+	
+	
 	
 
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 	public String getoNum() {
 		return oNum;
 	}
@@ -188,11 +207,10 @@ public class CustomerVO {
 	public String toString() {
 		return "CustomerVO [cId=" + cId + ", cNick=" + cNick + ", cTel=" + cTel + ", cName=" + cName + ", cPw=" + cPw
 				+ ", pPoint=" + pPoint + ", grade=" + grade + ", cAdd=" + cAdd + ", cAdd2=" + cAdd2 + ", cAdd3=" + cAdd3
-				+ ", stmp=" + stmp + ", email=" + email + ", mileage=" + mileage + ", sId=" + sId + ", oNum=" + oNum
-				+ ", gd=" + gd + ", mName=" + mName + ", total=" + total + ", payMethod=" + payMethod + ", receipt="
-				+ receipt + ", dob=" + dob + ", cJoin=" + cJoin + "]";
+				+ ", stmp=" + stmp + ", email=" + email + ", authNum=" + authNum + ", mileage=" + mileage + ", sId="
+				+ sId + ", oNum=" + oNum + ", gd=" + gd + ", mName=" + mName + ", total=" + total + ", payMethod="
+				+ payMethod + ", receipt=" + receipt + ", startDate=" + startDate + ", endDate=" + endDate + ", dob="
+				+ dob + ", cJoin=" + cJoin + "]";
 	}
-
-	
 	
 }
