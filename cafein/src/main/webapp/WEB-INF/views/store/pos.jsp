@@ -132,7 +132,7 @@ var lastSel;
 var editableCells = ['oQty'];
 var ordernum ="";
    $(document).ready(function() {
-
+	  
 	   $("#gridlist").jqGrid({
            colModel: [
         	   { label: 'recipeno',  name:'optionlist', hidden:true},
@@ -188,7 +188,7 @@ var ordernum ="";
 	 	   var grid = $("#gridlist");
 	 	   var PSum = grid.jqGrid('getCol','Price',false,'sum');
 	 	   		grid.jqGrid("footerData", "set", {mName:"합계",Price:PSum});
-	 	   		
+	 	   	$("#addpay").val(PSum);
 	 	   console.log(PSum);
 	 	   //		grid.jqGrid("footerData", "set", {mName:"합계",qty:QSum});
 	 	   }
@@ -198,7 +198,9 @@ var ordernum ="";
 	   
 	   //그리드 새로고침
 	   $("#clearRow").on("click",function(){
+		   var degree=0;
 		   $("#gridlist").jqGrid("clearGridData", true).trigger("reloadGrid");
+		   $("#addpay").val(degree);
 	   });
 	   
 	   //그리드내 행 삭제
@@ -225,20 +227,12 @@ var ordernum ="";
 			var PSum = grid.jqGrid('getCol','Price',false,'sum');
 		 	   var QSum = grid.jqGrid('getCol','oQty',false,'sum');
 		 	   		grid.jqGrid("footerData", "set", {mName:"합계", Price:PSum, qty:QSum});
+		 	   	$("#addpay").val(PSum);
 			
 		});
 	   
 	   
    });
-   
-
-/* 
-var buffdata = $('#testGrid').jqGrid('getDataIDs'); // 테이블에 있는 모든 데이터를 수집한다.
-$('#testGrid').jqGrid('getGridParam','selarrrow') // 체크한줄 불러옴 배열로 가져옴
-
-$("#jourTable").getDataIDs(); // 모든 로우 ids 가져옴
-var updateList = $("#schoolGrid").getChangedCells('all'); //<--셀에값이 변한 줄 불러옴
-footerrow : true});*/
 
  
  //메뉴탭에서 매장메뉴 나오기
@@ -282,6 +276,7 @@ footerrow : true});*/
 		}
 	//고객검색이벤트로드
 		$("#customerserch").on("keyup", function() {
+			
 	 		var value = $(this).val().toLowerCase();
 	 		if (value.length>=3){
 	 		$.ajax({
@@ -316,6 +311,7 @@ footerrow : true});*/
 				 var now_mile = (totalmileage*1)-(mileage*1);
 				 $('#cusMile').val(now_mile);
 				 $('#reservebtn').attr('disabled',true);
+				 $("#addpay").val(sPSum);
 			}
 		});
 		$('#reservecancelbtn').on("click",function(){
@@ -557,16 +553,17 @@ footerrow : true});*/
 	    }); 
  		
  	}
+ 	//고객 검색 후 모달창 닫고 화면에 뿌리기
  	function aftersearch(Id,Name,Tel,mileage){
  		$('#cusSearchModal').modal("hide");
  		 $("#aftersearch").show();
  			console.log(Id,Name,Tel,mileage);
  			$("#aftersearch tbody").empty();
  		    	 $('<tr>')
- 		    	 .append($('<td><input type=\'text\'class=\'data0\' id=\'cusId\' value=\''+Id+'\'>'))
- 		          .append($('<td><input type=\'text\'class=\'data1\' id=\'cusName\' value=\''+Name+'\'>'))
- 		          .append($('<td><input type=\'text\' class=\'data2\' id=\'cusTel\' value=\''+Tel+'\'>'))
- 		          .append($('<td><input type=\'text\' class=\'data3\' id=\'cusMile\' value=\''+mileage+'\'>'))
+ 		    	 .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'data0\' id=\'cusId\' value=\''+Id+'\'>'))
+ 		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'data1\' id=\'cusName\' value=\''+Name+'\'>'))
+ 		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'data2\' id=\'cusTel\' value=\''+Tel+'\'>'))
+ 		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'data3\' id=\'cusMile\' value=\''+mileage+'\'>'))
  		          .appendTo('#aftersearch tbody');
  		      
  		}
@@ -618,15 +615,20 @@ footerrow : true});*/
 			var sum = minus-PSum;
 
 			$("#resultmoney").val(sum);
+			
 		});
 		
 
 		
 	});
+ 	/* $("#orderserch").on("keyup", function() {
+ 		getCusRefund()
+ 	}); */
  	
  	//환불 날짜별 검색
  	function getCusRefund() {
- 		 
+ 		$(".really").empty();
+ 		
 		//날짜 데이터 같이 보내기
 		var startDate = jQuery('#startDate').val();
 		var endDate = jQuery('#endDate').val();
@@ -640,7 +642,7 @@ footerrow : true});*/
   		}
   		console.log("startDate : "+ startDate);
   		console.log("endDate : "+ endDate);
-  		$('#orderlisttable tbody').empty();
+  		
 		$.ajax({
 			url : 'searchorder',
 			type : 'GET',
@@ -651,14 +653,21 @@ footerrow : true});*/
 			},
 			success : function(data) {
 				
-				
+				var refusenum;
 				$.each(data,function(idx,item){
 					
 					if(item.cId == null) item.cId="";
-					if(item.refuseReason == null) item.refuseReason="";
+					if(item.refuseReason == null) {
+						item.refuseReason="";
+						refusenum = "";
+					}
+					if(item.refuseReason != null){
+						
+						refusenum=item.refuseReason;
+					}
 					
 					$('<tr>').attr({
-						onclick:"menudetail('"+item.oNum+"')",
+						onclick:"menudetail('"+item.oNum+"','"+refusenum+"')",
 						name:"really",
 						id: "table"+item.oNum
 					})
@@ -669,8 +678,6 @@ footerrow : true});*/
 					.append($('<td><input type=\'text\'id=\'total4\' value=\''+item.total+'\'>'))
 					.append($('<td><input type=\'text\'id=\'refuseReason4\' value=\''+item.refuseReason+'\'>'))
 					.appendTo('#orderlisttable tbody');
-					
-					if(item.refuseReason != "") $('.really').css("background-color", "pink");
 				});
 				
 				}
@@ -678,13 +685,17 @@ footerrow : true});*/
 					
 				
 			} 
- 	function menudetail(orderNum){ 
- 		var reason = $('#refuseReason4').val();
+ 	function menudetail(onum,orderNum){ 
+ 		$(".optiontable").empty();
  		var menu_qty="0";
 		var menunum="";
 		var test="";
-		console.log(reason);
 		console.log(orderNum);
+		if(orderNum == ""){
+			orderNum = onum;
+		}
+
+			
  		$.ajax({
 			url: 'searchdetails',
 			type:'GET',
@@ -720,23 +731,30 @@ footerrow : true});*/
 						console.log(test);
 					}
 				}); 
-		 		console.log(test);
-		 			$('#table'+orderNum).after($('<tr>').attr("class","optiontable").attr("id","op_tr"+orderNum)
+		 			$('#table'+onum).after($('<tr>').attr("class","optiontable")
 		 					.append($('<td>').html("메뉴명 : <br>"+test).attr("colspan","2"))
 							.append($('<td>').html("고객성함 : " +data[0].cName))
 							.append($('<td>').html("사용한 마일리지 : " +data[0].mileage))
 							.append($('<td>').html("총 금액 : "+data[0].total+"원"))
 							.append($('<button>').attr({
+								class: orderNum,
 								type:"button",
 								onclick:"refund('"+orderNum+"')"
 							}).append("환불하기"))
 							);
+		 			
+		 			if(orderNum != onum && orderNum != null){
+		 				$('.'+orderNum).hide();
+		 			}
+		 			
 			}
+			
 			});	
 			}
  	
  	function refund(orderNum){
- 		$.ajax({
+ 		
+ 		 $.ajax({
 			url: 'refoundsuccess',
 			type:'POST',
 			dataType:'json',
@@ -749,7 +767,7 @@ footerrow : true});*/
 				alert("환불이 완료되었습니다.");
 			}
 				
-			});
+			}); 
  		
  		
  	}
@@ -801,6 +819,7 @@ footerrow : true});*/
  	</div>
   </div>
 <br><br><br><br><br>
+
 <div>
 <div id="aftersearch">
 <table>
@@ -821,8 +840,11 @@ footerrow : true});*/
 <button type="button" id="reservecancelbtn">취소</button>
 </a>
 </div>
-</div>
 
+</div>
+<div style="text-align:right">
+<a id="insertmoney" style="color:white">총 금액 : <input type="text" style="text-align:right;width:150px;" id="addpay" value="0" readonly="readonly" > 원</a>
+</div>
 
 
 	<div style="text-align:left">
@@ -879,6 +901,7 @@ footerrow : true});*/
 				<div class="modal-body">
 					<form class="form-borizontal" action="#" method="POST">
 						<div class="btn-group">
+						<input class="form-control" style="text-align:left; width:200px;" id="orderserch" type="text" placeholder="Search..">
 							<input type="date" class="btn btn-secondary" id="startDate"
 								name="startDate">&nbsp; <input type="date"
 								class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
@@ -948,11 +971,11 @@ footerrow : true});*/
 							</tr>
 							<tr> 
 								<th>받으실 돈</th>
-								<td id="payresult" class="numOnly num_sum"></td>
+								<td id="payresult" class="numOnly num_sum" ></td>
 							</tr>
 							<tr> 
 								<th>거스름 돈</th>
-								<td><input type="text" id="resultmoney" class="numOnly num_sum"></td>
+								<td><input type="text" id="resultmoney" class="numOnly num_sum" readonly="readonly"></td>
 							</tr>
 							</thead>
 						</table>
