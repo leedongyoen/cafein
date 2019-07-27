@@ -17,7 +17,7 @@ public class RecipeDAO {
 	private SqlSessionTemplate mybatis;
 	
 	public List<ViewStockCheckVO> getRecipeList(ViewStockCheckVO vo){
-		System.out.println("-> mybatis getRecipeList 을 이용함stock 정보");
+		System.out.println("-> mybatis getRecipeList �쓣 �씠�슜�븿stock �젙蹂�");
 		return mybatis.selectList("RecipeDAO.getRecipeList", vo);
 	}
 	
@@ -39,6 +39,16 @@ public class RecipeDAO {
 	public int deleteRecipe(RecipeVO vo) {
 		System.out.println("mybatis insertRecipe");
 		return mybatis.delete("RecipeDAO.deleteRecipe",vo);
+	}
+	
+	public int recipeDeleteProc1(RecipeVO vo) {
+		System.out.println("mybatis recipeDeleteProc1");
+		return mybatis.delete("RecipeDAO.recipeDeleteProc1",vo);
+	}
+	
+	public int recipeInsertProc1(RecipeVO vo) {
+		System.out.println("mybatis insertRecipe");
+		return mybatis.insert("RecipeDAO.recipeInsertProc1",vo);
 	}
 	
 	public int recipeUpdateProc1(RecipeVO vo) {
