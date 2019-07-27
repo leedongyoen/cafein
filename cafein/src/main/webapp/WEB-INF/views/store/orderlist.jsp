@@ -9,10 +9,33 @@
 </head>
 <script>
 	var checked;
+	
+	
+	
+//	ajax 통신 시작시 실행
+	$(document).ajaxStart(function() {
+		console.log("start");
+		console.log($('.loading-spinner'));
+		$('.loading-spinner').attr('style','visibility:visible');
+		//$('.loading-spinner').show();
+	});
+ 
+//		ajax 통신 종료시 실행
+	$(document).ajaxStop(function() {
+		console.log("end");
+		console.log($('.loading-spinner'));
+		$('.loading-spinner').attr('style','visibility:hidden');
+		//$('.loading-spinner').hide();
+	});
+	
+	
+	
 	$(function(){
 		getstoreorderlist();
 		
 		
+		
+	
 		// 주문 취소 제외시 
 		$('#ordercancel').change(function() {
 		    var value = $(this).val();              // value
@@ -54,6 +77,8 @@
 	// 주문번호의 메뉴번호
 	var ordermnum="";
 	
+
+	
 	// 날짜 검색 중에 주문 취소 제외시키는 경우
 	function searchdate_nocancelview(startDate,endDate){
 		
@@ -71,7 +96,7 @@
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				
 				$('#orderlisttable tbody').empty();
-				console.log(data);
+				
 				if(data.length == 0){
 					
 					$('<tr>').append($('<td>').html("해당 기간에는 주문이 없습니다.").attr("colspan","12").attr("rowspan","3"))
@@ -139,7 +164,7 @@
 	
 	// 승인 버튼 클릭 시 모달창 띄우기
 	function apply(ordern){
-		console.log(ordern);
+		
 		event.stopPropagation();
 		$('#applyordernumber').val(ordern);
 		$('#applyemodal').modal('show');
@@ -173,7 +198,7 @@
 	// 거절 버튼 클릭 시 모달창 띄우기
 	function refuse(ordern){
 		event.stopPropagation();
-		console.log(ordern);
+		
 		$('#cancelordernumber').val(ordern);
 		$('#refusemodal').modal('show');
 	}
@@ -222,7 +247,7 @@
 			},
 			success:function(data){
 				// 같은 정보가 또 추가되는 것을 막기 위해서 비우기
-				console.log(data);
+				
 				$("#op_tr"+order_n).empty();
 				
 				// 옵션이 없을 경우
@@ -239,7 +264,7 @@
 				}else{ //있을 경우
 					var menu_qty="0";
 					$.each(data,function(idx,item){
-						console.log(idx);
+						
 						if(menunum == ""){
 							menunum = item.oDnum;
 							test = item.mName+"-";
@@ -321,7 +346,7 @@
 		var orderopdnum = item.opDnum;
 		var deliverstatus;
 		var orderdate;
-		//console.log(item);
+		
 		$.ajax({
 			url: 'getstoreorderdetails',
 			type:'GET',
@@ -376,7 +401,7 @@
 						id: "table"+item.oNum,
 						class:"tr"+item.deliveryStatus
 					})
-					.append($('<td>').html(orderdate.toLocaleDateString() ))
+					.append($('<td>').html(orderdate.toLocaleString() ))
 					.append($('<td>').html(item.oNum))
 				//	.append($('<td>').attr("id",""+item.oNum+"").html(item.mName+"-"+ oQty +"개-("+option+")"))
 					.append($('<td>').attr("id",""+item.oNum+"").html(item.mName+"("+ oQty +"개)"+option))
@@ -413,7 +438,7 @@
 							id: "table"+item.oNum,
 							class:"tr"+item.deliveryStatus
 						})
-						.append($('<td>').html(orderdate.toLocaleDateString()))
+						.append($('<td>').html(orderdate.toLocaleString()))
 						.append($('<td>').html(item.oNum))
 						//	.append($('<td>').attr("id",""+item.oNum+"").html(item.mName+"-"+ oQty +"개-("+option+")"))
 						.append($('<td>').attr("id",""+item.oNum+"").html(item.mName+"("+ oQty +"개)"+option))
@@ -482,8 +507,7 @@
   			searchdate_nocancelview(startDate,endDate);
   			return;
   		}
-  		console.log("startDate : "+ startDate);
-  		console.log("endDate : "+ endDate);
+  		
   		var sId = '<%= session.getAttribute("sId") %>';
 		$('#orderlisttable tbody').empty();
 		$.ajax({
@@ -498,7 +522,7 @@
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				
 				$('#orderlisttable tbody').empty();
-				console.log(data);
+				
 				if(data.length == 0){
 					
 					$('<tr>').append($('<td>').html("해당 기간에는 주문이 없습니다.").attr("colspan","12").attr("rowspan","3"))
@@ -526,6 +550,14 @@
 		});
   		
 	}
+	
+	function resetview(){
+		// date 입력폼, check box 초기화해야됨.
+		$('.resetdate').val('');
+		$('.resetcheck').prop('checked', false);
+
+		getstoreorderlist();
+	}
 
 </script>
 <body>
@@ -540,19 +572,24 @@
   
     <div align="right">
 
-    <input type="date" class="btn btn-secondary" name="storeorderstartdate" id="storeorderstartdate">~
-    <input type="date" class="btn btn-secondary" name="storeorderenddate" id="storeorderenddate">
+    <input type="date" class="btn btn-secondary resetdate" name="storeorderstartdate" id="storeorderstartdate">~
+    <input type="date" class="btn btn-secondary resetdate" name="storeorderenddate" id="storeorderenddate">
     <input type="button" class="btn btn-success" onclick="searchDate()" value="조회">
-    <input type="button" class="btn btn-success" onclick="getstoreorderlist()" value="초기화">
+    <input type="button" class="btn btn-success" onclick="resetview()" value="초기화">
     </div>
 	<div align="left">
 
-  		<input type="checkbox" id="ordercancel" value="Y" class="checkbox">
+  		<input type="checkbox" id="ordercancel" value="Y" class="checkbox resetcheck">
   		<label for="ordercancel" style="font-size: 17px;">주문 취소 제외</label>
   	
   	</div>
 	
-  	
+
+	<!-- 로딩 화면 -->
+  	 <figure class="loading-spinner" style="visibility: visible;">
+    	<img src="https://loading.io/spinners/lava-lamp/index.lava-lamp-preloader.svg">
+    	<figcaption>데이터 로딩 중 ...</figcaption>
+  	</figure>
 
 	<hr>
 		
