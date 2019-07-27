@@ -68,9 +68,16 @@ html, body { height:100%; overflow:hidden }
 
 <script>
 
-var selRecinum = "";
-var selStanunit = 0;
-var aQty=0.0;
+var turnNo = 0;
+var stNumber = "";
+var consume = 0;
+var stUnit = "";
+var recipeDetail = "";
+var recipeNo = "";
+var stanUnit = 0;
+
+
+var aQty=0.0; 
 
 var storeid = "SH001";
 <%-- var storeid = "<%= (String)session.getAttribute("sid") %>";  --%>
@@ -91,6 +98,7 @@ $(function(){
 	
 	$('#recipeTablediv').hide();
 	$('#optionDiv').hide();
+	$("#recipeDatailTable").hide();
 	
 	$("#menuTable tbody tr").click(function(){
 		
@@ -164,12 +172,35 @@ $(function(){
 		var tr = $(this);
 		var td = tr.children();
 		
-		selRecinum = td.eq(6).text();
-		var tturnNo = td.eq(0).text();
-		selStanunit
-		console.log(selRecinum +" :: "+tturnNo);
-		$("#recipeNum").val(selRecinum);
-		$("#turnNo").val(tturnNo);
+		turnNo = td.eq(0).text();
+		turnNo = turnNo *1;
+		stNumber = td.eq(1).text();
+		consume = td.eq(3).text();
+		consume = consume *1; 
+		stUnit = td.eq(4).text();
+		recipeDetail = td.eq(6).text();
+		recipeNo = td.eq(7).text();
+		stanUnit = td.eq(8).text();
+		stanUnit = stanUnit*1;
+		
+		console.log(recipeNo +" :: "+turnNo);
+		/* $("#recipeNum").val(recipeNo);
+		$("#turnNo").val(tturnNo); */
+		
+		//행을 누를때 마다 추가 할 수 있게 
+			$("#recipeDatailTable").show();
+
+			$("#reciSelect option").each(function(){
+
+			    if($(this).val()=="${DB값}"){
+
+			      $(this).attr("selected","selected"); // attr적용안될경우 prop으로 
+
+			    }
+
+			  });
+		
+		
 		 });
 	
 	
@@ -180,8 +211,8 @@ $(function(){
 		var tr = $(this);
 		var td = tr.children();
 		
-		selRecinum = td.eq(3).text();
-		console.log(selRecinum);
+		recipeNo = td.eq(3).text();
+		console.log(recipeNo);
 		
 		 });
 	
@@ -192,7 +223,7 @@ $(function(){
 		var json = $(this).val();
 		var obj=JSON.parse(json);
 		aQty=obj.value3;
-		selStanunit = obj.value4;
+		stanUnit = obj.value4;
         console.log(obj.value1+" : "+obj.value2+" : "+obj.value3+" : "+obj.value4);
         $("#recistNum").val(obj.value1);
 		$("#recicaNum").val(obj.value2);
@@ -224,6 +255,21 @@ $(function(){
 		//$("#opcaNum").val(obj.value2);
 		
 	});
+	
+	
+	
+	
+	
+	
+/* 	
+	
+$("#").click(function(){
+
+	})
+	 */
+	
+	
+	
 	
 });
 
@@ -262,15 +308,17 @@ function menulist(mNum){
 						{
 							$('<tr>')
 							.append($('<td>').html(data[i].turnNo))
+							.append($('<td>').html(data[i].stNum))
 							.append($('<td>').html(data[i].stName))
 							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum*data[i].stanUnit)))
 							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].stUnit)))
 							.append($('<td>').html(Math.floor((data[i].stPrice*data[i].consum))+'원'))
 							.append($('<td>').html(data[i].recipeDetail))
-							.append($('<td style="visibility:hidden;">').html(data[i].recipeNo))
-							.append($('<td style="visibility:hidden;">').html(data[i].stanUnit))
-							.appendTo("#recipeTable tbody");
+							.append($('<td>').html(data[i].recipeNo))
+							.append($('<td>').html(data[i].stanUnit))
 							
+							.appendTo("#recipeTable tbody");
+							// style="visibility:hidden;"
 							totalWon = totalWon + (data[i].stPrice*data[i].consum);
 						}
 					}
@@ -465,11 +513,16 @@ function menuUpdate() {
 	});  
 }
 
+
+
+// 레시피 조회부터 다시
+
+
 function recipeInsert(){
 	var menuId = $("#mNum").val();
 	var reQty1 = $("#consum").val();
 	
-	var reQty2 = aQty*selStanunit;
+	var reQty2 = aQty*stanUnit;
 		//$("#recistAqty").val();
 	
 	if(reQty1 >= reQty2){
@@ -485,7 +538,7 @@ function recipeInsert(){
 	alert(JSON.stringify($("#recipeTableForm").serializeObject()));
 	//=====================================================================================
  	$.ajax({
-		url: "recipes/"+storeid+'/'+(reQty1)+'/'+(selStanunit),   
+		url: "recipes/"+storeid+'/'+(reQty1)+'/'+(stanUnit),   
 		type: 'POST',
 		dataType: 'json',
 		data: JSON.stringify($("#recipeTableForm").serializeObject()),
@@ -502,11 +555,29 @@ function recipeInsert(){
 }
 
 
+
+
+function recipeUpdate(){
+	var menuId = $("#mNum").val();
+	$.ajax({
+		url: "recipes/"+storeid,
+		type: 'PUT',
+		dataType: 'json',
+		data: JSON.stringify($("#recipeTableForm").serializeObject()),
+		contentType: 'application/json',
+		success: function(data) { 
+			menulist(menuId);
+		}
+		
+	});
+}
+
+
 function recipeDelete(){
 	var menuId = $("#mNum").val();
-	console.log(selRecinum);
+	console.log(recipeNo);
 	$.ajax({
-		url:'recipes/'+selRecinum,  
+		url:'recipes/'+recipeNo,  
 		type:'DELETE',
 		contentType:'application/json',
 		dataType:'json',
@@ -544,9 +615,9 @@ function optionInsert(){
 
 function optionDelete(){
 	var menuId = $("#mNum").val();
-	console.log(selRecinum);
+	console.log(recipeNo);
 	 $.ajax({
-		url:'options/'+selRecinum,  
+		url:'options/'+recipeNo,  
 		type:'DELETE',
 		contentType:'application/json',
 		dataType:'json',
@@ -572,23 +643,7 @@ function optionDelete(){
 		
 		$("#fileForm").submit();
 
-	}
-	//--------------------------
-	function recipeUpdate(){
-		var menuId = $("#mNum").val();
-		$.ajax({
-			url: "recipes/"+storeid,
-			type: 'PUT',
-			dataType: 'json',
-			data: JSON.stringify($("#recipeTableForm").serializeObject()),
-			contentType: 'application/json',
-			success: function(data) { 
-				menulist(menuId);
-			}
-			
-		});
-	}
-	////////////////////////
+
 	
 	function insertMenu(){
 		
@@ -598,6 +653,8 @@ function optionDelete(){
 		$("#menuModal").modal('show');
 		
 	}
+	
+}
 	
 </script>
 </head>
@@ -757,7 +814,6 @@ function optionDelete(){
 				<!-- 레시피 등록, 메뉴 하나 Select된 에서 레시피 레시피 조회가능, 등록 버튼 활성화 -->
 
 				<form id="recipeTableForm">
-					<!-- Recipe Detail List로 표현-->
 					<div id="recipeTablediv" style="padding: 5px;">
 						<hr>
 						<h3 align="center">
@@ -765,13 +821,22 @@ function optionDelete(){
 						</h3>
 						<h5 align="right">상세 레시피</h5>
 						<hr>
-						<input type="hidden" id="cPrice" readonly>
-						<div text-align="center">
-							<table border="1" id="recipeTable" class="table table-hover">
+						
+						
+							:<input type="text" id="cPrice" readonly>
+							:<input type="text" id="recipeMsg" style="text-align: right; width: 300px;" value="">
+							:<input type="text" id="recistAqty">
+							:<input type="text" id="recistStanunit" name = "stanUnit">
+							:<input type="text" id="recipeNum" name="recipeno">
+							:<input type="text" id="turnNo" name = "turnNo">
+							:<input type="text" id = "stanUnit" name="stanUnit">
+							
+							
+						<table border="1" id="recipeTable" class="table table-hover">
 								<thead>
 									<tr>
 										<th>제 작 순 번</th>
-										<th>재 료</th>
+										<th colspan="2">재 료</th>
 										<th>사 용 량</th>
 										<th>단 위</th>
 										<th>원 가</th>
@@ -780,25 +845,22 @@ function optionDelete(){
 								</thead>
 								<tbody></tbody>
 
-							</table>
-						</div>
-							<input type="text" id="recipeMsg" style="text-align: right; width: 300px;" value="">
-						<!-- <th>적정 수량</th> 레시피 추가하면서 필요시 update-->
-							<input type="text" id="recistAqty">
-							<input type="text" id="recistStanunit" name = "stanUnit">
-							<input type="text" id="recipeNum" name="recipeno">
-							<input type="text" id="turnNo" name = "turnNo">
-							<input type="text" id = "stanUnit" name="stanUnit">
-							 <br> <br>
-						<!-- 레시피 추가 테이블 -->
+						</table>
+						
 						<input type="button" value=" 재료 추가 " onclick="recipeInsert()">
 						<input type="button" value=" 레시피 수정 " onclick="recipeUpdate()">
 						<input type="button" value=" 재료 삭제 " onclick="recipeDelete()"><br>
-						<table border="1" class="table table-hover">
+						
+						<input type="hidden" id="recicaNum" name="caNum"> 
+						<input type="hidden" id="recistNum" name="stNum">
+						<!--  <input type="hidden" id="reciAqty" name="stAqty"> -->
+						<input type="hidden" id="cmNum" name="mNum">
+						
+						<table id="recipeDatailTable" border="1" class="table">
 							<tr>
-								<th>카테고리</th>
-								<td><input type="hidden" id="cmNum" name="mNum"> <input
-									type="text" id="cmCate"></td>
+								<!-- <th>카테고리</th>
+								<td><input type="text" id="cmCate"></td>
+								 -->
 								<th>재료 선택</th>
 								<td><select id="reciSelect"></select></td>
 
@@ -821,12 +883,9 @@ function optionDelete(){
 										rows=3 name="recipeDetail">
 										</textarea></td>
 							</tr>
-
 						</table>
-						<input type="hidden" id="recicaNum" name="caNum"> <input
-							type="hidden" id="recistNum" name="stNum">
-						<!--  <input type="hidden" id="reciAqty" name="stAqty">
-						-->
+						
+						
 					</div>
 				</form>
 			</div>
