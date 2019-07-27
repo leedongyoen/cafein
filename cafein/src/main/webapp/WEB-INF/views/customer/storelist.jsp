@@ -169,6 +169,7 @@ input {
 					<hr>
 					<form class="form-borizontal" action="#" method="POST">
 						<input class="form-control" id="storeserch" type="text" placeholder="Search..">
+						<hr>
 						<div class="table-responsive">
 						<table id="storetable" class="table">
 							<thead>
@@ -176,7 +177,7 @@ input {
 								<th>매장명</th>
 								<th>주소</th>
 								<th>거리</th>
-								<th>배달</th>
+								<th></th>
 							</tr>
 							</thead>
 							<tbody >
