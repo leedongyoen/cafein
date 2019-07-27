@@ -72,6 +72,7 @@
          			
 			from recipe 
 			where s_id=#{sId} and m_num=#{mNum}
+			order by turn_no
 
 </select>
 
@@ -100,6 +101,7 @@
 			
 		from stock_check_view
 		where s_id=#{sId} and m_num=#{mNum}
+		order by turn_no
 		
 		
 	</select>
@@ -144,10 +146,32 @@
 			 		)
 	
 	</insert>
-	
+	<insert id="recipeInsertProc1" parameterType="recipe" statementType="CALLABLE">
+		{			
+			call RECIPE_STOCK_INSERT(
+				#{caNum, mode=IN, jdbcType=VARCHAR, javaType=string},
+				#{consum, mode=IN, javaType=double,jdbcType=NUMERIC,numericScale=4},
+				#{mNum, mode=IN, jdbcType=VARCHAR, javaType=string},
+				#{recipeDetail, mode=IN, jdbcType=VARCHAR, javaType=string},
+				#{stNum, mode=IN, jdbcType=VARCHAR, javaType=string},
+				#{sId, mode=IN, jdbcType=VARCHAR, javaType=string}
+			)
+		}
+	</insert>
 	
 	<delete id="deleteRecipe" parameterType="recipe">
 	DELETE FROM RECIPE WHERE RECIPENO = #{recipeno}
+	
+	</delete>
+	<delete id="recipeDeleteProc1" parameterType="recipe" statementType="CALLABLE">
+		{			
+				call RECIPE_STOCK_DELETE(
+					#{recipeno, mode=IN, jdbcType=VARCHAR, javaType=string},
+					#{turnNo,  mode=IN, jdbcType=NUMERIC, javaType=java.lang.Integer},
+					#{sId, mode=IN, jdbcType=VARCHAR, javaType=string}
+				)
+
+		}
 	
 	</delete>
 	
