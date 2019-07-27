@@ -27,6 +27,12 @@ public class StoreMainController {
 	StoreMainService service;
 	
 	//매장 메인화면
+	@RequestMapping("storemain.do")
+	public String storemain() {
+		return "store/main";
+	}
+	
+	//매장 메인화면
 	@RequestMapping("storemainform.do")
 	public String storemainform() {
 		return "store/login";

@@ -4,8 +4,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 <%@ include file="storehead.jsp" %>
 <title>Store Main Page</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <!-- https://fonts.google.com/specimen/Roboto -->
+    <link rel="stylesheet" href="resources/css/fontawesome.min.css">
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+    <!-- https://getbootstrap.com/ -->
+    <!-- <link rel="stylesheet" href="resources/css/templatemo-style.css"> -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
 
@@ -73,17 +81,23 @@
 				
 				$('#salesRank tbody').empty();
 				
-				$.each(data,function(idx,item){	
-					
+				if(data.length == 0) {
 					$('<tr>')
-					.append($('<th>').html(item.rank))
-					.append($('<th>').html(item.mName))
-					.append($('<th>').html(item.cnt+'잔'))
+					.append($('<th colspan="3" height="99px">').html('판매된 메뉴가 없습니다.'))
 					.appendTo('#salesRank tbody');
-					
-					console.log('순위 : ' + item.rank + ', 메뉴명 : ' + item.mName + ', 판매량 : ' + item.cnt+'잔')
-					
-				});
+				} else {
+					$.each(data,function(idx,item){	
+						
+						$('<tr>')
+						.append($('<th>').html(item.rank))
+						.append($('<th>').html(item.mName))
+						.append($('<th>').html(item.cnt+'잔'))
+						.appendTo('#salesRank tbody');
+						
+						console.log('순위 : ' + item.rank + ', 메뉴명 : ' + item.mName + ', 판매량 : ' + item.cnt+'잔')
+						
+					});
+				}
 			}
 		});
 	}
@@ -99,29 +113,36 @@
 				alert('통신 실패');
 			},
 			success:function(data){ 
-				
+				console.log(data)
 				$('#stockLess tbody').empty();
 				
-				$.each(data,function(idx,item){	
-					console.log(item.stUnit)
-
-					if(item.stUnit == 'ml' || item.stUnit == 'g') { 
-						word = '통';
-						
-					} else if(item.stUnit == 'EA') {
-						word = '개';
-					}
-					
+				if(data.length == 0) {
 					$('<tr>')
-					.append($('<th>').html(item.rank))
-					.append($('<th>').html(item.stName))
-					.append($('<th>').html(item.stQty+word))
+					.append($('<th colspan="3" height="99px">').html('소모된 재고가 없습니다.'))
 					.appendTo('#stockLess tbody');
-					
-
-					console.log('순위 : ' + item.rank + ', 메뉴명 : ' + item.stName + ', 판매량 : ' + item.stQty)
-					
-				});
+				} else {
+				
+					$.each(data,function(idx,item){	
+						console.log(item.stUnit)
+	
+						if(item.stUnit == 'ml' || item.stUnit == 'g') { 
+							word = '통';
+							
+						} else if(item.stUnit == 'EA') {
+							word = '개';
+						}
+						
+						$('<tr>')
+						.append($('<th>').html(item.rank))
+						.append($('<th>').html(item.stName))
+						.append($('<th>').html(item.stQty+word))
+						.appendTo('#stockLess tbody');
+						
+	
+						console.log('순위 : ' + item.rank + ', 메뉴명 : ' + item.stName + ', 판매량 : ' + item.stQty)
+						
+					});
+				}
 			}
 		});
 	}
@@ -141,8 +162,8 @@
 				$.each(data,function(idx,item){	
 					
 					$('<tr>')
-					.append($('<th>').html(addCommas(item.addmileage)+'P'))
-					.append($('<th>').html(addCommas(item.mileage)+'P'))
+					.append($('<th height="99px">').html(addCommas(item.addmileage)+'P'))
+					.append($('<th height="99px">').html(addCommas(item.mileage)+'P'))
 					.appendTo('#mileageInfo tbody');
 					
 					console.log('사용된 마일리지 : ' + item.addmileage + ', 적립된 마일리지 : ' + item.mileage)
@@ -178,13 +199,14 @@ table tr th {
 	<h3 align="center">시간별 통계</h3>
 	<div id="chart_div"></div><br>
 	<div align="center" id="test_dataview3"></div>
+	<br>	
 <div class = "container" align="center">
 	<!-- 판매율 -->
 	<div style = "float:left;margin-right:10px;">
 	<table border = "1" id="salesRank">
 		<thead>
 			<tr>
-				<th colspan = "3">판매율 TOP3 메뉴</th>
+				<th colspan = "3">월별 판매율 TOP3 메뉴</th>
 			</tr>
 			<tr>
 			<th>No.</th>
@@ -217,7 +239,7 @@ table tr th {
 	<div>
 	<table border = "1" id="mileageInfo">
 		<thead>
-			<tr>
+			<tr height="66px">
 				<th>적립된 마일리지</th>
 				<th>사용된 마일리지</th>
 			</tr>
@@ -227,5 +249,14 @@ table tr th {
 	</table>
 	</div>
 </div>
+	<script src="resources/js/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="resources/js/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="resources/js/Chart.min.js"></script>
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="resources/js/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="resources/js/tooplate-scripts.js"></script>
 </body>
 </html>
