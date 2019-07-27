@@ -277,6 +277,8 @@ function chkPwContinuity(paramObj) {
 		$("#cAdd3").attr("readonly", true);
 		$("#c_addbt").attr("disabled","disabled");
 		$("#dob").attr("readonly", true);
+		
+		readcustomerinfo();
 	}
 	
 	function readcustomerinfo(){
