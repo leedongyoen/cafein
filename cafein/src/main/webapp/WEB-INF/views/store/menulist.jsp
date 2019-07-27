@@ -906,7 +906,6 @@ function insertRecipe(){
 			</div>
 
 
-
 			<!-- 메뉴 옵션 추가 CRUD -->
 			<div style="float: left; padding: 5px; width: 100%;" id="optionDiv">
 
