@@ -188,6 +188,7 @@ table tr th {
 </style>
 </head>
 <body>
+<input type="button" onclick="location.href='maintest.do'" value="메인화면 테스트">
 <!-- 시간별 매출 그래프 -->
 	<h3 align="center">시간별 통계</h3>
 	<div id="chart_div"></div><br>

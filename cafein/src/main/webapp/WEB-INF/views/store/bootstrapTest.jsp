@@ -26,7 +26,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <p class="text-white mt-5 mb-5">Welcome back, <b><%= session.getAttribute("sId") %></b></p>
+                    <p class="text-white mt-5 mb-5">Welcome back, <b><%= session.getAttribute("sName") %></b></p>
                 </div>
             </div>
             <!-- row -->

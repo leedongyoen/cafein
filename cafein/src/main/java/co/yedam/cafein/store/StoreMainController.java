@@ -38,6 +38,13 @@ public class StoreMainController {
 		return "store/login";
 	}
 	
+	//매장 메인화면 테스트
+	@RequestMapping("maintest.do")
+	public String storemaintest() {
+		return "store/bootstrapTest";
+	}
+	
+	
 	// 매장 메인 판매율 TOP3 메뉴 조회
 	@ResponseBody
 	@RequestMapping(value="/salesrank", method=RequestMethod.GET)
