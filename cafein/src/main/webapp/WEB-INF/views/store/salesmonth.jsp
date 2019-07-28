@@ -18,13 +18,15 @@
 	google.charts.setOnLoadCallback(drawBasic);
 
 	var sId = '<%= session.getAttribute("sId") %>';
-
+	
 	
 	var daydata;
 	function drawBasic() {
+		var startDate = $('#startDate').val();
+		
 		$.ajax({
 			url : "./getsalesmonth.do",
-			data : { sId : sId, week : "M", dates : "19"},
+			data : { sId : sId, week : "MM", startDate : startDate},
 			type : "POST",
 			datatype : "json",
 			success : function(days) {
@@ -68,6 +70,10 @@
 	<h2 align="center">매출</h2>
 	<h3 align="center">월별 통계</h3>
 	<div id="chart_div"></div>
+	<p align="center">
+		<input type ="date" name ="startDate" id="startDate">&nbsp;
+		<input type="button" value= "검색" class="btn btn-primary btn-sm" onclick="drawBasic()">
+	</p>
 	<div align="center" id="test_dataview2"></div><br>
 	<div>
 		<table align="center">

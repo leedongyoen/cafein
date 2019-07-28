@@ -121,7 +121,7 @@
 						OD.O_NUM = O.O_NUM
 						AND OD.M_NUM = M.M_NUM
 						AND O.S_ID = #{sId}
-						AND O.DELIVERY_STATUS NOT IN ('C4','C0')
+						AND O.DELIVERY_STATUS NOT IN ('C4','C0','C6')
 						AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
 						AND
 				 	<choose>
@@ -143,7 +143,7 @@
 	</select>
 	<!-- 월별 매출 통계 쿼리. -->
 	<select id="getMonthSales" resultType="salessum">
-		SELECT
+		<!-- SELECT
 		A.WEEK,
 		NVL(B.TOTALQTY, 0) CNT,
 		NVL(B.TOTALS, 0) ATOTAL
@@ -155,7 +155,7 @@
 		FROM
 		DUAL
 		CONNECT BY
-		<!-- 부등호 기호 들어가면 CDATA로 감싸주어야됨.  connect by level 로 컬럼 12개까지 설정.-->
+		부등호 기호 들어가면 CDATA로 감싸주어야됨.  connect by level 로 컬럼 12개까지 설정.
 			 <![CDATA[ 
 			LEVEL <= 12
 			]]>
@@ -219,7 +219,56 @@
 		WHERE
 		A.WEEK = B.WEEK(+)
 		ORDER BY
-		A.WEEK
+		A.WEEK -->
+		
+		SELECT A.WEEK,
+			 NVL(B.TOTALQTY, 0) CNT, 
+			 NVL(B.TOTALS, 0) ATOTAL
+		FROM (
+				SELECT LEVEL WEEK, 0 DAY
+				FROM DUAL
+				CONNECT BY LEVEL<![CDATA[ <= ]]> 12 ) A,
+				( SELECT WEEK, SUM(O_QTY) TOTALQTY, SUM(TOTAL) TOTALS
+				FROM 
+					(
+					SELECT DISTINCT O.S_ID,
+							 O.O_DATE, 
+							 TO_CHAR(O_DATE, 'MM') WEEK, 
+							 OD.O_QTY,
+							 O.TOTAL, 
+							 OD.OP_DNUM, 
+							 OD.M_NUM
+					FROM ORDER_DETAILS OD, 
+						MENU M, 
+						ORDERS O		
+					where	
+						OD.O_NUM = O.O_NUM
+						AND OD.M_NUM = M.M_NUM
+						AND O.S_ID = #{sId}
+						AND O.DELIVERY_STATUS NOT IN ('C4','C0','C6')
+						AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
+		<!-- 				
+						<choose>
+						 <when test="startDate != null and startDate !='' ">
+                  		   AND  O_DATE  BETWEEN TRUNC(ADD_MONTHS(TO_DATE(#{startDate},'YYYY-MM-DD'),-1)+1)-TO_CHAR(TO_DATE(#{startDate}),'DD')
+                 	  		 AND 
+                 	  		 TRUNC(LAST_DAY(ADD_MONTHS(TO_DATE(#{startDate},'YYYY-MM-DD'), +1))) +1
+                 	  		 AND
+                 	  		 TO_CHAR(O_DATE, 'YYYY') = SUBSTR(#{startDate},1,4) )
+                  		  </when>
+                  		  <otherwise>
+							 AND O_DATE  BETWEEN TRUNC(ADD_MONTHS(SYSDATE,-1)+1)-TO_CHAR(SYSDATE,'DD')
+                 	  		 AND 
+                 	  		 TRUNC(LAST_DAY(ADD_MONTHS(SYSDATE, +1))) +1
+                 	  		  )    	  		 					     
+						</otherwise> -->
+                  		AND TO_CHAR(O_DATE, 'YYYY') = TO_CHAR(TO_DATE(#{startDate}),'YYYY')  
+           			 )
+		GROUP BY WEEK ) B
+		WHERE A.WEEK = B.WEEK(+)
+
+     ORDER BY A.WEEK
+		
 	</select>
 	<!-- 연별 매출 통계 쿼리. -->
 	<select id="getYearSales" resultType="salessum">
@@ -237,7 +286,7 @@
 				ORDERS O JOIN ORDER_DETAILS OD
 				ON O.O_NUM = OD.O_NUM
 			WHERE
-			O.DELIVERY_STATUS NOT IN ('C4','C0')
+			O.DELIVERY_STATUS NOT IN ('C4','C0','C6')
 			AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
 			)
 		WHERE S_ID = #{sId}
@@ -256,7 +305,7 @@
 			ON M.M_NUM = OD.M_NUM JOIN ORDERS O
 			ON O.O_NUM = OD.O_NUM
 			WHERE M.S_ID = #{sId}
-			AND O.DELIVERY_STATUS NOT IN ('C4','C0')
+			AND O.DELIVERY_STATUS NOT IN ('C4','C0','C6')
 			AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
 			) AB
 			GROUP BY AB.M_NAME
@@ -300,7 +349,7 @@
 				</choose>
 					 AND
 					 M.S_ID = #{sId}
-					 AND O.DELIVERY_STATUS  NOT IN ('C4','C0')
+					 AND O.DELIVERY_STATUS  NOT IN ('C4','C0','C6')
                      AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')					 	
 			</where>	          
                 ) KIN 
