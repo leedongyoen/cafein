@@ -25,9 +25,14 @@ input {
 	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
 }
 
-table tbody tr td{
+table tbody tr td,
+.table td{
 	text-align: left;
+ 
+} 
 
+tableth{
+width: 50p;
 }
 
 </style>
@@ -422,7 +427,7 @@ table tbody tr td{
 			<div align="center">
 			<div class=”table-responsive“>
 			
-			<table class="table">
+			<table class="table"> 
 			
 <!-- 				<tr>
 					<th>주 문 번 호</th>
