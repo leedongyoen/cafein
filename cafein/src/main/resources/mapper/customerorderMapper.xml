@@ -2,8 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="CustomerOrderDAO">
 
-	<select id="getOrderlist" parameterType="order" resultType="order">
+
+	<select id="getorderlistcount" resultType="int">
+		SELECT COUNT(*)
+		FROM ORDERS
+		WHERE C_ID= #{cId}
+		<if test="orderlistcontroller == 7">
+			AND O_DATE > SYSTIMESTAMP-7
+		</if> 
+		<if test="orderlistcontroller != 7">
+			AND O_DATE > SYSTIMESTAMP - (INTERVAL '${orderlistcontroller}' MONTH)
+		</if> 
 	
+	</select>
+	<select id="getOrderlist" parameterType="order" resultType="order">
+	SELECT B.* FROM ( SELECT A.*, ROWNUM RN FROM (
 		SELECT O.O_NUM
 		      , O.C_ID
 		      , O.O_DATE
@@ -26,7 +39,9 @@
 			AND O.O_DATE > SYSTIMESTAMP - (INTERVAL '${orderlistcontroller}' MONTH)
 		</if>
 		ORDER BY O.O_DATE DESC
-	
+<![CDATA[ 
+	 ) A )B WHERE RN >= #{start} and RN <= #{end}	
+]]>
 	
 	</select>
 	

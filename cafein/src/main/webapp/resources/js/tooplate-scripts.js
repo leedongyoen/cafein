@@ -41,7 +41,7 @@ function drawLineChart() {
             cubicInterpolationMode: "monotone",
             pointRadius: 0
           },
-          {
+          /*{
             label: "Popular Hits",
             data: [33, 45, 37, 21, 55, 74, 69],
             fill: false,
@@ -56,7 +56,7 @@ function drawLineChart() {
             borderColor: "rgba(153, 102, 255, 1)",
             cubicInterpolationMode: "monotone",
             pointRadius: 0
-          }
+          }*/
         ]
       },
       options: optionsLine

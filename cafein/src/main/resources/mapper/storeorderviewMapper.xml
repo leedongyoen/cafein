@@ -3,8 +3,26 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="getStoreOrderListDAO">
 
-	<select id="getstoreorderlist" parameterType="order"  resultType="order">
+	<select id="getstoreorderlisttotal" resultType="int">
 	
+		SELECT COUNT(*)
+		FROM ORDERS
+		WHERE S_ID=#{sId}
+		
+		<if test="startDate != null and endDate != null ">
+			AND TO_CHAR(O_DATE,'YYYY-MM-DD') BETWEEN '${startDate}' AND '${endDate}'
+		</if>
+		<if test="startDate == null and endDate ==null">
+			AND TO_CHAR(O_DATE,'YYYY/MM/DD') BETWEEN TO_CHAR(SYSTIMESTAMP-1,'YYYY/MM/DD') AND TO_CHAR(SYSTIMESTAMP,'YYYY/MM/DD')
+		</if>
+		<if test="nocancelview != null">
+			AND DELIVERY_STATUS != 'C4'
+		</if>
+	
+	</select>
+
+	<select id="getstoreorderlist" parameterType="order"  resultType="order">
+	SELECT B.* FROM ( SELECT A.*, ROWNUM RN FROM (
 		SELECT DISTINCT
 					  O.O_DATE
 					, O.O_NUM
@@ -33,8 +51,10 @@
 					AND O.DELIVERY_STATUS != 'C4'
 				</if>
 				
-		ORDER BY O.O_NUM DESC
-	
+		ORDER BY O.O_NUM DESC 
+<![CDATA[ 
+	 ) A )B WHERE RN >= #{start} and RN <= #{end}
+]]>
 	</select>
 	
 	<select id="getstoreorderdetails" resultType="orderdt">

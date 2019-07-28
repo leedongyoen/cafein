@@ -85,7 +85,7 @@
 
 					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
 						<span class="label-input100">비밀번호</span>
-						<input class="input100" type="password" name="spw" placeholder="Enter password">
+						<input class="input100" type="password" name="spw" onkeypress="if(event.keyCode == 13){ checkForm(); return; }" placeholder="Enter password">
 						<span class="focus-input100"></span>
 					</div>
 					

@@ -5,12 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp"%>
+<style type="text/css">
+
+</style>
 <title>주문 목록</title>
 </head>
 <script>
 
 	$(function(){
 		getOrderList();
+		
+		
 	});
 	
 	function refuse(ordernum,sId){
@@ -37,24 +42,34 @@
 		}
 	}
 	
-	function getOrderList(){
+	function getOrderList(pagenumber){
 		var checklogin = "<%=(String) session.getAttribute("cId")%>";
 		var orderdate;
 		var controller = $('[name="controlllist"]').val(); 
 		console.log(controller);
+		
+		if(pagenumber == null){
+			console.log("null");
+			pagenumber=1;
+		}else{
+			console.log(pagenumber);
+		}
+		
 		$.ajax({
 			url:'orderlist',
 			type:'GET',
 			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
-			data: {cId: checklogin, orderlistcontroller:controller},
+			data: {cId: checklogin, orderlistcontroller:controller, checkpagenum : pagenumber},
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				$("#orderlist tbody").empty();
-				
-				$.each(data,function(idx,item){
+				$('#pageul').empty(); 
+				var list = data.list;
+				var paging = data.paging; 
+				$.each(list,function(idx,item){
 
 					orderdate= new Date(item.oDate);
 					if(item.payMethod == 'card')
@@ -83,14 +98,42 @@
 				 											}).css("display","none")
 															.append("결제 취소") ))
 					.appendTo('#orderlist tbody');
+					
+				
 				});
 				
 				$('.C0').css({
 					display:"inline"
 				});
 				
+				console.log("paging first : "+paging.first);
+				
+				var li;
+				// 처음 페이지 번호에서 마지막 페이지번호까지
+				
+				for(var n= paging.startPage; n<=paging.endPage; n++){
+					// 선택한 page 번호가 n이랑 같으면
+				 
+					if(paging.page == n){
+						li =  $('<li>').attr("class","page-item active")
+								.append($('<a>').attr({
+									class: "page-link"
+										, href: "javascript:getOrderList("+n+")"
+									}).append(n));
+						  
+					}else{
+						li =  $('<li>').attr("class","page-item")
+										.append($('<a>').attr({
+											class: "page-link"
+												, href: "javascript:getOrderList("+n+")"
+											}).append(n));
+					}  
+					$('#pageul').append(li);
+					
+				}
 				
 			} 
+			
 		});
 	}
 	
@@ -252,7 +295,11 @@
 				
 				</tbody>
 			</table>
-
+		
+			<ul id="pageul" class="pagination justify-content-center" >
+				
+			</ul>
+		 
 			<hr>
 			<br>
 		</div>

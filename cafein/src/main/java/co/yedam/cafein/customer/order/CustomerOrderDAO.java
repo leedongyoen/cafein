@@ -23,6 +23,11 @@ public class CustomerOrderDAO {
 		return dao.selectList("CustomerOrderDAO.getOrderlist",vo);
 	}
 	
+	// 주문 전체 수 ( 검색기능이 있고, 기본이 7일 )
+	public int getorderlistcount(OrdersVO vo) {
+		return dao.selectOne("CustomerOrderDAO.getorderlistcount",vo);
+	}
+	
 	// 고객 페이지 - 주문 클릭시 메뉴 상세
 	public List<OrderDetailsVO> getcustomerordermenudetail(OrdersVO vo){
 		return dao.selectList("CustomerOrderDAO.getcustomerordermenudetail",vo);
