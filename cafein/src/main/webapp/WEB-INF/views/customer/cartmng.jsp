@@ -81,13 +81,13 @@ $(function(){
 			.append($('<td rowspan="2">'))
 			.append($('<td>').html(local_cart[i].mName))   //.html(local_cart[i].mName))
 			.append($('<td rowspan="2">').html(state))    //.html(state))
-			.append($('<td rowspan="2">').append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"})).append($('<input>').attr({type: "text", name:"orderqty", id:"qty"+i,value:local_cart[i].qty})).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"})))
+			.append($('<td rowspan="2">').append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"})).append($('<input>').attr({type: "text", name:"orderqty",size:'3', id:"qty"+i,value:local_cart[i].qty})).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"})))
 			.append($('<td rowspan="2">').html(local_cart[i].totalPrice))
 			.append($('<input>').attr({type:"hidden", id:"price"+i, value:local_cart[i].totalPrice}))
 			.appendTo("#CartList table tbody");
 		
 			
-			$('<tr>').append($('<td>').append($('<ul>'))).appendTo("#CartList table tbody");
+			$('<tr>').append($('<td>').append($('<ul>').css("list-style","none"))).appendTo("#CartList table tbody");
 			
 			var storeName = "";
 			var imgName="";
@@ -108,7 +108,7 @@ $(function(){
 			}
 
 			
-			$('<img>').attr("src","${pageContext.request.contextPath}/image/"+imgName).css("width","100px").appendTo($('#CartList div table tbody tr:eq('+(2*i)+') td:eq(2)'));
+			$('<img>').attr("src","${pageContext.request.contextPath}/image/"+imgName).css("width","100px").css("padding","5px").appendTo($('#CartList div table tbody tr:eq('+(2*i)+') td:eq(2)'));
 			$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
 			
 			//$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
@@ -118,7 +118,7 @@ $(function(){
 				for(var j = 0;j<local_cart[i].cuoptionlist.length;j++){
 					var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuoptionlist[j]);
 				
-					$('<li>').html(detail).appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
+					$('<li>').html(detail).css("margin-right","50px").appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
 					
 				}
 			} 
@@ -294,17 +294,17 @@ function getOptionNaming(mnumber, stnumber){
 			</script>
 		</c:forEach>
 
-		<div style="padding: 3px; display: inline-block; text-align: center;" id="CartList"> <!-- border: 1px solid orange; -->
+		<div style="padding: 3px; display: inline-block; text-align: center; width:80%;" id="CartList"> <!-- border: 1px solid orange; -->
 			<!-- display: inline-block; -->
 
 			<form id="orderCartForm" name="orderCartForm" action="cartorder" method="POST">
 
-				<div style="background: gray;">
+				<div style="background: pink;">
 					<label><input type="checkbox" onClick="allCheck(this.value)"></label> <a href="#"></a>
 				</div>
 				<div style="text-align: center;">
 
-					<table border="1">
+					<table border="1" style="width:100%;">
 
 
 						<thead>
