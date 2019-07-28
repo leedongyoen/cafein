@@ -18,7 +18,7 @@
  
  String today = sf.format(now);
  
-
+ 
 %>
 <style type="text/css">
 input {

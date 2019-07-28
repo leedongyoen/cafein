@@ -16,6 +16,8 @@
  		mainLikeMenuList();
 		
  		mainOrderList();
+ 		
+ 		loginCheck();
  	});
 	
 	var cId = '<%= session.getAttribute("cId") %>';
