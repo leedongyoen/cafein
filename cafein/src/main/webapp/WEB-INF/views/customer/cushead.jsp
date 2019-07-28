@@ -24,13 +24,24 @@
 			$("#loginbtn").css('display', 'block');
 			$("#logoutbtn").css('display', 'none');
 			$("#dropdown01").css('display', 'none');
+			$("#cartbtn").css('display', 'none');
+			
 		}
 		if(id != "null") {
 			$("#loginbtn").css('display', 'none');
 			$("#logoutbtn").css('display', 'block');
 			$("#dropdown01").css('display', 'block');
+			$("#cartbtn").css('display', 'block');  
 		}
 	});
+	
+	function loginCheck(){
+		var cId = "<%= (String)session.getAttribute("cId") %>";
+		if(cId == "null") {
+
+			location.href="${pageContext.request.contextPath}/customerstorelist.do";
+		}
+	}
 </script>
 <style>
 body {
@@ -74,7 +85,7 @@ body {
                 	<a class="nav-link" href="${pageContext.request.contextPath}/customerlogout.do" id="logoutbtn" style="display: none;">Logout</a>
                 </li>                
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/cartmng">장바구니</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/cartmng" id="cartbtn">장바구니</a>
                 </li>
         </ul>
     </div>
