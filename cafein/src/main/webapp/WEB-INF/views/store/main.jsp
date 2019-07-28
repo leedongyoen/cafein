@@ -7,13 +7,6 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <%@ include file="storehead.jsp" %>
 <title>Store Main Page</title>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
-    <!-- https://fonts.google.com/specimen/Roboto -->
-    <link rel="stylesheet" href="resources/css/fontawesome.min.css">
-    <!-- https://fontawesome.com/ -->
-    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
-    <!-- https://getbootstrap.com/ -->
-    <!-- <link rel="stylesheet" href="resources/css/templatemo-style.css"> -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
 
@@ -249,14 +242,5 @@ table tr th {
 	</table>
 	</div>
 </div>
-	<script src="resources/js/jquery-3.3.1.min.js"></script>
-    <!-- https://jquery.com/download/ -->
-    <script src="resources/js/moment.min.js"></script>
-    <!-- https://momentjs.com/ -->
-    <script src="resources/js/Chart.min.js"></script>
-    <!-- http://www.chartjs.org/docs/latest/ -->
-    <script src="resources/js/bootstrap.min.js"></script>
-    <!-- https://getbootstrap.com/ -->
-    <script src="resources/js/tooplate-scripts.js"></script>
 </body>
 </html>
