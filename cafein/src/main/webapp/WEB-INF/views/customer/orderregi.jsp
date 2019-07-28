@@ -24,6 +24,12 @@
 input {
 	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
 }
+
+table tbody tr td{
+	text-align: left;
+
+}
+
 </style>
 <script type="text/javascript">
 	var price = 4100;

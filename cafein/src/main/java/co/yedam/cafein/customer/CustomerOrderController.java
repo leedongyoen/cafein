@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.JsonObject;
 
+import co.yedam.cafein.common.Paging;
 import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
 import co.yedam.cafein.store.info.StoreInfoServiceImpl;
 import co.yedam.cafein.store.menu.MenuServiceImpl;
@@ -119,12 +120,50 @@ public class CustomerOrderController {
 	// 고객 주문 리스트 가져오기
 	@ResponseBody
 	@RequestMapping(value = "/orderlist", method = RequestMethod.GET)
-	public List<OrdersVO> getOrderList(OrdersVO vo, HttpSession session) {
+	public Map<String, Object> getOrderList(OrdersVO vo, HttpSession session) {
 		/*
 		 * OrdersVO vo = new OrdersVO(); vo.setcId(cId);
 		 */
 		
-		return service.getOrderList(vo);
+		Paging paging = new Paging();
+		paging.setPage(vo.getCheckpagenum());
+		
+		vo.setStart(paging.getFirst());
+		vo.setEnd(paging.getLast());
+		
+		
+		// 전체 건수 받아오기
+		paging.setTotalRecord(service.getorderlistcount(vo));
+		
+		/*
+		 * // 보여주는 행의 처음과 끝 vo.setStartPage(paging.getStartPage());
+		 * vo.setEndPage(paging.getEndPage());
+		 * 
+		 * // 마지막 페이지번호 vo.setLastPage(paging.getLastPage());
+		 */
+		
+		System.out.println("================getTotalRecord"+
+					paging.getTotalRecord()+
+					"=== getCheckpagenum"+
+					vo.getCheckpagenum()
+					+"=== getStart"+
+					vo.getStart()
+					+"=== getEnd"+
+					vo.getEnd()
+					+"=== getStartPage"+
+					vo.getStartPage()
+					+"=== getEndPage"+
+					vo.getEndPage()
+					+"=== getLastPage"+
+					vo.getLastPage()
+
+				);
+		List<OrdersVO> orderlist = service.getOrderList(vo);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("list", orderlist);
+		result.put("paging", paging);
+		
+		return result;
 	}
 	
 	// 고객 페이지 - 주문 클릭시 메뉴 상세

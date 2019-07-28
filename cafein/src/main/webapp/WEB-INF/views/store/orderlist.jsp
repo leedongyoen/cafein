@@ -50,11 +50,11 @@
 	  			alert('검색 날짜를 확인해주세요.');
 	  			return;
 	  		}else if((startDate != '' || endDate != '') && checked ){
-	  			// 검색 날짜가 있고, 주문 취소 제외햇을때
+	  			// 검색 날짜가 있고, 주문 취소 제외햇을때 0
 	  			searchdate_nocancelview(startDate,endDate);
 	  			return;
 	  		}else if( (startDate != '' || endDate != '') && !checked  ){
-	  			// 날짜 검색이 있고, 주문 취소 제외는 없다.
+	  			// 날짜 검색이 있고, 주문 취소 제외는 없다.0
 	  			searchDate();
 	  			
 	  		}
@@ -80,24 +80,28 @@
 
 	
 	// 날짜 검색 중에 주문 취소 제외시키는 경우
-	function searchdate_nocancelview(startDate,endDate){
+	function searchdate_nocancelview(startDate,endDate,checkpagenum){
 		
 		var sId = '<%= session.getAttribute("sId") %>';
+		
+		if(checkpagenum == null)
+			checkpagenum =1;
 		$('#orderlisttable tbody').empty();
 		$.ajax({
 			url: 'getstoreorderlist',
 			type:'GET',
-			data: {sId: sId, startDate: startDate, endDate: endDate, nocancelview: 'Y'},
+			data: {sId: sId, startDate: startDate, endDate: endDate, nocancelview: 'Y',checkpagenum:checkpagenum},
 			dataType:'json',
 			async: false,
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				
+				$('#pageul').empty(); 
 				$('#orderlisttable tbody').empty();
-				
-				if(data.length == 0){
+				var list = data.list;
+				var paging = data.paging;
+				if(list.length == 0){
 					
 					$('<tr>').append($('<td>').html("해당 기간에는 주문이 없습니다.").attr("colspan","12").attr("rowspan","3"))
 					.appendTo('#orderlisttable tbody');
@@ -105,7 +109,7 @@
 					return;
 				
 				}
-				$.each(data,function(idx,item){
+				$.each(list,function(idx,item){
 					
 					if(item.cAdd == null) item.cAdd="";
 					if(item.cAdd3 == null) item.cAdd3 = "";
@@ -120,19 +124,52 @@
 					
 					
 				});
+				
+				console.log(paging);
+				
+				console.log("paging first : "+paging.first);
+				//function searchdate_nocancelview(startDate,endDate,checkpagenum){
+				var li;
+				// 처음 페이지 번호에서 마지막 페이지번호까지
+				
+				for(var n= paging.startPage; n<=paging.endPage; n++){
+					// 선택한 page 번호가 n이랑 같으면
+				 
+					if(paging.page == n){
+						li =  $('<li>').attr("class","page-item active")
+								.append($('<a>').attr({
+									class: "page-link"
+										, href: "javascript:searchdate_nocancelview('"+startDate+"','"+endDate+"',"+n+")"
+									}).append(n));
+						  
+					}else{
+						li =  $('<li>').attr("class","page-item")
+										.append($('<a>').attr({
+											class: "page-link"
+												, href: "javascript:searchdate_nocancelview('"+startDate+"','"+endDate+"',"+n+")"
+											}).append(n));
+					}  
+					$('#pageul').append(li);
+					
+				}
+				
 			}
 		});
 	}
 	
 	
 	// 주문 취소 제외시
-	function cancelorderno(){
+	function cancelorderno(checkpagenum){
 		var sId = '<%= session.getAttribute("sId") %>';
 		$('#orderlisttable tbody').empty();
-		$.ajax({
+		$('#pageul').empty(); 
+		if(checkpagenum == null)
+			checkpagenum =1;
+		
+		$.ajax({ 
 			url: 'getstoreorderlist',
 			type:'GET',
-			data: {sId: sId, nocancelview: 'Y'},
+			data: {sId: sId, nocancelview: 'Y',checkpagenum: checkpagenum},
 			dataType:'json',
 			async: false,
 			error:function(xhr,status,msg){
@@ -140,9 +177,10 @@
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				
-				$('#orderlisttable tbody').empty();
+				var list = data.list;
+				var paging = data.paging;
 				
-				$.each(data,function(idx,item){
+				$.each(list,function(idx,item){
 					
 					if(item.cAdd == null) item.cAdd="";
 					if(item.cAdd3 == null) item.cAdd3 = "";
@@ -157,6 +195,34 @@
 					
 					
 				});
+				
+				
+				console.log(paging);
+				
+				console.log("paging first : "+paging.first);
+				//function searchdate_nocancelview(startDate,endDate,checkpagenum){
+				var li;
+				// 처음 페이지 번호에서 마지막 페이지번호까지
+				
+				for(var n= paging.startPage; n<=paging.endPage; n++){
+					// 선택한 page 번호가 n이랑 같으면
+				 
+					if(paging.page == n){
+						li =  $('<li>').attr("class","page-item active")
+								.append($('<a>').attr({
+									class: "page-link"
+										, href: "javascript:cancelorderno("+n+")"
+									}).append(n));
+						  
+					}else{
+						li =  $('<li>').attr("class","page-item")
+										.append($('<a>').attr({
+											class: "page-link"
+												, href: "javascript:cancelorderno("+n+")"
+											}).append(n));
+					}  
+					$('#pageul').append(li);
+				} 
 			}
 		});
 	}
@@ -301,15 +367,19 @@
 	}
 	
 	
-	function getstoreorderlist(){
+	function getstoreorderlist(checkpagenum){
 		
 		
 		var sId = '<%= session.getAttribute("sId") %>';
+		
+		if(checkpagenum == null)
+			checkpagenum = 1;
+		
 		$('#orderlisttable tbody').empty();
 		$.ajax({
 			url: 'getstoreorderlist',
 			type:'GET',
-			data: {sId: sId},
+			data: {sId: sId, checkpagenum:checkpagenum},
 			dataType:'json',
 			async: false,
 			error:function(xhr,status,msg){
@@ -318,8 +388,10 @@
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
 				
 				$('#orderlisttable tbody').empty();
-				
-				$.each(data,function(idx,item){
+				$('#pageul').empty(); 
+				var list = data.list;
+				var paging = data.paging;
+				$.each(list,function(idx,item){
 					
 					if(item.cAdd == null) item.cAdd="";
 					if(item.cAdd3 == null) item.cAdd3 = "";
@@ -334,6 +406,34 @@
 					
 					
 				});
+				console.log(paging);
+				
+				console.log("paging first : "+paging.first);
+				
+				var li;
+				// 처음 페이지 번호에서 마지막 페이지번호까지
+				
+				for(var n= paging.startPage; n<=paging.endPage; n++){
+					// 선택한 page 번호가 n이랑 같으면
+				 
+					if(paging.page == n){
+						li =  $('<li>').attr("class","page-item active")
+								.append($('<a>').attr({
+									class: "page-link"
+										, href: "javascript:getOrderList("+n+")"
+									}).append(n));
+						  
+					}else{
+						li =  $('<li>').attr("class","page-item")
+										.append($('<a>').attr({
+											class: "page-link"
+												, href: "javascript:getOrderList("+n+")"
+											}).append(n));
+					}  
+					$('#pageul').append(li);
+					
+				}
+				
 			}
 		});
 		
@@ -489,10 +589,13 @@
 		});
 	}
 	// 날짜 검색
-	function searchDate(){
+	function searchDate(checkpagenum){
 		var startDate = jQuery('#storeorderstartdate').val();
   		var endDate = jQuery('#storeorderenddate').val();
   		
+  		if(checkpagenum == null){
+  			checkpagenum =1;
+  		}
   		
   		if(startDate > endDate){
   			alert('검색 날짜를 확인해주세요.');
@@ -513,17 +616,18 @@
 		$.ajax({
 			url: 'getstoreorderlist',
 			type:'GET',
-			data: {sId: sId, startDate: startDate, endDate: endDate},
+			data: {sId: sId, startDate: startDate, endDate: endDate,checkpagenum:checkpagenum},
 			dataType:'json',
 			async: false,
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				
+				$('#pageul').empty(); 
 				$('#orderlisttable tbody').empty();
-				
-				if(data.length == 0){
+				var list = data.list;
+				var paging = data.paging;
+				if(list.length == 0){
 					
 					$('<tr>').append($('<td>').html("해당 기간에는 주문이 없습니다.").attr("colspan","12").attr("rowspan","3"))
 					.appendTo('#orderlisttable tbody');
@@ -531,7 +635,7 @@
 					return;
 				
 				}
-				$.each(data,function(idx,item){
+				$.each(list,function(idx,item){
 					
 					if(item.cAdd == null) item.cAdd="";
 					if(item.cAdd3 == null) item.cAdd3 = "";
@@ -546,6 +650,35 @@
 					
 					
 				});
+				
+				console.log(paging);
+				
+				console.log("paging first : "+paging.first);
+				
+				var li;
+				// 처음 페이지 번호에서 마지막 페이지번호까지
+				
+				for(var n= paging.startPage; n<=paging.endPage; n++){
+					// 선택한 page 번호가 n이랑 같으면
+				 
+					if(paging.page == n){
+						li =  $('<li>').attr("class","page-item active")
+								.append($('<a>').attr({
+									class: "page-link"
+										, href: "javascript:searchDate("+n+")"
+									}).append(n));
+						  
+					}else{
+						li =  $('<li>').attr("class","page-item")
+										.append($('<a>').attr({
+											class: "page-link"
+												, href: "javascript:searchDate("+n+")"
+											}).append(n));
+					}  
+					$('#pageul').append(li);
+					
+				}
+				
 			}
 		});
   		
@@ -614,6 +747,13 @@
 			</tbody>
 		</table>
 
+<!-- ============================================================	 -->	
+		<!-- paging 추가   -->
+		<ul id="pageul" class="pagination justify-content-center" >
+				
+		</ul>
+<!-- ============================================================	 -->			
+		
 	<!-- 승인  Modal -->
 	<div class="modal fade" id="applyemodal" role="dialog">
 		<div class="modal-dialog">		

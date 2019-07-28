@@ -56,6 +56,10 @@ public class OrdersVO {
 	// 페이징 처리
 	private int start;
 	private int end;
+	private int checkpagenum;
+	private int startPage;
+	private int endPage;
+	private int lastPage;
 	
 	// 고객 - 주문 조회 페이지
 	private int orderlistcontroller;
@@ -71,8 +75,34 @@ public class OrdersVO {
 	private String mileageservice;
 	
 	
+	
+
+	public int getLastPage() {
+		return lastPage;
+	}
+	public void setLastPage(int lastPage) {
+		this.lastPage = lastPage;
+	}
+	public int getStartPage() {
+		return startPage;
+	}
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
+	}
 
 
+	public int getEndPage() {
+		return endPage;
+	}
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+	public int getCheckpagenum() {
+		return checkpagenum;
+	}
+	public void setCheckpagenum(int checkpagenum) {
+		this.checkpagenum = checkpagenum;
+	}
 	public String getNocancelview() {
 		return nocancelview;
 	}
