@@ -33,7 +33,7 @@
   <form name = "loginForm" action = "customerloginresult.do" method = "post">
     <h3>로그인</h3>
       <label>ID </label><input type = "text" name = "cId"><br>
-      <label>PW </label><input type = "password" name = "cPw"><br><br>
+      <label>PW </label><input type = "password" name = "cPw" onkeypress="if(event.keyCode == 13){ checkForm(); return; }"><br><br>
       <input type = "button" class="btn btn-default " onclick = "checkForm()" value = "로그인">
       <a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/kakaologin&response_type=code">
       	<img src="${pageContext.request.contextPath}/image/kakaologin.png">

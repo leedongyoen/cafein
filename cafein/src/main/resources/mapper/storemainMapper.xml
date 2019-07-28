@@ -6,20 +6,26 @@
 	<select id="getSalesRank" resultType="order">
 		SELECT *
 		FROM (
-		        SELECT M.M_NAME
-		             , SUM(OD.O_QTY) "cnt"
-		             , ROW_NUMBER() OVER (ORDER BY SUM(OD.O_QTY) DESC) "rank"
-		        FROM ORDER_DETAILS OD JOIN ORDERS O
-		        ON O.O_NUM = OD.O_NUM
-		        JOIN MENU M
-		        ON OD.M_NUM = M.M_NUM
-		        WHERE O.S_ID = #{sId}
-		        AND O.DELIVERY_STATUS IN ('C3','C5')
-		        AND OD.CA_NUM IN ('CACO','CADR','CADE')
-		        AND TO_CHAR(O.O_DATE,'YYYY/MM') = TO_CHAR(SYSDATE - TO_CHAR(SYSDATE, 'DD') + 1 ,'YYYY/MM')
-		        GROUP BY M.M_NUM, M.M_NAME
-		) MENURANK
-		WHERE MENURANK."rank" <![CDATA[ < ]]> 4
+		        SELECT  MENURANK.M_NAME
+		              , SUM(MENURANK.O_QTY) "cnt"
+		              , ROW_NUMBER() OVER (ORDER BY SUM(MENURANK.O_QTY) DESC) "rank"
+		        FROM (
+		                SELECT   DISTINCT M.M_NAME
+		                     , OD.O_QTY
+		                     , OD.OP_DNUM
+		                FROM ORDER_DETAILS OD JOIN ORDERS O
+		                ON O.O_NUM = OD.O_NUM
+		                JOIN MENU M
+		                ON OD.M_NUM = M.M_NUM
+		                WHERE O.S_ID = #{sId}
+		                AND O.DELIVERY_STATUS IN ('C3','C5')
+		                AND OD.CA_NUM IN ('CACO','CADR','CADE')
+		                AND O.O_DATE BETWEEN TRUNC(SYSDATE+1)-TO_CHAR(SYSDATE,'DD') AND TRUNC(LAST_DAY(SYSDATE))+1
+		                ) MENURANK
+		        group by MENURANK.M_NAME
+		        order by 3
+		)TOTAL
+		WHERE TOTAL."rank" <![CDATA[ < ]]> 4
 	</select>
 	
 	<!-- 재고 소모율 top3  조회 -->

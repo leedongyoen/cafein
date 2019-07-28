@@ -17,6 +17,9 @@
 	google.charts.setOnLoadCallback(drawBasic);
 
 	$(function(){
+		if(sId == 'null') {
+			location.href="store/login";
+		}
 		menuTop3();
 		stockLess();
 		mileageInfo();
