@@ -47,7 +47,7 @@
 							.getElementById('test_dataview3'))
 	
 				table.draw(daydata, {
-					 width: '30%', height: '30%'
+					 width: '80%', height: '100%'
 				});
 	
 				var chart = new google.visualization.LineChart(document
@@ -191,56 +191,60 @@ table tr th {
 <input type="button" onclick="location.href='maintest.do'" value="메인화면 테스트">
 <!-- 시간별 매출 그래프 -->
 	<h3 align="center">시간별 통계</h3>
-	<div id="chart_div"></div><br>
-	<div align="center" id="test_dataview3"></div>
+	<div class="row">
+		<div class="col-8" id="chart_div"></div><br>
+		<div class="col-4" id="test_dataview3"></div>
+	</div>
 	<br>	
 <div class = "container" align="center">
-	<!-- 판매율 -->
-	<div style = "float:left;margin-right:10px;">
-	<table border = "1" id="salesRank">
-		<thead>
-			<tr>
-				<th colspan = "3">월별 판매율 TOP3 메뉴</th>
-			</tr>
-			<tr>
-			<th>No.</th>
-			<th>메뉴명</th>
-			<th>판매량</th>
-		</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
-	</div>
-	<!-- 재고 소모 순위 -->
-	<div style = "float:left;margin-right:10px;">
-	<table border = "1" id="stockLess">
-		<thead>
-			<tr>
-				<th colspan = "3">일일 재고 소모 순위</th>
-			</tr>
-			<tr>
+	<div class="row">
+		<!-- 판매율 -->
+		<div class="col-sm">
+		<table border = "1" id="salesRank">
+			<thead>
+				<tr>
+					<th colspan = "3">월별 판매율 TOP3 메뉴</th>
+				</tr>
+				<tr>
 				<th>No.</th>
-				<th>재고명</th>
-				<th>소모량</th>
+				<th>메뉴명</th>
+				<th>판매량</th>
 			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
-	</div>
-	<!-- 적립금 현황 -->
-	<div>
-	<table border = "1" id="mileageInfo">
-		<thead>
-			<tr height="66px">
-				<th>적립된 마일리지</th>
-				<th>사용된 마일리지</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		</div>
+		<!-- 재고 소모 순위 -->
+		<div class="col-sm">
+		<table border = "1" id="stockLess">
+			<thead>
+				<tr>
+					<th colspan = "3">일일 재고 소모 순위</th>
+				</tr>
+				<tr>
+					<th>No.</th>
+					<th>재고명</th>
+					<th>소모량</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		</div>
+		<!-- 적립금 현황 -->
+		<div class="col-sm">
+		<table border = "1" id="mileageInfo">
+			<thead>
+				<tr height="66px">
+					<th>적립된 마일리지</th>
+					<th>사용된 마일리지</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		</div>
 	</div>
 </div>
 </body>
