@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import co.yedam.cafein.common.Paging;
 import co.yedam.cafein.customer.CustomerOrderController;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
@@ -29,10 +29,45 @@ public class StoreOrderController {
 	// 해당 매장의 주문 목록
 	@ResponseBody
 	@RequestMapping(value="getstoreorderlist", method=RequestMethod.GET)
-	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
+	public Map<String, Object> getstoreorderlist(OrdersVO vo){
+		
+		Paging paging = new Paging();
+		
+		paging.setPage(vo.getCheckpagenum());
+		paging.setPageUnit(7);
+		vo.setStart(paging.getFirst());
+		vo.setEnd(paging.getLast());
 		
 		
-		return service.getstoreorderlist(vo);
+		// 전체 건수 받아오기
+		paging.setTotalRecord(service.getstoreorderlisttotal(vo));
+		
+		
+		System.out.println("================getTotalRecord"+
+					paging.getTotalRecord()+
+					"=== getCheckpagenum"+
+					vo.getCheckpagenum()
+					+"=== getStart"+
+					vo.getStart()
+					+"=== getEnd"+
+					vo.getEnd()
+					+"=== getStartPage"+
+					paging.getStartPage()
+					+"=== getEndPage"+
+					paging.getEndPage()
+					+"=== getLastPage"+
+					paging.getLastPage()
+
+				);
+		
+		
+		
+		List<OrdersVO> orderlist = service.getstoreorderlist(vo);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("list", orderlist);
+		result.put("paging", paging);
+		
+		return result;
 	}
 	
 	// 해당 매장의 주문 상세

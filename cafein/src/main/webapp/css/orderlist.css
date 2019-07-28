@@ -56,7 +56,7 @@ table thead tr th,
 .table td, .table th , .table thead th{
 	
 	vertical-align: middle;
-
+	text-align: center;
 }
 
 
@@ -67,6 +67,9 @@ table tbody tr td,
 	font-family: 'WONDotum';
 	font-size: 15px;
 	font-weight: normal; 
+	text-align: center;
+	vertical-align: middle;
+	 
 } 
 
 
