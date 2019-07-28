@@ -326,7 +326,7 @@ var ordernum ="";
 			$('#cusMile').val(totalmileage);
 			$('#reservebtn').attr('disabled',false);
 		});
-	 	
+	 	                                   
 	
 	// 최종 주문하기버튼 결제하기
 	 $('#orderbtn').on("click",function(){
