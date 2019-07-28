@@ -106,7 +106,6 @@ $(function(){
 						imgName=arrImg[k];
 					}
 			}
-
 			
 			$('<img>').attr("src","${pageContext.request.contextPath}/image/"+imgName).css("width","100px").css("padding","5px").appendTo($('#CartList div table tbody tr:eq('+(2*i)+') td:eq(2)'));
 			$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
