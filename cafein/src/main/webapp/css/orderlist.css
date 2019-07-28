@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
 @import url('https://fonts.googleapis.com/css?family=Cute+Font|Nanum+Myeongjo|Noto+Sans+KR|Stylish&display=swap');
+@font-face { 
+	font-family: 'WONDotum'; 
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/WONDotum.woff') 
+			format('woff'); 
+	font-weight: normal; 
+	font-style: normal; 
+}
 
 
 /*  글씨체
@@ -8,19 +15,19 @@
 	font-family: 'Stylish', sans-serif;
 	font-family: 'Nanum Myeongjo', serif;
 	font-family: 'Noto Sans KR', sans-serif;
-
+	font-family: 'WONDotum';
 
   */ 
 
 body{
-	font-family: 'Noto Sans KR', sans-serif;
-	font-size: 17px;
+	font-family: 'WONDotum';
+	font-size: 15px;
 }
  
   
 /*  페이지 타이틀을 위한 css  */ 
 .titlefont{
-	font-family: 'Nanum Myeongjo', serif;
+	font-family: 'WONDotum';
 	font-size: 50px;
 	 font-weight: 800;
 	 
@@ -39,18 +46,27 @@ table tr th,
 table thead tr th,
 .trth
 {
-	font-family: 'Nanum Myeongjo', serif;
+	font-family: 'WONDotum';
 	font-size: 20px;
 	font-weight: 800;
+	text-align: center;
 	
 }  
+
+.table td, .table th , .table thead th{
+	
+	vertical-align: middle;
+
+}
+
 
 table tr td,
 table tbody tr td,
 .trtd
 {
-	font-family: 'Noto Sans KR', sans-serif;
-	font-size: 17px;
+	font-family: 'WONDotum';
+	font-size: 15px;
+	font-weight: normal; 
 } 
 
 
@@ -152,6 +168,29 @@ select {
 	color: #FFF;
 }
 
+
+/* =========================================================== */
+/* 로딩할 때 보여주기 위한 곳.   */
+/* Ajax 로딩 스피너 디자인 */
+.loading-spinner {
+  position: fixed;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  margin: 0;
+  color: #ff878c;
+  font-size: 12px;
+  transform: translate(-50%, -50%);
+}
+
+.loading-spinner img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+/* =========================================================== */
 
 
 /*  modal bottom css  */ 

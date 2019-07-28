@@ -81,9 +81,10 @@ public class PosController {
 	//pos기 환불
 	@ResponseBody
 	@RequestMapping (value = "/refoundsuccess", method = RequestMethod.POST)
-	public String refoundcall(OrdersVO vo) {
+	public OrdersVO refoundcall(OrdersVO vo) {
 		System.out.println("환불");
-		return "redirect:/pos.do";
+		posService.refoundcall(vo);
+		return vo;
 	}
 	
 	//pos기 주문
@@ -302,19 +303,7 @@ public class PosController {
 			  ordervo.setmNum(v_mNum); 
 			  result = cusService.getmutilodnum(ordervo); 
 			  
-			int mileageresult;
-			// 해당 매장의 마일리지 서비스를 할 경우에만.
-			ordervo.setMileageservice((String) insertParam.get("stMileageService"));
-			if(ordervo.getMileageservice().equals("Y")) {
-				
-				// 마일리지 업데이트
-				mileageresult = cusService.updatemileage(ordervo);
-				
-				// 해당 매장에 대한 마일리지가 없을 경우
-				if(mileageresult == 0) {
-					mileageresult = cusService.insertmileage(ordervo);
-				}
-			}
+			
 			  
 			  
 			/*
@@ -323,8 +312,22 @@ public class PosController {
 			 * cusService.getmutilodnum(ordervo); }
 			 */
 		  }  
-		     
-		
+		  
+		  int mileageresult;
+			// 해당 매장의 마일리지 서비스를 할 경우에만.
+			ordervo.setMileageservice((String) insertParam.get("stMileageService"));
+			
+			if(ordervo.getMileageservice().equals("Y") && (!ordervo.getcId().equals("null") ||  !ordervo.getcId().equals(null))) {
+				System.out.println("============== 마일리지 insert");
+			/*
+			 * // 마일리지 업데이트 mileageresult = cusService.updatemileage(ordervo);
+			 * 
+			 * // 해당 매장에 대한 마일리지가 없을 경우 if(mileageresult == 0 ) { mileageresult =
+			 * cusService.insertmileage(ordervo); }
+			 */
+			}
+		  
+		  
 		  return "redirect:/pos.do";
 	}
 	

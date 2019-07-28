@@ -5,7 +5,9 @@
 
 	<select id="getstoreorderlist" parameterType="order"  resultType="order">
 	
-		SELECT DISTINCT O.O_NUM
+		SELECT DISTINCT
+					  O.O_DATE
+					, O.O_NUM
 					, M.M_NUM 
 					, M.M_NAME 
 					, ORD.OP_DNUM
@@ -26,6 +28,9 @@
 				</if>
 				<if test="startDate == null and endDate ==null">
 					AND TO_CHAR(O.O_DATE,'YYYY/MM/DD') BETWEEN TO_CHAR(SYSTIMESTAMP-1,'YYYY/MM/DD') AND TO_CHAR(SYSTIMESTAMP,'YYYY/MM/DD')
+				</if>
+				<if test="nocancelview != null">
+					AND O.DELIVERY_STATUS != 'C4'
 				</if>
 				
 		ORDER BY O.O_NUM DESC
@@ -158,5 +163,13 @@
 						call ORDER_CANCEL_PRO()
 				}
 	</select>
-
+	
+	
+	<select id="stockupdate" statementType="CALLABLE">
+				{
+						call SET_STOCK_CONSUM()
+				}
+	</select>
+	
+	
 </mapper>

@@ -30,4 +30,9 @@ public class MenuServiceImpl{
 	public int updateFile(MenuVO vo) {
 		return menuDao.updateFile(vo);
 	}
+	
+	public int insertMenuProc1(MenuVO vo) {
+		return menuDao.insertMenuProc1(vo);
+	}
+	
 }

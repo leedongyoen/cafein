@@ -10,8 +10,23 @@ public class RecipeVO {
 	private String caNum;
 	private String opName;
 	private String opPrice;
+	private int turnNo;
+	private String recipeDetail;
 	
 	
+	
+	public int getTurnNo() {
+		return turnNo;
+	}
+	public void setTurnNo(int turnNo) {
+		this.turnNo = turnNo;
+	}
+	public String getRecipeDetail() {
+		return recipeDetail;
+	}
+	public void setRecipeDetail(String recipeDetail) {
+		this.recipeDetail = recipeDetail;
+	}
 	public double getConsum() {
 		return consum;
 	}
@@ -64,9 +79,10 @@ public class RecipeVO {
 	@Override
 	public String toString() {
 		return "RecipeVO [recipeno=" + recipeno + ", sId=" + sId + ", consum=" + consum + ", stNum=" + stNum + ", mNum="
-				+ mNum + ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice + "]";
+				+ mNum + ", caNum=" + caNum + ", opName=" + opName + ", opPrice=" + opPrice + ", turnNo=" + turnNo
+				+ ", recipeDetail=" + recipeDetail + "]";
 	}
-	
+
 	
 	
 }

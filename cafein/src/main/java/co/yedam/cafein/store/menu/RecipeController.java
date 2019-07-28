@@ -24,32 +24,7 @@ public class RecipeController {
 	@Autowired
 	RecipeSerciveImpl service,service2;
 	
-	
-	
-	/*
-	 * @RequestMapping(value="/storerecipemenuoption/{sId}/{mNum}",
-	 * method=RequestMethod.GET) public ModelAndView getRecipeList(
-	 * 
-	 * @PathVariable("sId") String sId , @PathVariable("mNum") String mNum
-	 * //,ViewStockCheckVO vo ,Model model){
-	 * 
-	 * 
-	 * ModelAndView mv = new ModelAndView(); ViewStockCheckVO vo = new
-	 * ViewStockCheckVO(); RecipeVO vo2 = new RecipeVO(); StockVO vo3 = new
-	 * StockVO();
-	 * 
-	 * vo.setsId(sId); vo.setmNum(mNum); vo2.setsId(sId); vo2.setmNum(mNum);
-	 * vo3.setsId(sId); //
-	 * mv.addObject("recipedetail",service.getRecipeDetailList(vo2));
-	 * mv.addObject("recipelist",service.getRecipeList(vo)); //모든 레시피 정보 가져옴
-	 * mv.addObject("stocklist",service.getRecipeStockList(vo3)); //stock caNum 가져옴
-	 * 
-	 * mv.setViewName("store/menulist"); return mv;
-	 * 
-	 * }
-	 */
-	
-	//조건있는 전체조회
+	//議곌굔�엳�뒗 �쟾泥댁“�쉶
 	
 	  @RequestMapping(value="/recipes/{sId}/{mNum}",
 	  method=RequestMethod.GET) public List<ViewStockCheckVO> getRecipeList(
@@ -60,17 +35,25 @@ public class RecipeController {
 	  
 	  vo.setsId(sId); vo.setmNum(mNum); 
 	  //service.getRecipeDetailList(vo); 
+	  
 	  return service.getRecipeList(vo);
 	  
 	  }
 	 
 	
 	@ResponseBody
-	@RequestMapping(value="/recipes/{recipeno}", method=RequestMethod.DELETE)
-	public Map deleteRecipe( @PathVariable("recipeno") String recipeno, RecipeVO vo, Model model) {
+	@RequestMapping(value="/recipes/{sId}/{recipeno}/{turnNo}", method=RequestMethod.DELETE)
+	public Map deleteRecipe(@PathVariable("sId") String sId,
+							@PathVariable("recipeno") String recipeno,
+							@PathVariable("turnNo") String turnNo,
+							RecipeVO vo, Model model) {
+		
+		vo.setsId(sId);
 		vo.setRecipeno(recipeno);
-		System.out.println("controller: 전"+recipeno);
-		service.deleteRecipe(vo);
+		vo.setTurnNo(Integer.parseInt(turnNo));
+		System.out.println("vo: "+vo);
+		service.recipeDeleteProc1(vo);
+		
 		Map result = new HashMap<String, Object>();
 		result.put("result", Boolean.TRUE);
 		return result;
@@ -79,7 +62,7 @@ public class RecipeController {
 	
 	
 	
-	/* 0712 recipe update위해 잠시 막음
+	/* 0712 recipe update�쐞�빐 �옞�떆 留됱쓬
 	 * @ResponseBody
 	 * 
 	 * @RequestMapping(value="/recipes" ,method=RequestMethod.POST //
@@ -99,7 +82,7 @@ public class RecipeController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value="/recipes/{sId}/{stAqty}/{stanUnit}"
+	@RequestMapping(value="/recipes/{sId}"
 					,method=RequestMethod.POST
 				//	,produces="application/json"     
 				//	,consumes="application/json"
@@ -107,19 +90,23 @@ public class RecipeController {
 			)public Map<String, Boolean> insertRecipe(@RequestBody RecipeVO vo
 														,StockVO vo2
 														,@PathVariable("sId") String sId
-														,@PathVariable("stAqty") String stAqty
-														,@PathVariable("stanUnit") String stanUnit
+														//,@PathVariable("stAqty") String stAqty
+														//,@PathVariable("stanUnit") String stanUnit
 														, Model model){
 		
+		//procedure 사용
 		vo.setsId(sId);
-		double staaqty = Double.parseDouble(stAqty);
-		int stanuunit = Integer.parseInt(stanUnit);
-		vo2.setStAqty(staaqty/stanuunit);
-		vo2.setStNum(vo.getStNum());
-		vo.setConsum(staaqty/stanuunit);
+		System.out.println("vo: "+vo);
+		service.recipeInsertProc1(vo);
 		
-		service2.updateStockAqty(vo2);
-		service.insertRecipe(vo);
+		
+		/*
+		 * vo.setsId(sId); double staaqty = Double.parseDouble(stAqty); int stanuunit =
+		 * Integer.parseInt(stanUnit); vo2.setStAqty(staaqty/stanuunit);
+		 * vo2.setStNum(vo.getStNum()); vo.setConsum(staaqty/stanuunit);
+		 * 
+		 * service2.updateStockAqty(vo2); service.insertRecipe(vo);
+		 */
 		Map<String, Boolean> map = new HashMap<String, Boolean>();
 		map.put("result", true);
 		return map;
@@ -129,10 +116,19 @@ public class RecipeController {
 	
 
 	
+	@ResponseBody
+	@RequestMapping(value="/recipes/{sId}"
+					, method=RequestMethod.PUT
+					,consumes="application/json" 
+					)
+	public RecipeVO updateRecipe(@RequestBody RecipeVO vo,@PathVariable("sId") String sId , Model model) {
+		vo.setsId(sId);
+		service.recipeUpdateProc1(vo);
+		return vo;
+	}
 	
 	
-	
-	//stock caNum List 받아옴
+	//stock caNum List 諛쏆븘�샂
 	
 	  @RequestMapping(value="/recipes/{sId}", method=RequestMethod.GET) public
 	  List<StockVO> getStockCaNumList(
@@ -142,7 +138,7 @@ public class RecipeController {
 	 
 	
 		
-	//옵션 
+	//�샃�뀡 
 		@ResponseBody
 		@RequestMapping(value="/options"
 						,method=RequestMethod.POST
@@ -152,7 +148,7 @@ public class RecipeController {
 				)public Map<String, Boolean> insertOption(@RequestBody RecipeVO vo, Model model){
 			
 			vo.setsId("SH001");
-			//여기도 출력 안되는거보면 jsp쪽에서 수정
+			//�뿬湲곕룄 異쒕젰 �븞�릺�뒗嫄곕낫硫� jsp履쎌뿉�꽌 �닔�젙
 			System.out.println(vo.getConsum());
 			
 			service.insertOption(vo);
@@ -168,7 +164,7 @@ public class RecipeController {
 		@RequestMapping(value="/options/{recipeno}", method=RequestMethod.DELETE)
 		public Map deleteOption( @PathVariable("recipeno") String recipeno, RecipeVO vo, Model model) {
 			vo.setRecipeno(recipeno);
-			System.out.println("controller: 전"+recipeno);
+			System.out.println("controller: �쟾"+recipeno);
 			service.deleteOption(vo);
 			Map result = new HashMap<String, Object>();
 			result.put("result", Boolean.TRUE);
@@ -177,7 +173,7 @@ public class RecipeController {
 		
 		
 		
-		//ice hot 이 stnum이  null이라 급하게 가져옴
+		//ice hot �씠 stnum�씠  null�씠�씪 湲됲븯寃� 媛��졇�샂
 	
 	  @RequestMapping(value="/options/{sId}/{mNum}", method=RequestMethod.GET)
 	  public List<RecipeVO> getRecipeIceHotList(

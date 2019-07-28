@@ -15,9 +15,22 @@ public class MenuVO {
 	//file upload 위한 변수 두개
 	private String uploadFileName;
 	private MultipartFile uploadFile;
+	private String ca_num_nm;
+	private String m_stat_nm;
 	
-	   
 	
+	public String getCa_num_nm() {
+		return ca_num_nm;
+	}
+	public void setCa_num_nm(String ca_num_nm) {
+		this.ca_num_nm = ca_num_nm;
+	}
+	public String getM_stat_nm() {
+		return m_stat_nm;
+	}
+	public void setM_stat_nm(String m_stat_nm) {
+		this.m_stat_nm = m_stat_nm;
+	}
 	public String getUploadFileName() {
 		return uploadFileName;
 	}
@@ -77,9 +90,9 @@ public class MenuVO {
 	@Override
 	public String toString() {
 		return "MenuVO [mNum=" + mNum + ", mName=" + mName + ", mPrice=" + mPrice + ", sId=" + sId + ", caNum=" + caNum
-				+ ", mStat=" + mStat + ", menuSale=" + menuSale + "]";
+				+ ", mStat=" + mStat + ", menuSale=" + menuSale + ", uploadFileName=" + uploadFileName + ", uploadFile="
+				+ uploadFile + ", ca_num_nm=" + ca_num_nm + ", m_stat_nm=" + m_stat_nm + "]";
 	}
-
 
 
 	

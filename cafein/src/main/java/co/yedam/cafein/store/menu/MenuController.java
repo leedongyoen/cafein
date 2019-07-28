@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.cafein.vo.MenuVO;
+import co.yedam.cafein.vo.RecipeVO;
 import co.yedam.cafein.vo.StockVO;
 
 @RestController
@@ -31,6 +32,10 @@ public class MenuController {
 
 	@Autowired
 	MenuServiceImpl service;
+	@Autowired
+	RecipeSerciveImpl service2;
+	
+	
 
 	@RequestMapping(value="/storerecipemenu", method=RequestMethod.GET)
 	public ModelAndView getMenuList(ModelAndView mv) {
@@ -66,7 +71,7 @@ public class MenuController {
 	
 	
 	
-	//硫붾돱 �벑濡� 留욎쓬
+	//메뉴 등록+coffee는 반드시 hot/ice 출력
 	@ResponseBody
 	@RequestMapping(value="/menues"
 	,method=RequestMethod.POST
@@ -74,24 +79,12 @@ public class MenuController {
 //		,consumes="application/json"
    ,headers = {"Content-type=application/json" })
 	public Map<String,Boolean> insertUser(@RequestBody MenuVO vo, Model model) throws IllegalStateException, IOException {
+
 		
+	
+		//insert 후에 mnum받아와야함......
+		service.insertMenuProc1(vo);
 		
-		/*
-		System.out.println("t�궗吏� �뾽濡쒕뱶 �뀒�뒪�뀫 以�: "+vo.getUploadFileName());
-		
-		//泥⑤��뙆�씪 �뾽濡쒕뱶 泥섎━
-		MultipartFile uploadFile = vo.getUploadFile();
-		String fileName = null;
-		if(uploadFile !=null && !uploadFile.isEmpty() && uploadFile.getSize()>0) {
-		fileName = uploadFile.getOriginalFilename();
-		uploadFile.transferTo(new File("C:\\upload/"+fileName));
-		}
-		//泥⑤��뙆�씪紐� VO�뿉 吏��젙
-		vo.setUploadFileName(fileName);
-		*/
-		
-		
-		service.insertUser(vo);
 		Map<String, Boolean> map = new HashMap<String, Boolean>();
 		map.put("result", true);
 		return  map;
