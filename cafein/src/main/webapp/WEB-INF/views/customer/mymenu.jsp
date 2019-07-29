@@ -8,7 +8,7 @@
 <%@ include file="cushead.jsp"%>
 <title>Insert title here</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+   
 <style type="text/css">
 /* The Close Button */
 .close {
@@ -26,11 +26,10 @@
 	text-decoration: none;
 	cursor: pointer;
 }
-
 </style>
-
+       
 </head>
-<body>
+<body style="background: url(image/backgroundcoff.jpg) no-repeat center center; background-size: cover;">
 	<h1 align="center">나만의 메뉴</h1>
 	<hr>
 	<br>	
@@ -48,8 +47,8 @@
 		</script>
 		<br>
 			<a href="${pageContext.request.contextPath}/customerstorelist.do" id="addddd"
-				class="test btn">추가</a>
-				<a class="test btn" href="javascript:deleteMymenu()" id="deletemymenu">삭제</a>
+				class="test btn btn-secondary">추가</a>
+				<a class="test btn btn-secondary" href="javascript:deleteMymenu()" id="deletemymenu">삭제</a>
 				<br>
 			<div id="somediv" title="" style="display: none;">
 				<div id="thedialog"></div>
@@ -60,8 +59,8 @@
 			<div class ="row" id="GoToDetail"></div>
 
 <div class="deleteCheckon" align="right">
-<a class="deletetest btn" href="javascript:deleteMymenu()" id="deletemymenuon">삭제하기</a>
-<a class="offtest btn" href="javascript:deleteMymenu()" id="offtest">돌아가기</a>
+<a class="deletetest btn btn-secondary" href="javascript:deleteMymenu()" id="deletemymenuon">삭제하기</a>
+<a class="offtest btn btn-secondary" href="javascript:deleteMymenu()" id="offtest">돌아가기</a>
 </div>
 </div>
 
@@ -110,14 +109,14 @@
 				<input type="button" onclick="add(1)" value="+">
 			</td>
 		</tr>
-		<tr>
+		<tr id="icehot">
 			<th>HOT/ICE</th>
 			<td>
 				<input  type="radio" id="ice" name="hotice_option" value="CAIC">ice
 				<input  type="radio"  id="hot" name="hotice_option" value="CAHT">hot
 			</td>
 		</tr>
-		<tr>
+		<tr>  
 			<th>OPTION</th>
 			<td id="menudetailoption"></td>
 		</tr>
@@ -132,9 +131,9 @@
 				
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-outline-primary" id="cu_orderbtn">주문</button>&nbsp;&nbsp;
-					<button class="btn btn-outline-primary" id="cartbtn">담기</button>&nbsp;&nbsp;		
-					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+					<button class="btn btn-secondary" id="cu_orderbtn">주문</button>&nbsp;&nbsp;
+					<button class="btn btn-secondary" id="cartbtn">담기</button>&nbsp;&nbsp;		
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
@@ -217,8 +216,8 @@
 					$("#ice").attr("checked","checked");
 					
 				}else if(item.opName =="HOT"){
-					$("#hot").attr("checked","checked");	
-				}
+					$("#hot").attr("checked","checked");
+				}  
 				else if(item.caNum =="CAOP"){
 					
 					$("<input>").attr({ 
@@ -253,6 +252,12 @@
 					pl += item.mPrice; */
 
 				}
+				if(item.caNum =="CADE"){
+					$("#icehot").hide();
+				}
+				else{
+					$("#icehot").show();
+				}
 
 			
 		});
@@ -260,7 +265,7 @@
 		var totalprice = Number(mP)+Number(pl);	
 		console.log(totalprice);
 		$("#totalPrice").val(totalprice);
-	}; 
+	};   
 	//삭제창
 	function deleteMymenu(cuNum) {
 		$(".deleteCheckon").show();
