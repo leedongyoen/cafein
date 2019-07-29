@@ -25,7 +25,7 @@ public class RecipeSerciveImpl {
 		return recipeDao.getRecipeStockList(vo);
 	}
 	
-	public List<RecipeVO> getRecipeDetailList(RecipeVO vo){
+	public List<RecipeVO> getRecipeDetailList(ViewStockCheckVO vo){
 		System.out.println("=========================="+vo.getsId());
 		return recipeDao.getRecipeDetailList(vo);
 	}
@@ -51,6 +51,10 @@ public class RecipeSerciveImpl {
 	
 	public int insertOption(RecipeVO vo) {
 		return recipeDao.insertOption(vo);
+	}
+	
+	public int optionInsertProc1(RecipeVO vo) {
+		return recipeDao.optionInsertProc1(vo);
 	}
 	
 	public int deleteOption(RecipeVO vo) {

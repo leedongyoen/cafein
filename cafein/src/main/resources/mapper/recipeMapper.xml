@@ -57,22 +57,27 @@
      
      
 
-<select id="getReciDetailList" resultMap="reciDetailMap" parameterType="recipe">
+<select id="getReciDetailList" resultType="co.yedam.cafein.viewvo.ViewStockCheckVO" parameterType="co.yedam.cafein.viewvo.ViewStockCheckVO">
 
-			select RECIPENO
-					, S_ID
-					, CONSUM
-					, ST_NUM
-					, M_NUM
-					, CA_NUM
-					, OP_NAME 
-					, OP_PRICE
-					, TURN_NO
-         			, RECIPE_DETAIL
-         			
-			from recipe 
-			where s_id=#{sId} and m_num=#{mNum}
-			order by turn_no
+select 
+			re.S_ID "sId"
+			,re.CONSUM "consum"
+			,re.M_NUM "mNum"
+			,re.CA_NUM "caNum"
+			,re.OP_NAME "opName"
+			,re.OP_PRICE "opPrice"
+			,st.ST_NUM "stNum"
+			,st.ST_NAME "stName"
+			,re.RECIPENO "recipeNo"
+			,st.ST_AQTY "stAqty"
+			,st.STAN_UNIT "stanUnit"
+			,st.ST_UNIT "stUnit"
+			,st.ST_PRICE "stPrice"
+
+		from recipe re left OUTER join stock st
+        on(re.st_num = st.st_num)
+        where re.S_ID = #{sId} and m_num = #{mNum}
+
 
 </select>
 
@@ -219,6 +224,22 @@
 	
 	
 	</insert>
+	
+	<insert id="optionInsertProc1" parameterType="recipe" statementType="CALLABLE">
+		{			
+			call OPTION_INSERT(
+				#{sId, mode=IN, jdbcType=VARCHAR, javaType=string},
+				#{consum, mode=IN, javaType=double,jdbcType=NUMERIC,numericScale=4},
+				#{stNum, mode=IN, jdbcType=VARCHAR, javaType=string},
+				#{mNum, mode=IN, jdbcType=VARCHAR, javaType=string},
+				#{caNum, mode=IN, jdbcType=VARCHAR, javaType=string},
+				#{opName, mode=IN, jdbcType=VARCHAR, javaType=string},
+				#{opPrice, mode=IN, jdbcType=VARCHAR, javaType=string}
+			)
+		}
+	
+	</insert>
+	
 	<delete id="deleteOption" parameterType="recipe">
 		DELETE FROM RECIPE WHERE RECIPENO = #{recipeno}
 	

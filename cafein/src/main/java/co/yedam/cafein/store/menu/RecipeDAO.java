@@ -25,7 +25,7 @@ public class RecipeDAO {
 		return mybatis.selectList("RecipeDAO.getRecipeStockList",vo);
 	}
 	
-	public List<RecipeVO> getRecipeDetailList(RecipeVO vo){
+	public List<RecipeVO> getRecipeDetailList(ViewStockCheckVO vo){
 		System.out.println("");
 		return mybatis.selectList("RecipeDAO.getReciDetailList",vo);
 	}
@@ -68,7 +68,10 @@ public class RecipeDAO {
 		return mybatis.insert("RecipeDAO.insertOption",vo);
 	}
 	
-	
+	public int optionInsertProc1(RecipeVO vo) {
+		System.out.println("mybatis optionInsertProc1");
+		return mybatis.insert("RecipeDAO.optionInsertProc1",vo);
+	}
 	
 	public int deleteOption(RecipeVO vo) {
 		System.out.println("mybatis delete Option");

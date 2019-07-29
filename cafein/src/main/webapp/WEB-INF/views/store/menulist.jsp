@@ -99,6 +99,7 @@ $(function(){
 	$('#recipeTablediv').hide();
 	$('#optionDiv').hide();
 	$("#recipeDatailTable").hide();
+	$("#optionDatailTable").hide();
 	
 	$("#menuTable tbody tr").click(function(){
 		
@@ -106,6 +107,7 @@ $(function(){
 		
 		
 		$("#recipeDatailTable").hide();
+		$("#optionDatailTable").hide();
 		$('#backgroundCoffee').hide();
 		$('#toggleTable').show();
 		$('#recipeTablediv').show();
@@ -207,13 +209,14 @@ $(function(){
 	
 	
 	$(document).on("click","#optionTable tbody tr",function(){ 
+		$("#optionDatailTable").show();
 		var str="";
 		var tdArr = new Array();
 		
 		var tr = $(this);
 		var td = tr.children();
 		
-		recipeNo = td.eq(3).text();
+		recipeNo = td.eq(4).text();
 		console.log(recipeNo);
 		
 		 });
@@ -251,10 +254,12 @@ $(function(){
         		$("#consume").val(0);
         		$("#opPrice").val(0);
         		$("#opcaNum").val("CAIC");
+        	}else{
+        		$("#opcaNum").val("CAOP");
         	}
         
         $("#opstNum").val(obj.value1);
-		//$("#opcaNum").val(obj.value2);
+		
 		
 	});
 	
@@ -289,6 +294,7 @@ function menulist(mNum){
 			
 			$("#cmNum").val(mNum);
 			$("#cmName").val(mName);
+			$("#vmName").val(mName);
 			$("#omNum").val(mNum);
 			$("#cmCate").val(mCate);	
 			//전역변수의 값들 넣음
@@ -335,9 +341,10 @@ function menulist(mNum){
 
 	
 	 $.ajax({
-		url:'options/'+storeid+'/'+mNum,
+		url:'options',
 		type:'GET',
 		//contentType:'application/json;charset=utf-8',
+		data:{sId:storeid,mNum:mNum},
 		dataType:'json',
 		error:function(xhr,status,msg){
 			alert("상태값 :" + status + " Http에러메시지 :"+msg);
@@ -358,9 +365,10 @@ function menulist(mNum){
 							
 							$('<tr>')
 							.append($('<td>').html(data[i].opName))
-							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].consum)))
-							.append($('<td>').append($('<input style="text-align:center; width:80px;">').val(data[i].opPrice)))
-							.append($('<td style="visibility:hidden;">').html(data[i].recipeno))
+							.append($('<td>').html(data[i].consum*data[i].stanUnit))
+							.append($('<td>').html(data[i].stUnit))
+							.append($('<td>').html(data[i].opPrice))
+							.append($('<td style="display:none;">').html(data[i].recipeNo))
 							.appendTo("#optionTable tbody");
 						}
 						
@@ -598,13 +606,13 @@ function recipeDelete(){
 
 function optionInsert(){
 	var menuId = $("#mNum").val();
- 	alert(JSON.stringify($("#optionTableForm").serializeObject()));
+ 	alert(JSON.stringify($("#insertOptionDetail").serializeObject()));
 	
  	$.ajax({
-		url: "options",
+		url: "options/"+storeid,
 		type: 'POST',
 		dataType: 'json',
-		data: JSON.stringify($("#optionTableForm").serializeObject()),
+		data: JSON.stringify($("#insertOptionDetail").serializeObject()),
 		contentType: 'application/json',
 		success: function(data) {
 			if(data.result == true) {
@@ -621,8 +629,9 @@ function optionDelete(){
 	var menuId = $("#mNum").val();
 	console.log(recipeNo);
 	 $.ajax({
-		url:'options/'+recipeNo,  
+		url:'options/'+storeid+'/'+recipeNo,  
 		type:'DELETE',
+		
 		contentType:'application/json',
 		dataType:'json',
 		error:function(xhr,status,msg){
@@ -653,31 +662,37 @@ function optionDelete(){
 	
 function insertMenu(){
 		
-		// 모달창의 배경을 눌렀을 때 닫히는 이벤트를 막아준다
-		$('#menuModal').modal({keyboard: false}) ;
-		// 마감 내역 모달창 show
-		$("#menuModal").modal('show');
+	$('#menuModal').modal({keyboard: false}) ;
+	$("#menuModal").modal('show');
 		
-	}
+}
 	
 	
 function insertRecipe(){
 	
-	// 모달창의 배경을 눌렀을 때 닫히는 이벤트를 막아준다
 	$('#recipeModal').modal({keyboard: false}) ;
-	// 마감 내역 모달창 show
 	$("#recipeModal").modal('show');
 	
 }
+
+function insertOption(){
+	
+	$('#optionModal').modal({keyboard: false}) ;
+	$("#optionModal").modal('show');
+		
+}
+
+
 </script>
 </head>
 <body>
 
 	<div style="position: absolute; width: 100%" class="h-div">
-		<div style="background-color: black; color: #92B3B7">
-			<h3>[메뉴 관리]</h3>
-		</div>
+		
+			
+		
 		<div style="overflow: scroll; height: 100%; float: left; width: 45%;">
+		<h3>[메뉴 관리]</h3>
 			<!-- 메뉴 List-->
 			<div class="container" style="width: 100%">
 
@@ -880,11 +895,11 @@ function insertRecipe(){
 								<td><input type="text" id="cmCate"></td>
 								 -->
 								
-								<th text-align="center">재료</th>
+								<th>재료</th>
 								<td><input type="text" id="cmStname"></td>
 							</tr>
 							<tr>
-								<th>사 용 량</th>
+								<th>소 모 량</th>
 								<td colspan="3">
 										<input type="text" id="consumee" name="consum"> 
 										<input type="text" id="stUnitt" name="stUnit"> 
@@ -910,54 +925,55 @@ function insertRecipe(){
 			<div style="float: left; padding: 5px; width: 100%;" id="optionDiv">
 
 				<hr>
-				<h4 align="center">옵션 관리</h4>
-				<h5 align="right"><font  color="gray">나만의 메뉴에 등록할 옵션을 설정합니다.</font></h5>
+				<h4 align="center"><input style = "text-align:center;" type="text" id="vmName" readonly> 옵션 관리</h4>
+				<h6 align="right"><font  color="gray">나만의 메뉴에 등록할 옵션을 설정합니다.</font></h6>
 				<hr>
 				<form id="optionTableForm">
 				
 				<table border="1" id="optionTable" class="table table-hover">
 					<thead>
 						<tr>
-							<th>옵션 이름</th>
-							<th>소모량</th>
-							<th>옵션 가격</th>
+							<th>옵 션 이 름</th>
+							<th>소 모 량</th>
+							<th>단 위</th>
+							<th rowspan="2">옵 션 가 격</th>
 						</tr>
 					</thead>
 					<tbody></tbody>
 				</table>
+				<input type="button" value=" 옵션 추가 " onclick="insertOption()">
 				
+				
+				<div id = "optionDatailTable">
+					<div align="right">
+						<input type="button" value=" 옵션 수정 " onclick="optionUpdate()">
+							<input type="button" value=" 옵션 삭제 " onclick="optionDelete()">
+					</div>
 					<table border="1" class="table table-hover">
 						<tr>
-							<th>재고 이름</th>
-							<td><select id="opSelct">
-							</select></td>
+							<th>재 료 이 름</th>
+							<td></td>
 						</tr>
 						<tr>
-							<th>옵션 이름</th>
-							<td><input type="text" id="opName" name="opName"></td>
+							<th>옵 션 이 름</th>
+							<td><input type="text" id="" name="opName"> 
+										</td>
 						</tr>
 						<tr>
-							<th>소모량</th>
-							<td><input type="text" id="consume" name="consum"></td>
+							<th>소 모 량</th>
+							<td><input type="text" id="" name="consum">
+							<input type="text" id="" name="stUnit"></td>
 						</tr>
 						<tr>
-							<th>옵션 가격</th>
-							<td><input type="text" id="opPrice" name="opPrice">원</td>
-						</tr>
-						<tr>
-						<tr>
-							<td><input type="button" value=" 옵션 추가 "
-								onclick="optionInsert()"></td>
-							<td><input type="button" value=" 옵션 삭제 "
-								onclick="optionDelete()"></td>
-						</tr>
+							<th>옵 션 가 격</th>
+							<td><input type="text" id="" name="opPrice">원</td>
+						
 
 					</table>
-					<input type="hidden" id="sId" name="sId" value="SH001"> <input
-						type="hidden" id="omNum" name="mNum"> <input type="hidden"
-						id="opcaNum" name="caNum"> <input type="hidden"
-						id="opstNum" name="stNum">
-
+					<!-- <input type="hidden" id="omNum" name="mNum">
+					<input type="hidden" id="opcaNum" name="caNum">
+					<input type="hidden" id="opstNum" name="stNum"> -->
+				</div>
 				</form>
 
 			</div>
@@ -1070,17 +1086,52 @@ function insertRecipe(){
 					</div>
 				</div>
 			</div>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
+			<div class="modal fade" id="optionModal" role="dialog">
+				<div class="modal-dialog" style="max-width: 40%; width: auto;">
+					<div class="modal-content">
+						<div class="modal-body">
+
+							<div style="width: 100%;" id="insertOptionFormTable">
+
+								<h3>[옵션 추가]</h3>
+								<form id="insertOptionDetail" method="post">
+								<table border="1" class="table table-hover">
+									<tr>
+										<th>재고 이름</th>
+										<td><select id="opSelct">
+										</select></td>
+									</tr>
+									<tr>
+										<th>옵션 이름</th>
+										<td><input type="text" id="opName" name="opName"></td>
+									</tr>
+									<tr>
+										<th>소모량</th>
+										<td><input type="text" id="consume" name="consum"></td>
+									</tr>
+									<tr>
+										<th>옵션 가격</th>
+										<td><input type="text" id="opPrice" name="opPrice">원</td>
+									</tr>
+									<tr>
+									<tr>
+										<td></td>
+										<td><input type="button" value="등록"
+											onclick="optionInsert()"></td>
+									</tr>
+
+								</table>
+								
+								<input type="hidden" id="omNum" name="mNum"> <input
+									type="hidden" id="opcaNum" name="caNum"> <input
+									type="hidden" id="opstNum" name="stNum">
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 

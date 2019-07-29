@@ -104,7 +104,7 @@
 				
 				$('.C0').css({
 					display:"inline"
-				});
+				}).addClass("btn btn-outline-danger");
 				
 				console.log("paging first : "+paging.first);
 				

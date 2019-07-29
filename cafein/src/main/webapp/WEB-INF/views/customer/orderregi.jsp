@@ -545,9 +545,9 @@ width: 50p;
 			<br>
 			<div>
 				<div align="right">
-					<button type="submit" id="orderbtn" class="btn btn-default ">주문하기</button>
+					<button type="submit" id="orderbtn" class="btn btn-outline-primary">주문하기</button>
 					&nbsp;&nbsp; <a href="javascript:history.go(-1)"
-						class="btn btn-default ">돌아가기</a>
+						class="btn btn-outline-danger ">돌아가기</a>
 				</div>
 				
 			</div>

@@ -140,18 +140,18 @@ public class RecipeController {
 		
 	//�샃�뀡 
 		@ResponseBody
-		@RequestMapping(value="/options"
+		@RequestMapping(value="/options/{sId}"
 						,method=RequestMethod.POST
 					//	,produces="application/json"     
 					//	,consumes="application/json"
 						,headers = {"Content-type=application/json" }
-				)public Map<String, Boolean> insertOption(@RequestBody RecipeVO vo, Model model){
+				)public Map<String, Boolean> insertOption(@RequestBody RecipeVO vo, @PathVariable("sId") String sId , Model model){
 			
-			vo.setsId("SH001");
-			//�뿬湲곕룄 異쒕젰 �븞�릺�뒗嫄곕낫硫� jsp履쎌뿉�꽌 �닔�젙
-			System.out.println(vo.getConsum());
+			vo.setsId(sId);
 			
-			service.insertOption(vo);
+			System.out.println("vo: "+vo);
+			
+			service.optionInsertProc1(vo);
 			Map<String, Boolean> map = new HashMap<String, Boolean>();
 			map.put("result", true);
 			return map;
@@ -161,10 +161,15 @@ public class RecipeController {
 		
 		
 		@ResponseBody
-		@RequestMapping(value="/options/{recipeno}", method=RequestMethod.DELETE)
-		public Map deleteOption( @PathVariable("recipeno") String recipeno, RecipeVO vo, Model model) {
+		@RequestMapping(value="/options/{sId}/{recipeno}", method=RequestMethod.DELETE)
+		public Map deleteOption( 
+									@PathVariable("sId") String sId,
+									@PathVariable("recipeno") String recipeno,
+									RecipeVO vo, Model model) {
+			
+			vo.setsId(sId);
 			vo.setRecipeno(recipeno);
-			System.out.println("controller: �쟾"+recipeno);
+			System.out.println("vo:"+vo);
 			service.deleteOption(vo);
 			Map result = new HashMap<String, Object>();
 			result.put("result", Boolean.TRUE);
@@ -175,12 +180,14 @@ public class RecipeController {
 		
 		//ice hot �씠 stnum�씠  null�씠�씪 湲됲븯寃� 媛��졇�샂
 	
-	  @RequestMapping(value="/options/{sId}/{mNum}", method=RequestMethod.GET)
+	  @RequestMapping(value="/options", method=RequestMethod.GET)
 	  public List<RecipeVO> getRecipeIceHotList(
-	  
-	  @PathVariable("sId") String sId , @PathVariable("mNum") String mNum ,RecipeVO
-	  vo ,Model model){ vo.setsId(sId); vo.setmNum(mNum); 
-	  return service.getRecipeDetailList(vo);
+			  									//@PathVariable("sId") String sId ,
+			  									//@PathVariable("mNum") String mNum ,
+			  									ViewStockCheckVO vo ,Model model){
+		  
+		  System.out.println("vo: "+vo);
+		  return service.getRecipeDetailList(vo);
 	  
 	  }
 	  
