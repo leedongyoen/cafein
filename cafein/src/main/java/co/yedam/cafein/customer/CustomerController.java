@@ -1,10 +1,26 @@
 package co.yedam.cafein.customer;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 import java.io.IOException;
 import java.io.PrintWriter;
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 import java.util.HashMap;
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 import java.util.Map;
 import java.util.Properties;
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,18 +34,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -42,6 +78,10 @@ import co.yedam.cafein.customer.join.CustomerJoinService;
 import co.yedam.cafein.customer.login.CustomerLoginDAO;
 import co.yedam.cafein.customer.login.CustomerLoginService;
 import co.yedam.cafein.customer.login.KakaoRestAPI;
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
 import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.NaverLoginVO;
 

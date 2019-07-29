@@ -23,14 +23,4 @@ public class Scheduler {
 
 	}
 
-	/*	*//**
-			 * 1. 1시간마다
-			 *//*
-				 * @Scheduled(cron = "0 0 0/1 * * *") public void stockupdate() {
-				 * 
-				 * service.stockupdate();
-				 * 
-				 * 
-				 * }
-				 */
 }

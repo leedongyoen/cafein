@@ -5,6 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style type="text/css">
+
+</style>
 <%@ include file="cushead.jsp" %>
 <title>매장별 적립금</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -72,9 +75,9 @@
 	<hr>
 	 <p align="center"><b>회원님의 적립금은</b></p>
 	<div class = "container" align="center" >
-	 <table id="reservetable1" class = "table" >
+	 <table id="reservetable1" class = "table table-hover" >
 			<thead>
-			<tr>
+			<tr class="tableth">
 				<th>총 적립금</th>	
 				<th>사용된 적립금</th>
 				<th>남은 적립금</th>
@@ -89,7 +92,7 @@
 		</div>
 	<br>
 	<div class = "container" align="center">
-		<table id ="reservetable" class = "table">
+		<table id ="reservetable" class="table table-hover">
 			<thead>
 			<tr>
 				<th width=250>날짜</th>

@@ -70,8 +70,9 @@ public class CustomerInfoController {
 		System.out.println(vo+"==============================");
 		vo.setcId(id);
 		CustomerVO customer = customService.getCustomer(vo);
-		boolean mathes = passEncoder.matches(vo.getcPw(), customer.getcPw()); 
-
+		boolean mathes = passEncoder.matches(vo.getcPw(), customer.getcPw());
+		
+		
 		customService.checkpw(vo);
 		return vo;
 	}
