@@ -152,8 +152,8 @@
 	<select id="getTimeSales" resultType="salessum"> 
 		SELECT
 			 DECODE(GROUPING(CD.TM1),1,'토탈',CD.TM1||'~'||CD.TM2) WEEK
-			, SUM(AB.CNT) CNT
-			, SUM(AB.TOTAL) ATOTAL
+			, NVL(SUM(AB.CNT),0) CNT
+			, NVL(SUM(AB.TOTAL),0) ATOTAL
 			FROM
    		(
         SELECT 
