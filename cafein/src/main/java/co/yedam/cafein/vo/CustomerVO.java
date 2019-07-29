@@ -19,7 +19,7 @@ public class CustomerVO {
 	private int stmp;
 	private String email;
 	private String authNum;
-	
+	private String curpw;
 	// 마일리지 조인
 	private String mileage;
 	private String sId;
@@ -42,6 +42,12 @@ public class CustomerVO {
 	
 	
 
+	public String getCurpw() {
+		return curpw;
+	}
+	public void setCurpw(String curpw) {
+		this.curpw = curpw;
+	}
 	public String getStartDate() {
 		return startDate;
 	}
