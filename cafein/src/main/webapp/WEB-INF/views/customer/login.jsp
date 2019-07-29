@@ -69,28 +69,6 @@
 </script>
 </head>
 <body>
-<<<<<<< HEAD
-
-=======
-  <%-- <div class = "container" align="center">
-  <form name = "loginForm" action = "customerloginresult.do" method = "post">
-    <h3>로그인</h3>
-      <label>ID </label><input type = "text" name = "cId"><br>
-      <label>PW </label><input type = "password" name = "cPw" onkeypress="if(event.keyCode == 13){ checkForm(); return; }"><br><br>
-      <input type = "button" class="btn btn-default " onclick = "checkForm()" value = "로그인">
-      <a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/kakaologin&response_type=code">
-      	<img src="${pageContext.request.contextPath}/image/kakaologin.png">
-      </a>
-      <a id="naver-login-btn" href="http://localhost/cafein/naverlogin.do"><img src="${pageContext.request.contextPath}/image/naverlogin.PNG" style="witdh:222px;height:50px;"></a>
-      
-      <!-- 카카오로 로그인 시 이 로그아웃 버큰 사용하기 <a href="#"><img src="${pageContext.request.contextPath}/image/naverlogin.PNG" style = "width:222px;hieth:50px;"></a>-->
-	  <a href="http://developers.kakao.com/logout"></a><br>
-      <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerjoinForm.do'" value = "회원가입">
-      <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerfindidpw.do'" value = "ID/PW 찾기">
-  </form>
-  </div> --%>
->>>>>>> branch 'master' of https://github.com/leedongyoen/cafein
-
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
