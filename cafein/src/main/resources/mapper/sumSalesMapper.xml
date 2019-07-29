@@ -121,11 +121,12 @@
 				ORDERS O JOIN ORDER_DETAILS OD
 				ON O.O_NUM = OD.O_NUM
 			WHERE
-			O.DELIVERY_STATUS NOT IN ('C3','C5')
+			O.DELIVERY_STATUS IN ('C3','C5')
 			AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
 			)
 		WHERE S_ID = #{sId}
 		GROUP BY WEEK
+		ORDER BY WEEK ASC
 	</select>
 	<!-- 메뉴별 통계 쿼리  -->
 	<select id="getMenuSales" resultType="salessum">
