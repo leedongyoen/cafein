@@ -18,14 +18,14 @@ input {
 	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
 	};
 	
-   body{
-         background: url(image/back2.jpg) no-repeat center center fixed; 
+/*    body{
+          no-repeat center center fixed; 
           -webkit-background-size: cover;
          -moz-background-size: cover;
          -o-background-size: cover;
          background-size: cover; 
 
-   }
+   } */
 
 </style>
 
@@ -267,7 +267,7 @@ function getOptionNaming(mnumber, stnumber){
 }
 </script>
 </head>
-<body>
+<body style="background: url(image/back2.jpg) no-repeat center center; background-size: cover;">
 		
 
 <div id="backgroundCoffee" style="width: 100%; height: 100%;" > 
@@ -302,13 +302,13 @@ function getOptionNaming(mnumber, stnumber){
 		</c:forEach>
 		
 		<form id="orderCartForm" name="orderCartForm" action="cartorder" method="POST">
-		<div style="padding: 3px; display: inline-block; text-align: center; width:80%;" id="CartList"> <!-- border: 1px solid orange; -->
+		<div style="padding: 3px; display: inline-block; text-align: center; width:70%;" id="CartList"> <!-- border: 1px solid orange; -->
 			<!-- display: inline-block; -->
 
 			
 
 				<div style="background: #D8D8D8;">
-					<label><input type="checkbox" onClick="allCheck(this.value)"></label> <a href="#"></a>
+					<label><input type="checkbox" onClick="allCheck(this.value)"></label><a href="#"></a>
 				</div>
 				<div style="text-align: center;">
 
