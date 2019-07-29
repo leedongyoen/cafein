@@ -420,14 +420,14 @@
 						li =  $('<li>').attr("class","page-item active")
 								.append($('<a>').attr({
 									class: "page-link"
-										, href: "javascript:getOrderList("+n+")"
+										, href: "javascript:getstoreorderlist("+n+")"
 									}).append(n));
 						  
 					}else{
 						li =  $('<li>').attr("class","page-item")
 										.append($('<a>').attr({
 											class: "page-link"
-												, href: "javascript:getOrderList("+n+")"
+												, href: "javascript:getstoreorderlist("+n+")"
 											}).append(n));
 					}  
 					$('#pageul').append(li);
