@@ -314,7 +314,6 @@ function getOptionNaming(mnumber, stnumber){
 
 					<table border = "1" style="width:100%; border: 1px solid #F2F2F2;">
 
-
 						<thead>
 							<tr style="background: pink;">
 								<th rowspan="1"></th>
