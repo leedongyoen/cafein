@@ -3,7 +3,6 @@ package co.yedam.cafein.store.stock;
 import java.util.List;
 
 import co.yedam.cafein.vo.StockVO;
-import co.yedam.cafein.vo.StoreOpenVO;
 
 public interface StoreStockService {
 	

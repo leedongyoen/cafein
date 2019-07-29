@@ -12,6 +12,13 @@
 		loginCheck();
 		stockList();
 		
+		 // 재고 검색
+	    $("#stockserch").on("keyup", function() {
+	     var value = $(this).val().toLowerCase();
+	     $("#stockTbody tr").filter(function() {
+	        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	   		});
+		});
 	});
 	
 	//입고할 재고 목록 요청하기
@@ -119,8 +126,9 @@
 </head>
 <body>
 <div class="container">
-		<h2>재고 목록</h2>
+		<h2>재고 입고</h2>
 		<!-- 	<form action="deleteStock.do"> -->
+		<input class="form-control" id="stockserch" type="text" placeholder="Search..">
 		<table class="table text-cente	r">
 			<thead>
 				<tr>
@@ -128,6 +136,7 @@
 					<th class="text-center">재고 단가</th>
 					<th class="text-center">재고 수량</th>
 					<th class="text-center">입고 수량</th>
+					<th class="text-center">추가 수량</th>
 				</tr>
 			</thead>
 			<tbody id="stockTbody"></tbody>
