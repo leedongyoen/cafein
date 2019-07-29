@@ -52,7 +52,8 @@
 	</tbody>
 </table>
 <div style="text-align:right" >
-<button onclick = "location.href='customermainform.do'">돌아가기</button>
+<p align="center">
+<button onclick = "location.href='customermainform.do'" class="btn btn-success">돌아가기</button></p>
 </div>
 </div>
 </body>

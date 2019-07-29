@@ -139,18 +139,21 @@ table tbody tr td,
 
 	//이메일을 보내는 스크립트.
 	function myFunction() {
+		  var form = document.customerjoinForm;
 		  var screenW = screen.availWidth;  // 스크린 가로사이즈
 		  var screenH = screen.availHeight; // 스크린 세로사이즈
 		  var popW = 500; // 띄울창의 가로사이즈
 		  var popH = 300; // 띄울창의 세로사이즈
 
-		  var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션
+		  var posL=( screenW-popW ) / 2;   
+		  var posT=( screenH-popH ) / 2;   
+		  
+		 if(form.email.value =="")  {
+			 alert("이메일을 입력해주세요.");
+		 } else {
+			 window.open('sendmail.do','','width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
 
-		  var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
-		   
-		 window.open('sendmail.do','','width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
-
-
+		 }
 		//  var myWindow = window.open("sendmail.do", "", "width=600,height=200");
 		}
 
@@ -160,65 +163,72 @@ table tbody tr td,
 </script>
 </head>
 <body>
- <div class = "container" align="center">
+ <div class="container" align="center">
+ <div class="row">
+    <div class="col-sm-12 text-center" >
+   
   <form name = "customerjoinForm" action="customerjoin.do" method="post">
-    <h3>회원가입</h3>
+    <h3>회원가입</h3><br>
       <table class = "table table-hover">
         <tr>
           <th>ID</th>
           <td>
-          <input type = "text" name = "cId" id="cId">
-          <button type = "button" class="btn btn-default" id="idCheck">중복확인</button>
+          <input type = "text" name = "cId" id="cId" class="form-control"></td>
+          <td><button type = "button" class="btn btn-default" id="idCheck">중복확인</button>
           </td>
         </tr>
         <tr>
           <th>닉네임</th>
-          <td><input type = "text" name="cNick"></td>
+          <td><input type = "text" name="cNick" class="form-control"></td>
         </tr>
         <tr>
           <th>비밀번호</th>
-          <td><input type ="password" name ="cPw">
-          <button type="button" class="btn btn-default" onclick="post_check()">비밀번호 체크</button>
+          <td><input type ="password" name ="cPw" class="form-control"></td>   
+          <td><button type="button" class="btn btn-default" onclick="post_check()">비밀번호 체크</button>
           </td>
         </tr>
     	<tr>
           <th>비밀번호 확인</th>
-          <td><input type = "password" id = "cPwcheck"></td>
+          <td><input type = "password" id = "cPwcheck" class="form-control"></td>
         </tr>
         <tr>
           <th>이름</th>
-          <td><input type = "text" name="cName" id="cName"></td>
+          <td><input type = "text" name="cName" id="cName" class="form-control"></td>
         </tr>
         <tr>
           <th>연락처</th>
-          <td><input type = "tel" name = "cTel" id="cTel"></td>
+          <td><input type = "tel" name = "cTel" id="cTel" class="form-control"></td>
         </tr>
         <tr>
           <th>주소</th>
           <td>
-          <input type = "text" name="cAdd2" id = "cAdd2" placeholder="우편번호">
-          <button type = "button" onclick="execPostCode()">우편번호 찾기</button><br>
-          <input type = "text" name = "cAdd" id="cAdd" placeholder="주소">
-          <input type = "text" name = "cAdd3" id="cAdd3" placeholder="상세주소">
+          <input type = "text" name="cAdd2" id = "cAdd2" placeholder="우편번호" class="form-control"><br>
+          <input type = "text" name = "cAdd" id="cAdd" placeholder="주소" class="form-control">
+          <input type = "text" name = "cAdd3" id="cAdd3" placeholder="상세주소" class="form-control">
           </td>
+       	<td> <button type = "button" onclick="execPostCode()" class="btn btn-default">주소 검색</button></td>
         </tr>
         <tr>
           <th>생년월일</th>
-          <td><input type = "text" name="dob"></td>
+          <td><input type = "text" name="dob" class="form-control"></td>
+          <td>ex) 2019/01/01</td>
         </tr>
         <tr>
         	<th>이메일</th>
-        	<td><input type="email" name="email" id="email">
-        		<button type="button"
-        		onclick="myFunction()">이메일 인증</button>
+        	<td><input type="email" name="email" id="email" class="form-control"></td>
+        	 <td><button type="button"
+        		onclick="myFunction()" class="btn btn-default">이메일 인증</button>
         	</td>
         </tr>
       </table>
-      <button type ="button" class="btn btn-default"
+      <button type ="button" class="btn btn-primary"
       onclick="checkForm()">가입하기</button>
       <input type="button"  class="btn btn-default"
-       onclick="location.href='customerlogin.do'" value="돌아가기">
+       onclick="location.href='customerlogin.do'" value="돌아가기" class="btn btn-success">
   </form>
+ 
+  </div>
+  </div>
   </div>
 </body>
 </html>

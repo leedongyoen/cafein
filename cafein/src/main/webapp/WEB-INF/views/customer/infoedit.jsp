@@ -520,6 +520,7 @@ function chkPwContinuity(paramObj) {
 				<tr>
 					<th class="tableth">생년월일</th>
 					<td><input type="date" id="dob" name="dob" readonly></td>
+					
 				</tr>
 			</table>
 			<a class="btn btn-default  pull-right"
