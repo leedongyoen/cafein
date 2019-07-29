@@ -8,7 +8,6 @@ import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.StockVO;
 import co.yedam.cafein.vo.StoreCloseDataInsertVO;
 import co.yedam.cafein.vo.StoreOpenVO;
-import co.yedam.cafein.vo.WarehousingVO;
 
 public interface StoreCloseService {
 
