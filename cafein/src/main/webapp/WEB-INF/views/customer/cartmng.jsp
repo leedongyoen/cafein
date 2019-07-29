@@ -18,14 +18,26 @@ input {
 	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
 	};
 	
-/*    body{
-          no-repeat center center fixed; 
-          -webkit-background-size: cover;
-         -moz-background-size: cover;
-         -o-background-size: cover;
-         background-size: cover; 
+.btn-group .button {
+  background-color: #4CAF50; /* Green */
+  border: 1px solid green;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  width: 150px;
+  display: block;
+}
 
-   } */
+.btn-group .button:not(:last-child) {
+  border-bottom: none; /* Prevent double borders */
+}
+
+.btn-group .button:hover {
+  background-color: #3e8e41;
+}
 
 </style>
 
@@ -83,13 +95,13 @@ $(function(){
 			$("#CartList div a").html(local_cart[i].sId);
 			$("#CartList div a").val(local_cart[i].sId);
 			$('<tr>')
-			.append($('<td rowspan="2">').css("width","100px").append($('<input>').css("width","25px").attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i,onClick:"cartlist(this.value)",})))
+			.append($('<td rowspan="2">').css("width","100px").append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i ,onClick:"cartlist(this.value)",})))
 			.append($('<td rowspan="2">').css("width","100px"))    //.html()
 			.append($('<td rowspan="2">').css("width","150px"))
 			.append($('<td>').css("width","300px").html(local_cart[i].mName))   //.html(local_cart[i].mName))
 			.append($('<td rowspan="2">').html(state).css("width","100px"))    //.html(state))
 			.append($('<td rowspan="2">').css("width","150px").append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"}).css("background-color","#A9F5E1").css("color","white").css("border","none")).append($('<input>').attr({type: "text", name:"orderqty",size:'3', id:"qty"+i,value:local_cart[i].qty}).css("text-align","")).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"}).css("background-color","#A9F5E1").css("color","white").css("border","none")))
-			.append($('<td rowspan="2">').css("width","150px").html(local_cart[i].totalPrice+" 원"))
+			.append($('<td rowspan="2">').css("width","150px").html(local_cart[i].totalPrice))
 			.append($('<input>').attr({type:"hidden", id:"price"+i, value:local_cart[i].totalPrice}).css("color","#04B4AE"))
 			.appendTo("#CartList table tbody");
 		
@@ -196,7 +208,6 @@ function cartlist(val){
 	var allPrice = 0;
 	
 	$("input[name=cartnumlist]:checked").each(function() {
-		
 		
 		var test = $(this).val(); 
 		for(var t = 0;t<test.length;t++){
@@ -315,7 +326,7 @@ function getOptionNaming(mnumber, stnumber){
 					<table border = "1" style="width:100%; border: 1px solid #F2F2F2;">
 
 						<thead>
-							<tr style="background: pink;">
+							<tr style="height:50px;">
 								<th rowspan="1"></th>
 								<th rowspan="1">매 장 명</th>
 								<th colspan="2">상품/옵션정보</th>
@@ -330,18 +341,18 @@ function getOptionNaming(mnumber, stnumber){
 					</table>
 				</div>
 
-				<div style="background: #A9F5E1; padding: 3px;">
-					<p>
+				<div style="padding: 3px; background: #F5D0A9; height:80px;">
+					<p  style="padding-top:25px;">
 						<span> 주 문 합 계 <input type="hidden" name="totalPrice" value="0"><strong>0</strong>원</span>
 					</p>
 				</div>
 			</div>
 
 		<br> <br> <br>
-		<div align="right">
-			<input type="button" class="btn btn-outline-info" value="주문" id="orderBtn" onclick="orderBtnClick()">
-			<button class="btn btn-outline-info" onclick="orderDeleteClick()">삭제</button>
-			<a href="javascript:history.go(-1)" class="btn btn-outline-info">돌아가기</a>
+		<div align="right" class="btn-group">
+			<button class="button" onclick="orderBtnClick()">주문</button>
+			<button class="button" onclick="orderDeleteClick()">삭제</button>
+			<!-- <a href="javascript:history.go(-1)" class="button">돌아가기</a> -->
 		</div>
 		</form>
 		
