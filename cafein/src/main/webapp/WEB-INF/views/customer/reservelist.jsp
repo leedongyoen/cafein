@@ -105,7 +105,7 @@
 			</tbody>
 		</table>
 	</div>
-	<p align="center"><button type="button"  class="btn btn-default"
+	<p align="center"><button type="button"  class="btn btn-success"
 	 onclick = "location.href='customermainform.do'">돌아가기</button></p>
 </body>
 </html>

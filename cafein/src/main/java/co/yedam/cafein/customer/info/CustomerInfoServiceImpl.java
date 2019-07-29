@@ -1,5 +1,9 @@
 package co.yedam.cafein.customer.info;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,6 +14,9 @@ import co.yedam.cafein.vo.CustomerVO;
 public class CustomerInfoServiceImpl implements CustomerInfoService{
 	@Autowired
 	CustomerInfoDAO customerDAO;
+	
+	@Autowired
+	CustomerInfoService service;
 		
 	//회원 단건조회
 	@Override
