@@ -24,8 +24,18 @@ input {
 		
 		$("#customerTable tbody tr").click(function(){
 			$('#toggleTable').show();
-			
 		})
+		
+		//검색
+		$("#customerserch").on("keyup", function() {
+		      var value = $(this).val().toLowerCase();
+		      $("#customerTbody tr").filter(function() {
+		         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		      });
+		   });
+		
+		
+		
 	});
 	
 	 //날짜검색
@@ -342,6 +352,7 @@ input {
 				<hr>
 			</div>
 			<div class="container" align="center">
+				<input class="form-control" id="customerserch" type="text" placeholder="Search..">
 				<table class="table table-hover" id="customerTable">
 
 					<thead>
@@ -366,36 +377,36 @@ input {
 				<hr>
 			</div>
 			<div>
-				<form id="form1">
-					<table border="1" class="table ">
+				<form id="form1" style="margin:0% 10% 0% 10%">
+					
+					<table border="1" class="table" >
 						<tr>
-							<th class="tableth">ID</th>
-							<td><input type="text" id="cId" name="cId" readonly></td>
+							<th class="tableth" width="50" >ID</th>
+							<td width="150"><input type="text" size="50" style="text-align:center" id="cId" name="cId" readonly></td>
 						</tr>
 						<tr>
 							<th class="tableth">NICKNAME</th>
-							<td><input type="text" id="cNick" name="cNick" readonly></td>
+							<td><input type="text" size="50" style="text-align:center"id="cNick" name="cNick" readonly></td>
 						</tr>
 						<tr>
 							<th class="tableth">NAME</th>
-							<td><input type="text" id="cName" name="cName" readonly></td>
+							<td><input type="text" size="50" style="text-align:center"id="cName" name="cName" readonly></td>
 						</tr>
 						<tr>
 							<th class="tableth">TEL</th>
-							<td><input type="text" id="cTel" name="cTel" readonly></td>
+							<td><input type="text" size="50" style="text-align:center"id="cTel" name="cTel" readonly></td>
 						</tr>
 						<tr>
 							<th class="tableth">address</th>
-							<td><input type="text" id="cAdd" size=50 name="cAdd"
-								readonly></td>
+							<td><input type="text" size="50" style="text-align:center"id="cAdd" name="cAdd" readonly ></td>
 						</tr>
 						<tr>
 							<th class="tableth">loginRoot</th>
-							<td><input type="text" id="cJoin" name="cJoin" readonly></td>
+							<td><input type="text" size="50" style="text-align:center"id="cJoin" name="cJoin" readonly></td>
 						</tr>
 						<tr>
 							<th class="tableth">MILEAGE</th>
-							<td><input type="text" id="mileage" name="mileage" readonly></td>
+							<td><input type="text" size="50" style="text-align:center"id="mileage" name="mileage" readonly></td>
 						</tr>
 					</table>
 				</form>
@@ -409,6 +420,7 @@ input {
 					<input type="date" class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
 				<input type="button" value="검색" class="btn btn-success" id="btnSearch" onclick="dateSearch()">
 			</div>
+
 				<table border="1" class="table " id="c_history">
 					<thead>
 						<tr>

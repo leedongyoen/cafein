@@ -20,6 +20,13 @@
 $(function() {
 	loginCheck();
 	storeList();
+	
+	$("#storeserch").on("keyup", function() {
+	      var value = $(this).val().toLowerCase();
+	      $("#storelist tr").filter(function() {
+	         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	      });
+	   });
 });
 
 
@@ -39,6 +46,8 @@ $(function() {
 		
 	}); */
 	
+	
+	
 	function storeList(){
 		console.log('function in');
 	
@@ -57,7 +66,7 @@ $(function() {
 								.append($('<td>').html(store.sname))
 								.append($('<td>').html(store.sid))
 								.append($('<td>').html(store.sadd))
-								.append($('<td>').html(store.sadd2))
+								.append($('<td>').html(store.sadd3))
 								.append($('<td>').html(store.stel))
 								.append($('<td>').html(store.stdeliservice))
 								.append($('<td>').html(store.stopentime))
@@ -102,8 +111,7 @@ $(function() {
 	<div class="container">
 
 		<div style="text-align: right">
-			<input type='text' name='word' value=''>
-			<button>검색</button>
+			<input class="form-control" id="storeserch" size="50" type="text" placeholder="Search..">
 		</div>
 		<br>
 		<table class = "table" id="storeTable">
@@ -115,9 +123,9 @@ $(function() {
 					<th>상세주소</th>
 					<th>전화번호</th>
 					<th>배달</th>
-					<th>적립금</th>
 					<th>오픈시간</th>
 					<th>마감시간</th>
+					<th>적립금</th>
 				</tr>
 			</thead>
 			<tbody id=storelist>

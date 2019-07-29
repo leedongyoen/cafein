@@ -21,6 +21,13 @@
 	$(function(){
 		loginCheck();
 		storepermissionList();
+		
+		 $("#storeserch").on("keyup", function() {
+		      var value = $(this).val().toLowerCase();
+		      $("#storepermissionlist tr").filter(function() {
+		         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		      });
+		   });
 	});
 	
 	
@@ -42,7 +49,7 @@
 								.append($('<td>').html(store.sname))
 								.append($('<td>').html(store.sid))
 								.append($('<td>').html(store.sadd))
-								.append($('<td>').html(store.sadd2))
+								.append($('<td>').html(store.sadd3))
 								.append($('<td>').html(store.stel))
 								.append($('<td>').html(store.stdeliservice))
 								.append($('<td>').html(store.stopentime))
@@ -96,6 +103,9 @@
 	<hr>
 	<div class="container">
 	<form id="frm">
+	
+		<input class="form-control" id="storeserch" type="text" placeholder="Search.."><hr>
+		
 		<table class = "table ">
 			
 			<thead class ="tableth trth">
