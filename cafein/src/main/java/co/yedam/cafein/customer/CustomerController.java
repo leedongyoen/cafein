@@ -1,17 +1,14 @@
 package co.yedam.cafein.customer;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.channels.SeekableByteChannel;
+
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
+
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -25,23 +22,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.junit.runners.Parameterized.Parameters;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.MimeMessageHelper;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonParser;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -54,7 +51,7 @@ import co.yedam.cafein.customer.info.CustomerInfoService;
 import co.yedam.cafein.customer.join.CustomerJoinDAO;
 import co.yedam.cafein.customer.join.CustomerJoinService;
 import co.yedam.cafein.customer.login.KakaoRestAPI;
-import co.yedam.cafein.google.TempKey;
+
 import co.yedam.cafein.vo.CustomerVO;
 import co.yedam.cafein.vo.NaverLoginVO;
 

@@ -41,7 +41,7 @@
 <body>
 <h3 align="center">선호 메뉴 목록</h3>
 <div class="container" align="center">
-<table class ="table" id="likemenulist">
+<table class = "table table-hover" id="likemenulist">
 	<thead>
 		<tr onclick = "location.href='Order.jsp'">
 			<th>주문순위</th>

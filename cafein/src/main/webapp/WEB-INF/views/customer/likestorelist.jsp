@@ -39,7 +39,7 @@
 <body>
 <h3 align="center">선호 매장 목록</h3>
 <div class="container" align="center">
-<table class ="table" id="likestorelist">
+<table class = "table table-hover" id="likestorelist">
 	<thead>
 	<tr>
 		<th>방문순위</th>
