@@ -20,21 +20,20 @@ import co.yedam.cafein.vo.CustomerVO;
 
 @Controller
 public class CustomerInfoController {
-	
+
 	@Autowired
 	CustomerInfoService customService;
-	
+
 	@Autowired
 	BCryptPasswordEncoder passEncoder;
-	
+
 	// 회원 단건 조회
 	@ResponseBody
 	@RequestMapping(value = "/customerinfo", method = RequestMethod.GET)
-	public CustomerVO getCustomer( CustomerVO vo, Model model) {
+	public CustomerVO getCustomer(CustomerVO vo, Model model) {
 
-		
 		CustomerVO resultvo = new CustomerVO();
-		
+
 		resultvo = customService.getCustomer(vo);
 		/*
 		 * if(resultvo.getcJoin().equals("naver")) {
@@ -53,34 +52,41 @@ public class CustomerInfoController {
 		System.out.println(resultvo);
 		return resultvo;
 	}
-	
-	//수정
+
+	// 수정
 	@ResponseBody
-	@RequestMapping(value="/customerinfo", method=RequestMethod.PUT, consumes="application/json")
-	public CustomerVO infoedit(@RequestBody CustomerVO vo, Model model,HttpServletRequest req) {
-		System.out.println(vo+"==============================");
+	@RequestMapping(value = "/customerinfo", method = RequestMethod.PUT, consumes = "application/json")
+	public CustomerVO infoedit(@RequestBody CustomerVO vo, Model model, HttpServletRequest req) {
+		System.out.println(vo + "==============================");
 		vo.setcPw(null);
 		customService.infoedit(vo);
 		return vo;
 	}
-	
-	//비밀번호 변경
+
+	// 비밀번호 변경
 	@ResponseBody
-	@RequestMapping(value="/customerpw/{cId}", method=RequestMethod.PUT, consumes="application/json")
-	public CustomerVO checkpw(@PathVariable("cId") String id,@RequestBody CustomerVO vo, Model model,HttpServletRequest req) {
-		System.out.println(vo+"==============================");
+	@RequestMapping(value = "/customerpw/{cId}", method = RequestMethod.PUT, consumes = "application/json")
+	public int checkpw(@PathVariable("cId") String id, @RequestBody CustomerVO vo, Model model,
+			HttpServletRequest req) {
+		System.out.println(vo + "==============================");
 		vo.setcId(id);
 		CustomerVO customer = customService.getCustomer(vo);
-		boolean mathes = passEncoder.matches(vo.getcPw(), customer.getcPw());
-		
-		
-		customService.checkpw(vo);
-		return vo;
+		int n = 0;
+		boolean mathes = passEncoder.matches(vo.getCurpw(), customer.getcPw());
+		if (mathes) {
+			n = customService.checkpw(vo);
+			if (n == 0) {
+				return 2;
+			}
+		} else { // 매치가 안된경우 0
+			return n;
+		}
+		return n;
 	}
 
-	//삭제
+	// 삭제
 	@ResponseBody
-	@RequestMapping(value="/customerinfo/{cId}", method=RequestMethod.DELETE)
+	@RequestMapping(value = "/customerinfo/{cId}", method = RequestMethod.DELETE)
 	public Map getUserList(@PathVariable("cId") String id, CustomerVO vo, Model model) {
 		vo.setcId(id);
 		customService.deleteCustomer(vo);
@@ -88,11 +94,5 @@ public class CustomerInfoController {
 		result.put("result", Boolean.TRUE);
 		return result;
 	}
-	
-	
-	
-	
-	
-	
 
 }

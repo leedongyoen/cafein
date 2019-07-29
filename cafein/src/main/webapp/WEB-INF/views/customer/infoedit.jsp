@@ -323,13 +323,40 @@ function chkPwContinuity(paramObj) {
 	
 	function checkpwbtn(){
 		
+		if($("#new_pw").val() == $("#newck_pw").val()){
+			
+			$.ajax({
+				url : 'customerpw/'+'<%=(String) session.getAttribute("cId")%>',
+				type : 'PUT',
+				contentType : 'application/json;charrset=utf-8',
+				dataType : 'json',
+				data : JSON.stringify($("#ckckpw").serializeObject()),
+				success : function(data) {
+					if(data == 0) {
+					alert("현재 비밀번호가 틀렸습니다.")
+						
+					} else if( data == 1){
+						alert("비밀번호가 변경되었습니다.")
+					} else {
+						alert("변경이 실패되었습니다. 다시 입력해주세요.")
+					}
+					$("#c_pw").val('');
+					$("#new_pw").val('');
+					$("#newck_pw").val('');
+					$("#checkpw").modal('hide');
+					readcustomerinfo();
+				}
+			});
+
+		}
+		
 		/* 현재 비밀번호가 진짜맞는지 
 				맞으면 새 비밀번호끼리 맞는지 확인 후
 					같다면 update
 					다르면 alert로 다르다고 알리기
 				다르면 alert로 현재비밀번호 틀렸다고 알리기
 		*/
-		
+<%-- 		
 		if(current_pw == $("#c_pw").val()  ){
 // 			console.log("==");
 			if($("#new_pw").val() == $("#newck_pw").val()){
@@ -357,7 +384,7 @@ function chkPwContinuity(paramObj) {
 			$("#c_pw").val('');
 			$("#new_pw").val('');
 			$("#newck_pw").val('');
-		}
+		} --%>
 
 	}
 
@@ -423,7 +450,7 @@ function chkPwContinuity(paramObj) {
 
 							<tr>
 								<th>현재 비밀번호</th>
-								<th><input type="password" id="c_pw">
+								<th><input type="password" name ="curpw" id="c_pw">
 							</tr>
 							<tr>
 								<th>새 비밀번호</th>
@@ -471,7 +498,7 @@ function chkPwContinuity(paramObj) {
 					<th class="tableth">비밀번호</th>
 					<td>
 						<!-- 					<input type="text" id="c_pw" name="cPw" readonly> -->
-						<button type="button" id="pwbt" onclick="openModeal()" disabled>비밀번호 변경하기</button>
+						<button type="button" id="pwbt" onclick="openModeal()" >비밀번호 변경하기</button>
 
 					</td>
 				</tr>

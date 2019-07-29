@@ -58,7 +58,6 @@ import co.yedam.cafein.vo.NaverLoginVO;
 @Controller
 public class CustomerController {
 
-	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
 	private NaverLoginVO naverLoginVO;
 	private String apiResult = null;

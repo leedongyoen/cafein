@@ -23,9 +23,10 @@
 			if (form.cTel.value == "") {
 				alert("연락처를 입력해주세요.");
 				return form.cTel.focus();
-			} 
-			alert("에일로 아이디를 발송했습니다.")	
-			form.submit();		
+			}
+				alert("에일로 아이디를 발송했습니다.")	
+				form.submit();		
+			
 				
 			}
 				
