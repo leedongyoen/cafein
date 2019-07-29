@@ -69,7 +69,7 @@
 </script>
 </head>
 <body>
-  <div class = "container" align="center">
+  <%-- <div class = "container" align="center">
   <form name = "loginForm" action = "customerloginresult.do" method = "post">
     <h3>로그인</h3>
       <label>ID </label><input type = "text" name = "cId"><br>
@@ -85,7 +85,7 @@
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerjoinForm.do'" value = "회원가입">
       <input type = "button" class="btn btn-default " onclick = "location.href='${pageContext.request.contextPath}/customerfindidpw.do'" value = "ID/PW 찾기">
   </form>
-  </div>
+  </div> --%>
 
 	<div class="limiter">
 		<div class="container-login100">
