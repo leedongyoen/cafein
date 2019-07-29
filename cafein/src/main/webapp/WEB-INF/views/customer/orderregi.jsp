@@ -484,7 +484,7 @@ width: 50p;
 				</tr>
 				<tr>
 					<th class="tableth">금 액</th>
-					<td><input id="price" value="${selectmenu.mPrice}" size="2" readonly> &nbsp;&nbsp;
+					<td><input id="price" value="${selectmenu.mPrice}" size="4" readonly> &nbsp;&nbsp;
 						<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(1)">+</button> <input name="oQty" style="text-align: center;" size="1" value="${selectmenu.orderqty}" readonly>
 						<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(-1)">-</button></td>
 				</tr>
