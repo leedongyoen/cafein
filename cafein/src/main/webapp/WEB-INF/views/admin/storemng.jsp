@@ -21,6 +21,13 @@
 	$(function(){
 		loginCheck();
 		storepermissionList();
+		
+		 $("#storeserch").on("keyup", function() {
+		      var value = $(this).val().toLowerCase();
+		      $("#storepermissionlist tr").filter(function() {
+		         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		      });
+		   });
 	});
 	
 	
@@ -42,7 +49,7 @@
 								.append($('<td>').html(store.sname))
 								.append($('<td>').html(store.sid))
 								.append($('<td>').html(store.sadd))
-								.append($('<td>').html(store.sadd2))
+								.append($('<td>').html(store.sadd3))
 								.append($('<td>').html(store.stel))
 								.append($('<td>').html(store.stdeliservice))
 								.append($('<td>').html(store.stopentime))
@@ -96,6 +103,9 @@
 	<hr>
 	<div class="container">
 	<form id="frm">
+	
+		<input class="form-control" id="storeserch" type="text" placeholder="Search.."><hr>
+		
 		<table class = "table ">
 			
 			<thead class ="tableth trth">
@@ -106,9 +116,9 @@
 				<th>상세주소</th>
 				<th>전화번호</th>
 				<th>배달</th>
-				<th>적립금</th>
 				<th>오픈시간</th>
 				<th>마감시간</th>
+				<th>마일리지서비스</th>
 				<th>승인 선택</th>
 			</tr>
 			</thead>
