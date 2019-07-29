@@ -1,27 +1,50 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <html>
+<head>
+<title>Main Page</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<link rel="stylesheet" href="mainresource/assets/css/main.css" />
+<link rel="stylesheet" href="mainresource/assets/css/noscript.css" />
+<style>
+	body{
+			background: url(image/main.jpg) no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
 
-	<head>
-		<title>Identity by HTML5 UP</title>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="mainresource/assets/css/main.css" />
-		<link rel="stylesheet" href="mainresource/assets/css/noscript.css" />
-	</head>
-	<body class="is-preload">
+	}
+	.bg {
+		position: fixed; 
+		top: -50%; 
+		left: -50%; 
+		width: 200%; 
+		height: 200%;
+	}
+	.bgForm {
+		padding: 5px 10px;
+		text-align: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate( -50%, -50% );
+	}
+</style>
+</head>
+<body class="is-preload">
+<div class="bgForm">
+<!-- Wrapper -->
+<div id="wrapper">
 
-		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Main -->
-					<section id="main">
-						<header>
-							<span class="avatar"><img src="image/loginbgimg.jpg" alt="" /></span>
-							<h1>Jane Doe</h1>
-							<p>Senior Psychonautics Engineer</p>
-						</header>
-						<!--
+	<!-- Main -->
+		<section id="main">
+			<header>
+				<h1>Jane Doe</h1>
+				<p>Senior Psychonautics Engineer</p>
+			</header>
+			<!--
 						<hr />
 						<h2>Extra Stuff!</h2>
 						<form method="post" action="#">
@@ -58,34 +81,26 @@
 						</form>
 						<hr />
 						-->
-						<footer>
-							<ul class="icons">
-								<li><a href="${pageContext.request.contextPath}/customerlogin.do" class="icon brands fa-twitter">고객</a></li>
-								<li><a href="${pageContext.request.contextPath}/storelogin.do" class="icon brands fa-instagram">매장</a></li>
-								<li><a href="${pageContext.request.contextPath}/adminlogin.do" class="icon brands fa-facebook-f">관리자</a></li>
-							</ul>
-						</footer>
-					</section>
+			
+			<footer>
+				<ul class="icons">
+					<li><a href="${pageContext.request.contextPath}/customerlogin.do" class="icon brands fa-twitter">Customer</a></li>
+					<li><a href="${pageContext.request.contextPath}/storelogin.do" class="icon brands fa-instagram">Store</a></li>
+					<li><a href="${pageContext.request.contextPath}/adminlogin.do" class="icon brands fa-facebook-f">Admin</a></li>
+				</ul>
+			</footer>
+		</section>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<ul class="copyright">
-							<li>&copy; Jane Doe</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-						</ul>
-					</footer>
-
-			</div>
-
-		<!-- Scripts -->
-			<script>
-				if ('addEventListener' in window) {
-					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
-					document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
-				}
-			</script>
-
-
-
+</div>
+</div>
+<!-- Scripts -->
+<script>
+	if ('addEventListener' in window) {
+		window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
+		document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
+	}
+</script>
 
 </body>
+
 </html>
