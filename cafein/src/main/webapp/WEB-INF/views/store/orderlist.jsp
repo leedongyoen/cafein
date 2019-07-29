@@ -514,12 +514,16 @@
 															type:"button",
 															onclick:"apply('"+item.oNum+"')",										
 															class: item.deliveryStatus
-															}).append("승인") ))
+															})
+															.addClass("btn btn-outline-primary")
+															.append("승인") ))
 					.append($('<td>').append($('<button>').attr({ 
 															type:"button",
 															onclick:"refuse('"+item.oNum+"')",								
 															class: item.deliveryStatus
-															}).append("거절") ))
+															})
+															.addClass("btn btn-outline-danger")
+															.append("거절") ))
 					.appendTo('#orderlisttable tbody');
 					
 				}else{
@@ -552,17 +556,19 @@
 																onclick:"apply('"+item.oNum+"')",									
 								 								class: item.deliveryStatus
 																}).css("display","none")
+																.addClass("btn btn-outline-primary")
 																.append("승인") ))
 						.append($('<td>').append($('<button>').attr({
 																type:"button",
 																onclick:"refuse('"+item.oNum+"')",										
 																class: item.deliveryStatus
 																}).css("display","none")
+																.addClass("btn btn-outline-danger")
 																.append("거절") ))
 						.appendTo('#orderlisttable tbody');
 					}
 					
-				}
+				} 
 				 
 				
 				$('.C0').css({ // 주문 대기

@@ -14,6 +14,11 @@
 <META NAME="Keywords" CONTENT="">
 <META NAME="Description" CONTENT="">
 <style type="text/css">
+table tbody tr td,
+.table td{
+	text-align: left;
+ 
+} 
 
 @media (min-width: 768px) {
   .container {
