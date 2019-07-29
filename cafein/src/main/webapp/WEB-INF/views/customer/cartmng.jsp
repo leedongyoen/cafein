@@ -18,10 +18,14 @@ input {
 	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
 	};
 	
-table, td {
-		
-	};
+   body{
+         background: url(image/back2.jpg) no-repeat center center fixed; 
+          -webkit-background-size: cover;
+         -moz-background-size: cover;
+         -o-background-size: cover;
+         background-size: cover; 
 
+   }
 
 </style>
 
@@ -79,13 +83,13 @@ $(function(){
 			$("#CartList div a").html(local_cart[i].sId);
 			$("#CartList div a").val(local_cart[i].sId);
 			$('<tr>')
-			.append($('<td rowspan="2">').append($('<input>').css("width","25px").attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i,onClick:"cartlist(this.value)",})))
+			.append($('<td rowspan="2">').css("width","100px").append($('<input>').css("width","25px").attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i,onClick:"cartlist(this.value)",})))
 			.append($('<td rowspan="2">').css("width","100px"))    //.html()
 			.append($('<td rowspan="2">').css("width","150px"))
-			.append($('<td>').css("width","200px").html(local_cart[i].mName))   //.html(local_cart[i].mName))
+			.append($('<td>').css("width","300px").html(local_cart[i].mName))   //.html(local_cart[i].mName))
 			.append($('<td rowspan="2">').html(state).css("width","100px"))    //.html(state))
-			.append($('<td rowspan="2">').append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"}).css("background-color","#A9F5E1").css("color","white").css("border","none")).append($('<input>').attr({type: "text", name:"orderqty",size:'3', id:"qty"+i,value:local_cart[i].qty}).css("text-align","")).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"}).css("background-color","#A9F5E1").css("color","white").css("border","none")))
-			.append($('<td rowspan="2">').html(local_cart[i].totalPrice+" 원"))
+			.append($('<td rowspan="2">').css("width","150px").append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"}).css("background-color","#A9F5E1").css("color","white").css("border","none")).append($('<input>').attr({type: "text", name:"orderqty",size:'3', id:"qty"+i,value:local_cart[i].qty}).css("text-align","")).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"}).css("background-color","#A9F5E1").css("color","white").css("border","none")))
+			.append($('<td rowspan="2">').css("width","150px").html(local_cart[i].totalPrice+" 원"))
 			.append($('<input>').attr({type:"hidden", id:"price"+i, value:local_cart[i].totalPrice}).css("color","#04B4AE"))
 			.appendTo("#CartList table tbody");
 		
@@ -265,6 +269,11 @@ function getOptionNaming(mnumber, stnumber){
 </head>
 <body>
 		
+
+<div id="backgroundCoffee" style="width: 100%; height: 100%;" > 
+		
+		
+		
 	<form action="cartorder" method="post" name="fCart">
 		<input type="hidden" name="jsonData">
 	</form>
@@ -272,7 +281,7 @@ function getOptionNaming(mnumber, stnumber){
 	<div style="width: 100%; text-align: center; padding: 3px;" id="CartListWrapper"> <!-- border: 1px solid pink; -->
 		
 		<hr>
-		<h3 align="center">장 바 구 니</h3>
+		<h3 align="center">장 바 구 니!</h3>
 	<hr>
 		<c:forEach var="cart" items="${optionname}" varStatus="i">
 			<script>
@@ -340,5 +349,7 @@ function getOptionNaming(mnumber, stnumber){
 	</div>
 	<%-- <img style="width:90%; height:120%; opacity:0.8; position: absolute;" src="${pageContext.request.contextPath}/image/note.jpg">
 	 --%>
+	 
+	 </div>
 </body>
 </html>
