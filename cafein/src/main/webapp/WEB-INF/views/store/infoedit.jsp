@@ -12,7 +12,14 @@
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">
 <META NAME="Description" CONTENT="">
+ <style type="text/css">
+ table tbody tr td,
+.table td{
+	text-align: left;
  
+} 
+ 
+ </style>
 <script>
 //최소길이 & 최대길이 제한
 var minimum = 8;

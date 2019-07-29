@@ -140,7 +140,7 @@ input {
 				<div class="modal-footer">	
 					<input type="button" id="mymenuInsertbtn" class="btn btn-outline-primary" value="나만의 메뉴 등록" >
 					<button type="button" id="cu_orderbtn"  class="btn btn-outline-primary" >주문</button>	
-					<button type="button" id="cartbtn" class="btn btn-outline-primary" >담기</button>			
+					<button type="button" id="menucartbtn" class="btn btn-outline-primary" >담기</button>			
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 				</form>
@@ -774,7 +774,7 @@ $(function(){
 		
 	});
 	
-	$("#cartbtn").on("click",function(){
+	$("#menucartbtn").on("click",function(){
 		var list =  $("#menudetailForm").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;

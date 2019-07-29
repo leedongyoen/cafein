@@ -484,7 +484,7 @@ width: 50p;
 				</tr>
 				<tr>
 					<th class="tableth">금 액</th>
-					<td><input id="price" value="${selectmenu.mPrice}" size="2" readonly> &nbsp;&nbsp;
+					<td><input id="price" value="${selectmenu.mPrice}" size="4" readonly> &nbsp;&nbsp;
 						<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(1)">+</button> <input name="oQty" style="text-align: center;" size="1" value="${selectmenu.orderqty}" readonly>
 						<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(-1)">-</button></td>
 				</tr>
@@ -545,9 +545,9 @@ width: 50p;
 			<br>
 			<div>
 				<div align="right">
-					<button type="submit" id="orderbtn" class="btn btn-default ">주문하기</button>
+					<button type="submit" id="orderbtn" class="btn btn-outline-primary">주문하기</button>
 					&nbsp;&nbsp; <a href="javascript:history.go(-1)"
-						class="btn btn-default ">돌아가기</a>
+						class="btn btn-outline-danger ">돌아가기</a>
 				</div>
 				
 			</div>

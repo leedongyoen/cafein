@@ -247,7 +247,7 @@ public class CustomerController {
 		String subject = "<관리자>인증번호 입니다.";
 		String from = "bnghty22@gmail.com"; // 보내는 메일
 		String to = "bnghty5798@naver.com"; // 받는 메일
-
+		
 		authNum = RandomNum();
 
 		CustomerVO vo = new CustomerVO();

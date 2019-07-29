@@ -42,7 +42,7 @@
 						OD.O_NUM = O.O_NUM
 						AND OD.M_NUM = M.M_NUM
 						AND O.S_ID = #{sId}
-						AND O.DELIVERY_STATUS NOT IN ('C4','C0','C6')
+						AND O.DELIVERY_STATUS IN ('C3','C5')
 						AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
 						AND
 				 	<choose>
@@ -88,7 +88,7 @@
            				OD.O_NUM = O.O_NUM
 						AND OD.M_NUM = M.M_NUM
 						AND O.S_ID = #{sId}
-						AND O.DELIVERY_STATUS NOT IN ('C4','C0','C6')
+						AND O.DELIVERY_STATUS IN ('C3','C5')
 						AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
            			 	<choose>
            			 		<when test="startDate != null and startDate != '' ">
@@ -121,11 +121,12 @@
 				ORDERS O JOIN ORDER_DETAILS OD
 				ON O.O_NUM = OD.O_NUM
 			WHERE
-			O.DELIVERY_STATUS NOT IN ('C4','C0','C6')
+			O.DELIVERY_STATUS IN ('C3','C5')
 			AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
 			)
 		WHERE S_ID = #{sId}
 		GROUP BY WEEK
+		ORDER BY WEEK ASC
 	</select>
 	<!-- 메뉴별 통계 쿼리  -->
 	<select id="getMenuSales" resultType="salessum">
@@ -140,7 +141,7 @@
 			ON M.M_NUM = OD.M_NUM JOIN ORDERS O
 			ON O.O_NUM = OD.O_NUM
 			WHERE M.S_ID = #{sId}
-			AND O.DELIVERY_STATUS NOT IN ('C4','C0','C6')
+			AND O.DELIVERY_STATUS IN ('C3','C5')
 			AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
 			) AB
 			GROUP BY AB.M_NAME
@@ -184,7 +185,7 @@
 				</choose>
 					 AND
 					 M.S_ID = #{sId}
-					 AND O.DELIVERY_STATUS  NOT IN ('C4','C0','C6')
+					 AND O.DELIVERY_STATUS  IN ('C3','C5')
                      AND OD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')					 	
 			</where>	          
                 ) KIN 

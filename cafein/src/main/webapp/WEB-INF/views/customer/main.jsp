@@ -141,7 +141,7 @@ table {
 </div>
 <br><br>
 
-<div align = "center">
+
 <div style = "float:left;margin-right:10px;">
   <table border = "1" id="mainlikestorelist"
   	onclick = "location.href='${pageContext.request.contextPath}/likestorelist.do'">
