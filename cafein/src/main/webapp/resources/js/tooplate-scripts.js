@@ -1,11 +1,13 @@
 const width_threshold = 480;
 
+var sId = "<%= (String)session.getAttribute('sId') %>";	
+
 function drawLineChart() {
 	
 	var i;
 	$.ajax({
 		url : "./getsalestime.do",
-		data : { sId : "SH001"},
+		data : { sId : sId},
 		type : "POST",
 		datatype : "json",
 		async:false,
@@ -159,7 +161,7 @@ function drawLineChart() {
   
  */ 
 }
-var sId = "<%= (String)session.getAttribute('sId') %>";	
+
 function drawBarChart() {
 	
 	

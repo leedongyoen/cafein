@@ -128,15 +128,11 @@ $(function(){
 						//$('<li>').html(local_cart[i].cuNumList[j]);
 						//console.log($test);
 						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
-					
-						//$("#CartList div p span strong").html(sumtotalPrice);
+					//$("#CartList div p span strong").html(sumtotalPrice);
 		}
 		
 	}
 	
-	
-	
-
 	
 });
 

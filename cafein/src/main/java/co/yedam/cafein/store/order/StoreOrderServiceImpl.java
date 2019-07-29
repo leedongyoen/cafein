@@ -1,16 +1,12 @@
 package co.yedam.cafein.store.order;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.yedam.cafein.common.Paging;
 import co.yedam.cafein.customer.order.CustomerOrderDAO;
 import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
