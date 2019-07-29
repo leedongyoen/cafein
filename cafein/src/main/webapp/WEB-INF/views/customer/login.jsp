@@ -35,6 +35,12 @@
 	<link rel="stylesheet" type="text/css" href="loginresource/css/main.css">
 <!--===============================================================================================-->
 <style>
+
+body {
+	
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
 .container-login100 {
   width: 100%;
   min-height: 100vh;
