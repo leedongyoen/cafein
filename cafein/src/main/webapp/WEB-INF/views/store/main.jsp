@@ -8,12 +8,24 @@
 <%@ include file="storehead.jsp" %>
 <title>Store Main Page</title>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <!-- https://fonts.google.com/specimen/Roboto --><!-- 
+    <link rel="stylesheet" href="resources/css/fontawesome.min.css">
+    https://fontawesome.com/
+    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+    https://getbootstrap.com/
+    <link rel="stylesheet" href="resources/css/templatemo-style.css"> -->
+    <!--
+	Product Admin CSS Template
+	https://templatemo.com/tm-524-product-admin
+	-->
 <script>
 
 	var sId = "<%= (String)session.getAttribute("sId") %>";	
 	var daydata,word;
 
-	google.charts.load('current', {	packages : [ 'table','corechart', 'line' ]});
+ 	google.charts.load('current', {	packages : [ 'table','corechart', 'line' ]});
 	google.charts.setOnLoadCallback(drawBasic);
 
 	$(function(){
@@ -28,7 +40,7 @@
 	function drawBasic() {
 		$.ajax({
 			url : "./getsalestime.do",
-			data : { sId : "SH001"},
+			data : { sId : sId },
 			type : "POST",
 			datatype : "json",
 			success : function(days) {
@@ -53,10 +65,10 @@
 					 width: '80%', height: '100%'
 				});
 	
-				var chart = new google.visualization.LineChart(document
+				/* var chart = new google.visualization.LineChart(document
 							.getElementById('chart_div'));
 	
-				chart.draw(daydata, options);
+				chart.draw(daydata, options); */
 			}
 		});
 	
@@ -179,6 +191,7 @@
 	function addCommas(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+
 </script>
 <style>
 table {
@@ -188,15 +201,26 @@ table {
 table tr th {
 	text-align:center;
 }
+.chartjs-render-monitor {
+	color:black;
+	background-color:#C2E5F4;
+}
 </style>
 </head>
 <body>
-<input type="button" onclick="location.href='maintest.do'" value="메인화면 테스트">
+<!-- <input type="button" onclick="location.href='maintest.do'" value="메인화면 테스트"> -->
 <!-- 시간별 매출 그래프 -->
 	<h3 align="center">시간별 통계</h3>
 	<div class="row">
+		<div class="col-8">
+			<canvas id="lineChart"></canvas>
+		</div>
+		<div class="col-4">
+			<div id="test_dataview3"></div>
+		</div>
+	<!-- 
 		<div class="col-8" id="chart_div"></div><br>
-		<div class="col-4" id="test_dataview3"></div>
+		 -->
 	</div>
 	<br>	
 <div class = "container" align="center">
@@ -250,5 +274,37 @@ table tr th {
 		</div>
 	</div>
 </div>
+
+    <script src="resources/js/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="resources/js/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="resources/js/Chart.min.js"></script>
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="resources/js/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="resources/js/tooplate-scripts.js"></script>
+    <script>
+        Chart.defaults.global.defaultFontColor = 'white';
+        let ctxLine,
+            ctxBar,
+            ctxPie,
+            optionsLine,
+            optionsBar,
+            optionsPie,
+            configLine,
+            configBar,
+            configPie,
+            lineChart;
+        // DOM is ready
+        $(function () {
+            drawLineChart(); // Line Chart
+
+            $(window).resize(function () {
+                updateLineChart();          
+            });
+        })
+    </script>
+
 </body>
 </html>

@@ -110,14 +110,22 @@ public class KakaoRestAPI {
 	        String id = element.getAsJsonObject().get("id").toString();
 	        // 사용자의 정보 (JSON 형태의 key, value)
 	        JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+	        JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 			
 	        String nickname = properties.getAsJsonObject().get("nickname").getAsString();
 	        
+	        // 이메일 연동 시 이메일 정보 가지고 오기
+	        /*
+	        if(kakao_account.get("has_email").getAsBoolean()) {
+	        	String email = kakao_account.get("email").getAsString();
+	        	userInfo.put("email", email);
+	        	System.out.println("kakao email : " + email);
+	        }
+	        */
 	        System.out.println("kakao id : " + id);
 	        
 	        userInfo.put("nickname", nickname);
 	        userInfo.put("kakaoId", id);
-	        //userInfo.put("email", email);
 	        
 	    } catch (IOException e) {
 	        // TODO Auto-generated catch block
