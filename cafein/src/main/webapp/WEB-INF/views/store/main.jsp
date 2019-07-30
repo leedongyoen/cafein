@@ -30,7 +30,7 @@
 
 	$(function(){
 		if(sId == 'null') {
-			location.href="store/login";
+			location.href="storemain.do";
 		}
 		menuTop3();
 		stockLess();
