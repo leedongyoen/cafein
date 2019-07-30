@@ -959,7 +959,7 @@ p {
 				
 				</div>
 				<div class="modal-footer">		
-					<button type="button" class="btn btn-outline-dark" data-dismiss="modal" onclick="location.href='storemainform.do'">Close</button>
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal" onclick="location.href='storemain.do'">Close</button>
 				</div>
 			</div>
 		</div>
