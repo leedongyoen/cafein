@@ -355,8 +355,13 @@ var ordernum ="";
 			$("input:text[name='cId']").val(cId);
 			$("input:text[name='mileage']").val(mileage);
 			var coin =$(".pay").val();
+			var getmoney=$("#getmoney").val();
+			var resultmoney=$("#resultmoney").val();
+			
 			if(coin == '0'){
 				alert("주문건이 없습니다.");
+			}else if(getmoney =='0' || resultmoney<0){
+				alert("금액을 다시 확인해 주세요.");
 			}else{
 			
 			//주문한 데이터 모두 가져오기
