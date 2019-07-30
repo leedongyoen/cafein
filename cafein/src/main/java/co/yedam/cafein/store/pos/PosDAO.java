@@ -48,5 +48,11 @@ public class PosDAO {
 		System.out.println("===> Mybatis refoundcall()");
 		mybatis.insert("PosDAO.refoundcall",vo);
 	}
+	//알람 숫자로 띄우기
+	public int orderalarmcount(OrdersVO vo) {
+		System.out.println("===> Mybatis ordercountalarm()");
+		System.out.println(vo.getoNum());
+		return mybatis.selectOne("PosDAO.orderalarmcount",vo);
+	}
 	
 }

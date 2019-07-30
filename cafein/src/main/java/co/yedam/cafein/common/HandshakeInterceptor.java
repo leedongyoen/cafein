@@ -31,6 +31,7 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{
 	//	PlansVO planvo = (PlansVO) req.getSession().getAttribute("planvo");
 		String sId = (String) req.getSession().getAttribute("sId");
 		String cId = (String) req.getSession().getAttribute("cId");
+		System.out.println(sId+"==========================================찾아라");
         // 주문한 메뉴의 매장ID
 		attributes.put("id", sId != null ? sId : cId );
 				

@@ -46,7 +46,8 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 		super.afterConnectionEstablished(session);
 
 		sessionSet.put((String)session.getAttributes().get("id"),session);
-		this.logger.info("add session!");
+		System.out.println("add session!"+sessionSet);
+		
 	}
 
 	@Override
@@ -66,6 +67,8 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 			int n = service.getstoreordernotviewcount(order);
 			sendMessage(order.getsId(),n+"건");
 			System.out.println("===================== 미확인 건 "+n);
+		}else {
+			sendMessage("SH001","접속성공");
 		}
 		
 		
@@ -92,14 +95,18 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 		WebSocketSession session = sessionSet.get(sid);
 		System.out.println("===========  sid "+sid);
 		System.out.println("=============== 찾기 "+ sessionSet.get(sid));
-		if (session.isOpen()) {
-			try {
-				session.sendMessage(new TextMessage(message));
-				System.out.println("=============== 찾기 "+ new TextMessage(message));
-			} catch (Exception ignored) {
-				this.logger.error("fail to send message!", ignored);
+		Set<String> set = this.sessionSet.keySet();
+		for (String key : set) {
+			session = sessionSet.get(key);
+			if (session.isOpen()) {
+				try {
+					session.sendMessage(new TextMessage(message));
+					System.out.println("=============== 찾기 "+ new TextMessage(message));
+				} catch (Exception ignored) {
+					this.logger.error("fail to send message!", ignored);
+				}
 			}
-		}
+	}
 	}
 
 	@Override

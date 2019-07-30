@@ -47,6 +47,29 @@ $(function(){
 
 	
 });
+
+//알람기능
+var webSocket;
+	var sId = "<%= (String)session.getAttribute("sId") %>";
+	if(sId != "null") {
+		webSocket = new WebSocket('ws://localhost/cafein/OrdercastingServer.do');
+		
+		webSocket.onerror = function(event) {
+			onError(event)
+		};
+		webSocket.onopen = function(event) {
+		 	console.log(" \n" + "연결 성공 ");
+		};
+		webSocket.onmessage = function(event) {
+			console.log(event);
+			 alert(event.data);
+		};
+	}
+
+ function onError(event) {
+	 console.log(event);
+	 alert(event.data);
+}
 	
 function startTime() {
 	var dayko = ['일','월','화','수','목','금','토'];
@@ -148,6 +171,7 @@ body {
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/closedetails.do">마감 내역</a>
 		</div>
 	</li>
+	<li class="nav-item"><a class="nav-link" href="#" id="alarmbtn">웹주문</a></li>
 
 
 

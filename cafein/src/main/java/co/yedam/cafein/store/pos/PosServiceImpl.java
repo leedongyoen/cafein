@@ -48,5 +48,10 @@ public class PosServiceImpl implements PosService{
 	public void refoundcall(OrdersVO vo) {
 		System.out.println(vo.getoNum());
 		dao.refoundcall(vo);
-	};
+	}
+	public int orderalarmcount(OrdersVO vo){
+		System.out.println(vo.getoNum());
+		return dao.orderalarmcount(vo);
+	
+	} 
 }
