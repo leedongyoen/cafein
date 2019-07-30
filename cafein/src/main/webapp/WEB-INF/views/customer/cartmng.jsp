@@ -257,7 +257,7 @@ function orderBtnClick(){
 	}
 	
 	alert(JSON.stringify(arr)); 
-	console.log("?");
+
 	//alert 로 선택한 리스트와 수량이 넘어옴
 
  $('[name="jsonData"]').val(JSON.stringify(arr));
@@ -352,7 +352,7 @@ function getOptionNaming(mnumber, stnumber){
 
 		<br> <br> <br>
 		<div align="right" class="btn-group">
-			<input class="button" onclick="orderBtnClick()" value="주문">
+			<input type="button" class="button" onclick="orderBtnClick()" value="주문">
 			
 			<!-- <a href="javascript:history.go(-1)" class="button">돌아가기</a> -->
 		</div>
