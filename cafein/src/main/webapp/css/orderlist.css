@@ -35,8 +35,8 @@ body{
 
 table thead tr,
 .tableth{
-	background-color: #886A08;
 	color: white;
+	background-color: #435c70; 
 
 }
 
@@ -50,6 +50,7 @@ table thead tr th,
 	font-size: 20px;
 	font-weight: 800;
 	text-align: center;
+	background-color: #435c70; 
 	
 }  
 
@@ -87,7 +88,7 @@ table tbody tr td,
 }
 
 .cusorderlist{
-	color: #8A0829
+	color: #435c70
 }
 
 

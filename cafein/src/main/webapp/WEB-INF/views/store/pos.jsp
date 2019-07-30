@@ -9,14 +9,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>매장POS</title>
 <style type="text/css">
-  body{
-background-color:#424242;
-}  
+      
 .nav-tabs a{
-  color: gray !important;
+  color: black !important;
   font-weight: bold;
-}  
-.left {
+}      
+.left {  
   position:absolute;
   width:900px;
   height: 600px;
@@ -30,7 +28,6 @@ background-color:#424242;
 .grid-container {
   display: inline-grid;
   grid-template-columns: auto auto auto auto;
-  background-color: #424242;
   padding: 1px;
   grid-column-gap:25px;
   grid-row-gap: 25px;
@@ -42,13 +39,12 @@ background-color:#424242;
 	text-align:center;
 	width:200px; 
 	border: 0px; 
-	background-color: #424242; 
 	color:white;
+	background: transparent;
 	font-size: large;
 
 }
 .grid-item {
-  background-color: #424242;
 
   text-align: center;
 }
@@ -138,10 +134,9 @@ background-color: #FBEFF2
 .really{
 background-color: #E0F8F7
 }
-
 </style>
 </head>
-<body>
+<body style="background: url(image/metalbk.jpg) no-repeat center center; background-size: cover;">
 <script type="text/javascript">
 //포스기 버튼
 var sId='<%= session.getAttribute("sId") %>'; //헤더에있는 Id로 교체
@@ -360,8 +355,13 @@ var ordernum ="";
 			$("input:text[name='cId']").val(cId);
 			$("input:text[name='mileage']").val(mileage);
 			var coin =$(".pay").val();
+			var getmoney=$("#getmoney").val();
+			var resultmoney=$("#resultmoney").val();
+			
 			if(coin == '0'){
 				alert("주문건이 없습니다.");
+			}else if(getmoney =='0' || resultmoney<0){
+				alert("금액을 다시 확인해 주세요.");
 			}else{
 			
 			//주문한 데이터 모두 가져오기
@@ -859,7 +859,7 @@ var ordernum ="";
 
 </div>
 <div style="text-align:right; padding:0px 300px 0px 0px; font-size: xx-large;">
-<a id="insertmoney" style="color:white">총 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background-color: #424242; color:white;" id="addpay" value="0" readonly="readonly" > 원</a>
+<a id="insertmoney" style="color:white">총 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="addpay" value="0" readonly="readonly" > 원</a>
 </div>
 
 

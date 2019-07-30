@@ -661,14 +661,14 @@ $(function(){
 	mymenu_login_check = "<%= (String)session.getAttribute("cId") %>";
 	if(mymenu_login_check == "null" || mymenu_login_check == ""){
 		$("#mymenuInsertbtn").hide();
-		$("#cartbtn").hide();
+		$("#menucartbtn").hide();
 		$("#cu_orderbtn").hide();
 		$("#storelistbtn1").attr("disabled","disabled");
 		$("#storelistbtn2").attr("disabled","disabled");
 		$("#menumodaltitle").html("로그인 시에만 주문가능합니다.");
 	}else{
 		$("#mymenuInsertbtn").show();
-		$("#cartbtn").show();
+		$("#menucartbtn").show();
 		$("#cu_orderbtn").show();
 		$("#storemodalminititle").html("");
 	}
