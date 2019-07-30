@@ -15,7 +15,48 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="./js/json.min.js"></script>
 
-<script>
+<script >
+
+	var webSocket = new WebSocket('ws://localhost/cafein/OrdercastingServer.do');
+	
+	webSocket.onerror = function(event) {
+		 	onError(event)
+	};
+	webSocket.onopen = function(event) {
+		 onOpen(event)
+	};
+	webSocket.onmessage = function(event) {
+		 onMessage(event)
+	};
+	 
+	function onMessage(event) {
+		//alert(event);
+		 
+	}
+
+	function onOpen(event) {
+	 	
+	}
+
+	function onError(event) {
+		 console.log(event);
+		
+	}
+
+	function send(v_type,v_sid) {
+		var msg = {
+				type : v_type,
+				sId : v_sid,
+
+		};
+			//  Send  the msg  object  as  a  JSON-formatted  string.
+		webSocket.send(JSON.stringify(msg));
+
+		// webSocket.send(inputMessage.value);
+		
+	}
+		 
+		 
 	$(function(){
 		var id = "<%= (String)session.getAttribute("cId") %>";
 		console.log("customer id = " + id);

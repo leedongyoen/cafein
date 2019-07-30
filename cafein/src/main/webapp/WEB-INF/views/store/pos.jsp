@@ -251,13 +251,13 @@ var ordernum ="";
  
  //메뉴탭에서 매장메뉴 나오기
  $(document).ready(function(){
-	 $("#aftersearch").hide();
-	
+	 $("#aftersearch").hide()
 	 $("#paymentModal").modal('hide');
 	 $("#cusSearchModal").modal('hide');
 	 $("#orderListModal").modal('hide');
-		//메뉴로드
 	
+	 
+	 //메뉴로드
 	 $.ajax({
 			url:'pos/'+sId,
 			type:'GET',

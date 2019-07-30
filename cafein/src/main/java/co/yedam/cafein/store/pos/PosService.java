@@ -15,4 +15,5 @@ public interface PosService {
 	List<OrdersVO> getCusRefund(OrdersVO vo);
 	List<ViewPosOrdetailsVO> getOrDetails(ViewPosOrdetailsVO vo);
 	void refoundcall(OrdersVO vo);
+	int orderalarmcount(OrdersVO vo);
 }

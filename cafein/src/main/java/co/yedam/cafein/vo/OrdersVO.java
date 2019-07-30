@@ -4,7 +4,8 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrdersVO {
 
 	private String oNum;
@@ -74,9 +75,18 @@ public class OrdersVO {
 	// 해당 매장에서 마일리지 서비스를 이용하는지 여부를 저장하기 위해서
 	private String mileageservice;
 	
+	// 웹 소켓 알림
+	private String type;
+	
 	
 	
 
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public int getLastPage() {
 		return lastPage;
 	}

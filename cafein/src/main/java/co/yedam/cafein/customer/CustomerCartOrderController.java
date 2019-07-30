@@ -117,7 +117,7 @@ public class CustomerCartOrderController {
 	        		
 	        		addCuop.clear();
 	        		String[] stList = meorvo.get(j).getCuoptionlist();
-	        		
+	        		System.out.println("stList:"+stList[0]);
 	        		
 	        		if(stList!=null) {
 	        			
@@ -143,11 +143,11 @@ public class CustomerCartOrderController {
 		        		
 		        		
 		        		for(int d = 0;d<stList.length;d++) {
+		        			System.out.println("stList.length:"+stList.length);
 		        			addCuop.add(stList[d].toString());
 		        			System.out.println("stList[d]: "+stList[d]);
-		        			
 		        		}
-		        		System.out.println(addCuop.toString());
+		        		System.out.println("::"+addCuop.toString());
 		        		
 	        		
 	        		}

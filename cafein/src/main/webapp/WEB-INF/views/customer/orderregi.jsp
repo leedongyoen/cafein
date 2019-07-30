@@ -412,7 +412,11 @@ width: 50p;
 
 	function menuorder(){
 		// 소켓 연결
+		//JSON.stringify($("#orderform").serializeObject())
 		
+		var sid=$('#storeid').val();
+		var type ="cusorder";
+		send(type,sid);
 		document.orderform.submit();
 	}
 </script>

@@ -29,6 +29,11 @@ public class StoreOrderServiceImpl {
 		return dao.getstoreorderlisttotal(vo);
 	}
 	
+	// 주문확인 상태인 건수
+	public int getstoreordernotviewcount(OrdersVO vo) {
+		return dao.getstoreordernotviewcount(vo);
+	}
+	
 	// 해당 매장의 주문상세 가져오기
 	public List<OrderDetailsVO> getstoreorderdetails(OrdersVO vo){
 		return dao.getstoreorderdetails(vo);

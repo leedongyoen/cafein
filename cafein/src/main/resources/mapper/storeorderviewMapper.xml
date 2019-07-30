@@ -20,6 +20,13 @@
 		</if>
 	
 	</select>
+	
+	<select id="getstoreordernotviewcount" resultType="int">
+		SELECT COUNT(*)
+		FROM ORDERS
+		WHERE DELIVERY_STATUS = 'C0'
+	
+	</select>
 
 	<select id="getstoreorderlist" parameterType="order"  resultType="order">
 	SELECT B.* FROM ( SELECT A.*, ROWNUM RN FROM (

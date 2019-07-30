@@ -25,6 +25,11 @@ public class StoreOrderDAO {
 		return template.selectOne("getStoreOrderListDAO.getstoreorderlisttotal",vo);
 	}
 	
+	// 주문확인 상태인 건수
+	public int getstoreordernotviewcount(OrdersVO vo) {
+		return template.selectOne("getStoreOrderListDAO.getstoreordernotviewcount",vo);
+	}
+	
 	// 해당 매장의 주문상세 가져오기
 	public List<OrderDetailsVO> getstoreorderdetails(OrdersVO vo){
 		return template.selectList("getStoreOrderListDAO.getstoreorderdetails",vo);

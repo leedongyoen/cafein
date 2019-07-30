@@ -358,6 +358,7 @@
 							.append($('<td>').html(test).attr("colspan","6"))
 							.append($('<button>').attr({
 								type:"button",
+								class:"btn btn-warning",
 								onclick:"delterow('"+order_n+"')"
 							}).append("Close"))
 					);	
