@@ -18,6 +18,14 @@
 	$(function(){
 		 loginCheck();
 		dateSearch();
+		
+		 // 입출고상세내역 검색
+	    $("#wareserch").on("keyup", function() {
+	     var value = $(this).val().toLowerCase();
+	     $("tbody tr").filter(function() {
+	        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	   		});
+		});
 	});
 	
 		
@@ -69,7 +77,7 @@
     			.append($('<th>').html('재고 명'))
     			.append($('<th>').html('총 가격'))
     			.append($('<th>').html('총 수량'))
-    			.append($('<th>').html('재고 손실'))
+//     			.append($('<th>').html('재고 손실'))
     			.appendTo('thead');
     	  $.each(data, function(idx,item){
 				wDate = new Date(item.wareDate);
@@ -78,7 +86,7 @@
     		  	.append($('<td>').html(item.stName))
     		  	.append($('<td>').html(item.warePrice))
     		  	.append($('<td>').html(item.wareQty))
-    		  	.append($('<td>').html(item.stLoss))
+//     		  	.append($('<td>').html(item.stLoss))
     		  	.appendTo('tbody');
     	  });
       }
@@ -91,9 +99,11 @@
 		<input type="date" class="btn btn-secondary" id="startDate" name="startDate">&nbsp;
 		<input type="date" class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
 		<input type="button" value="검색" class="btn btn-success" id="btnSearch" onclick="dateSearch()">
-	</div>
-	<br>
 		
+	</div>
+	<div>
+		<input class="form-control" id="wareserch" type="text" placeholder="Search..">
+	</div>		
 </div>
 	<br>
 	

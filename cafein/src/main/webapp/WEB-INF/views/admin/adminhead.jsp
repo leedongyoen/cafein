@@ -90,7 +90,7 @@ body {
                 </li>
                 
                 <li class="nav-item">
-                	<a class="nav-link" href="${pageContext.request.contextPath}/adminlogin.do" id="logoutbtn">Logout</a>
+                	<a class="nav-link" href="${pageContext.request.contextPath}/adminlogout.do" id="logoutbtn">Logout</a>
                 </li>
 
 

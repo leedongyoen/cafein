@@ -275,7 +275,6 @@ table tr th {
 	</div>
 </div>
 
-    <script src="resources/js/jquery-3.3.1.min.js"></script>
     <!-- https://jquery.com/download/ -->
     <script src="resources/js/moment.min.js"></script>
     <!-- https://momentjs.com/ -->
