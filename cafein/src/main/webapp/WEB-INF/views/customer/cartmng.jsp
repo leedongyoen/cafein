@@ -247,19 +247,21 @@ function orderDeleteClick(){
 
 function orderBtnClick(){
 
-	var ordercart = $("#orderCartForm").serializeObject();
+	 var ordercart = $("#orderCartForm").serializeObject();
 	var arr = [];
-
+	
+	
 	
 	for(var k = 0;k<ordercart.cartnumlist.length;k++){
 		arr.push(local_cart[ordercart.cartnumlist[k]]);
 	}
 	
-	console.log(JSON.stringify(arr));
+	alert(JSON.stringify(arr)); 
+	console.log("?");
 	//alert 로 선택한 리스트와 수량이 넘어옴
 
-$('[name="jsonData"]').val(JSON.stringify(arr));
-	document.fCart.submit();
+ $('[name="jsonData"]').val(JSON.stringify(arr));
+	document.fCart.submit(); 
 	
 }
 
@@ -350,12 +352,12 @@ function getOptionNaming(mnumber, stnumber){
 
 		<br> <br> <br>
 		<div align="right" class="btn-group">
-			<button class="button" onclick="orderBtnClick()">주문</button>
-			<button class="button" onclick="orderDeleteClick()">삭제</button>
+			<input class="button" onclick="orderBtnClick()" value="주문">
+			
 			<!-- <a href="javascript:history.go(-1)" class="button">돌아가기</a> -->
 		</div>
 		</form>
-		
+		<button class="button" onclick="orderDeleteClick()">삭제</button>
 	</div>
 	<%-- <img style="width:90%; height:120%; opacity:0.8; position: absolute;" src="${pageContext.request.contextPath}/image/note.jpg">
 	 --%>
