@@ -28,11 +28,42 @@ input {
 table tbody tr td,
 .table td{
 	text-align: left;
+	background-color: #F2F2F2;
  
 } 
+body{ 
+			background: url(image/cusstoreselect.jpg) no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+}
 
 tableth{
 width: 50p;
+}
+
+.table {
+  width: 70%;
+  margin-bottom: $spacer;
+  color: $table-color;
+  background-color: $table-bg; // Reset for nesting within parents with `background-color`.
+
+  th,
+  td {
+    padding: $table-cell-padding;
+    vertical-align: top;
+    border-top: $table-border-width solid $table-border-color;
+  }
+
+  thead th {
+    vertical-align: bottom;
+    border-bottom: (2 * $table-border-width) solid $table-border-color;
+  }
+
+  tbody + tbody {
+    border-top: (2 * $table-border-width) solid $table-border-color;
+  }
 }
 
 </style>
@@ -475,7 +506,7 @@ width: 50p;
 									<input type="checkbox" class="checkoption checkbox" id="${option.recipeno}" name="optionlist" value="${option.recipeno}" checked="checked">
 									<label for="${option.recipeno}">${option.opName}(${option.opPrice})</label>
 									<input type="hidden" id="price${option.recipeno}" value="${option.opPrice}"><br>
-									<c:set var="check" value="O"/>
+									<c:set var="check" value="O"/> 
 								</c:if>
 								
 							</c:forEach>
@@ -502,8 +533,8 @@ width: 50p;
 				<tr id="reservetr" style="display: none;">
 					<th class="tableth">적립금</th>
 					<td><input type="text" name="mileage" id="insertmileage" size="10" value="0">
-						<button type="button" class="btn btn-outline-primary" id="reservebtn">사용</button>
-						<button type="button" class="btn btn-outline-danger" id="reservecancelbtn">취소</button>
+						<button type="button" class="btn btn-info" id="reservebtn">사용</button>
+						<button type="button" class="btn btn-danger" id="reservecancelbtn">취소</button>
 						<br>현 적립금 : <span id="usermileage"></span>
 						<p id="usermileageinfo" style="color: blue;">100단위로 사용가능합니다</p>
 					</td>
@@ -553,9 +584,9 @@ width: 50p;
 			<br>
 			<div>
 				<div align="right">
-					<button type="button" id="orderbtn" onclick="menuorder()" class="btn btn-outline-primary">주문하기</button>
+					<button type="button" id="orderbtn" onclick="menuorder()" class="btn btn-info">주문하기</button>
 					&nbsp;&nbsp; <a href="javascript:history.go(-1)"
-						class="btn btn-outline-danger ">돌아가기</a>
+						class="btn btn-danger">돌아가기</a>
 				</div>
 				
 			</div>

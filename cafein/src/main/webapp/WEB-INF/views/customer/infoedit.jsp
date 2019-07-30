@@ -17,13 +17,47 @@
 table tbody tr td,
 .table td{
 	text-align: left;
- 
+ 	background-color: #F2F2F2;
 }
 
 input[type=password]{
 font-family: "";
 } 
+ 
+body{ 
+			background: url(image/cusstoreselect.jpg) no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;  
+}
 
+tableth{
+width: 50p;
+}
+
+.table {
+  width: 70%;
+  margin-bottom: $spacer;
+  color: $table-color;
+  background-color: $table-bg; // Reset for nesting within parents with `background-color`.
+
+  th,
+  td {
+    padding: $table-cell-padding;
+    vertical-align: top;
+    border-top: $table-border-width solid $table-border-color;
+  }
+
+  thead th {
+    vertical-align: bottom;
+    border-bottom: (2 * $table-border-width) solid $table-border-color;
+  }
+
+  tbody + tbody {
+    border-top: (2 * $table-border-width) solid $table-border-color;
+  }
+}  
 @media (min-width: 768px) {
   .container {
     width: 750px;
@@ -447,24 +481,24 @@ function chkPwContinuity(paramObj) {
 					<h5 class="modal-title">비밀번호 변경하기</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body" align="center">
 					<form class="form-borizontal" id="ckckpw" action="#" method="post">
 
 						<table class="table">
 
 							<tr>
 								<th>현재 비밀번호</th>
-								<th><input type="password" name ="curpw" id="c_pw">
+								<td><input type="password" name ="curpw" id="c_pw"></td>
 							</tr>
 							<tr>
 								<th>새 비밀번호</th>
-								<th><input type="password" id="new_pw" name="cPw"
+								<td><input type="password" id="new_pw" name="cPw"
 									onKeyUp="javascript:chkPw(this, 'chkPwView');"> <br>
-								<span id="chkPwView"></span></th>
+								<span id="chkPwView"></span></td>
 							</tr>
 							<tr>
 								<th>새 비밀번호 확인</th>
-								<th><input type="password" id="newck_pw"></th>
+								<td><input type="password" id="newck_pw"></td>
 							</tr>
 
 						</table>
@@ -489,11 +523,11 @@ function chkPwContinuity(paramObj) {
 			<p id="c_info" align="center" class="titlefont">회원 정보</p>
 			<p id="c_infoedit" align="center" class="titlefont" style=" display:none ">회원 정보 수정</p>
 			<hr>
-			<table class="table">
+			<table class="table"> 
 				<tr class="notweb">
 					<th class="tableth">ID</th>
 					<td><input type="text" name="cId" readonly></td>
-				</tr>
+				</tr> 
 				<tr class="notweb">
 					<th class="tableth">닉네임</th>
 					<td><input type="text" id="c_nick" name="cNick" readonly></td>
@@ -505,7 +539,7 @@ function chkPwContinuity(paramObj) {
 
 						<button type="button" class="btn btn-primary" id="pwbt" onclick="openModeal()" disabled>비밀번호 변경하기</button>
 
-						<button type="button" id="pwbt" onclick="openModeal()" >비밀번호 변경하기</button>
+						<!-- <button type="button" id="pwbt" onclick="openModeal()" >비밀번호 변경하기</button> -->
 
 
 					</td>

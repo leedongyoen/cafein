@@ -6,7 +6,13 @@
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp"%>
 <style type="text/css">
-
+body{ 
+			background: url(image/cusstoreselect.jpg) no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover; 
+			background-size: cover;
+}
 </style>
 <title>주문 목록</title>
 </head>

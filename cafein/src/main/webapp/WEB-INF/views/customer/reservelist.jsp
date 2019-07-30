@@ -5,11 +5,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<style type="text/css">
 
-</style>
 <%@ include file="cushead.jsp" %>
-<title>매장별 적립금</title>
+<title>매장별 적립금</title> 
+<style type="text/css">
+body{ 
+			background: url(image/cusstoreselect.jpg) no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+}
+.reservelist{
+	background-color: #F2F2F2;
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
 
@@ -48,7 +58,7 @@
 				$.each(data,function(idx,item){
 				orderdate = new Date(item.dates);
 				enddates = new Date(item.enddate);
-					$('<tr>')
+					$('<tr>').attr("class","reservelist")
 					.append($('<td>').html(orderdate.toLocaleDateString()))
 					.append($('<td>').html(item.sName))
 					.append($('<td>').html(item.mileAge))
@@ -71,9 +81,10 @@
 </script>
 </head>
 <body>
-	<h2 align="center">나의 적립금 현황</h2>
 	<hr>
-	 <p align="center"><b>회원님의 적립금은</b></p>
+		<div class="titlefont" align="center">나의적립금 현황</div>
+	<hr>
+	 <h5 align="center"><b>회원님의 적립금은</b></h5>
 	<div class = "container" align="center" >
 	 <table id="reservetable1" class = "table table-hover" >
 			<thead>

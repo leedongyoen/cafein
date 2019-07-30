@@ -6,6 +6,18 @@
 <meta charset="UTF-8">
 <%@ include file="cushead.jsp" %>
 <title>Like Store List</title>
+<style type="text/css">
+body{ 
+			background: url(image/cusstoreselect.jpg) no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+}
+.storeist{
+	background-color: #F2F2F2;
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 	$(function(){
@@ -24,7 +36,7 @@
 					console.log(data);
 					$("#likestorelist tbody").empty();
 					$.each(data,function(idx,item){
-						$('<tr>')
+						$('<tr>').attr("class","storeist")
 						.append($('<td>').html(item.rank))
 						.append($('<td>').html(item.sName))
 						.append($('<td>').html(item.sAdd))
@@ -37,8 +49,11 @@
 </script>
 </head>
 <body>
-<h3 align="center">선호 매장 목록</h3>
+
 <div class="container" align="center">
+	<hr>   
+		<div class="titlefont" align="center">선호 매장 목록</div>
+	<hr>	
 <table class = "table table-hover" id="likestorelist">
 	<thead>
 	<tr>

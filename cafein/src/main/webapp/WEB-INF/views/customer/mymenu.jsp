@@ -25,15 +25,25 @@
 	color: #bbb;
 	text-decoration: none;
 	cursor: pointer;
+} 
+.mymenu{
+	text-align: center;
+	
+} 
+.menuname{
+	background-color: #435c70; 
+	font-weight: bold;
+	color: white; 
 }
 </style>
        
 </head>
 <body style="background: url(image/backgroundcoff.jpg) no-repeat center center; background-size: cover;">
-	<h1 align="center">나만의 메뉴</h1>
-	<hr>
-	<br>	
+	
 	<div class="container">
+		<div class="titlefont" align="center">나만의 메뉴</div> 
+		<hr>
+		<br>	
 		<div id="play" align="right">
 		<form name="searchFrm">
 		정렬기준<select name="sort" onchange="myMenuList()" >
@@ -45,10 +55,10 @@
 		searchFrm.sort.value = "${ViewMymenuVO.sort}" == "" ? searchFrm.sort.options[0].value
 				: "${ViewMymenuVO.sort}";
 		</script>
-		<br>
+		<br> 
 			<a href="${pageContext.request.contextPath}/customerstorelist.do" id="addddd"
-				class="test btn btn-secondary">추가</a>
-				<a class="test btn btn-secondary" href="javascript:deleteMymenu()" id="deletemymenu">삭제</a>
+				class="test btn btn-info" style="margin-right: 5px;">추가</a> 
+				<a class="test btn btn-danger" href="javascript:deleteMymenu()" id="deletemymenu">삭제</a>
 				<br>
 			<div id="somediv" title="" style="display: none;">
 				<div id="thedialog"></div>
@@ -165,8 +175,8 @@
 				$.each(data, function(idx, item) {
 					console.log(item.cuNum);
 					var imgurl = "${pageContext.request.contextPath}/image/"+item.uploadFileName;
-				$("#GoToDetail").append("<div class=\"col-md-4\"><div><img src='"+imgurl+"' onclick=detailmyMenuList('"+item.cuNum+"')  style=\"width:200px; height:200px;\"></div><div>"
-									+item.mName+"</div><div>"+item.sName
+				$("#GoToDetail").append("<div class=\"col-md-4 mymenu\"><div><img src='"+imgurl+"' onclick=detailmyMenuList('"+item.cuNum+"')  style=\"width:200px; height:200px;\"></div><div class=\"menuname\">"
+									+item.mName+"</div><div class=\"menuname\">"+item.sName
 									+"</div><div class=\"deleteCheck\"><input type='checkbox' name=\"checkDel\" id='hidden_cuNum"+idx+"'value='"
 									+item.cuNum+"'></div></div>");
 				})

@@ -294,8 +294,9 @@ function getOptionNaming(mnumber, stnumber){
 	<div style="width: 100%; text-align: center; padding: 3px;" id="CartListWrapper"> <!-- border: 1px solid pink; -->
 		
 		<hr>
-		<h3 align="center">장 바 구 니!</h3>
-	<hr>
+		<div class="titlefont" align="center">장 바 구 니!</div> 
+		
+		<hr>
 		<c:forEach var="cart" items="${optionname}" varStatus="i">
 			<script>
 				arrMenu[${i.index}] = "${cart.mNum}"; arrStock[${i.index}] = "${cart.stNum}"; arropName[${i.index}] = "${cart.opName}";
@@ -352,12 +353,13 @@ function getOptionNaming(mnumber, stnumber){
 
 		<br> <br> <br>
 		<div align="right" class="btn-group">
-			<input type="button" class="button" onclick="orderBtnClick()" value="주문">
+			<input type="button" class="button btn btn-info" onclick="orderBtnClick()" value="주문">
 			
 			<!-- <a href="javascript:history.go(-1)" class="button">돌아가기</a> -->
-		</div>
-		</form>
-		<button class="button" onclick="orderDeleteClick()">삭제</button>
+		</div> 
+		</form>  
+		 
+		<button class="button btn btn-danger" onclick="orderDeleteClick()">삭제</button>
 	</div>
 	<%-- <img style="width:90%; height:120%; opacity:0.8; position: absolute;" src="${pageContext.request.contextPath}/image/note.jpg">
 	 --%>

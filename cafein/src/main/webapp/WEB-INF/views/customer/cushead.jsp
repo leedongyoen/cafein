@@ -17,17 +17,22 @@
 
 <script >
 
-	var webSocket = new WebSocket('ws://localhost/cafein/OrdercastingServer.do');
+	var checksocketid = "<%= (String)session.getAttribute("cId") %>";
+	var webSocket;
+	if(checksocketid != "null") {
+		webSocket= new WebSocket('ws://localhost/cafein/OrdercastingServer.do');
+		
+		webSocket.onerror = function(event) {
+			 	onError(event)
+		};
+		webSocket.onopen = function(event) {
+			 onOpen(event)
+		};
+		webSocket.onmessage = function(event) {
+			 onMessage(event)
+		};
+	}
 	
-	webSocket.onerror = function(event) {
-		 	onError(event)
-	};
-	webSocket.onopen = function(event) {
-		 onOpen(event)
-	};
-	webSocket.onmessage = function(event) {
-		 onMessage(event)
-	};
 	 
 	function onMessage(event) {
 		//alert(event);

@@ -9,6 +9,22 @@
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
 
 <title>매장</title>
+<style type="text/css">
+.storelist{
+	background-color: #F2F2F2;
+}
+
+
+body{ 
+			background: url(image/cusstoreselect.jpg) no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+}
+
+
+</style>
 </head>
 <body>
 <p></p>
@@ -16,9 +32,10 @@
 <div class="container" align="center">
 	<!-- <div id="map" style="width:500px;height:400px;" ></div> -->
 
-	<p></p>
 	<hr>
-	
+		<div class="titlefont" align="center">모든 매장</div>
+		<hr>
+	    
 			<!-- 메뉴 선택 -->
 		<!-- Nav tabs -->
 	  <ul id="topclick" class="nav nav-tabs">
@@ -208,25 +225,25 @@
 			storeregi = ''+item.sadd;
 			storeregi=storeregi.substr(0,2);
 			if(storeregi == '대구'){
-				$('<tr>').attr("onclick","storeDetail('"+item.sid+"')")
+				$('<tr>').attr("onclick","storeDetail('"+item.sid+"')").attr("class","storelist")
 				.append($('<td>').html(item.sname))
 				.append($('<td>').html(item.sadd))
 				.append($('<td>').html(item.stel))
 				.appendTo('#daegustoretable tbody');
 			}else if(storeregi == '울산'){
-				$('<tr>').attr("onclick","storeDetail('"+item.sid+"')")
+				$('<tr>').attr("onclick","storeDetail('"+item.sid+"')").attr("class","storelist")
 				.append($('<td>').html(item.sname))
 				.append($('<td>').html(item.sadd))
 				.append($('<td>').html(item.stel))
 				.appendTo('#ulsanstoretable tbody');
 			}else if(storeregi == '서울'){
-				$('<tr>').attr("onclick","storeDetail('"+item.sid+"')")
+				$('<tr>').attr("onclick","storeDetail('"+item.sid+"')").attr("class","storelist")
 				.append($('<td>').html(item.sname))
 				.append($('<td>').html(item.sadd))
 				.append($('<td>').html(item.stel))
 				.appendTo('#seoulstoretable tbody');
-			}else{
-				$('<tr>').attr("onclick","storeDetail('"+item.sid+"')")
+			}else{ 
+				$('<tr>').attr("onclick","storeDetail('"+item.sid+"')").attr("class","storelist")
 				.append($('<td>').html(item.sname))
 				.append($('<td>').html(item.sadd))
 				.append($('<td>').html(item.stel))
