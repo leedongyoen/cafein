@@ -47,7 +47,6 @@ import co.yedam.cafein.vo.NaverLoginVO;
 @Controller
 public class CustomerController {
 
-	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
 	private NaverLoginVO naverLoginVO;
 	private String apiResult = null;
@@ -486,6 +485,7 @@ public class CustomerController {
 		if (customer == null) {
 			vo.setcId((String) response.get("email"));
 			vo.setcName((String) response.get("name"));
+			vo.setEmail((String) response.get("email"));
 			customerLoginService.insertCustomerNaver(vo);
 		}
 

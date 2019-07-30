@@ -228,7 +228,7 @@ function chkPwContinuity(paramObj) {
 
 	function edit() {
 		$("#edit_after").css('display', 'inline');
-		$("#edit_before").css('display', 'none');
+		$("#edit_before").css('display', 'none' );
 		$("#c_infoedit").css('display', 'inline');
 		$("#c_info").css('display', 'none');
 		$("#c_nick").removeAttr("readonly");
@@ -323,13 +323,40 @@ function chkPwContinuity(paramObj) {
 	
 	function checkpwbtn(){
 		
+		if($("#new_pw").val() == $("#newck_pw").val()){
+			
+			$.ajax({
+				url : 'customerpw/'+'<%=(String) session.getAttribute("cId")%>',
+				type : 'PUT',
+				contentType : 'application/json;charrset=utf-8',
+				dataType : 'json',
+				data : JSON.stringify($("#ckckpw").serializeObject()),
+				success : function(data) {
+					if(data == 0) {
+					alert("현재 비밀번호가 틀렸습니다.")
+						
+					} else if( data == 1){
+						alert("비밀번호가 변경되었습니다.")
+					} else {
+						alert("변경이 실패되었습니다. 다시 입력해주세요.")
+					}
+					$("#c_pw").val('');
+					$("#new_pw").val('');
+					$("#newck_pw").val('');
+					$("#checkpw").modal('hide');
+					readcustomerinfo();
+				}
+			});
+
+		}
+		
 		/* 현재 비밀번호가 진짜맞는지 
 				맞으면 새 비밀번호끼리 맞는지 확인 후
 					같다면 update
 					다르면 alert로 다르다고 알리기
 				다르면 alert로 현재비밀번호 틀렸다고 알리기
 		*/
-		
+<%-- 		
 		if(current_pw == $("#c_pw").val()  ){
 // 			console.log("==");
 			if($("#new_pw").val() == $("#newck_pw").val()){
@@ -357,7 +384,7 @@ function chkPwContinuity(paramObj) {
 			$("#c_pw").val('');
 			$("#new_pw").val('');
 			$("#newck_pw").val('');
-		}
+		} --%>
 
 	}
 
@@ -423,7 +450,7 @@ function chkPwContinuity(paramObj) {
 
 							<tr>
 								<th>현재 비밀번호</th>
-								<th><input type="password" id="c_pw">
+								<th><input type="password" name ="curpw" id="c_pw">
 							</tr>
 							<tr>
 								<th>새 비밀번호</th>
@@ -471,7 +498,11 @@ function chkPwContinuity(paramObj) {
 					<th class="tableth">비밀번호</th>
 					<td>
 						<!-- 					<input type="text" id="c_pw" name="cPw" readonly> -->
-						<button type="button" id="pwbt" onclick="openModeal()" disabled>비밀번호 변경하기</button>
+
+						<button type="button" class="btn btn-primary" id="pwbt" onclick="openModeal()" disabled>비밀번호 변경하기</button>
+
+						<button type="button" id="pwbt" onclick="openModeal()" >비밀번호 변경하기</button>
+
 
 					</td>
 				</tr>
@@ -486,20 +517,19 @@ function chkPwContinuity(paramObj) {
 				<tr>		
 				<th class="tableth">주소</th>
 					<td><input type = "text" id="cAdd2" name = "cAdd2" placeholder="우편번호" readonly>
-	          		<button type = "button" onclick="execPostCode()"id="c_addbt" disabled>우편번호 찾기</button><br>
+	          		<button type = "button" class="btn btn-primary" onclick="execPostCode()"id="c_addbt" disabled>우편번호 찾기</button><br>
 	          		<input type = "text" id="cAdd" name = "cAdd" size=30 placeholder="주소" readonly>
 	          		<input type = "text" id="cAdd3" name = "cAdd3" placeholder="상세주소" readonly></td>
 				</tr>
 				<tr>
 					<th class="tableth">생년월일</th>
 					<td><input type="date" id="dob" name="dob" readonly></td>
+					
 				</tr>
 			</table>
-			<a class="btn btn-default  pull-right"
-				href="javascript:history.go(-1)">돌아가기</a> <input type="button"
-				class="btn btn-default" id="edit_before" value="수정하기"
-				onclick="edit()"> <input style="display: none" type="button"
-				class="btn btn-default" id="edit_after" value="수정완료"
+			<input type="button" class="btn btn-secondary" onclick="javascript:history.go(-1)" value="돌아가기"> 
+			<input type="button" class="btn btn-success" id="edit_before" value="수정하기" onclick="edit()"> 
+			<input style="display: none" type="button" class="btn btn-primary" id="edit_after" value="수정완료"
 				onclick="editok()">
 		</form>
 	</div>
