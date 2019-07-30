@@ -173,7 +173,7 @@ table {
   onclick = "location.href='${pageContext.request.contextPath}/reservelist.do'">
 	<thead>
 	<tr>
-		<th><label>총 적립금</label></th>
+		<th><label>적립금</label></th>
 	</tr>
 	</thead>
 	<tbody>

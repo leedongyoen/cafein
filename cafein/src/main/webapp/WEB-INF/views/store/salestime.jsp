@@ -11,9 +11,10 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <title>시간별 통계</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-		google.charts.load('current', {	packages : [ 'table','corechart', 'line' ]});
+		google.charts.load('current',{	packages : [ 'table','corechart']});
 		google.charts.setOnLoadCallback(drawBasic);
 
 		var sId = '<%= session.getAttribute("sId") %>';
@@ -41,17 +42,20 @@
 						
 						daydata = google.visualization.arrayToDataTable(chartData);	
 						var options = {
-								width : '60%'
+								chartArea : {
+									width : '40%'
+								}
+								
 						};
 	
 						var table = new google.visualization.Table(document
 									.getElementById('test_dataview3'))
 	
 						table.draw(daydata, {
-							 width: '30%', height: '30%'
+							 width: '50%', height: '30%'
 						});
 	
-						var chart = new google.visualization.LineChart(document
+						var chart = new google.visualization.ComboChart(document
 									.getElementById('chart_div'));
 	
 						chart.draw(daydata, options);
@@ -79,11 +83,11 @@
 	<div>
 		<table align="center">
 			<tr>
-				<th><button onclick="location.href='salestime.do'">시간별매출</button></th>
-				<th><button onclick="location.href='salesday.do'">일별매출</button></th>
-				<th><button onclick="location.href='salesmonth.do'">월별매출</button></th>
-				<th><button onclick="location.href='salesyear.do'">연별매출</button></th>
-				<th><button onclick="location.href='salesmenu.do'">메뉴별매출</button></th>
+				<th><button onclick="location.href='salestime.do'"  class="btn btn-primary">시간별매출</button>&nbsp;</th>
+				<th><button onclick="location.href='salesday.do'" class="btn btn-success">일별매출</button>&nbsp;</th>
+				<th><button onclick="location.href='salesmonth.do'" class="btn btn-info">월별매출</button>&nbsp;</th>
+				<th><button onclick="location.href='salesyear.do'" class="btn btn-warning">연별매출</button>&nbsp;</th>
+				<th><button onclick="location.href='salesmenu.do'" class="btn btn-danger">메뉴별매출</button>&nbsp;</th>
 			</tr>
 		</table>
 	</div>

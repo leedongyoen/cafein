@@ -68,7 +68,7 @@
 	<select id="mainTotalReserve" resultType="reserve">
 		SELECT SUM(ORL.TOTALRE) TOTO
 		FROM
-			( SELECT NVL(SUM(RE.MILEAGE)+DD.MILEAGE ,0) TOTALRE
+			( SELECT NVL(SUM(RE.MILEAGE),0) TOTALRE
 			  FROM RESERVE RE ,
 					(SELECT S_ID,
 							C_ID,

@@ -18,6 +18,10 @@ table tbody tr td,
 .table td{
 	text-align: left;
  
+}
+
+input[type=password]{
+font-family: "";
 } 
 
 @media (min-width: 768px) {

@@ -36,7 +36,7 @@
     				
     				daydata = google.visualization.arrayToDataTable(chartData);	
     				var options = {
-    					
+    						
     					
     				};
 
@@ -44,7 +44,7 @@
     							.getElementById('test_dataview5'))
 
     				table.draw(daydata, {
-    					 width: '30%', height: '30%'
+    					 width: '50%', height: '30%'
     				});
 
     				var chart = new google.visualization.PieChart(document
@@ -68,11 +68,11 @@
 	<div align="center" id="test_dataview5"></div><br>
 		<table align="center">
 			<tr>
-				<th><button onclick="location.href='salestime.do'">시간별매출</button></th>
-				<th><button onclick="location.href='salesday.do'">일별매출</button></th>
-				<th><button onclick="location.href='salesmonth.do'">월별매출</button></th>
-				<th><button onclick="location.href='salesyear.do'">연별매출</button></th>
-				<th><button onclick="location.href='salesmenu.do'">메뉴별매출</button></th>
+				<th><button onclick="location.href='salestime.do'"  class="btn btn-primary">시간별매출</button>&nbsp;</th>
+				<th><button onclick="location.href='salesday.do'" class="btn btn-success">일별매출</button>&nbsp;</th>
+				<th><button onclick="location.href='salesmonth.do'" class="btn btn-info">월별매출</button>&nbsp;</th>
+				<th><button onclick="location.href='salesyear.do'" class="btn btn-warning">연별매출</button>&nbsp;</th>
+				<th><button onclick="location.href='salesmenu.do'" class="btn btn-danger">메뉴별매출</button>&nbsp;</th>
 			</tr>
 		</table>
 </body>
