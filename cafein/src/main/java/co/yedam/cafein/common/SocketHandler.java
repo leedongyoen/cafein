@@ -60,7 +60,7 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 		
 		ObjectMapper mapper = new ObjectMapper();
 		OrdersVO order = mapper.readValue((String) message.getPayload(), OrdersVO.class);
-		
+		System.out.println("======= 메시지 "+(String) message.getPayload());
 		if(order.getType().equals("cusorder")) {
 			// 건수 조회
 			int n = service.getstoreordernotviewcount(order);
@@ -90,6 +90,7 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 		// send
 	
 		WebSocketSession session = sessionSet.get(sid);
+		System.out.println("===========  sid "+sid);
 		System.out.println("=============== 찾기 "+ sessionSet.get(sid));
 		if (session.isOpen()) {
 			try {

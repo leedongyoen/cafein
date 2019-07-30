@@ -4,7 +4,8 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrdersVO {
 
 	private String oNum;
