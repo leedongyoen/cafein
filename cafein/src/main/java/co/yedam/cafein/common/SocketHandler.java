@@ -90,9 +90,11 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 		// send
 	
 		WebSocketSession session = sessionSet.get(sid);
+		System.out.println("=============== 찾기 "+ sessionSet.get(sid));
 		if (session.isOpen()) {
 			try {
 				session.sendMessage(new TextMessage(message));
+				System.out.println("=============== 찾기 "+ new TextMessage(message));
 			} catch (Exception ignored) {
 				this.logger.error("fail to send message!", ignored);
 			}
