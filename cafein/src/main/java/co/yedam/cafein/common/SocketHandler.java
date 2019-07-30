@@ -8,6 +8,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
@@ -16,6 +17,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import co.yedam.cafein.store.order.StoreOrderServiceImpl;
 import co.yedam.cafein.vo.OrdersVO;
 
 public class SocketHandler extends TextWebSocketHandler implements InitializingBean {
@@ -23,6 +25,9 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 	private static final Logger logger = LoggerFactory.getLogger(SocketHandler.class);
 	private Map<String,WebSocketSession> sessionSet = new HashMap<String,WebSocketSession>();
 
+	@Autowired
+	StoreOrderServiceImpl service;
+	
 	public SocketHandler() {
 		super();
 		this.logger.info("create SocketHandler instance!");
@@ -58,7 +63,9 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 		
 		if(order.getType().equals("cusorder")) {
 			// 건수 조회
-			sendMessage(order.getsId(),"");
+			int n = service.getstoreordernotviewcount(order);
+			sendMessage(order.getsId(),n+"건");
+			System.out.println("===================== 미확인 건 "+n);
 		}
 		
 		

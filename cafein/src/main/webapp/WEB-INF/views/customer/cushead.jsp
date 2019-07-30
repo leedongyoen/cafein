@@ -30,7 +30,7 @@
 	};
 	 
 	function onMessage(event) {
-		alert(event);
+		//alert(event);
 		 
 	}
 
