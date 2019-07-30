@@ -13,7 +13,7 @@
 .nav-tabs a{
   color: black !important;
   font-weight: bold;
-}  
+}    
 .left {  
   position:absolute;
   width:900px;
