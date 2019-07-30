@@ -68,6 +68,13 @@ html, body { height:100%; overflow:hidden }
 
 <script>
 
+//옵션 전역 변수
+var opName = "";
+var consum = 0.0;
+var unit = "";
+var opPrice = 0;
+
+//레시피 전역변수
 var turnNo = 0;
 var stNumber = "";
 var consume = 0;
@@ -82,6 +89,7 @@ var aQty=0.0;
 var storeid = "SH001";
 <%-- var storeid = "<%= (String)session.getAttribute("sid") %>";  --%>
 
+//메뉴 전역변수
 var mNum = "";
 var mName = "";
 var mPrice = "";
@@ -195,7 +203,6 @@ $(function(){
 		
 		//행을 누를때 마다 ajax 실행
 		
-			
 
 			$("#cmStname").val(td.eq(2).text());
 			$("#consumee").val(consume);
@@ -216,10 +223,23 @@ $(function(){
 		var tr = $(this);
 		var td = tr.children();
 		
+		opName = td.eq(0).text();
+		consum = td.eq(1).text();
+		unit = td.eq(2).text();
+		opPrice = td.eq(3).text();
 		recipeNo = td.eq(4).text();
-		console.log(recipeNo);
+		stName = td.eq(5).text();
+		console.log(stName);
 		
-		 });
+		
+		$("#opopname").val(opName);
+		$("#opopconsum").val(consum);
+		$("#opopunit").val(unit);
+		$("#opopprice").val(opPrice);
+		$("#optionDatailTable table tbody tr:eq(0) td").html(stName);
+		
+		
+	});
 	
 	
 	
@@ -262,20 +282,7 @@ $(function(){
 		
 		
 	});
-	
-	
-	
-	
-	
-	
-/* 	
-	
-$("#").click(function(){
 
-	})
-	 */
-	
-	
 	
 	
 });
@@ -369,6 +376,7 @@ function menulist(mNum){
 							.append($('<td>').html(data[i].stUnit))
 							.append($('<td>').html(data[i].opPrice))
 							.append($('<td style="display:none;">').html(data[i].recipeNo))
+							.append($('<td style="display:none;">').html(data[i].stName))
 							.appendTo("#optionTable tbody");
 						}
 						
@@ -956,17 +964,17 @@ function insertOption(){
 						</tr>
 						<tr>
 							<th>옵 션 이 름</th>
-							<td><input type="text" id="" name="opName"> 
+							<td><input type="text" id="opopname" name="opName"> 
 										</td>
 						</tr>
 						<tr>
 							<th>소 모 량</th>
-							<td><input type="text" id="" name="consum">
-							<input type="text" id="" name="stUnit"></td>
+							<td><input type="text" id="opopconsum" name="consum">
+							<input type="text" id="opopunit" name="stUnit" readonly></td>
 						</tr>
 						<tr>
 							<th>옵 션 가 격</th>
-							<td><input type="text" id="" name="opPrice">원</td>
+							<td><input type="text" id="opopprice" name="opPrice">원</td>
 						
 
 					</table>
