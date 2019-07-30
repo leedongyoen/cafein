@@ -410,7 +410,11 @@ width: 50p;
 	});
 	
 
-	
+	function menuorder(){
+		// 소켓 연결
+		
+		document.orderform.submit();
+	}
 </script>
 </head>
 	<body>	
@@ -545,7 +549,7 @@ width: 50p;
 			<br>
 			<div>
 				<div align="right">
-					<button type="submit" id="orderbtn" class="btn btn-outline-primary">주문하기</button>
+					<button type="button" id="orderbtn" onclick="menuorder()" class="btn btn-outline-primary">주문하기</button>
 					&nbsp;&nbsp; <a href="javascript:history.go(-1)"
 						class="btn btn-outline-danger ">돌아가기</a>
 				</div>

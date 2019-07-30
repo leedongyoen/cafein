@@ -24,7 +24,7 @@
 		s_id
 		, s_name
 		, s_add
-		, s_add2
+		, s_add3
 		, s_tel
 		, st_deli_service
 		, st_open_time
@@ -40,7 +40,7 @@
 		s_id
 		, s_name
 		, s_add
-		, s_add2
+		, s_add3
 		, s_tel
 		, st_deli_service
 		, st_open_time

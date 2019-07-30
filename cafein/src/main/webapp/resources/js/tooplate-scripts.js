@@ -1,6 +1,6 @@
 const width_threshold = 480;
 
-var sId = "<%= (String)session.getAttribute('sId') %>";	
+//var sId = '<%= (String)session.getAttribute("sId") %>'
 
 function drawLineChart() {
 	
@@ -63,49 +63,40 @@ function drawLineChart() {
 			            cubicInterpolationMode: "monotone",
 			            pointRadius: 0
 		              }
-		             /*
-		             {
-			            label: "Featured",
-			            data: [44, 19, 38, 46, 85, 66, 79],
-			            fill: false,
-			            borderColor: "rgba(153, 102, 255, 1)",
-			            cubicInterpolationMode: "monotone",
-			            pointRadius: 0
-		             }*/
 			        ]
 			      },
-			      options: optionsLine
+			      /*options:{
+			    	  annotations: {
+			    	    textStyle: {
+			    	      // The color of the text.
+			    	      color: '#871b47'
+			    	    }
+			    	  }
+			      }*/
+			      
+			      options:{ 
+			    	  legend: { labels: { fontColor: "#040404" } } 
+			      	  ,hAxis: { labels: { color: "#040404" } }
+			      	  ,vAxis: { labels: { color: "#040404" } } 
+			      }
+			      
+			      /*chart.draw(data, { titleTextStyle: { color: 'red' }, 
+			    	  hAxis: { textStyle: { color: 'red' }, 
+			    		  titleTextStyle: { color: 'red' } }, 
+			    		  vAxis: { textStyle: { color: 'red' }, 
+			    			  titleTextStyle: { color: 'red' } }, 
+			    			  legend: { textStyle: { color: 'red' } } });
+			      */
+			      
+			      
+			      //options: optionsLine
 			    };
 
 			    lineChart = new Chart(ctxLine, configLine);
 	
 			
 			}
-			/*
-			var chartData = [];
-			chartData.push(['시간별','수량','금액'])
-				for(i=0; i<days.length; i++) {		
-					var dayss = [days[i].week, parseInt(days[i].cnt), parseInt(days[i].atotal)];
-					chartData.push(dayss);
-			}
 			
-			daydata = google.visualization.arrayToDataTable(chartData);	
-			var options = {
-					width : '100%'
-			};
-
-			var table = new google.visualization.Table(document
-						.getElementById('test_dataview3'))
-
-			table.draw(daydata, {
-				 width: '80%', height: '100%'
-			});
-
-			var chart = new google.visualization.LineChart(document
-						.getElementById('chart_div'));
-
-			chart.draw(daydata, options);
-			*/
 		}
 	});
 	

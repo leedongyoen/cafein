@@ -11,7 +11,7 @@
 <script src="./js/json.min.js"></script>
 <script type="text/javascript">
 	
-	var sId = "<%= (String)session.getAttribute("sId") %>";
+var sId = "<%= (String)session.getAttribute("sId") %>";
 	$(function() {
 		loginCheck();
 		
@@ -26,7 +26,16 @@
 		stockUpdate();
 
 		init();
-	});
+		
+			
+			 // 재고 검색
+	    $("#stockserch").on("keyup", function() {
+	     var value = $(this).val().toLowerCase();
+	     $("#stockTbody tr").filter(function() {
+	        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	   		});
+		});	 
+});
 
 	//초기화
 	function init() {
@@ -296,13 +305,13 @@
 		jQuery('#btnInsert').hide();
 		jQuery('#btnUpdate').show();
 	}
-	
 </script>
 </head>
 <body>
 	<div class="container">
 		<h2>재고 목록</h2>
 		<!-- 	<form action="deleteStock.do"> -->
+		<input class="form-control" id="stockserch" type="text" placeholder="Search..">
 		<table class="table text-center">
 			<thead>
 				<tr>

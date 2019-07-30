@@ -446,7 +446,7 @@ function checkpwbtn(){
       </table>
       <a class="btn btn-secondary  pull-right"  href="javascript:history.go(-1)">돌아가기</a>
       <input type = "button" id = "edit_before"  class="btn btn-default btn-success" value = "수정하기" onclick = "edit()">
-      <input style=" display:none " type = "button" class="btn btn-default" id = "edit_after" value = "수정완료" onclick = "editok()">
+      <input style=" display:none " type = "button" class="btn btn-primary" id = "edit_after" value = "수정완료" onclick = "editok()">
   </form>
   </div>
 </body>

@@ -55,14 +55,15 @@
 		   , TOTAL "total"
 		   , PAY_METHOD "payMethod"
 		   , MILEAGE "mileage"
-		   , REFUSE_REASON "refuseReason"
+		   , (select to_char(o_date,'yyyy-MM-dd HH:mm:ss') ||'('|| o_num ||')' from orders corder where orders.o_num =corder.refuse_reason)  "refuseReason"
+		   
 	FROM ORDERS
 	<where>
 	S_ID=#{sId}
 	<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
 			AND	 TRUNC(O_DATE) BETWEEN #{startDate} AND #{endDate}
-			</if>
-	AND DELIVERY_STATUS IN ('C5','C6')
+			</if>	
+	AND DELIVERY_STATUS IN ('C5')
 	</where>
 	</select> 
 <!-- 환불 주문건 상세내역 -->
@@ -71,7 +72,7 @@
 			O_NUM "oNum"
 			, O_DNUM "oDnum"
 			, OP_DNUM "opDnum"
-			,OP_NAME "opName"
+			, OP_NAME "opName"
 			, CA_NUM "caNum"
 			, M_NAME "mName"
 			, O_QTY "oQty"

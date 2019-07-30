@@ -43,8 +43,7 @@
 		<section id="main">
 			<header>
 				<span class="avatar"><img src="image/mainlogo.png" alt="" /></span>
-				<h1></h1>
-				<p></p>
+				<br><br>
 			</header>
 			
 			<footer>

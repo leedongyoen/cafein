@@ -232,7 +232,7 @@ function chkPwContinuity(paramObj) {
 
 	function edit() {
 		$("#edit_after").css('display', 'inline');
-		$("#edit_before").css('display', 'none');
+		$("#edit_before").css('display', 'none' );
 		$("#c_infoedit").css('display', 'inline');
 		$("#c_info").css('display', 'none');
 		$("#c_nick").removeAttr("readonly");
@@ -502,7 +502,11 @@ function chkPwContinuity(paramObj) {
 					<th class="tableth">비밀번호</th>
 					<td>
 						<!-- 					<input type="text" id="c_pw" name="cPw" readonly> -->
+
+						<button type="button" class="btn btn-primary" id="pwbt" onclick="openModeal()" disabled>비밀번호 변경하기</button>
+
 						<button type="button" id="pwbt" onclick="openModeal()" >비밀번호 변경하기</button>
+
 
 					</td>
 				</tr>
@@ -517,7 +521,7 @@ function chkPwContinuity(paramObj) {
 				<tr>		
 				<th class="tableth">주소</th>
 					<td><input type = "text" id="cAdd2" name = "cAdd2" placeholder="우편번호" readonly>
-	          		<button type = "button" onclick="execPostCode()"id="c_addbt" disabled>우편번호 찾기</button><br>
+	          		<button type = "button" class="btn btn-primary" onclick="execPostCode()"id="c_addbt" disabled>우편번호 찾기</button><br>
 	          		<input type = "text" id="cAdd" name = "cAdd" size=30 placeholder="주소" readonly>
 	          		<input type = "text" id="cAdd3" name = "cAdd3" placeholder="상세주소" readonly></td>
 				</tr>
@@ -527,11 +531,9 @@ function chkPwContinuity(paramObj) {
 					
 				</tr>
 			</table>
-			<a class="btn btn-default  pull-right"
-				href="javascript:history.go(-1)">돌아가기</a> <input type="button"
-				class="btn btn-default" id="edit_before" value="수정하기"
-				onclick="edit()"> <input style="display: none" type="button"
-				class="btn btn-default" id="edit_after" value="수정완료"
+			<input type="button" class="btn btn-secondary" onclick="javascript:history.go(-1)" value="돌아가기"> 
+			<input type="button" class="btn btn-success" id="edit_before" value="수정하기" onclick="edit()"> 
+			<input style="display: none" type="button" class="btn btn-primary" id="edit_after" value="수정완료"
 				onclick="editok()">
 		</form>
 	</div>

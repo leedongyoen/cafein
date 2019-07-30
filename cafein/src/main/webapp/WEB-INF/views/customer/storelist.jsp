@@ -14,11 +14,24 @@
 input {
 	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
 }
+.menulist{
+	background-color: #F2F2F2;
+}
+
+
+body{
+			background: url(image/cusstoreselect.jpg) no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+}
+
 </style>
 </head>
 <body>
 <br>
-
+ 
 <div class="container">
 
 	<button id="selectStore" class="btn btn-outline-info" >매장 선택</button>
@@ -53,7 +66,7 @@ input {
 			<thead>
 				<tr><th>사진</th><th>메뉴명</th><th>가격</th></tr>
 				</thead>
-				<tbody id="searchTable">
+				<tbody id="searchTable" class="menulist">
 				
 			</tbody>
 			</table>
@@ -64,7 +77,7 @@ input {
     			<thead>
 				<tr><th>사진</th><th>메뉴명</th><th>가격</th></tr>
 				</thead>
-				<tbody id="searchTable">
+				<tbody id="searchTable" class="menulist">
 				
 				</tbody>
 			</table>
@@ -74,7 +87,7 @@ input {
      			<thead>
 				<tr><th>사진</th><th>메뉴명</th><th>가격</th></tr>
 				</thead>
-				<tbody id="searchTable">
+				<tbody id="searchTable" class="menulist">
 				
 				</tbody>
 			</table>
@@ -648,14 +661,14 @@ $(function(){
 	mymenu_login_check = "<%= (String)session.getAttribute("cId") %>";
 	if(mymenu_login_check == "null" || mymenu_login_check == ""){
 		$("#mymenuInsertbtn").hide();
-		$("#cartbtn").hide();
+		$("#menucartbtn").hide();
 		$("#cu_orderbtn").hide();
 		$("#storelistbtn1").attr("disabled","disabled");
 		$("#storelistbtn2").attr("disabled","disabled");
 		$("#menumodaltitle").html("로그인 시에만 주문가능합니다.");
 	}else{
 		$("#mymenuInsertbtn").show();
-		$("#cartbtn").show();
+		$("#menucartbtn").show();
 		$("#cu_orderbtn").show();
 		$("#storemodalminititle").html("");
 	}

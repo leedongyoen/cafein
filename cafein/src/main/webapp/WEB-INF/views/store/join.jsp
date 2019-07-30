@@ -10,6 +10,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <link rel="stylesheet" href="./css/orderlist.css" >
+ <style type="text/css">
+ table tbody tr td,
+.table td{
+	text-align: left;
+ 
+} 
+ 
+ </style>
 <script type="text/javascript">
 
 var idCheck = 0;

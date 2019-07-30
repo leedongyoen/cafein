@@ -5,8 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="adminhead.jsp" %>
+<title>Admin Login Page</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
-<title>Login Page</title>
 <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="loginresource/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
@@ -45,6 +50,7 @@
   background: #F6E3CE;
 }
 </style>
+<title>Login Page</title>
 <script>
 		
 		function checkForm() {
@@ -64,18 +70,7 @@
 </script>
 </head>
 <body>
-<!--   <div class = "container" align="center">
-  <form name = "loginForm" action = "adminloginresult.do" method = "post">
-    <h3>로그인</h3>
-      <label>ID </label><input type = "text" name = "aId"><br>
-      <label>PW </label><input type = "password" name = "aPw"><br><br>
-      <input type = "button" class="btn btn-default " onclick = "checkForm()" value = "로그인">
-  </form>
-  </div>
-   -->
-  
-  
-  <div class="limiter">
+  	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
 				<div class="login100-form-title" style="background-image: url(image/loginbgimg.jpg);">
@@ -84,16 +79,16 @@
 					</span>
 				</div>
 
-				<form class="login100-form validate-form" name = "loginForm" action="${pageContext.request.contextPath}/adminloginresult.do"  method = "post">
-					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+				<form class="login100-form validate-form" name = "loginForm" action="adminloginresult.do">
+					<div class="wrap-input100 validate-input m-b-26" data-validate="Admin name is required">
 						<span class="label-input100">아이디</span>
-						<input class="input100" type="text" name="aId" placeholder="Enter user id">
+						<input class="input100" type="text" name = "aId" placeholder="Enter Admin id">
 						<span class="focus-input100"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
 						<span class="label-input100">비밀번호</span>
-						<input class="input100" type="password" name="aPw" onkeypress="if(event.keyCode == 13){ checkForm(); return; }" placeholder="Enter password">
+						<input class="input100" type="password" name = "aPw" placeholder="Enter password">
 						<span class="focus-input100"></span>
 					</div>
 					
@@ -104,8 +99,11 @@
 			</div>
 		</div>
 	</div>
-	
-<!--===============================================================================================-->
+
+  
+  
+  
+  <!--===============================================================================================-->
 	<script src="loginresource/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 	<script src="loginresource/vendor/animsition/js/animsition.min.js"></script>
@@ -121,7 +119,6 @@
 	<script src="loginresource/vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
 	<script src="loginresource/js/main.js"></script>
-  
   
 </body>
 </html>

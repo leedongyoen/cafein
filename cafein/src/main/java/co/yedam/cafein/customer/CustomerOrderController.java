@@ -288,6 +288,8 @@ public class CustomerOrderController {
 		// 해당 주문번호의 op_dnum수정
 		n = service.getodnum(info);
 		
+		
+		
 		// 해당 매장의 마일리지 서비스를 할 경우에만.
 		if(info.getMileageservice().equals("Y")) {
 			
@@ -297,6 +299,7 @@ public class CustomerOrderController {
 			// 해당 매장에 대한 마일리지가 없을 경우
 			if(n == 0) {
 				n = service.insertmileage(info);
+				
 			}
 		}
 		return "redirect:orderlist.do";

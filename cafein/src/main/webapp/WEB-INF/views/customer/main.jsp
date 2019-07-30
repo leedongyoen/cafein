@@ -34,7 +34,7 @@
 				$("#totalreserve tbody").empty();
 				$.each(data,function(idx,item){
 					$('<tr>')
-					.append($('<td>').html(item.toto))
+					.append($('<td>').html(addCommas(item.toto)))
 					.appendTo('#totalreserve tbody');
 				});
 			}
@@ -96,6 +96,10 @@
 			} 
 		});
 	}
+	
+	function addCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
  	</script>
 <title>Customer Main Page</title>
 
@@ -140,59 +144,62 @@ table {
   	</a>
 </div>
 <br><br>
+<div class = "container" align="center">
+	<div class="row">
+		<div class="col-sm">
+		  <table border = "1" id="mainlikestorelist"
+		  	onclick = "location.href='${pageContext.request.contextPath}/likestorelist.do'">
+			<thead>
+				<tr>
+					
+					<th colspan="2"><label>자주 이용한 매장</label></th>
+				</tr>
+			</thead>
+				<tbody>
+				</tbody>
+		  </table>
+		</div>
+		<div class="col-sm">
+		  <table border = "1" id="mainlikemenulist"
+		  onclick = "location.href='${pageContext.request.contextPath}/likemenulist.do'">
+			<thead>
+				<tr>
+					
+					<th colspan="2"><label>많이 주문한 메뉴</label></th>
+				</tr>
+			</thead>
+				<tbody>
+				</tbody>
+		  </table>
+		</div>
+		<div class="col-sm">
+		  <table border = "1" id ="totalreserve" 
+		  onclick = "location.href='${pageContext.request.contextPath}/reservelist.do'">
+			<thead>
+			<tr>
+				<th><label>적립금</label></th>
+			</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		  </table>
+		</div>
+		<div class="col-sm">
+		  <table border = "1" id="mainorderlist"
+		  onclick = "location.href='${pageContext.request.contextPath}/orderlist.do'">
+			<thead>
+				<tr >
+					<th><label>총 사용 금액</label></th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		  </table>
+		</div>
+	</div>	
+</div>
 
 
-<div style = "float:left;margin-right:10px;">
-  <table border = "1" id="mainlikestorelist"
-  	onclick = "location.href='${pageContext.request.contextPath}/likestorelist.do'">
-	<thead>
-		<tr>
-			<th><label>-</label></th>
-			<th><label>자주 이용한 매장</label></th>
-		</tr>
-	</thead>
-		<tbody>
-		</tbody>
-  </table>
-</div>
-<div style = "float:left;margin-right:10px;">
-  <table border = "1" id="mainlikemenulist"
-  onclick = "location.href='${pageContext.request.contextPath}/likemenulist.do'">
-	<thead>
-		<tr>
-			<th><label>-</label></th>
-			<th><label>많이 주문한 메뉴</label></th>
-		</tr>
-	</thead>
-		<tbody>
-		</tbody>
-  </table>
-</div>
-<div style = "float:left;margin-right:10px;">
-  <table border = "1" id ="totalreserve" 
-  onclick = "location.href='${pageContext.request.contextPath}/reservelist.do'">
-	<thead>
-	<tr>
-		<th><label>적립금</label></th>
-	</tr>
-	</thead>
-	<tbody>
-	</tbody>
-  </table>
-</div>
-<div style = "float:left;margin-right:10px;">
-  <table border = "1" id="mainorderlist"
-  onclick = "location.href='${pageContext.request.contextPath}/orderlist.do'">
-	<thead>
-		<tr >
-			<th><label>총 사용 금액</label></th>
-		</tr>
-	</thead>
-	<tbody>
-	</tbody>
-  </table>
-</div>
-</div>
 
 <!-- <br><br><br><br><br><br><br><br>
 <div id="map" style="width:100%;height:400px;margin:auto;"></div>

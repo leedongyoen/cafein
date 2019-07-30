@@ -11,6 +11,8 @@
 <title>Insert title here</title>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
 var price = 4100;
 var no = 1;
@@ -235,10 +237,49 @@ function orderCartInsert(){
 
 	var ordercart = $("#ordercartform").serializeObject();
 	
-	console.log(JSON.stringify(ordercart));
+	 var IMP = window.IMP; // 생략해도 괜찮습니다.
+	 IMP.init("imp82928353");	//발급받은후 코드 넣기
 	
-	$('[name="jsonData"]').val(JSON.stringify(ordercart));
-	document.fCart.submit();
+	 
+	// IMP.request_pay(param, callback) 호출
+	  IMP.request_pay({ // param
+	    pg: "inicis",
+	    pay_method: "card",
+	    merchant_uid: "ORD20180131-0000011",
+	    name: "노르웨이 회전 의자",
+	    amount: 64900,
+	    buyer_email: "gildong@gmail.com",
+	    buyer_name: "홍길동",
+	    buyer_tel: "010-4242-4242",
+	    buyer_addr: "서울특별시 강남구 신사동",
+	    buyer_postcode: "01181"
+	  }, function (rsp) { // callback
+	    if (rsp.success) {
+	    	
+	    	var msg = '결제가 완료되었습니다.';
+			msg += '고유ID : ' + rsp.imp_uid;
+			msg += '상점 거래ID : ' + rsp.merchant_uid;
+			msg += '결제 금액 : ' + rsp.paid_amount;
+			msg += '카드 승인번호 : ' + rsp.apply_num;
+			
+			console.log(msg);
+	    	/* console.log(JSON.stringify(ordercart));
+	    	
+	    	$('[name="jsonData"]').val(JSON.stringify(ordercart));
+	    	document.fCart.submit();
+	    	 */
+	    	
+	    } else {
+	       console.log("결제 실패..");
+	       return;
+	    }
+	  });
+	 
+	 
+	 
+	 
+	
+	
 	
 	
 }

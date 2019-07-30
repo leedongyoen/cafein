@@ -485,6 +485,7 @@ public class CustomerController {
 		if (customer == null) {
 			vo.setcId((String) response.get("email"));
 			vo.setcName((String) response.get("name"));
+			vo.setEmail((String) response.get("email"));
 			customerLoginService.insertCustomerNaver(vo);
 		}
 

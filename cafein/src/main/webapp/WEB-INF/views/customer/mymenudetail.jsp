@@ -15,7 +15,7 @@ function myMenuSelectResult(user) {
 	$('select[name="role"]').val(user.role).attr("selected", "selected");
 }//userSelectResult
 
-
+   
 </script>
 
 </head>
