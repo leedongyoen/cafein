@@ -98,7 +98,7 @@ body {
 					</div>
 					
 					<div class="container-login100-form-btn">
-						<input type = "button" class="btn btn-outline-success btn-lg" onclick = "checkForm()" value = "로그인" style="width:130px">&nbsp;
+						<input type = "button" class="btn btn-outline-success btn-lg" onclick = "checkForm()" onkeypress="if(event.keyCode == 13){ checkForm(); return; }" value = "로그인" style="width:130px">&nbsp;
 						<input type = "button" class="btn btn-outline-info btn-lg" onclick = "location.href='${pageContext.request.contextPath}/customerjoinForm.do'" value = "회원가입" style="width:130px">
 						
 						<div>

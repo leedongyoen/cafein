@@ -210,7 +210,9 @@ table tr th {
 <body>
 <!-- <input type="button" onclick="location.href='maintest.do'" value="메인화면 테스트"> -->
 <!-- 시간별 매출 그래프 -->
+<br>
 	<h3 align="center">시간별 통계</h3>
+	<br>
 	<div class="row">
 		<div class="col-8">
 			<canvas id="lineChart"></canvas>
@@ -280,7 +282,7 @@ table tr th {
     <!-- https://momentjs.com/ -->
     <script src="resources/js/Chart.min.js"></script>
     <!-- http://www.chartjs.org/docs/latest/ -->
-    <script src="resources/js/bootstrap.min.js"></script>
+    <!-- <script src="resources/js/bootstrap.min.js"></script> -->
     <!-- https://getbootstrap.com/ -->
     <script src="resources/js/tooplate-scripts.js"></script>
     <script>
