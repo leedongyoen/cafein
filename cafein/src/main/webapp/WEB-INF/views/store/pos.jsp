@@ -9,11 +9,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>매장POS</title>
 <style type="text/css">
-    
+      
 .nav-tabs a{
   color: black !important;
   font-weight: bold;
-}    
+}      
 .left {  
   position:absolute;
   width:900px;
@@ -355,8 +355,13 @@ var ordernum ="";
 			$("input:text[name='cId']").val(cId);
 			$("input:text[name='mileage']").val(mileage);
 			var coin =$(".pay").val();
+			var getmoney=$("#getmoney").val();
+			var resultmoney=$("#resultmoney").val();
+			
 			if(coin == '0'){
 				alert("주문건이 없습니다.");
+			}else if(getmoney =='0' || resultmoney<0){
+				alert("금액을 다시 확인해 주세요.");
 			}else{
 			
 			//주문한 데이터 모두 가져오기

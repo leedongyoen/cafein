@@ -908,7 +908,7 @@ function insertOption(){
 							</tr>
 							<tr>
 								<th>소 모 량</th>
-								<td colspan="3">
+								<td>
 										<input type="text" id="consumee" name="consum"> 
 										<input type="text" id="stUnitt" name="stUnit"> 
 								</td>
@@ -916,7 +916,7 @@ function insertOption(){
 
 							<tr>
 								<th>제 작 방 법</th>
-								<td colspan="3">
+								<td>
 								<textarea style="width: 100%; border: 1; overflow: visible; text-overflow: ellipsis;"
 										rows=3 id="recipeDetail" name="recipeDetail">
 										</textarea></td>
@@ -1081,8 +1081,7 @@ function insertOption(){
 								<th>제 작 방 법</th>
 								<td colspan="3">
 								<textarea style="width: 100%; border: 1; overflow: visible; text-overflow: ellipsis;"
-										rows=3 name="recipeDetail">
-										</textarea></td>
+										rows=3 name="recipeDetail"></textarea></td>
 							</tr>
 								</table>
 						
