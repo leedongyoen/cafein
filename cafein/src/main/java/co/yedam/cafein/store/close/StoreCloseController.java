@@ -30,6 +30,7 @@ import co.yedam.cafein.vo.StoreOpenVO;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -147,38 +148,44 @@ public class StoreCloseController {
 		return service.storeReceiptList(vo);
 	}
 	
-	
 	// 마감 정산 내역 PDF 파일로 저장
 	@RequestMapping("report.do")
 	public void report(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+		
+		Connection conn = null;
+		
 		try {
+			
 			String sId = (String) session.getAttribute("sId");
 			String openTime = request.getParameter("openTime");
-			//String closeTime = request.getParameter("closeTime");
 			
+			conn = dataSource.getConnection();
+
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("p_store", sId);
-			map.put("openTime", openTime);
+			map.put("openTime", openTime);			
 			
-			//map.put("p_opentime", openTime);
 			JasperReport report = JasperCompileManager
 					.compileReport(request.getSession().getServletContext().getRealPath("reports/receipt.jrxml"));
+			JasperReport jasperSubReport1 = JasperCompileManager
+					.compileReport(request.getSession().getServletContext().getRealPath("reports/cash.jrxml"));
+			JasperReport jasperSubReport2 = JasperCompileManager
+					.compileReport(request.getSession().getServletContext().getRealPath("reports/mileage.jrxml"));
+			JasperReport jasperSubReport3 = JasperCompileManager
+					.compileReport(request.getSession().getServletContext().getRealPath("reports/orders.jrxml"));
+			 
 			// 커넥션만 넘겨주기, sId와 날짜별로 데이터 다르게 나오게 하기, 이전의 마감 내역 조회
-			Connection conn= dataSource.getConnection();
-			JasperPrint print = JasperFillManager.fillReport(report, map, conn);
-			JRExporter exporter = new JRPdfExporter();
-			OutputStream out;
-			response.reset();
-			out = response.getOutputStream();
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, "storeReceipt.pdf");
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
-			exporter.exportReport();
-			out.flush();
-			out.close();
+			 OutputStream out = response.getOutputStream();
+			 JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, conn);
+
+			 JasperExportManager.exportReportToPdfStream(jasperPrint, out);
+			 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			conn.close();
 		}
 	}
+
 
 }

@@ -189,7 +189,7 @@ body {
 	</li>
 	<li class="nav-item">
 	<button type="button" class="btn btn-dark" id="answercall">
-	  웹주문 <span id="ordercall" class="badge badge-light">0</span>
+	  웹주문 <span id="ordercall" class="badge badge-light" style="width:20px;height:20px;">0</span>
 	  <span class="sr-only">unread messages</span>
 	</button>
 	</li>

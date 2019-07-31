@@ -201,7 +201,7 @@
 					<td><p id="cashSales"></p></td>
 				</tr>
 				<tr>
-					<th>현금 결제 시 사용된 포인트</th>
+					<th>현금 결제 시 사용된 적립금</th>
 					<td><p id="usedMileage"></p></td>
 				</tr>
 			</table>

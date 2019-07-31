@@ -7,13 +7,13 @@
 <%@ include file="storehead.jsp" %>
 <title>Store Closing Page</title>
 <style>
-ul {
+.ulClass {
 	list-style: none;
 	width:450px;
 	margin-left: auto;
   	margin-right: auto;
 }
-li {
+.liClass {
 	width:450px;
 }
 hr {
@@ -98,7 +98,7 @@ p {
 							id:'nonDelCheck',
 							disabled:'disabled',
 							value:'삭제불가',
-							class:'btn btn-outline-info'
+							"class":'btn btn-outline-info'
 						})))
 						.appendTo('#operatingreservTable tbody');
 					} else if(item.stPayMethod == 'CASH') {
@@ -113,7 +113,7 @@ p {
 							id:'nonDelCheck',
 							disabled:'disabled',
 							value:'삭제불가',
-							class:'btn btn-outline-info'
+							"class":'btn btn-outline-info'
 						})))
 						.appendTo('#operatingreservTable tbody');
 						orSum += Number(item.warePrice);		// 현금 영업준비금 때문에 필요
@@ -175,6 +175,7 @@ p {
 			.append($('<td>').append($('<input>').attr({
 				type:'button',
 				value:'삭제',
+				"class":'btn btn-outline-info'
 			}).addClass('delbtn')))
 			.appendTo('#operatingreservTable tbody');
 		}
@@ -811,7 +812,7 @@ p {
 			</div><br>
 		</div>
 	</div>
-	
+</div>
 	<!-- 마감 영수증  Modal -->
 	<div class="modal fade" id="receiptmodal" role="dialog">
 		<div class="modal-dialog" style="max-width: 40%; width: auto;">		
@@ -819,138 +820,138 @@ p {
 				<div class="modal-body">
 					<form class="form-borizontal" action="#" method="POST">
 						<div class="table-responsive">
-							<ul>
-								<li>
+							<ul class="ulClass">
+								<li class="liClass">
 									<p>*** <%= session.getAttribute("sName") %> 마감 결과 ***</p>
 								</li>
 								<hr>
 								<!-- 오픈, 마감 일시 -->
-								<li>
+								<li class="liClass">
 									<span>오픈일시</span>
 									<label id="opentime"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span>마감일시</span>
 									<label id="closetime"></label>
 								</li>
 								<hr>
 								<!-- 매출 -->
-								<li>
+								<li class="liClass">
 									<p>직접수령</p>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<span class="sales">현금</span>
 									<span class="sales" id="takeoutCashCnt"></span>
 									<label id="takeoutCashSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span class="sales">카드</span>
 									<span class="sales" id="takeoutCardCnt"></span>
 									<label id="takeoutCardSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span class="sales">합계</span>
 									<span class="sales" id="takeoutSumCnt"></span>
 									<label id="takeoutSum"></label>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<p>배달주문</p>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<span class="sales">현금</span>
 									<span class="sales" id="deliveryCashCnt"></span>
 									<label id="deliveryCashSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span class="sales">카드</span>
 									<span class="sales" id="deliveryCardCnt"></span>
 									<label id="deliveryCardSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span class="sales">합계</span>
 									<span class="sales" id="deliverySumCnt"></span>
 									<label id="deliverySum"></label>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<p>포인트 내역</p>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<span class="sales">포인트사용</span>
 									<span class="sales" id="pointMinusCnt"></span>
 									<label id="pointMinusSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span class="sales">포인트적립</span>
 									<span class="sales" id="pointPlusCnt"></span>
 									<label id="pointPlusSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span class="sales">환불포인트</span>
 									<span class="sales" id="refundPointCnt"></span>
 									<label id="refundPointSum"></label>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<p>환불내역</p>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<span class="sales">현금</span>
 									<span class="sales" id="refundCashCnt"></span>
 									<label id="refundCashSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span class="sales">카드</span>
 									<span class="sales" id="refundCardCnt"></span>
 									<label id="refundCardSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span class="sales">합계</span>
 									<span class="sales" id="refundSumCnt"></span>
 									<label id="refundSum"></label>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<span>총매출</span>
 									<label id="storeTotalSum"></label>
 								</li>
 								<hr>
 								<!-- 시재 -->
-								<li>
+								<li class="liClass">
 									<p>현금 관리</p>
 								</li>
 								<li>
 									<span>현금시재</span>
 									<label id="storeCash"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span>현금매출</span>
 									<label id="storeCashSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span>준비금</span>
 									<label id="storeDefaultCash"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span>영업지출금</span>
 									<label id="storeOrSum"></label>
 								</li>
-								<li>
+								<li class="liClass">
 									<span>포인트사용</span>
 									<label id="storeCashPoint"></label>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<span>순수익</span>
 									<label id="storeNetIncome"></label>
 								</li>
 								<hr>
-								<li>
+								<li class="liClass">
 									<span>차액</span>
 									<label id="storeDefference"></label>
 								</li>
@@ -967,6 +968,6 @@ p {
 		</div>
 	</div>
 	
-</div>
+
 </body>
 </html>

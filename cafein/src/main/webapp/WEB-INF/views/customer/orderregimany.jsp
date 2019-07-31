@@ -1,8 +1,8 @@
 <%@page import="org.json.simple.parser.JSONParser"%>
 <%@page import="org.json.simple.JSONObject"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +12,53 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b402787b02c7003da0294158d1b3c1f8&libraries=services"></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
+<style>
+input {
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
+}
+
+table tbody tr td,
+.table td{
+	text-align: left;
+	background-color: #F2F2F2;
+ 
+} 
+body{ 
+			background: url(image/cusstoreselect.jpg) no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+}
+
+tableth{
+width: 50p;
+}
+
+.table {
+  width: 70%;
+  margin-bottom: $spacer;
+  color: $table-color;
+  background-color: $table-bg;
+}
+  th,
+  td {
+    padding: $table-cell-padding;
+    vertical-align: top;
+    border-top: $table-border-width solid $table-border-color;
+  }
+
+  thead th {
+    vertical-align: bottom;
+    border-bottom: (2 * $table-border-width) solid $table-border-color;
+  }
+
+  tbody + tbody {
+    border-top: (2 * $table-border-width) solid $table-border-color;
+  }
+}
+
+</style>
 <script>
 var price = 4100;
 var no = 1;
@@ -37,11 +84,7 @@ $(function(){
 	getstoremileageservice();
 	getstoredeliverservice();
 	
-	
-	
-	
 	var cart = '${cartListsmero}';
-
 	var json = JSON.parse(cart);
 	
 	console.log(json);
@@ -60,8 +103,6 @@ $(function(){
 			oplist[t] = oplist[t].trim();
 			$('input:checkbox[id="'+oplist[t]+'"]').attr("checked", true);
 		}
-	
-		
 	}
 	
 	$('#orderbtn').attr('disabled',false);
@@ -225,8 +266,6 @@ function getstoredeliverservice(){
 			}else{
 				$('.deliverN').show();
 			}
-			
-				
 		}
 	}); 
 	
@@ -235,85 +274,11 @@ function getstoredeliverservice(){
 function orderCartInsert(){
 
 	var ordercart = $("#ordercartform").serializeObject();
-	alert(ordercart);
-	 var IMP = window.IMP; // 생략해도 괜찮습니다.
-	 IMP.init("imp82928353");	//발급받은후 코드 넣기
-	
-	 
-	// IMP.request_pay(param, callback) 호출
-	  IMP.request_pay({ // param
-		  pg: 'kakao', // version 1.1.0부터 지원.
-		  /*
-		  'kakao':카카오페이,
-		  html5_inicis':이니시스(웹표준결제)
-		  'nice':나이스페이
-		  'jtnet':제이티넷
-		  'uplus':LG유플러스
-		  'danal':다날
-		  'payco':페이코
-		  'syrup':시럽페이
-		  'paypal':페이팔
-		  */
-		  pay_method: 'card',
-		  /*
-		  'samsung':삼성페이,
-		  'card':신용카드,
-		  'trans':실시간계좌이체,
-		  'vbank':가상계좌,
-		  'phone':휴대폰소액결제
-		  */
-		  merchant_uid: 'merchant_',
-		  /*
-		  merchant_uid에 경우
-		  https://docs.iamport.kr/implementation/payment
-		  위에 url에 따라가시면 넣을 수 있는 방법이 있습니다.
-		  참고하세요.
-		  나중에 포스팅 해볼게요.
-		  */
-		  name: '주문명:결제테스트',
-		  //결제창에서 보여질 이름
-		  amount: 1000,
-		  //가격
-		  buyer_email: 'mossball1011@gmail.com',
-		  buyer_name: 'who',
-		  buyer_tel: '010-1234-5678',
-		  buyer_addr: '서울특별시 강남구 삼성동',
-		  buyer_postcode: '123-456',
-		  //m_redirect_url: 'https://www.yourdomain.com/payments/complete'
-		  /*
-		  모바일 결제시,
-		  결제가 끝나고 랜딩되는 URL을 지정
-		  (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
-		  */
+	//alert(ordercart);
 
-	  }, function (rsp) { // callback
-	    if (rsp.success) {
-	    	
-	    	var msg = '결제가 완료되었습니다.';
-			msg += '고유ID : ' + rsp.imp_uid;
-			msg += '상점 거래ID : ' + rsp.merchant_uid;
-			msg += '결제 금액 : ' + rsp.paid_amount;
-			msg += '카드 승인번호 : ' + rsp.apply_num;
-			
-			console.log(msg);
-	    	 console.log(JSON.stringify(ordercart));
-	    	
-	    	$('[name="jsonData"]').val(JSON.stringify(ordercart));
-	    	document.fCart.submit();
-	    	 
-	    	
-	    } else {
-	       console.log("결제 실패..");
-	       return;
-	    }
-	  });
-	 
-	 
-	 
-	 
-	
-	
-	
+	console.log(JSON.stringify(ordercart));
+  	$('[name="jsonData"]').val(JSON.stringify(ordercart));
+  	document.fCart.submit();
 	
 }
 
@@ -449,9 +414,6 @@ $(function(){
 
 	                        // 해당 주소에 대한 좌표를 받아서
 	                        searchPostion = new daum.maps.LatLng(result.y, result.x);
-	                        
-	                    
-	        	        	
 	                        
 	                        // 거리 계산을 위해서 설정.
 	                        setSearchLine(searchPostion);  
@@ -595,32 +557,24 @@ alert(msg);
 
 </head>
 
-	<body>
+<body>
+	<h1 align="center">주 문</h1>
+	<div class="container" >
 	
-	
-	
-		<h1 align="center">주 문</h1>
-		<div class="container" >
+	<form action="ordercartmany" method="post" name="fCart">
+		<input type="hidden" name="jsonData">
+	</form>
 		
-		<form action="ordercartmany" method="post" name="fCart">
-			<input type="hidden" name="jsonData">
-		</form>
-		
-		<form class="form-borizontal" id="ordercartform" name="ordercartform" method="POST" >
-			
-		
-			 <input id="storeid" value="${selectmenu.sId}" name="sId" style="display: none" >
-			 <input id="storeid" value="${selectmenu.cId}" name="cId" style="display: none" >  
-			 			
-		
-	
-			
+	<form class="form-borizontal" id="ordercartform" name="ordercartform" method="POST" >
+		 <input id="storeid" value="${selectmenu.sId}" name="sId" style="display: none" >
+		 <input id="storeid" value="${selectmenu.cId}" name="cId" style="display: none" >  
+			 		
 			<table class="table">
 				<tr>
 					<th>매 장  명</th>
 					<td>${cartLists[0].sName}</td>
 				</tr>
-		<c:forEach items="${cartLists}" var="cartlist" varStatus="status">
+			<c:forEach items="${cartLists}" var="cartlist" varStatus="status">
 				
 				<tr>
 					<th>메 뉴 명</th>
@@ -644,9 +598,7 @@ alert(msg);
 				    </c:otherwise>
 				</c:choose>
 				
-
 					</td>
-
 				</tr>
 				<tr>
 					<th>옵션</th>
@@ -661,8 +613,6 @@ alert(msg);
 						</c:if>
 					</c:forEach>
 					
-					
-
 					 </td>
 				</tr>
 				<tr>
@@ -736,15 +686,10 @@ alert(msg);
 					<button type="button" id="orderbtn" onclick="orderCartInsert()" class="btn btn-default ">주문하기</button>
 					&nbsp;&nbsp; <a href="javascript:history.go(-1)"
 						class="btn btn-default ">돌아가기</a>
-						<button id="check_module" type="button">아임 서포트 결제 모듈 테스트 해보기</button>
+						<!-- <button id="check_module" type="button">아임 서포트 결제 모듈 테스트 해보기</button> -->
+					</div>
 				</div>
-				
-			</div>
 			</form>
 		</div>
-
-
-
-</body>
-</body>
+	</body>
 </html>

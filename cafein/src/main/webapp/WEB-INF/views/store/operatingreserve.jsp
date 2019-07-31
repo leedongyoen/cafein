@@ -82,7 +82,8 @@
 		.append($('<td>').html(stPayMethod))
 		.append($('<td>').append($('<input>').attr({
 			type:'button',
-			value:'삭제'
+			value:'삭제',
+			"class":'btn btn-outline-info'
 		}).addClass('delbtn')))
 		.appendTo('#operatingreservTable tbody');
 		

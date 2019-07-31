@@ -155,7 +155,7 @@
 		});
 	}
 	
-	// 매장 메인 마일리지 현황 조회
+	// 매장 메인 적립금 현황 조회
 	function mileageInfo() {
 		$.ajax({
 			url:"mileageinfo",
@@ -174,7 +174,7 @@
 					.append($('<th height="99px" class="thcolor">').html(addCommas(item.mileage)+'P'))
 					.appendTo('#mileageInfo tbody');
 					
-					console.log('사용된 마일리지 : ' + item.addmileage + ', 적립된 마일리지 : ' + item.mileage)
+					console.log('사용된 적립금 : ' + item.addmileage + ', 적립된 적립금 : ' + item.mileage)
 					
 				});
 			}
@@ -203,7 +203,7 @@ table tr th {
 }
 .chartjs-render-monitor {
 	color:black;
-	background-color:#C2E5F4;
+	background-color:#E6E0F8;
 }
 .thcolor {
 	background-color:white;
@@ -217,16 +217,19 @@ table tr th {
 <br>
 	<h3 align="center">시간별 통계</h3>
 	<br>
-	<div class="row">
-		<div class="col-8">
-			<canvas id="lineChart"></canvas>
+	<div class="container">
+		<div class="row">
+			<div class="col-8">
+				<canvas id="lineChart"></canvas> 
+				
+			</div>
+			<div class="col-4">
+				<div id="test_dataview3"></div>
+			</div>
+		<!-- 
+			<div class="col-8" id="chart_div"></div><br>
+			 -->
 		</div>
-		<div class="col-4">
-			<div id="test_dataview3"></div>
-		</div>
-	<!-- 
-		<div class="col-8" id="chart_div"></div><br>
-		 -->
 	</div>
 	<br>	
 <div class = "container" align="center">
@@ -270,8 +273,8 @@ table tr th {
 		<table border = "1" id="mileageInfo">
 			<thead>
 				<tr height="66px">
-					<th>적립된 마일리지</th>
-					<th>사용된 마일리지</th>
+					<th>적립된 적립금</th>
+					<th>사용된 적립금</th>
 				</tr>
 			</thead>
 			<tbody>
