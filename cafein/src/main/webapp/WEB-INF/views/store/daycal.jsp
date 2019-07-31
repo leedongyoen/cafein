@@ -97,7 +97,8 @@ p {
 							type:'button',
 							id:'nonDelCheck',
 							disabled:'disabled',
-							value:'삭제불가'
+							value:'삭제불가',
+							class:'btn btn-outline-info'
 						})))
 						.appendTo('#operatingreservTable tbody');
 					} else if(item.stPayMethod == 'CASH') {
@@ -111,7 +112,8 @@ p {
 							type:'button',
 							id:'nonDelCheck',
 							disabled:'disabled',
-							value:'삭제불가'
+							value:'삭제불가',
+							class:'btn btn-outline-info'
 						})))
 						.appendTo('#operatingreservTable tbody');
 						orSum += Number(item.warePrice);		// 현금 영업준비금 때문에 필요
@@ -791,7 +793,7 @@ p {
 			<div class="col-7" id="content" style="border:1px dotted;height:680px;overflow:auto;">
 			</div><br><br>
 			<div class="col-4">
-				<button type="button" onclick = "closeCheck()">마감정산</button>
+				<button type="button" onclick = "closeCheck()" class="btn btn-outline-info">마감정산</button>
 			</div>
 			<div class="col-7">
 				<!-- <table>

@@ -91,15 +91,15 @@
 				
 				if(data.length == 0) {
 					$('<tr>')
-					.append($('<th colspan="3" height="99px">').html('판매된 메뉴가 없습니다.'))
+					.append($('<th colspan="3" height="99px" class="thcolor">').html('판매된 메뉴가 없습니다.'))
 					.appendTo('#salesRank tbody');
 				} else {
 					$.each(data,function(idx,item){	
 						
 						$('<tr>')
-						.append($('<th>').html(item.rank))
-						.append($('<th>').html(item.mName))
-						.append($('<th>').html(item.cnt+'잔'))
+						.append($('<th class="thcolor">').html(item.rank))
+						.append($('<th class="thcolor">').html(item.mName))
+						.append($('<th class="thcolor">').html(item.cnt+'잔'))
 						.appendTo('#salesRank tbody');
 						
 						console.log('순위 : ' + item.rank + ', 메뉴명 : ' + item.mName + ', 판매량 : ' + item.cnt+'잔')
@@ -126,7 +126,7 @@
 				
 				if(data.length == 0) {
 					$('<tr>')
-					.append($('<th colspan="3" height="99px">').html('소모된 재고가 없습니다.'))
+					.append($('<th colspan="3" height="99px" class="thcolor">').html('소모된 재고가 없습니다.'))
 					.appendTo('#stockLess tbody');
 				} else {
 				
@@ -141,9 +141,9 @@
 						}
 						
 						$('<tr>')
-						.append($('<th>').html(item.rank))
-						.append($('<th>').html(item.stName))
-						.append($('<th>').html(item.stQty+word))
+						.append($('<th class="thcolor">').html(item.rank))
+						.append($('<th class="thcolor">').html(item.stName))
+						.append($('<th class="thcolor">').html(item.stQty+word))
 						.appendTo('#stockLess tbody');
 						
 	
@@ -170,8 +170,8 @@
 				$.each(data,function(idx,item){	
 					
 					$('<tr>')
-					.append($('<th height="99px">').html(addCommas(item.addmileage)+'P'))
-					.append($('<th height="99px">').html(addCommas(item.mileage)+'P'))
+					.append($('<th height="99px" class="thcolor">').html(addCommas(item.addmileage)+'P'))
+					.append($('<th height="99px" class="thcolor">').html(addCommas(item.mileage)+'P'))
 					.appendTo('#mileageInfo tbody');
 					
 					console.log('사용된 마일리지 : ' + item.addmileage + ', 적립된 마일리지 : ' + item.mileage)
@@ -204,6 +204,10 @@ table tr th {
 .chartjs-render-monitor {
 	color:black;
 	background-color:#C2E5F4;
+}
+.thcolor {
+	background-color:white;
+	color:black;
 }
 </style>
 </head>
