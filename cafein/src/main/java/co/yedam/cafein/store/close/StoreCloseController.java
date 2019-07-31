@@ -163,7 +163,7 @@ public class StoreCloseController {
 
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("p_store", sId);
-			map.put("openTime", openTime);			
+			map.put("p_opendate", openTime);			
 			
 			JasperReport report = JasperCompileManager
 					.compileReport(request.getSession().getServletContext().getRealPath("reports/receipt.jrxml"));

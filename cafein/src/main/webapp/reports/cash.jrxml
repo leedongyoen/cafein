@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 7.2.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cash" pageWidth="500" pageHeight="210" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="7fe238fe-7cf1-4d26-85ad-b34e3fa38357">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="157"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="835"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PRESSO"/>
+	<style name="textStyle" pdfFontName="malgun.ttf" pdfEncoding="Identity-H"/>
 	<parameter name="p_store" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT      nvl(to_char(sum(O.TOTAL),'999,999,999,999,999'),0) "totalSum"
@@ -57,62 +58,62 @@ group by SOP.CASH, SOP.DEFAULT_CASH, SOP.OR_CASH, SOP.NET_INCOME, SOP.DIFFERENCE
 	<columnHeader>
 		<band height="201" splitType="Stretch">
 			<staticText>
-				<reportElement x="120" y="5" width="60" height="15" uuid="75c1abb7-cd52-4708-88a9-77cc1092b759">
+				<reportElement style="textStyle" x="120" y="5" width="60" height="15" uuid="75c1abb7-cd52-4708-88a9-77cc1092b759">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[총매출]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="60" width="60" height="15" uuid="8763b7bb-b308-4bfa-9417-b9782e9aeca4">
+				<reportElement style="textStyle" x="120" y="60" width="60" height="15" uuid="8763b7bb-b308-4bfa-9417-b9782e9aeca4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[현금시재]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="75" width="60" height="15" uuid="893adcc5-456a-4645-8776-7edadea84360">
+				<reportElement style="textStyle" x="120" y="75" width="60" height="15" uuid="893adcc5-456a-4645-8776-7edadea84360">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[현금매출]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="90" width="60" height="15" uuid="2a275f95-0b0a-4ffd-8b7f-58e527c42c1a">
+				<reportElement style="textStyle" x="120" y="90" width="60" height="15" uuid="2a275f95-0b0a-4ffd-8b7f-58e527c42c1a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[준비금]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="105" width="60" height="15" uuid="5e1d8e5c-ca32-4f1e-8142-885dba976d39">
+				<reportElement style="textStyle" x="120" y="105" width="60" height="15" uuid="5e1d8e5c-ca32-4f1e-8142-885dba976d39">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[영업지출금]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="120" width="60" height="15" uuid="3756a2b5-5f32-4936-a123-fb0f65b3434d">
+				<reportElement style="textStyle" x="120" y="120" width="60" height="15" uuid="3756a2b5-5f32-4936-a123-fb0f65b3434d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[포인트사용]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="150" width="60" height="15" uuid="844201be-df7f-41c1-ac69-d7b7722d8825">
+				<reportElement style="textStyle" x="120" y="150" width="60" height="15" uuid="844201be-df7f-41c1-ac69-d7b7722d8825">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[순수익]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="180" width="60" height="15" uuid="da52a572-b3a4-4c6e-80f3-84125b32eb80">
+				<reportElement style="textStyle" x="120" y="180" width="60" height="15" uuid="da52a572-b3a4-4c6e-80f3-84125b32eb80">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[차액]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="220" y="37" width="60" height="15" uuid="8c6d6e0b-5eeb-49d0-880e-06a040c28366">
+				<reportElement style="textStyle" x="220" y="37" width="60" height="15" uuid="8c6d6e0b-5eeb-49d0-880e-06a040c28366">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[현금관리]]></text>
 			</staticText>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="5" width="100" height="15" uuid="9b5e9159-a71a-4974-b0ee-35d65403c2c1">
+				<reportElement style="textStyle" x="280" y="5" width="100" height="15" uuid="9b5e9159-a71a-4974-b0ee-35d65403c2c1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -120,7 +121,7 @@ group by SOP.CASH, SOP.DEFAULT_CASH, SOP.OR_CASH, SOP.NET_INCOME, SOP.DIFFERENCE
 				<textFieldExpression><![CDATA[$F{totalSum}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="60" width="100" height="15" uuid="a0766cd5-3bfb-41aa-b399-6ddc1d644c2e">
+				<reportElement style="textStyle" x="280" y="60" width="100" height="15" uuid="a0766cd5-3bfb-41aa-b399-6ddc1d644c2e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -128,7 +129,7 @@ group by SOP.CASH, SOP.DEFAULT_CASH, SOP.OR_CASH, SOP.NET_INCOME, SOP.DIFFERENCE
 				<textFieldExpression><![CDATA[$F{cash}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="75" width="100" height="15" uuid="20eb0044-c94d-4e03-8189-423515bd3a4f">
+				<reportElement style="textStyle" x="280" y="75" width="100" height="15" uuid="20eb0044-c94d-4e03-8189-423515bd3a4f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -136,7 +137,7 @@ group by SOP.CASH, SOP.DEFAULT_CASH, SOP.OR_CASH, SOP.NET_INCOME, SOP.DIFFERENCE
 				<textFieldExpression><![CDATA[$F{cashSales}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="90" width="100" height="15" uuid="dbc9eb34-c92d-44b2-8c4c-324f3942e6ff">
+				<reportElement style="textStyle" x="280" y="90" width="100" height="15" uuid="dbc9eb34-c92d-44b2-8c4c-324f3942e6ff">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -144,7 +145,7 @@ group by SOP.CASH, SOP.DEFAULT_CASH, SOP.OR_CASH, SOP.NET_INCOME, SOP.DIFFERENCE
 				<textFieldExpression><![CDATA[$F{defaultCash}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="105" width="100" height="15" uuid="b4a4376a-4409-4407-a97d-c9aad5331556">
+				<reportElement style="textStyle" x="280" y="105" width="100" height="15" uuid="b4a4376a-4409-4407-a97d-c9aad5331556">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -160,7 +161,7 @@ group by SOP.CASH, SOP.DEFAULT_CASH, SOP.OR_CASH, SOP.NET_INCOME, SOP.DIFFERENCE
 				<textFieldExpression><![CDATA[$F{mileageSum}+"P"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="150" width="100" height="15" uuid="caa38132-12c7-4d4c-9fc8-c9ace3c908fe">
+				<reportElement style="textStyle" x="280" y="150" width="100" height="15" uuid="caa38132-12c7-4d4c-9fc8-c9ace3c908fe">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -168,7 +169,7 @@ group by SOP.CASH, SOP.DEFAULT_CASH, SOP.OR_CASH, SOP.NET_INCOME, SOP.DIFFERENCE
 				<textFieldExpression><![CDATA[$F{netIncome}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="180" width="100" height="15" uuid="bd6a10d0-54e2-4fcd-bf9f-ef6782666bd5">
+				<reportElement style="textStyle" x="280" y="180" width="100" height="15" uuid="bd6a10d0-54e2-4fcd-bf9f-ef6782666bd5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
