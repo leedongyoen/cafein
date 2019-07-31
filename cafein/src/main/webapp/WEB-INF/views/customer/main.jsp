@@ -107,13 +107,19 @@
  /* Make the image fully responsive */
 .carousel-inner img {
     width: 100%;
-    height: 100%;
+   min-height: 200px;
 }
 table {
 
 	width : 200px;
 	height : 100px;
 }
+ .carousel-inner > .item > img {
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 200px;
+    } 
 </style>
 </head>
 <body>
@@ -127,10 +133,13 @@ table {
 	<!--페이지-->
 	<div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="${pageContext.request.contextPath}/image/ad01.JPG"  width="100%" >
+      <img src="${pageContext.request.contextPath}/image/cusbanner1.jpg"  width="100%" height="500vw">
     </div>
-    <div class="carousel-item">
-      <img src="${pageContext.request.contextPath}/image/ad02.JPG" width="100%" >
+     <div class="carousel-item">
+      <img src="${pageContext.request.contextPath}/image/cusbanner3.jpg" width="100%" height="500vw">
+    </div>
+     <div class="carousel-item">
+      <img src="${pageContext.request.contextPath}/image/cusbanner4.jpg" width="100%" height="500vw">
     </div>
 
   </div>
