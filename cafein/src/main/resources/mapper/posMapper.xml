@@ -116,6 +116,7 @@
 					, O.C_ADD "cAdd"
 					, O.C_ADD3 "cAdd3"
 					, O.DELIVERY_STATUS "deliveryStatus" 
+					, O.C_ID "cId"
 		FROM ORDERS O LEFT OUTER JOIN ORDER_DETAILS ORD
 		ON O.O_NUM = ORD.O_NUM
 		JOIN MENU M

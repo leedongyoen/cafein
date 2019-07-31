@@ -67,7 +67,16 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 			int n = service.getstoreordernotviewcount(order);
 			sendMessage(order.getsId(),n+"건");
 			System.out.println("===================== 미확인 건 "+n);
+		}else if(order.getType().equals("cusorderOK")){
+			
+			sendMessage(order.getcId(),"승인"); 
+			
+		}else if(order.getType().equals("cusorderNO")){
+			
+			sendMessage(order.getcId(),"거절"); 
+			
 		}else {
+		
 			sendMessage("SH001","접속성공");
 		}
 		
