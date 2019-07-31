@@ -4,6 +4,7 @@ import java.util.List;
 import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
 import co.yedam.cafein.viewvo.ViewPosOrdetailsVO;
 import co.yedam.cafein.viewvo.ViewPosVO;
+import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.RecipeVO;
 
@@ -16,4 +17,8 @@ public interface PosService {
 	List<ViewPosOrdetailsVO> getOrDetails(ViewPosOrdetailsVO vo);
 	void refoundcall(OrdersVO vo);
 	int orderalarmcount(OrdersVO vo);
+	List<OrdersVO> getcallorderlist(OrdersVO vo);
+	List<OrderDetailsVO> getcallorderdetails(OrderDetailsVO vo);
+	
+	
 }
