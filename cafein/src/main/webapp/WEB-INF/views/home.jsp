@@ -36,6 +36,9 @@
 .customericon{ 
 	background-image: url(image/customericon.png) no-repeat center center fixed; 
 }	
+.mainIcon{
+	display: inline-block;
+}
 </style>
 </head>
 <body class="is-preload">
@@ -49,15 +52,21 @@
 				<span class="avatar"><img src="image/mainlogo.png" alt="" /></span>
 				<br><br>
 			</header>
-			
+			 
 			<footer>    
 				<div>
-				<a href="${pageContext.request.contextPath}/customerlogin.do"  ><img src="image/customericon.png"></a>
-				<br>Customer
+				<div class="icon1 mainIcon">
+				<a href="${pageContext.request.contextPath}/customerlogin.do"  ><img src="image/customericon.png"><br>Customer</a>
+				</div>&nbsp;
+				<div class="icon2 mainIcon">
+				<a href="${pageContext.request.contextPath}/storelogin.do" ><img src="image/storeicon.png"><br>Store</a>
+				</div>&nbsp;&nbsp;
+				<div class="icon3 mainIcon">
+				<a href="${pageContext.request.contextPath}/adminlogin.do"><img src="image/adminicon.png"><br>&nbsp;Admin</a>
+				</div>
+				
 				</div>
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="${pageContext.request.contextPath}/storelogin.do" ><img src="image/storeicon.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="${pageContext.request.contextPath}/adminlogin.do"><img src="image/adminicon.png"></a>
 				<%-- <ul class="icons">
 					<li><a href="${pageContext.request.contextPath}/customerlogin.do"  ><img src="image/customericon.png"></a></li>
 					<li><a href="${pageContext.request.contextPath}/storelogin.do" class="icon brands fa-instagram">Store</a><img src="image/storeicon.png"></li>
