@@ -102,6 +102,19 @@ function loginCheck(){
 		location.href="storelogin.do";
 	}
 }
+
+function send(v_type,v_sid) {
+	var msg = {
+			type : v_type,
+			sId : v_sid,
+
+	};
+		//  Send  the msg  object  as  a  JSON-formatted  string.
+	webSocket.send(JSON.stringify(msg));
+
+	// webSocket.send(inputMessage.value);
+	
+}
 </script>
 
 <style>
