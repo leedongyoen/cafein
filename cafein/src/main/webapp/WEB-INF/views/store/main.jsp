@@ -203,7 +203,7 @@ table tr th {
 }
 .chartjs-render-monitor {
 	color:black;
-	background-color:#C2E5F4;
+	background-color:#E6E0F8;
 }
 .thcolor {
 	background-color:white;
@@ -217,16 +217,19 @@ table tr th {
 <br>
 	<h3 align="center">시간별 통계</h3>
 	<br>
-	<div class="row">
-		<div class="col-8">
-			<canvas id="lineChart"></canvas>
+	<div class="container">
+		<div class="row">
+			<div class="col-8">
+				<canvas id="lineChart"></canvas> 
+				
+			</div>
+			<div class="col-4">
+				<div id="test_dataview3"></div>
+			</div>
+		<!-- 
+			<div class="col-8" id="chart_div"></div><br>
+			 -->
 		</div>
-		<div class="col-4">
-			<div id="test_dataview3"></div>
-		</div>
-	<!-- 
-		<div class="col-8" id="chart_div"></div><br>
-		 -->
 	</div>
 	<br>	
 <div class = "container" align="center">

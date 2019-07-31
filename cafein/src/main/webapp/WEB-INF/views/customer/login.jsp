@@ -93,24 +93,25 @@ body {
 
 					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
 						<span class="label-input100">비밀번호</span>
-						<input class="input100" type="password" name = "cPw" placeholder="Enter password">
+						<input class="input100" type="password" onkeypress="if(event.keyCode == 13){ checkForm(); return; }" name = "cPw" placeholder="Enter password">
 						<span class="focus-input100"></span>
 					</div>
 					
 					<div class="container-login100-form-btn">
-						<input type = "button" class="btn btn-outline-success btn-lg" onclick = "checkForm()" onkeypress="if(event.keyCode == 13){ checkForm(); return; }" value = "로그인" style="width:130px">&nbsp;
+						<input type = "button" class="btn btn-outline-success btn-lg" onclick = "checkForm()" value = "로그인" style="width:130px">&nbsp;
 						<input type = "button" class="btn btn-outline-info btn-lg" onclick = "location.href='${pageContext.request.contextPath}/customerjoinForm.do'" value = "회원가입" style="width:130px">
 						
-						<div>
-						
-							<a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/kakaologin&response_type=code">
-					      		<img  src="${pageContext.request.contextPath}/image/kakaologin.png">
-					     	</a>
-					      	<a id="naver-login-btn" href="http://localhost/cafein/naverlogin.do"><img src="${pageContext.request.contextPath}/image/naverlogin.PNG" style="witdh:222px;height:50px;"></a>
-					      
+						<div class="row">
+							<div class="sm-col">
+								<a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=ae2e6275133a2bf25fe30fba002ced8d&redirect_uri=http://localhost/cafein/kakaologin&response_type=code">
+						      		<img  src="${pageContext.request.contextPath}/image/kakaologin.png" style="witdh:222px;height:50px;">
+						     	</a>
+							</div>
+							<div class="sm-col">
+					      		<a id="naver-login-btn" href="http://localhost/cafein/naverlogin.do"><img src="${pageContext.request.contextPath}/image/naverlogin.PNG" style="witdh:222px;height:50px;"></a>
+					        </div>
 					      	<!-- 카카오로 로그인 시 이 로그아웃 버큰 사용하기 <a href="#"><img src="${pageContext.request.contextPath}/image/naverlogin.PNG" style = "width:222px;hieth:50px;"></a>-->
 						  	<a href="http://developers.kakao.com/logout"></a>
-							
 						</div>
 					  	<input type = "button" class="btn btn-outline-info btn-lg" onclick = "location.href='${pageContext.request.contextPath}/customerfindidpw.do'" value = "ID/PW 찾기" style="width:130px"> 
 					</div>
