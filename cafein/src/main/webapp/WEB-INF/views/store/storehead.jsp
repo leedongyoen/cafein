@@ -52,7 +52,7 @@ $(function(){
 var webSocket;
 	var sId = "<%= (String)session.getAttribute("sId") %>";
 	if(sId != "null") {
-		webSocket = new WebSocket('ws://localhost/cafein/OrdercastingServer.do');
+		webSocket = new WebSocket('ws://192.168.0.55/cafein/OrdercastingServer.do');
 		
 		webSocket.onerror = function(event) {
 			onError(event)
@@ -103,10 +103,11 @@ function loginCheck(){
 	}
 }
 
-function send(v_type,v_sid) {
+function send(v_type,v_sid,v_oNum) {
 	var msg = {
 			type : v_type,
 			cId : v_sid,
+			ckoNum : v_oNum
 
 	};
 		//  Send  the msg  object  as  a  JSON-formatted  string.
