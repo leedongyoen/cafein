@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 7.2.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="orders" pageWidth="500" pageHeight="300" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f28605c8-669d-48db-ab51-ac06dd0f2cb9">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PRESSO"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<style name="textStyle" pdfFontName="malgun.ttf" pdfEncoding="Identity-H"/>
 	<queryString language="SQL">
 		<![CDATA[select 
 			nvl(to_char(sum(case when O.RECEIPT='delivery' and o.pay_method = 'card'  then o.total else 0 end),'999,999,999,999,999'),0) "cardDelivery",
@@ -73,7 +74,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="280" y="57" width="100" height="15" uuid="efcf054c-2ac7-4197-bbe4-5f4dbd928f51">
+				<reportElement style="textStyle" x="280" y="57" width="100" height="15" uuid="efcf054c-2ac7-4197-bbe4-5f4dbd928f51">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -81,7 +82,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{cardDelivery}+"원"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="280" y="42" width="100" height="15" uuid="d5265acd-bbbd-4960-a12b-25bdca83ba30">
+				<reportElement style="textStyle" x="280" y="42" width="100" height="15" uuid="d5265acd-bbbd-4960-a12b-25bdca83ba30">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -89,7 +90,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{cashDelivery}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="147" width="100" height="15" uuid="0c494cf9-c759-49e6-b0b0-67074176dd94">
+				<reportElement style="textStyle" x="280" y="147" width="100" height="15" uuid="0c494cf9-c759-49e6-b0b0-67074176dd94">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -97,7 +98,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{cardtakeout}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="132" width="100" height="15" uuid="04b4d025-aab5-404a-a94f-dd6e631d59e2">
+				<reportElement style="textStyle" x="280" y="132" width="100" height="15" uuid="04b4d025-aab5-404a-a94f-dd6e631d59e2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -105,7 +106,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{cashtakeout}+"원"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="57" width="100" height="15" uuid="734e8f43-445c-4c89-868c-54b57ca54d73">
+				<reportElement style="textStyle" x="160" y="57" width="100" height="15" uuid="734e8f43-445c-4c89-868c-54b57ca54d73">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -113,7 +114,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{cardDeliveryCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="42" width="100" height="15" uuid="b66093dc-ea03-4bd7-ab6f-ee43f2378f78">
+				<reportElement style="textStyle" x="160" y="42" width="100" height="15" uuid="b66093dc-ea03-4bd7-ab6f-ee43f2378f78">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -121,7 +122,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{cashDeliveryCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="147" width="100" height="15" uuid="37178dd3-27cd-4ab4-8dd4-6a13a6776593">
+				<reportElement style="textStyle" x="160" y="147" width="100" height="15" uuid="37178dd3-27cd-4ab4-8dd4-6a13a6776593">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -129,7 +130,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{cardtakeoutCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="132" width="100" height="15" uuid="78e2a999-a9b2-4e82-89d9-1d6df0c0025d">
+				<reportElement style="textStyle" x="160" y="132" width="100" height="15" uuid="78e2a999-a9b2-4e82-89d9-1d6df0c0025d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -137,12 +138,12 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{cashtakeoutCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="200" y="6" width="100" height="16" uuid="1817801c-36dd-4652-b8b0-c969334f3ddc"/>
+				<reportElement style="textStyle" x="200" y="6" width="100" height="16" uuid="1817801c-36dd-4652-b8b0-c969334f3ddc"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[직접수령]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="99" width="100" height="15" uuid="deff5a3b-a8ce-449e-9081-597a57c1e5ba">
+				<reportElement style="textStyle" x="200" y="99" width="100" height="15" uuid="deff5a3b-a8ce-449e-9081-597a57c1e5ba">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -150,42 +151,42 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<text><![CDATA[배달주문]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="42" width="100" height="15" uuid="917d17c2-204b-4369-81a7-d21385c8ad24">
+				<reportElement style="textStyle" x="120" y="42" width="100" height="15" uuid="917d17c2-204b-4369-81a7-d21385c8ad24">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<text><![CDATA[현금]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="57" width="100" height="15" uuid="d16fbc27-bb48-411a-8d73-8030222a0b4f">
+				<reportElement style="textStyle" x="120" y="57" width="100" height="15" uuid="d16fbc27-bb48-411a-8d73-8030222a0b4f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<text><![CDATA[카드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="72" width="100" height="15" uuid="f648e647-0d40-422b-9d2f-a22cc7e59d12">
+				<reportElement style="textStyle" x="120" y="72" width="100" height="15" uuid="f648e647-0d40-422b-9d2f-a22cc7e59d12">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<text><![CDATA[합계]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="119" y="132" width="100" height="15" uuid="078fb4bb-0083-488a-8a41-2bb0dbc77336">
+				<reportElement style="textStyle" x="119" y="132" width="100" height="15" uuid="078fb4bb-0083-488a-8a41-2bb0dbc77336">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<text><![CDATA[현금]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="119" y="147" width="100" height="15" uuid="bdc49479-7c99-47dc-bf2a-1e05df282143">
+				<reportElement style="textStyle" x="119" y="147" width="100" height="15" uuid="bdc49479-7c99-47dc-bf2a-1e05df282143">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<text><![CDATA[카드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="119" y="162" width="100" height="15" uuid="3c43bbb5-1aa5-4f81-bedf-3d25a6ec9d2c">
+				<reportElement style="textStyle" x="119" y="162" width="100" height="15" uuid="3c43bbb5-1aa5-4f81-bedf-3d25a6ec9d2c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -204,7 +205,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="160" y="72" width="100" height="15" uuid="a6c28e97-bfa5-4968-aef2-8acf2d416d5a">
+				<reportElement style="textStyle" x="160" y="72" width="100" height="15" uuid="a6c28e97-bfa5-4968-aef2-8acf2d416d5a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -212,7 +213,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{deliveryTotalCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="162" width="100" height="15" uuid="bfb4c222-681e-45ac-b05d-0c7e256630fe">
+				<reportElement style="textStyle" x="160" y="162" width="100" height="15" uuid="bfb4c222-681e-45ac-b05d-0c7e256630fe">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -220,7 +221,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{takeoutTotalCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="280" y="72" width="100" height="15" uuid="1f3a5d5f-d2dd-4eb7-aaeb-06e0fc17e979">
+				<reportElement style="textStyle" x="280" y="72" width="100" height="15" uuid="1f3a5d5f-d2dd-4eb7-aaeb-06e0fc17e979">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -228,7 +229,7 @@ AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIP
 				<textFieldExpression><![CDATA[$F{deliveryTotalSum}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="162" width="100" height="15" uuid="3a71db2e-9fbd-43fa-ae45-4b404ffeb8b7">
+				<reportElement style="textStyle" x="280" y="162" width="100" height="15" uuid="3a71db2e-9fbd-43fa-ae45-4b404ffeb8b7">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
