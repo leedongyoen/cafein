@@ -32,6 +32,10 @@
 		left: 50%;
 		transform: translate( -50%, -50% );
 	}
+	
+.customericon{ 
+	background-image: url(image/customericon.png) no-repeat center center fixed; 
+}	
 </style>
 </head>
 <body class="is-preload">
@@ -46,12 +50,19 @@
 				<br><br>
 			</header>
 			
-			<footer>
-				<ul class="icons">
-					<li><a href="${pageContext.request.contextPath}/customerlogin.do" class="icon brands fa-twitter">Customer</a></li>
-					<li><a href="${pageContext.request.contextPath}/storelogin.do" class="icon brands fa-instagram">Store</a></li>
-					<li><a href="${pageContext.request.contextPath}/adminlogin.do" class="icon brands fa-facebook-f">Admin</a></li>
-				</ul>
+			<footer>    
+				<div>
+				<a href="${pageContext.request.contextPath}/customerlogin.do"  ><img src="image/customericon.png"></a>
+				<br>Customer
+				</div>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="${pageContext.request.contextPath}/storelogin.do" ><img src="image/storeicon.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="${pageContext.request.contextPath}/adminlogin.do"><img src="image/adminicon.png"></a>
+				<%-- <ul class="icons">
+					<li><a href="${pageContext.request.contextPath}/customerlogin.do"  ><img src="image/customericon.png"></a></li>
+					<li><a href="${pageContext.request.contextPath}/storelogin.do" class="icon brands fa-instagram">Store</a><img src="image/storeicon.png"></li>
+					<li><a href="${pageContext.request.contextPath}/adminlogin.do" class="icon brands fa-facebook-f">Admin</a><img src="image/adminicon.png"></li>
+				</ul> --%>
 			</footer>
 		</section>
 
