@@ -73,16 +73,20 @@ public class MenuController {
 	
 	//메뉴 등록+coffee는 반드시 hot/ice 출력
 	@ResponseBody
-	@RequestMapping(value="/menues"
+	@RequestMapping(value="/menues/{sId}"
 	,method=RequestMethod.POST
 //		,produces="application/json"     
 //		,consumes="application/json"
    ,headers = {"Content-type=application/json" })
-	public Map<String,Boolean> insertUser(@RequestBody MenuVO vo, Model model) throws IllegalStateException, IOException {
+	public Map<String,Boolean> insertUser(
+								@PathVariable("sId") String sId,
+								@RequestBody MenuVO vo,
+								Model model) throws IllegalStateException, IOException {
 
 		
 	
 		//insert 후에 mnum받아와야함......
+		vo.setsId(sId);
 		service.insertMenuProc1(vo);
 		
 		Map<String, Boolean> map = new HashMap<String, Boolean>();
@@ -98,7 +102,7 @@ public class MenuController {
 	@RequestMapping(value = "/imgUpdate.do", method = RequestMethod.POST)
 	public ModelAndView boardInsert(MenuVO vo, HttpServletRequest request)
 			throws IllegalStateException, IOException {
-		// 泥⑤��뙆�씪 �뾽濡쒕뱶 泥섎━
+
 		
 		System.out.println(request.getSession().getServletContext().getRealPath("/"));
 		
@@ -108,54 +112,11 @@ public class MenuController {
 			fileName = uploadFile.getOriginalFilename();
 			uploadFile.transferTo(new File(request.getSession().getServletContext().getRealPath("/")+"image/" + fileName));
 		}
-		// 泥⑤��뙆�씪紐� VO�뿉 吏��젙
 		vo.setUploadFileName(fileName);
 		service.updateFile(vo);
 		ModelAndView mv = new ModelAndView();
 		mv = getMenuList(mv);
 		return mv;
 	}
-	
-	
-	
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping("") public MenuVO updateImg(@RequestBody MenuVO vo, Model
-	 * model) throws IllegalStateException, IOException {
-	 * 
-	 * System.out.println("t�궗吏� �뾽濡쒕뱶 �뀒�뒪�뀫 以�: "+vo.toString());
-	 * 
-	 * //泥⑤��뙆�씪 �뾽濡쒕뱶 泥섎━ MultipartFile uploadFile = vo.getUploadFile(); String fileName
-	 * = null; if(uploadFile !=null && !uploadFile.isEmpty() &&
-	 * uploadFile.getSize()>0) { fileName = uploadFile.getOriginalFilename();
-	 * uploadFile.transferTo(new File("C:\\upload/"+fileName)); } //泥⑤��뙆�씪紐� VO�뿉 吏��젙
-	 * vo.setUploadFileName(fileName);
-	 * 
-	 * return null; }
-	 * 
-	 */
-	
-	/*
-	 * @Value("${file.path}") private String up_dir;
-	 * 
-	 * //ajax �씠誘몄� �뾽濡쒕뱶
-	 * 
-	 * @RequestMapping(value = "/imgUpload.do")
-	 * 
-	 * @ResponseBody public Map imgUpload(@RequestParam("upload") MultipartFile
-	 * uploadFile, HttpServletRequest request) throws IllegalStateException,
-	 * IOException { String contextPath = request.getContextPath(); String filename
-	 * = uploadFile.getOriginalFilename(); //�뾽濡쒕뱶 �뙆�씪紐� String url = contextPath+"/"+
-	 * up_dir+"/"+filename; //src 寃쎈줈 留뚮뱾�뼱以�
-	 * 
-	 * String path = request.getSession().getServletContext().getRealPath(up_dir);
-	 * System.out.println("path: "+path); uploadFile.transferTo(new File(path,
-	 * filename));
-	 * 
-	 * Map<String, String> map = new HashMap<String, String>();
-	 * map.put("uploaded","1"); map.put("fileName",filename); map.put("url", url);
-	 * return map; }
-	 */
 	
 }
