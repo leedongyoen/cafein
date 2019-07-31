@@ -78,7 +78,7 @@ public class CustomerController {
 
 	// 고객 로그인
 	@RequestMapping("customerlogin.do")
-	public String login(@ModelAttribute("customer") CustomerVO vo) {
+	public String login() {
 		return "customer/login";
 
 	}
@@ -111,7 +111,7 @@ public class CustomerController {
 					+ "</script>");
 
 			out.flush();
-			return "redirect:customerlogin.do";
+			return "customer/login";
 			
 			// 현재 암호화된 비밀번호와 db에 저장된 암호화 비밀번호와 비교
 		} else if(passEncoder.matches(vo.getcPw(), customer.getcPw())) {		// 아이디와 비밀번호가 일치하는 경우
@@ -122,13 +122,13 @@ public class CustomerController {
 			session.setAttribute("cId", customer.getcId());
 			// 가입경로를 알기위해 세션에 담음(로그아웃시 필요!)
 			session.setAttribute("cJoin", customer.getcJoin());
-			return "redirect:customermainform.do";
+			return "customer/main";
 			
 		} else {		// 아이디와 비밀번호가 일치하지 않는 경우
 			
 			out.println("<script>alert('입력하신 비밀번호를 다시 확인해주세요.');</script>");
 			out.flush();
-			return "redirect:customerlogin.do";
+			return "customer/login";
 		}
 
 	}
