@@ -259,11 +259,11 @@ var ordernum ="";
 	 $('#answerCallModal').modal("hide");
 	 
 	  //웹주문 조회
-	    $("body").on("click",'#answercall',function(){
+	    $("#answercall").on("click",function(){
 	 		 $("#ordercall").text("0");
 	 		$('#answerCallModal').modal("show");
 	 		 console.log("in");
-	 		$("#callorderlisttable tbody").empty();
+	 		
 	 		$.ajax({
 				url:'getcallorderlist',
 				type:'GET',
@@ -272,24 +272,23 @@ var ordernum ="";
 					alert("상태값 :" + status + " Http에러메시지 :"+msg);
 				},
 				success:function(data){
-					
 					$.each(data,function(idx,item){
-						$("<tr>")
+						$('<tr>').attr({
+							onclick:"aftercallorder('"+item.oNum+"','"+item.mName+"')",
+							id: "table"+item.oNum
+							})
 							.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.mName+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
+							.append($('<td><input type=\'hidden\' value=\''+item.mNum+'\'>'))
+							.append($('<td><input type=\'hidden\' value=\''+item.opDnum+'\'>'))
 							.appendTo('#callorderlisttable tbody');
 						});
 	
 				}
 			});    
 	 	});
-	  
-	  function aftercallorder(){
-		  
-		  
-	  }
 	 //메뉴로드
 	 $.ajax({
 			url:'pos/'+sId,
@@ -821,8 +820,81 @@ var ordernum ="";
  		
  	}
  	
+ 	function aftercallorder(ocnum,mename){
+ 		var mqty="0";
+		var mnumber="";
+		var resul="";
+	//	$('.calloption').empty();
+ 		$.ajax({
+			url : 'getcallorderdetails',
+			type : 'GET',
+			dataType : 'json',
+			data : {oNum:ocnum},
+			error : function(status, msg) {
+				alert(status + "메세지" + msg);
+			},
+			success : function(data) {
+				console.log(data); 		
+		 		$.each(data,function(idx,item){
+				if(mnumber == ""){
+					mnumber = item.oDnum;
+					resul = mename+" - ";
+					mqty="0";
+				}
+				if(mnumber == item.opDnum){
+					if(mqty == "0" && item.oQty != "0"){
+						resul = resul+" "+item.oQty+" 개 - ";
+						mqty=item.oQty;
+					}
+					resul = resul +" "+ item.opName;
+					console.log("--- "+resul);
+					
+				}
+				if(mnumber != item.opDnum){
+					mnumber = item.oDnum;
+					mqty="0";
+					resul = resul + "<br>" +item.mName+" - ";
+					resul = resul +" " +item.opName;
+					console.log(resul);
+				}		
+			});
+		 		$('#table'+ocnum).after($('<tr>').attr("class","calloption").attr("id","ocnum")
+	 					.append($('<td>').html("메뉴명 : <br>"+resul).attr("colspan","2"))
+	 					.append($('<td>').append($('<button>').attr({
+						 						type:"button",
+						 						onclick:"callorderOK()",
+						 						'class':'callbtn btn btn-outline-dark'
+						 						}).append("주문확인")))
+						
+						.append($('<td>').append($('<button>').attr({
+						 						type:"button",
+						 						onclick:"callorderNO()",
+						 						'class':'callbtn btn btn-outline-dark'
+						 						}).append("주문취소")))
+						)   
+			}
+			}); 
+ 	}
  	
+ 	function callorderOK(){
+		// 소켓 연결
+		//JSON.stringify($("#orderform").serializeObject())
+		
+		var sid='<%= session.getAttribute("sId") %>';
+		var type ="cusorderOK";
+		send(type,sid);
+		document.orderform.submit();
+	}
+ 	function callorderNO(){
+		// 소켓 연결
+		//JSON.stringify($("#orderform").serializeObject())
+		
+		var sid='<%= session.getAttribute("sId") %>';
+		var type ="cusorderNO";
+		send(type,sid);
+	}
  	
+ 	   
 
 </script>
 <div class="left">

@@ -127,7 +127,6 @@
 	</select>
 	<!-- 주문내역 상세 -->
 	<select id="getcallorderdetails" resultType="orderdt">
-	
 		SELECT QTY.QTY	"oQty" 
 				, ORD.O_NUM		"oNum"
 				, ORD.M_NUM		"mNum"
@@ -138,14 +137,11 @@
 		    SELECT M_NUM,MAX(O_QTY) "QTY"
 		  FROM ORDER_DETAILS
 		  WHERE O_NUM = #{oNum}
-		        AND M_NUM = #{mNum}
-		        AND OP_DNUM = #{opDnum}
 		  GROUP BY M_NUM
 		)QTY
 		on QTY.M_NUM = ORD.M_NUM
 		WHERE ORD.O_NUM = #{oNum}
-		     AND ORD.M_NUM = #{mNum}
-		     AND OP_DNUM = #{opDnum}
 		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE','CAJP')
+
 	</select>
 </mapper>
