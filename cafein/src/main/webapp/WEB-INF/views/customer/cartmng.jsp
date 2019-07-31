@@ -354,12 +354,12 @@ function getOptionNaming(mnumber, stnumber){
 		<br> <br> <br>
 		<div align="right" class="btn-group">
 			<input type="button" class="button btn btn-info" onclick="orderBtnClick()" value="주문">
-			
+			<button class="button btn btn-danger" onclick="orderDeleteClick()">삭제</button>
 			<!-- <a href="javascript:history.go(-1)" class="button">돌아가기</a> -->
 		</div> 
 		</form>  
 		 
-		<button class="button btn btn-danger" onclick="orderDeleteClick()">삭제</button>
+		
 	</div>
 	<%-- <img style="width:90%; height:120%; opacity:0.8; position: absolute;" src="${pageContext.request.contextPath}/image/note.jpg">
 	 --%>

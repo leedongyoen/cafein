@@ -652,6 +652,25 @@ function optionDelete(){
 	 
 }
 
+
+function optionUpdate(){
+	console.log($("#optionTableForm").serializeObject());
+	var menuId = $("#mNum").val();
+	$.ajax({
+		url: "options/"+storeid,
+		type: 'PUT',
+		dataType: 'json',
+		data: JSON.stringify($("#optionTableForm").serializeObject()),
+		contentType: 'application/json',
+		success: function(data) { 
+			menulist(menuId);
+		}
+		
+	});
+	
+}
+
+
 	function fileUpload() {
 
 		$('#fileForm').ajaxForm({
