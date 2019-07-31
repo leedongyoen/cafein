@@ -106,7 +106,7 @@ function loginCheck(){
 function send(v_type,v_sid) {
 	var msg = {
 			type : v_type,
-			sId : v_sid,
+			cId : v_sid,
 
 	};
 		//  Send  the msg  object  as  a  JSON-formatted  string.
