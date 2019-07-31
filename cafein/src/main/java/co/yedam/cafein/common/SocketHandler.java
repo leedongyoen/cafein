@@ -69,11 +69,11 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 			System.out.println("===================== 미확인 건 "+n);
 		}else if(order.getType().equals("cusorderOK")){
 			
-			sendMessage(order.getcId(),"승인"); 
+			sendMessage(order.getcId(), order.getoNum()+":승인"); 
 			
 		}else if(order.getType().equals("cusorderNO")){
 			
-			sendMessage(order.getcId(),"거절"); 
+			sendMessage(order.getcId(),order.getoNum()+":거절"); 
 			
 		}else {
 		
