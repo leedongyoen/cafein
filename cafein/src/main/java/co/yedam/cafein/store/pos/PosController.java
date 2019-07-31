@@ -330,6 +330,21 @@ public class PosController {
 		  
 		  return "redirect:/pos.do";
 	}
+	//웹주문알람내역
+	@ResponseBody
+	@RequestMapping (value = "/getcallorderlist", method = RequestMethod.GET)
+	public List<OrdersVO> getcallorderlist(OrdersVO vo){
+		System.out.println("웹 주문 조회");
+		return posService.getcallorderlist(vo);
+	}
+	//웹주문알람 디테일
+	@ResponseBody
+	@RequestMapping (value = "/getcallorderdetails", method = RequestMethod.GET)
+	public List<OrderDetailsVO> getcallorderdetails(OrderDetailsVO vo){
+		System.out.println("웹 주문 조회");
+		return posService.getcallorderdetails(vo);
+	}
+	
 	
 	
 	

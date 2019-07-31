@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import co.yedam.cafein.viewvo.ViewPosOrdetailsVO;
 import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
 import co.yedam.cafein.viewvo.ViewPosVO;
+import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.RecipeVO;
 
@@ -53,6 +54,19 @@ public class PosDAO {
 		System.out.println("===> Mybatis ordercountalarm()");
 		System.out.println(vo.getoNum());
 		return mybatis.selectOne("PosDAO.orderalarmcount",vo);
+	}
+	//알람 주문가져오기
+	public List<OrdersVO> getcallorderlist(OrdersVO vo){
+		System.out.println("===> Mybatis getcallorderlist()");
+		System.out.println(vo.getoNum());
+		return mybatis.selectList("PosDAO.getcallorderlist",vo);
+	}
+	
+	//알람주문 상세
+	public List<OrderDetailsVO> getcallorderdetails(OrderDetailsVO vo){
+		System.out.println("===> Mybatis getcallorderdetails()");
+		System.out.println(vo.getoNum());
+		return mybatis.selectList("PosDAO.getcallorderdetails",vo);
 	}
 	
 }

@@ -78,7 +78,7 @@ public class CustomerController {
 
 	// 고객 로그인
 	@RequestMapping("customerlogin.do")
-	public String login(@ModelAttribute("customer") CustomerVO vo) {
+	public String login() {
 		return "customer/login";
 
 	}
@@ -93,7 +93,7 @@ public class CustomerController {
 //		String scPw = scpwd.encode(vo.getcPw());
 //		//암호화 후 db저장
 
-
+		response.setContentType("text/html; charset=UTF-8");
 
 		PrintWriter out = response.getWriter();
 
