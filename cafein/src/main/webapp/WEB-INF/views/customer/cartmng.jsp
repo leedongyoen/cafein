@@ -248,7 +248,6 @@ function orderDeleteClick(){
 				console.log("k: "+k);
 			}
 		}
-		
 	}
 	local_cart=JSON.stringify(arr);
 	localStorage.setItem("cartlist",local_cart);
