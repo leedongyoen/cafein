@@ -240,6 +240,23 @@ select
 	
 	</insert>
 	
+	
+	<update id = "optionUpdateProc1" parameterType="recipe" statementType="CALLABLE">
+			{			
+				call OPTION_STOCK_UPDATE(
+					#{consum, mode=IN, javaType=double,jdbcType=NUMERIC,numericScale=4},
+					#{opName, mode=IN, jdbcType=VARCHAR, javaType=string},
+					#{opPrice, mode=IN, jdbcType=VARCHAR, javaType=string},
+					#{stNum, mode=IN, jdbcType=VARCHAR, javaType=string},
+					#{sId, mode=IN, jdbcType=VARCHAR, javaType=string},
+					#{recipeno, mode=IN, jdbcType=VARCHAR, javaType=string}
+				)
+			}	
+			
+	</update>
+	
+	
+	
 	<delete id="deleteOption" parameterType="recipe">
 		DELETE FROM RECIPE WHERE RECIPENO = #{recipeno}
 	
