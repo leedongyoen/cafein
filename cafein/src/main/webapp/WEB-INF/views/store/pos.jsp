@@ -279,8 +279,8 @@ var ordernum ="";
 							onclick:"aftercallorder('"+item.oNum+"','"+item.mName+"','"+item.cId+"')",
 							id: "table"+item.oNum
 							})
-							.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
+							.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.mName+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.cId+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
@@ -866,7 +866,7 @@ var ordernum ="";
 	 					.append($('<td>').append($('<input>').attr({
 						 						type:"hidden",
 						 						id:"ckoNum",
-						 						value:"ocnum"
+						 						value:ocnum
 						 						})))
 						
 	 					.append($('<td>').append($('<button>').attr({
