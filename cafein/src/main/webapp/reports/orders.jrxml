@@ -6,6 +6,8 @@
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
 	<style name="textStyle" pdfFontName="malgun.ttf" pdfEncoding="Identity-H"/>
+	<parameter name="p_store" class="java.lang.String"/>
+	<parameter name="p_opendate" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select 
 			nvl(to_char(sum(case when O.RECEIPT='delivery' and o.pay_method = 'card'  then o.total else 0 end),'999,999,999,999,999'),0) "cardDelivery",
@@ -22,8 +24,9 @@
 	        nvl(to_char(sum(case when O.RECEIPT='delivery' then 1 else 0 end),'999,999,999,999,999,999'),0) "deliveryTotalCnt"
 FROM ORDERS O JOIN STOREOPEN SOP
 ON O.S_ID = SOP.S_ID 
-AND TO_char(opentime,'yyyy-MM-dd') = TO_char(sysdate,'yyyy-MM-dd')
-WHERE O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP)
+AND TO_char(OPENTIME,'YY/MM/DD') = TO_CHAR($P{p_opendate},'YY/MM/DD')
+WHERE TO_CHAR(O.O_DATE,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)
+AND O.S_ID = $P{p_store}
 AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS IN ('C3', 'C5') ) )]]>
 	</queryString>
 	<field name="cardDelivery" class="java.lang.String">

@@ -7,6 +7,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PRESSO"/>
 	<style name="textStyle" pdfFontName="malgun.ttf" pdfEncoding="Identity-H"/>
 	<parameter name="p_store" class="java.lang.String"/>
+	<parameter name="p_opendate" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT      nvl(to_char(sum(O.TOTAL),'999,999,999,999,999'),0) "totalSum"
           	  , nvl(to_char(SOP.CASH,'999,999,999,999,999'),0) "cash"
@@ -18,7 +19,7 @@
 	          , nvl(to_char(SOP.DIFFERENCE,'999,999,999,999,999'),0) "difference"
           , sop.opentime
 FROM ORDERS O JOIN STOREOPEN SOP 
-ON O.S_ID = SOP.S_ID AND TO_char(opentime,'yyyy-MM-dd') = TO_char(sysdate,'yyyy-MM-dd')
+ON O.S_ID = SOP.S_ID AND TO_char(opentime,'yy/MM/dd') = TO_char($P{p_opendate},'yy/MM/dd')
 WHERE O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP)
 AND 
 O.S_ID = $P{p_store} 

@@ -16,8 +16,8 @@
        		 , nvl(to_char(COUNT(o.PAY_METHOD),'999,999,999,999,999,999'),0) "RefundCnt"
 FROM ORDERS O JOIN STOREOPEN SOP
 ON O.S_ID = SOP.S_ID 
-AND TO_char(opentime,'yyyyMMdd') = TO_char(sysdate,'yyyyMMdd')
-WHERE O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP)
+AND TO_CHAR(OPENTIME,'YY/MM/DD') = TO_CHAR($P{p_opendate},'YY/MM/DD')
+WHERE TO_CHAR(O.O_DATE,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)
 AND O.TOTAL < 0
 AND O.S_ID = $P{p_store}]]>
 	</queryString>
