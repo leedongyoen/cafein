@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 7.2.0.final using JasperReports Library version 6.6.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receipt" pageWidth="500" pageHeight="850" columnWidth="460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eac7f807-b02f-449c-a7c4-d91bf689bd81">
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receipt" pageWidth="500" pageHeight="700" columnWidth="460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eac7f807-b02f-449c-a7c4-d91bf689bd81">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="227"/>
-	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="766"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PRESSO"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="207"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="787"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="640"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="350"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Arial" fontSize="26" isBold="true"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -16,11 +18,84 @@
 	<parameter name="p_store" class="java.lang.String"/>
 	<parameter name="p_opendate" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT   to_char(OPENTIME, 'yy/MM/dd HH24:mi') "openTime"
-			 , to_char(CLOSETIME,'yy/MM/dd HH24:mi') "closeTime"
-FROM STOREOPEN
-WHERE S_ID = $P{p_store}
-AND TO_CHAR(OPENTIME,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)]]>
+		<![CDATA[select a.*, b.*, c.*, d.*, e.*
+from (
+		SELECT   to_char(OPENTIME, 'yy/MM/dd HH24:mi') "openTime"
+					 , to_char(CLOSETIME,'yy/MM/dd HH24:mi') "closeTime"
+		FROM STOREOPEN
+		WHERE S_ID = $P{p_store}
+		AND TO_CHAR(OPENTIME,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8) 
+		) a,
+		(
+		SELECT      nvl(to_char(sum(O.TOTAL),'999,999,999,999,999'),0) "totalSum"
+		          	  , nvl(to_char(SOP.CASH,'999,999,999,999,999'),0) "cash"
+			      	  , nvl(to_char(sum(case when o.pay_method = 'cash' then o.total else 0 end),'999,999,999,999,999'),0) "cashSales"
+		         	  , nvl(to_char(SOP.DEFAULT_CASH,'999,999,999,999,999'),0) "defaultCash"
+			          , nvl(to_char(SOP.OR_CASH,'999,999,999,999,999'),0) "orCash"
+			          , nvl(to_char(SUM(case when o.total > 0 and o.pay_method = 'cash' then o.mileage else 0 end),'999,999,999,999,999'),0) "mileageSum"
+			          , nvl(to_char(SOP.NET_INCOME,'999,999,999,999,999'),0) "netIncome"
+			          , nvl(to_char(SOP.DIFFERENCE,'999,999,999,999,999'),0) "difference"
+		FROM ORDERS O JOIN STOREOPEN SOP 
+		ON O.S_ID = SOP.S_ID AND TO_char(opentime,'yy/MM/dd') = SUBSTR($P{p_opendate},1,8)
+		WHERE TO_CHAR(O.O_DATE,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)
+		AND 
+		O.S_ID = $P{p_store} 
+		AND
+		O.DELIVERY_STATUS IN ('C3', 'C5')
+		AND
+		TOTAL > 0
+		group by SOP.CASH, SOP.DEFAULT_CASH, SOP.OR_CASH, SOP.NET_INCOME, SOP.DIFFERENCE, sop.opentime
+		) b,
+		(
+		SELECT   nvl(to_char(SUM(case when o.total > 0 then o.mileage else 0 end),'999,999,999,999,999,999'),0) "mileage"
+			        , nvl(to_char(COUNT(CASE WHEN MILEAGE > 0 THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "minusMileageCnt"
+				    , nvl(to_char(SUM(case when o.total > 0 then o.total else 0 end)*0.01,'999,999,999,999,999,999'),0) "addmileage"
+				    , nvl(to_char(COUNT(CASE WHEN o.total > 0 THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "addMileageCnt"
+			        , nvl(to_char(sum(case when o.total < 0 then o.mileage else 0 end),'999,999,999,999,999,999'),0) "refundmileage"
+			        , nvl(to_char(COUNT(CASE WHEN MILEAGE < 0 THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "refundMileageCnt"
+		FROM ORDERS O ,( SELECT CLOSETIME, OPENTIME
+							        FROM STOREOPEN
+							        WHERE S_ID = $P{p_store}
+							        AND TO_char(opentime,'yy/MM/dd') = SUBSTR($P{p_opendate},1,8)) SOP
+		WHERE( TO_CHAR(O.O_DATE,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8) )
+		AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS IN ('C3', 'C5')) )
+		AND O.S_ID = $P{p_store}
+		) c,
+		(
+		select 
+					nvl(to_char(sum(case when O.RECEIPT='delivery' and o.pay_method = 'card'  then o.total else 0 end),'999,999,999,999,999'),0) "cardDelivery",
+					nvl(to_char(sum(case when O.RECEIPT='delivery' and o.pay_method = 'cash'  then o.total else 0 end),'999,999,999,999,999'),0) "cashDelivery",
+					nvl(to_char(sum(case when O.RECEIPT='takeout' and o.pay_method = 'card'  then o.total else 0 end),'999,999,999,999,999'),0) "cardtakeout",
+					nvl(to_char(sum(case when O.RECEIPT='takeout' and o.pay_method = 'cash' then o.total else 0 end),'999,999,999,999,999'),0) "cashtakeout",
+					nvl(to_char(sum(case when O.RECEIPT='delivery' and o.pay_method = 'card'  then 1 else 0 end),'999,999,999,999,999'),0) "cardDeliveryCnt",
+					nvl(to_char(sum(case when O.RECEIPT='delivery' and o.pay_method = 'cash'  then 1 else 0 end),'999,999,999,999,999'),0) "cashDeliveryCnt",
+					nvl(to_char(sum(case when O.RECEIPT='takeout' and o.pay_method = 'card'  then 1 else 0 end),'999,999,999,999,999,999'),0) "cardtakeoutCnt",
+					nvl(to_char(sum(case when O.RECEIPT='takeout' and o.pay_method = 'cash' then 1 else 0 end),'999,999,999,999,999,999'),0) "cashtakeoutCnt",
+			        nvl(to_char(sum(case when O.RECEIPT='delivery' then o.total else 0 end),'999,999,999,999,999,999'),0) "deliveryTotalSum",
+			        nvl(to_char(sum(case when O.RECEIPT='takeout' then o.total else 0 end),'999,999,999,999,999,999'),0) "takeoutTotalSum",
+			        nvl(to_char(sum(case when O.RECEIPT='takeout' then 1 else 0 end),'999,999,999,999,999,999'),0) "takeoutTotalCnt",
+			        nvl(to_char(sum(case when O.RECEIPT='delivery' then 1 else 0 end),'999,999,999,999,999,999'),0) "deliveryTotalCnt"
+		FROM ORDERS O JOIN STOREOPEN SOP
+		ON O.S_ID = SOP.S_ID 
+		AND TO_char(OPENTIME,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)
+		WHERE TO_CHAR(O.O_DATE,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)
+		AND O.S_ID = $P{p_store}
+		AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS IN ('C3', 'C5') ) )
+		) d,
+		(
+		SELECT     nvl(to_char(SUM(case when o.pay_method = 'card' then o.total else 0 end),'999,999,999,999,999,999'),0) "cardRefundSum"
+		       		 , nvl(to_char(SUM(case when o.pay_method = 'cash' then o.total else 0 end),'999,999,999,999,999,999'),0) "cashRefundSum"
+					 , nvl(to_char(COUNT(CASE WHEN o.PAY_METHOD = 'cash' THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "cashRefundCnt"
+					 , nvl(to_char(COUNT(CASE WHEN o.PAY_METHOD = 'card' THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "cardRefundCnt"
+					 , nvl(to_char(sum(o.total),'999,999,999,999,999,999'),0) "RefundSum"
+		       		 , nvl(to_char(COUNT(o.PAY_METHOD),'999,999,999,999,999,999'),0) "RefundCnt"
+		FROM ORDERS O JOIN STOREOPEN SOP
+		ON O.S_ID = SOP.S_ID 
+		AND TO_CHAR(OPENTIME,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)
+		WHERE TO_CHAR(O.O_DATE,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)
+		AND O.TOTAL < 0
+		AND O.S_ID = $P{p_store}
+		) e]]>
 	</queryString>
 	<field name="openTime" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="openTime"/>
@@ -28,13 +103,109 @@ AND TO_CHAR(OPENTIME,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)]]>
 	<field name="closeTime" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="closeTime"/>
 	</field>
+	<field name="totalSum" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="totalSum"/>
+	</field>
+	<field name="cash" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cash"/>
+	</field>
+	<field name="cashSales" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cashSales"/>
+	</field>
+	<field name="defaultCash" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="defaultCash"/>
+	</field>
+	<field name="orCash" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="orCash"/>
+	</field>
+	<field name="mileageSum" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="mileageSum"/>
+	</field>
+	<field name="netIncome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="netIncome"/>
+	</field>
+	<field name="difference" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="difference"/>
+	</field>
+	<field name="mileage" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="mileage"/>
+	</field>
+	<field name="minusMileageCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="minusMileageCnt"/>
+	</field>
+	<field name="addmileage" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="addmileage"/>
+	</field>
+	<field name="addMileageCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="addMileageCnt"/>
+	</field>
+	<field name="refundmileage" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="refundmileage"/>
+	</field>
+	<field name="refundMileageCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="refundMileageCnt"/>
+	</field>
+	<field name="cardDelivery" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cardDelivery"/>
+	</field>
+	<field name="cashDelivery" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cashDelivery"/>
+	</field>
+	<field name="cardtakeout" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cardtakeout"/>
+	</field>
+	<field name="cashtakeout" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cashtakeout"/>
+	</field>
+	<field name="cardDeliveryCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cardDeliveryCnt"/>
+	</field>
+	<field name="cashDeliveryCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cashDeliveryCnt"/>
+	</field>
+	<field name="cardtakeoutCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cardtakeoutCnt"/>
+	</field>
+	<field name="cashtakeoutCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cashtakeoutCnt"/>
+	</field>
+	<field name="deliveryTotalSum" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="deliveryTotalSum"/>
+	</field>
+	<field name="takeoutTotalSum" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="takeoutTotalSum"/>
+	</field>
+	<field name="takeoutTotalCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="takeoutTotalCnt"/>
+	</field>
+	<field name="deliveryTotalCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="deliveryTotalCnt"/>
+	</field>
+	<field name="cardRefundSum" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cardRefundSum"/>
+	</field>
+	<field name="cashRefundSum" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cashRefundSum"/>
+	</field>
+	<field name="cashRefundCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cashRefundCnt"/>
+	</field>
+	<field name="cardRefundCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cardRefundCnt"/>
+	</field>
+	<field name="RefundSum" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RefundSum"/>
+	</field>
+	<field name="RefundCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RefundCnt"/>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
 		<band height="60">
 			<line>
-				<reportElement positionType="FixRelativeToBottom" style="textStyle" x="80" y="20" width="300" height="1" uuid="39f48c34-b6ee-47f7-8876-c3aaee1eb021"/>
+				<reportElement style="textStyle" positionType="FixRelativeToBottom" x="80" y="20" width="300" height="1" uuid="39f48c34-b6ee-47f7-8876-c3aaee1eb021"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
@@ -75,27 +246,494 @@ AND TO_CHAR(OPENTIME,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)]]>
 		</band>
 	</pageHeader>
 	<summary>
-		<band height="690">
-			<subreport>
-				<reportElement x="-20" y="5" width="460" height="190" uuid="15e15455-3885-45e9-b66f-76ebb33d4116"/>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["orders.jasper"]]></subreportExpression>
-			</subreport>
-			<subreport>
-				<reportElement x="-20" y="190" width="460" height="90" uuid="d0ebfd70-d557-4a43-871b-d058c656190d"/>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["mileage.jasper"]]></subreportExpression>
-			</subreport>
-			<subreport>
-				<reportElement x="-20" y="280" width="460" height="90" uuid="8c68153e-684d-4be5-adbb-c87c8b483402"/>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["refund.jasper"]]></subreportExpression>
-			</subreport>
-			<subreport>
-				<reportElement x="-20" y="370" width="460" height="320" uuid="ef952644-a067-45e9-b821-d1cb1220892b"/>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["cash.jasper"]]></subreportExpression>
-			</subreport>
+		<band height="578">
+			<staticText>
+				<reportElement style="textStyle" x="100" y="382" width="60" height="15" uuid="bc64eb80-0eb3-4f21-8ac2-96df43b5c214">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[총매출]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="437" width="60" height="15" uuid="f0cecf22-f012-45a1-a437-559a28841e2b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[현금시재]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="452" width="60" height="15" uuid="1ead0e62-1977-4425-9f70-1d0b65053c0c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[현금매출]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="467" width="60" height="15" uuid="b34a5c79-c7f1-4f32-821a-05b2aa3a0788">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[준비금]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="482" width="60" height="15" uuid="60e94479-c556-439a-a4e4-df01c46c832b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[영업지출금]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="497" width="60" height="15" uuid="993fc67b-6374-40bc-8e17-52c8e5a1b1cc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[포인트사용]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="527" width="60" height="15" uuid="8492cd81-4fc0-478a-b3c6-0e7877215067">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[순수익]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="557" width="60" height="15" uuid="460b9d6b-6755-4167-b000-425e69716eeb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[차액]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="200" y="414" width="60" height="15" uuid="de896a31-8609-447b-94c9-7685a54febe3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[현금관리]]></text>
+			</staticText>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="382" width="100" height="15" uuid="87911936-11f3-4d81-8726-12a51b302fd9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{totalSum}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="437" width="100" height="15" uuid="9e851d0f-1633-49d3-95cd-24dd93ce6f78">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cash}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="452" width="100" height="15" uuid="0c6ef015-aeee-4199-b75a-56229cc61c19">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cashSales}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="467" width="100" height="15" uuid="b215065c-dcc7-428f-8245-6cab7857c363">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{defaultCash}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="482" width="100" height="15" uuid="5a8c3599-b124-4fca-b034-ecb6e9a06186">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{orCash}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="260" y="497" width="100" height="15" uuid="6c9ce939-c706-4026-adde-75f1f08aeebd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{mileageSum}+"P"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="527" width="100" height="15" uuid="3ea9dc22-2681-41b9-b966-347aa617a33c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{netIncome}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="557" width="100" height="15" uuid="f6af0b02-3e1b-4a85-852e-fdd7c28f4241">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{difference}+"원"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="406" width="300" height="1" uuid="7c432deb-98f5-4c22-b40d-3a2e48d564c6"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="517" width="300" height="1" uuid="de65ccb6-0dd7-4622-8370-9ca6cd94aaea"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="548" width="300" height="1" uuid="31721547-57fe-4ac7-bd69-d25d1ae21a1b"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="577" width="300" height="1" uuid="82224d97-a69c-43bd-87dc-0df3e3a0936b"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="99" width="300" height="1" uuid="3d3a9066-017c-4047-807f-3359edd266ce"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="textStyle" x="260" y="65" width="100" height="15" uuid="6ac8a303-007d-4e3a-82b1-80f39124c34b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cardDelivery}+"원"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="260" y="50" width="100" height="15" uuid="5881c5e5-0db7-4f71-8339-3d3aa2b478a2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cashDelivery}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="155" width="100" height="15" uuid="479f89c1-6756-4efe-b36f-a56cae2dd1e1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cardtakeout}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="140" width="100" height="15" uuid="ce20a06b-7507-4fa4-8a20-18b77f21b1a1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cashtakeout}+"원"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="65" width="100" height="15" uuid="35e2114b-2a99-4c9e-b6e8-38c34f93a9cb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cardDeliveryCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="50" width="100" height="15" uuid="35362fa8-6e74-4ca4-937c-440b170d4290">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cashDeliveryCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="155" width="100" height="15" uuid="81ad8207-a3ec-4957-ae20-7db8710c8ca2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cardtakeoutCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="140" width="100" height="15" uuid="3535c1a1-9587-47ff-91c6-3a5ba939b10e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cashtakeoutCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="textStyle" x="180" y="14" width="100" height="16" uuid="0229f0d6-e0c5-43c8-a42a-59c54b9b3ffd"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[배달주문]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="180" y="107" width="100" height="15" uuid="09c4c1c8-c283-40e9-9322-41f85d4f4384">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[직접수령]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="50" width="100" height="15" uuid="413dff22-c95b-4f60-a8c8-050a1a670fbb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[현금]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="65" width="100" height="15" uuid="c86316c2-0f59-4c7b-8344-12531bf4d6c4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[카드]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="80" width="100" height="15" uuid="c4c2400e-068f-4aef-942e-da81a24f8809">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[합계]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="99" y="140" width="100" height="15" uuid="58f9019a-1c2e-4f4c-ae92-1778a2b5856f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[현금]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="99" y="155" width="100" height="15" uuid="c407e393-49f3-4f21-a4c5-cbd5286145f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[카드]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="99" y="170" width="100" height="15" uuid="589462db-f1b5-45f0-ba2b-b19aa3201663">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[합계]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="39" width="300" height="1" uuid="ad2b01e7-e346-49e9-a40f-143022fadaea"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="129" width="300" height="1" uuid="ed2638b8-8fd9-4f4c-9871-5de70f273db5"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="textStyle" x="140" y="80" width="100" height="15" uuid="94094244-51ed-4b4b-9d88-a6fe737bd069">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{deliveryTotalCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="170" width="100" height="15" uuid="514f6592-8f7a-402b-a17f-9f9287e173cd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{takeoutTotalCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="260" y="80" width="100" height="15" uuid="57351d5e-5ea3-4796-942f-33f285474a06">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{deliveryTotalSum}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="170" width="100" height="15" uuid="5c1f4c10-1205-43db-bf6f-293f4269f1f4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{takeoutTotalSum}+"원"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="9" width="300" height="1" uuid="c62ddf72-841f-4c8b-9fe0-0ec4bbff4734"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="245" width="100" height="15" uuid="549c7a24-e298-4d2f-a225-e17b35b10332">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cardRefundSum}+"원"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="230" width="100" height="15" uuid="b5f413e0-e074-4433-8d56-5353b7773a11">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cashRefundSum}+"원"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="230" width="100" height="15" uuid="9ae37015-cf74-4a52-bbeb-10e4105095e2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cashRefundCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="245" width="100" height="15" uuid="783474c8-eb6c-4e1d-ab7c-9bbac979a07a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cardRefundCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="textStyle" x="209" y="197" width="43" height="15" uuid="6a67b77f-a0e5-4864-8f5a-b716a18da744"/>
+				<text><![CDATA[환불내역]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="230" width="50" height="15" uuid="053fe01c-9a57-408f-bed1-dbe961dfa08b"/>
+				<text><![CDATA[현금]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="245" width="50" height="15" uuid="5af43da2-5491-4ad8-a7a8-dfb5d9fc6ce3"/>
+				<text><![CDATA[카드]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="260" width="50" height="15" uuid="2540fc6c-c79d-4787-b0ac-2c8e1caca85b"/>
+				<text><![CDATA[합계]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="textStyle" x="140" y="260" width="100" height="15" uuid="877b0892-7b48-4975-b1f7-eeae23d749bb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{RefundCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="textStyle" x="260" y="260" width="100" height="15" uuid="0655ad37-f32b-4279-ae8b-f98f587a8abb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{RefundSum}+"원"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="219" width="300" height="1" uuid="2e3c7014-517e-47ed-aae1-97cbcc80fd3a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="190" width="300" height="1" uuid="709510c8-423f-4735-9bef-08ea26b1435e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="321" width="74" height="15" uuid="7a74e8c8-7633-4681-adbe-6d3dc5d6fe60">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[포인트사용]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="336" width="74" height="15" uuid="ce9c3d3a-f6df-4e47-8860-c5b22b5eca39">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[포인트적립]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="textStyle" x="100" y="351" width="74" height="15" uuid="d03e9597-c00c-47f3-8d4f-da1e5e0b9278">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[환불포인트]]></text>
+			</staticText>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="260" y="321" width="100" height="15" uuid="db71d32b-a287-47f3-9419-a34763aa3ef7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{mileage}+"P"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="321" width="100" height="15" uuid="94f4c041-ef16-43e1-a752-c2634eac37c3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{minusMileageCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="260" y="336" width="100" height="15" uuid="2342447d-ab7f-4d74-993d-ad2f5ea0214d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{addmileage}+"P"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="336" width="100" height="15" uuid="d1d376c5-3b90-49f0-b8f5-76a782af7b39">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{addMileageCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="260" y="351" width="100" height="15" uuid="c7f483c0-91fb-447c-bd0a-f70a8031099c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{refundmileage}+"P"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="textStyle" x="140" y="351" width="100" height="15" uuid="d9290eed-5a20-4896-8607-871bbc92c06a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{refundMileageCnt}+" 건"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="textStyle" x="201" y="289" width="59" height="15" uuid="ca10f93f-042b-4132-b85e-8a6e74733a69">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[적립금 내역]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="310" width="300" height="1" uuid="a2a6b6ef-1772-4bbe-9433-f8aa905fe8a5"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="282" width="300" height="1" uuid="ed622aac-fea2-4949-ae19-8a5fb11c26bf"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="374" width="300" height="1" uuid="9e6a03ab-e345-4263-afd9-e5bf8e157939"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
 		</band>
 	</summary>
 </jasperReport>

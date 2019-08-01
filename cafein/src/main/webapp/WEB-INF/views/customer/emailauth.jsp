@@ -12,10 +12,10 @@
 			$(function(){
 				$("#authkeyCheck").click(function() {
 					$.ajax({
-						url:"getauthjoin/"+$('#authNum').val(),
+						url:"${pageContext.request.contextPath}/getauthjoin/"+$('#authNum').val(),
 						type : "POST",
 						datatype: "json",
-						data: { authNum : authkey },
+						/* data: { authNum : authkey }, */
 						success: function(data){
 							if(data.cnt == 1){
 								alert("인증완료");

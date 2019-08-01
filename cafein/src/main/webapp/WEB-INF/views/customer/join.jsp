@@ -148,7 +148,7 @@ font-family: "";
 		 if(form.email.value =="")  {
 			 alert("이메일을 입력해주세요.");
 		 } else {
-			 window.open('sendmail.do','','width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
+			 window.open('sendmail.do/'+form.email.value,'','width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
 
 		 }
 		//  var myWindow = window.open("sendmail.do", "", "width=600,height=200");

@@ -20,7 +20,7 @@
 	var checksocketid = "<%= (String)session.getAttribute("cId") %>";
 	var webSocket;
 	if(checksocketid != "null") {
-		webSocket= new WebSocket('ws://localhost/cafein/OrdercastingServer.do');
+		webSocket= new WebSocket('ws://cafein.co.kr/OrdercastingServer.do');
 		
 		webSocket.onerror = function(event) {
 			 	onError(event)
@@ -37,7 +37,16 @@
 	function onMessage(event) {
 		var result = event.data;
 		var list = result.split(":");
-		alert(list[0]+" : "+list[1]);
+		
+		
+		// 매장 주문목록에서 승인/거절 시에는 이미 데이터가 바뀐 뒤
+		if(list[0] == "승인"){
+			alert("주문하신 메뉴가 준비중입니다.");
+		}else if(list[0] == "거절"){
+			alert("주문하신 메뉴가 거절되었습니다.");
+		}
+		
+		// 매장 POS에서 승인/거절은 데이터가 바뀌지 않은 상태에서 먼저 보내기 때문에
 		if(list[1] == "승인"){
 			$.ajax({
 				url: 'updateorderapply',

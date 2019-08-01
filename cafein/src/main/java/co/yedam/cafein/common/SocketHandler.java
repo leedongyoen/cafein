@@ -75,6 +75,10 @@ public class SocketHandler extends TextWebSocketHandler implements InitializingB
 			
 			sendMessage(order.getcId(),order.getoNum()+":거절"); 
 			
+		}else if(order.getType().equals("cus_orderOK")){
+			sendMessage(order.getcId(), "승인"); 
+		}else if(order.getType().equals("cus_orderNO")){
+			sendMessage(order.getcId(),"거절"); 
 		}else {
 		
 			sendMessage("SH001","접속성공");

@@ -117,7 +117,7 @@ public class CustomerCartOrderController {
 	        		
 	        		addCuop.clear();
 	        		String[] stList = meorvo.get(j).getCuoptionlist();
-	        		System.out.println("stList:"+stList[0]);
+	        		//System.out.println("stList:"+stList[0]);
 	        		
 	        		if(stList!=null) {
 	        			

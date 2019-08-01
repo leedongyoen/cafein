@@ -9,7 +9,7 @@
 </head>
 <script>
 	var checked;
-	
+	var select_order_user;
 	
 	
 //	ajax 통신 시작시 실행
@@ -229,8 +229,8 @@
 	
 	
 	// 승인 버튼 클릭 시 모달창 띄우기
-	function apply(ordern){
-		
+	function apply(ordern,cId){
+		select_order_user=cId;
 		event.stopPropagation();
 		$('#applyordernumber').val(ordern);
 		$('#applyemodal').modal('show');
@@ -252,6 +252,7 @@
 			},
 			success:function(data){
 				if(data == 1){
+					send("cus_orderOK",select_order_user,ordern);
 					alert("주문번호 : "+ordern+" 를 승인하셨습니다.");
 				}else{
 					alert("고객님이 주문번호 : "+ordern+"를 취소했습니다. ");
@@ -264,9 +265,9 @@
 	}
 	
 	// 거절 버튼 클릭 시 모달창 띄우기
-	function refuse(ordern){
+	function refuse(ordern,cId){
 		event.stopPropagation();
-		
+		select_order_user=cId;
 		$('#cancelordernumber').val(ordern);
 		$('#refusemodal').modal('show');
 	}
@@ -288,6 +289,7 @@
 				if(data == 0){
 					alert("고객님이 주문번호 : "+ordern+"를 취소했습니다. ");
 				}else{
+					send("cus_orderNO",select_order_user,ordern);
 					alert("주문번호 : "+ordern+" 를 거절되었습니다.");
 				}
 				
@@ -520,14 +522,14 @@
 					.append($('<td>').html(deliverstatus))
 					.append($('<td>').append($('<button>').attr({
 															type:"button",
-															onclick:"apply('"+item.oNum+"')",										
+															onclick:"apply('"+item.oNum+"','"+item.cId+"')",										
 															class: item.deliveryStatus
 															})
 															.addClass("btn btn-outline-primary")
 															.append("승인") ))
 					.append($('<td>').append($('<button>').attr({ 
 															type:"button",
-															onclick:"refuse('"+item.oNum+"')",								
+															onclick:"apply('"+item.oNum+"','"+item.cId+"')",							
 															class: item.deliveryStatus
 															})
 															.addClass("btn btn-outline-danger")
@@ -561,14 +563,14 @@
 						.append($('<td>').html(deliverstatus))
 						.append($('<td>').append($('<button>').attr({
 																type:"button",
-																onclick:"apply('"+item.oNum+"')",									
+																onclick:"apply('"+item.oNum+"','"+item.cId+"')",									
 								 								class: item.deliveryStatus
 																}).css("display","none")
 																.addClass("btn btn-outline-primary")
 																.append("승인") ))
 						.append($('<td>').append($('<button>').attr({
 																type:"button",
-																onclick:"refuse('"+item.oNum+"')",										
+																onclick:"apply('"+item.oNum+"','"+item.cId+"')",											
 																class: item.deliveryStatus
 																}).css("display","none")
 																.addClass("btn btn-outline-danger")

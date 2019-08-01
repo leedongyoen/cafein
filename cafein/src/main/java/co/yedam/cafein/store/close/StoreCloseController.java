@@ -158,23 +158,26 @@ public class StoreCloseController {
 			
 			String sId = (String) session.getAttribute("sId");
 			String openTime = request.getParameter("openTime");
+			String closeTime = request.getParameter("closeTime");
 			
 			conn = dataSource.getConnection();
 
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("p_store", sId);
-			map.put("p_opendate", openTime);			
+			map.put("p_opendate", openTime);
+			map.put("p_closedate", closeTime);	
 			
 			JasperReport report = JasperCompileManager
 					.compileReport(request.getSession().getServletContext().getRealPath("reports/receipt.jrxml"));
+			/*
 			JasperReport jasperSubReport1 = JasperCompileManager
 					.compileReport(request.getSession().getServletContext().getRealPath("reports/cash.jrxml"));
 			JasperReport jasperSubReport2 = JasperCompileManager
 					.compileReport(request.getSession().getServletContext().getRealPath("reports/mileage.jrxml"));
 			JasperReport jasperSubReport3 = JasperCompileManager
 					.compileReport(request.getSession().getServletContext().getRealPath("reports/orders.jrxml"));
-			 
-			// 커넥션만 넘겨주기, sId와 날짜별로 데이터 다르게 나오게 하기, 이전의 마감 내역 조회
+			 */
+			
 			 OutputStream out = response.getOutputStream();
 			 JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, conn);
 
