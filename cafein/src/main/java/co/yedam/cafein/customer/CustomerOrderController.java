@@ -102,10 +102,10 @@ public class CustomerOrderController {
 	
 	// updateAlramCancel
 	@ResponseBody
-	@RequestMapping(value = "/updateAlramCancel", method = RequestMethod.GET)
-	public void updateAlramCancel(OrdersVO vo) {
+	@RequestMapping(value = "/updateAlramCancel", method = RequestMethod.POST)
+	public int updateAlramCancel(OrdersVO vo) {
 		
-		service.updateAlramCancel(vo);
+		return service.updateAlramCancel(vo);
 		
 	}
 
