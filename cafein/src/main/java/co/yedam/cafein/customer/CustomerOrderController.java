@@ -92,12 +92,21 @@ public class CustomerOrderController {
 		String mileageservice = service.getstoremileageservice(vo.getsId());
 		vo.setMileageservice(mileageservice);
 		// 마일리지 수정을 위해서
-		if(n > 0 && mileageservice.equals("Y")) {		
+		if(mileageservice.equals("Y")) {		
 			n = storeorderservice.updateordermileage(vo);
 
 		}
 		
 		return n;
+	}
+	
+	// updateAlramCancel
+	@ResponseBody
+	@RequestMapping(value = "/updateAlramCancel", method = RequestMethod.POST)
+	public int updateAlramCancel(OrdersVO vo) {
+		
+		return service.updateAlramCancel(vo);
+		
 	}
 
 	// 고객 주문 페이지로 이동.

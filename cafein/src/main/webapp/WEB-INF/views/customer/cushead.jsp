@@ -20,7 +20,7 @@
 	var checksocketid = "<%= (String)session.getAttribute("cId") %>";
 	var webSocket;
 	if(checksocketid != "null") {
-		webSocket= new WebSocket('ws://192.168.0.55/cafein/OrdercastingServer.do');
+		webSocket= new WebSocket('ws://cafein.co.kr/OrdercastingServer.do');
 		
 		webSocket.onerror = function(event) {
 			 	onError(event)
@@ -35,9 +35,51 @@
 	
 	 
 	function onMessage(event) {
-		alert(event.data);
+		var result = event.data;
+		var list = result.split(":");
 		
-		 
+		
+		// 매장 주문목록에서 승인/거절 시에는 이미 데이터가 바뀐 뒤
+		if(list[0] == "승인"){
+			alert("주문하신 메뉴가 준비중입니다.");
+		}else if(list[0] == "거절"){
+			alert("주문하신 메뉴가 거절되었습니다.");
+		}
+		
+		// 매장 POS에서 승인/거절은 데이터가 바뀌지 않은 상태에서 먼저 보내기 때문에
+		if(list[1] == "승인"){
+			$.ajax({
+				url: 'updateorderapply',
+				type:'POST',
+				data: {oNum : list[0] , takeTime: "40"},
+				dataType:'json',
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){
+					alert("주문번호 : "+list[0]+" 가 승인되었습니다.");
+				}
+				
+			});
+			
+		}else if(list[1] == "거절"){
+			/* updateAlramCancel  */
+			
+			$.ajax({
+				url: 'updateAlramCancel',
+				type:'POST',
+				data: {oNum : list[0]},
+				dataType:'json',
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){
+					alert("주문번호 : "+list[0]+" 가 거절되었습니다.");
+				}
+				
+			});
+		}
+ 
 	}
 
 	function onOpen(event) {

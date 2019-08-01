@@ -279,8 +279,8 @@ var ordernum ="";
 							onclick:"aftercallorder('"+item.oNum+"','"+item.mName+"','"+item.cId+"')",
 							id: "table"+item.oNum
 							})
-							.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
+							.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.mName+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.cId+'\'>'))
 							.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
@@ -862,11 +862,11 @@ var ordernum ="";
 			});
 		 		$('#table'+ocnum).after($('<tr>').attr("class","calloption").attr("id","ocnum")
 		 				.append($('<td>').html("메뉴명 : <br>"+resul))
-	 					.append($('<td>').attr("id","cusck").attr("value",""+cusCID+"").html("고객 ID :"+cusCID))
+	 					.append($('<td>').attr("id","cusck").attr("value",cusCID).html("고객 ID :"+cusCID))
 	 					.append($('<td>').append($('<input>').attr({
 						 						type:"hidden",
 						 						id:"ckoNum",
-						 						value:"ocnum"
+						 						value:ocnum
 						 						})))
 						
 	 					.append($('<td>').append($('<button>').attr({

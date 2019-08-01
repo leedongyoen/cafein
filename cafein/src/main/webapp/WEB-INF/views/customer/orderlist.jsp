@@ -37,8 +37,12 @@ body{
 					alert("상태값 :" + status + " Http에러메시지 :"+msg);
 				},
 				success:function(data){ 
+					if(data > 0){
+						alert('주문 취소 되었습니다.');
+					}else{
+						alert('이미 매장에서 주문이 승인되었습니다.');
+					}
 					
-					alert('주문 취소 되었습니다.');
 					 getOrderList();
 				} 
 			});

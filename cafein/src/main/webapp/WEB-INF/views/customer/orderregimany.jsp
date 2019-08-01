@@ -609,6 +609,8 @@ alert(msg);
 						<c:if test="${recipeList.mNum eq cartlist.mNum}">
 							${recipeList.opName}
 							<input type="checkbox" value="${recipeList.recipeno}" id="${recipeList.recipeno}" name="${recipeList.mNum}" class="checkoption">
+							<span id = "${recipeList.recipeno}_span">${recipeList.opPrice}</span> 원
+						
 							<br>
 						</c:if>
 					</c:forEach>
@@ -617,7 +619,7 @@ alert(msg);
 				</tr>
 				<tr>
 					<th>금 액</th>
-					<td><input id="price${status.count}" value="${cartlist.mPrice}" size="6" readonly> &nbsp;&nbsp;
+					<td><input id="price${status.count}" value="${cartlist.totalPrice}" size="6" readonly> &nbsp;&nbsp;
 						<button type="button" id = "plus${status.count}" onclick="plus(this.id)">+</button>
 							<input name="oQty" id = "qty${status.count}" size="1" value="${cartlist.orderqty}" readonly>
 						<button type="button" id = "minus${status.count}" onclick="minus(this.id)">-</button></td>

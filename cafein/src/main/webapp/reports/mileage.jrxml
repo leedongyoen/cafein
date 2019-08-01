@@ -7,6 +7,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PRESSO"/>
 	<style name="textStyle" pdfFontName="malgun.ttf" pdfEncoding="Identity-H"/>
 	<parameter name="p_store" class="java.lang.String"/>
+	<parameter name="p_opendate" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT   nvl(to_char(SUM(case when o.total > 0 then o.mileage else 0 end),'999,999,999,999,999,999'),0) "mileage"
 	        , nvl(to_char(COUNT(CASE WHEN MILEAGE > 0 THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "minusMileageCnt"
@@ -18,7 +19,7 @@ FROM ORDERS O ,( SELECT CLOSETIME, OPENTIME
 					        FROM STOREOPEN
 					        WHERE S_ID = $P{p_store}
 					        AND TRUNC(OPENTIME) = '19/07/23') SOP
-WHERE( O.O_DATE BETWEEN (SELECT MAX(OPENTIME) FROM STOREOPEN) AND NVL(SOP.CLOSETIME,SYSTIMESTAMP))
+WHERE( TO_CHAR(O.O_DATE,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8) )
 AND ( (O.RECEIPT='delivery' AND O.DELIVERY_STATUS IN ('C3', 'C5')) OR ( O.RECEIPT = 'takeout' AND O.DELIVERY_STATUS IN ('C3', 'C5')) )
 AND O.S_ID = $P{p_store}]]>
 	</queryString>

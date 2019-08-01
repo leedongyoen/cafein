@@ -32,6 +32,7 @@
 	SELECT B.* FROM ( SELECT A.*, ROWNUM RN FROM (
 		SELECT DISTINCT
 					  O.O_DATE
+					, O.C_ID
 					, O.O_NUM
 					, M.M_NUM 
 					, M.M_NAME 
@@ -140,7 +141,7 @@
 		UPDATE ORDERS
 		SET REFUSE_REASON = #{refuseReason} 
 			, DELIVERY_STATUS = 'C4'
-		WHERE O_NUM = #{oNum}	
+		WHERE O_NUM = #{oNum} AND DELIVERY_STATUS='C0'
 	</update>
 	
 	<update id="updateordermileage">
@@ -163,7 +164,7 @@
 			SET DE_APPLY_TIME= systimestamp
 			    , TAKE_TIME = #{takeTime}
 			     , DELIVERY_STATUS='C1'
-			WHERE O_NUM= #{oNum}
+			WHERE O_NUM= #{oNum} AND DELIVERY_STATUS='C0'
 	</update>
 	
 	

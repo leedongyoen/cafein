@@ -108,7 +108,7 @@ public class StoreOrderController {
 		int n = service.updateordercancel(vo);
 		
 		System.out.println("============ mileage service "+mileageservice);
-		if(n > 0 && mileageservice.equals("Y") ) {
+		if(mileageservice.equals("Y") ) {
 			n = service.updateordermileage(vo);
 		}
 		return n;

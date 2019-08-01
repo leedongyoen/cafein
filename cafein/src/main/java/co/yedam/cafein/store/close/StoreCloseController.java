@@ -158,12 +158,14 @@ public class StoreCloseController {
 			
 			String sId = (String) session.getAttribute("sId");
 			String openTime = request.getParameter("openTime");
+			String closeTime = request.getParameter("closeTime");
 			
 			conn = dataSource.getConnection();
 
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("p_store", sId);
-			map.put("p_opendate", openTime);			
+			map.put("p_opendate", openTime);
+			map.put("p_closedate", closeTime);	
 			
 			JasperReport report = JasperCompileManager
 					.compileReport(request.getSession().getServletContext().getRealPath("reports/receipt.jrxml"));
