@@ -15,7 +15,9 @@ table tbody tr td,
 	text-align: left;
  
 }
-
+input[type=password]{
+font-family: "";
+}
 </style>
 <script type="text/javascript">
 	
@@ -75,7 +77,8 @@ table tbody tr td,
 			if (form.dob.value == "") {
 			alert("생년월일을 입력하세요.");
 			return form.dob.focus();
- 			}		
+ 			}	
+			alert("회원가입을 축하합니다");
 			form.submit();
 		};
 		function post_check(){
@@ -97,8 +100,7 @@ table tbody tr td,
 		function execPostCode() {
 	         new daum.Postcode({
 	             oncomplete: function(data) {
-	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-	 
+	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.	 
 	                // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
 	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
 	                var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
@@ -125,14 +127,9 @@ table tbody tr td,
 	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
 	                console.log(data.zonecode);
 	                console.log(fullRoadAddr);
-	                
-	                
-	          //      $("[name=addr1]").val(data.zonecode);
-	          //     $("[name=addr2]").val(fullRoadAddr);
-	                
+     
 	                document.getElementById('cAdd2').value = data.zonecode; //5자리 새우편번호 사용
 	                document.getElementById('cAdd').value = fullRoadAddr;
-	            //    document.getElementById('cAdd3').value = data.jibunAddress; 
 	            }
 	         }).open();
 	     }

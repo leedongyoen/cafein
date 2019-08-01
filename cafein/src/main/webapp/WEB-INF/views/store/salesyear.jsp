@@ -37,7 +37,7 @@
 				daydata = google.visualization.arrayToDataTable(chartData);	
 				var options = {
 					chartArea : {
-						width : '40%'
+						width : '50%'
 					}
 				};
 
@@ -64,8 +64,7 @@
     </script>
 </head>
 <body>
-	<h2 align="center">매출</h2>
-	<h3 align="center">연별 통계</h3>
+	<h2 align="center">연별 통계</h2><br>
 	<div id="curve_chart" style="width: 100%; margin: auto;"></div>
 	<div align="center" id="test_dataview4"></div><br>
 	<div>

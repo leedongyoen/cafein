@@ -36,7 +36,9 @@
     				
     				daydata = google.visualization.arrayToDataTable(chartData);	
     				var options = {
-    						
+    						chartArea : {
+    							width : '50%'
+    						}
     					
     				};
 
@@ -44,7 +46,7 @@
     							.getElementById('test_dataview5'))
 
     				table.draw(daydata, {
-    					 width: '50%', height: '30%'
+    					 width: '40%', height: '30%'
     				});
 
     				var chart = new google.visualization.PieChart(document
@@ -62,8 +64,7 @@
     </script>
 </head>
 <body>
-	<h2 align="center">매출</h2>
-	<h3 align="center">메뉴별 통계</h3>
+	<h2 align="center">메뉴별 통계</h2><br>
 	<div id="piechart" style="height: 500px; margin: auto;"></div>
 	<div align="center" id="test_dataview5"></div><br>
 		<table align="center">

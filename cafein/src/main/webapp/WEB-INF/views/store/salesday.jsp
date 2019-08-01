@@ -16,7 +16,6 @@
 
 	var daystring = ["일","월","화","수","목","금","토"]; // week에 요일을 붙여줄 배열.
 	var daydata; //
-	
 	var sId = '<%= session.getAttribute("sId") %>';
 	
 	function drawBasic() {
@@ -30,8 +29,6 @@
 		//	async : false,
 			datatype : "json",
 			success : function(days) {
-				
-		//		$("#resultsalessum").html(days);
 				var chartData = [];	//차트 데이터에 담을 배열 .
 				chartData.push(['요일','수량','금액']) 
 					for(i=0; i<days.length; i++) {		//매개변수 값을 이용하여 for문으로  리스트뿌림
@@ -40,41 +37,34 @@
 						chartData.push(dayss); // var 선언한 메소드를 담음
 						console.log(dayss);
 						
-				}
-				
+				}		
 				daydata = google.visualization.arrayToDataTable(chartData);	
 				var options = {
 					chartArea : {
 						width : '50%'
 					}
 				};
-
 				var table = new google.visualization.Table(document
 							.getElementById('test_dataview')) // table 만들 id 값
 
 				table.draw(daydata, { 
 					 width: '50%', height: '30%'
 				});
-
 				var chart = new google.visualization.BarChart(document
 							.getElementById('chart_div'));
-
 				chart.draw(daydata, options); // draw에 담길  메소드값와 옵션값을 넣어줌
 			}
 		});
-
 	};
 	$(window).resize(function() {
 		drawBasic();
 
 	});
-
 </script>
 <title>일별 통계</title>
 </head>
 <body>
-	<h2 align="center">매출</h2>
-	<h3 align="center">일별 통계</h3>
+	<h2 align="center">일별 통계</h2><br>
 	<div id="chart_div"></div>
 	<p align="center">
 		<input type ="date" name ="startDate" id="startDate">&nbsp;
