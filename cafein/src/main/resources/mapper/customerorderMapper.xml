@@ -267,7 +267,15 @@
 		UPDATE ORDERS
 		SET REFUSE_REASON = '고객이 주문 취소'
 			, DELIVERY_STATUS = 'C4'
-		WHERE O_NUM = #{oNum}	
+		WHERE O_NUM = #{oNum} AND DELIVERY_STATUS='C0'
 	</update>
+	
+	<select id="updateAlramCancel" statementType="CALLABLE" parameterType="order">
+	
+		call ALRAM_ORDER_CANCEL_PRO(
+			#{oNum, mode=IN, jdbcType=VARCHAR, javaType=string}
+		)
+	
+	</select>
 
 </mapper>

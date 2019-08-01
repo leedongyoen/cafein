@@ -253,6 +253,8 @@
 			success:function(data){
 				if(data == 1){
 					alert("주문번호 : "+ordern+" 를 승인하셨습니다.");
+				}else{
+					alert("고객님이 주문번호 : "+ordern+"를 취소했습니다. ");
 				}
 				
 				getstoreorderlist();
@@ -283,7 +285,12 @@
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){
-				alert("주문번호 : "+ordern+" 를 거절하셨습니다.");
+				if(data == 0){
+					alert("고객님이 주문번호 : "+ordern+"를 취소했습니다. ");
+				}else{
+					alert("주문번호 : "+ordern+" 를 거절되었습니다.");
+				}
+				
 				getstoreorderlist();
 			}
 			

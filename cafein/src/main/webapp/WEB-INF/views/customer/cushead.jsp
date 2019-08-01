@@ -35,9 +35,42 @@
 	
 	 
 	function onMessage(event) {
-		alert(event.data);
-		
-		 
+		var result = event.data;
+		var list = result.split(":");
+		alert(list[0]+" : "+list[1]);
+		if(list[1] == "승인"){
+			$.ajax({
+				url: 'updateorderapply',
+				type:'POST',
+				data: {oNum : list[0] , takeTime: "40"},
+				dataType:'json',
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){
+					alert("주문번호 : "+list[0]+" 가 승인되었습니다.");
+				}
+				
+			});
+			
+		}else if(list[1] == "거절"){
+			/* updateAlramCancel  */
+			
+			$.ajax({
+				url: 'updateAlramCancel',
+				type:'POST',
+				data: {oNum : list[0]},
+				dataType:'json',
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){
+					alert("주문번호 : "+list[0]+" 가 거절되었습니다.");
+				}
+				
+			});
+		}
+ 
 	}
 
 	function onOpen(event) {

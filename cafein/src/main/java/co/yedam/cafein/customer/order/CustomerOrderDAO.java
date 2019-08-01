@@ -128,7 +128,14 @@ public class CustomerOrderDAO {
 		return dao.update("CustomerOrderDAO.updatecusordercancel",vo);
 	}
 	
-
+	
+	// 매장에서 거절 알람이 온 경우
+	public int updateAlramCancel(OrdersVO vo) {
+		return dao.update("CustomerOrderDAO.updateAlramCancel",vo);
+	}
+	
+	
+	
 	// 다건주문인데 안겹치려고 잠깐 만들었습니다. order details op_dnum 업데이트
 	public int getodnum2(OrdersVO vo) {
 		return dao.update("CustomerOrderDAO.getodnum2",vo);

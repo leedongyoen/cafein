@@ -124,6 +124,13 @@ public class CustomerOrderServiceImpl {
 	public int updatecusordercancel(OrdersVO vo) {
 		return dao.updatecusordercancel(vo);
 	}
+	
+	
+	// 매장에서 거절 알람이 온 경우
+	public int updateAlramCancel(OrdersVO vo) {
+		return dao.updateAlramCancel(vo);
+	}
+	
 
 	public int getodnum2(OrdersVO vo) {
 		return dao.getodnum2(vo);
