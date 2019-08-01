@@ -91,9 +91,9 @@
 		</table>
 	</div>
 	<div class="container" align="right">
-		<button type="button" id="truthbackbtn">취소</button>
-		<button type="button" id="truthsavebtn">저장</button>
-		<button type="button" id="trutheditbtn">수정</button>
+		<button type="button" id="truthbackbtn" class="btn btn-outline-info">취소</button>
+		<button type="button" id="truthsavebtn" class="btn btn-outline-info">저장</button>
+		<button type="button" id="trutheditbtn" class="btn btn-outline-info">수정</button>
 	</div>
 	</form>
 </body>

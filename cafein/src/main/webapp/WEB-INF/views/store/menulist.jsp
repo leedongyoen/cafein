@@ -148,7 +148,7 @@ $(function(){
 		$("#mNum").val(mNum);
 		$("#mName").val(mName);
 		$("#mPrice").val(mPrice);
-		$("#mCategory").val(mCate);
+		$("#mCategory").val(mCate).prop('disabled',true);
 		$('input[id="salestate"]').removeAttr('checked');
 		$("input:radio[id=salestate]:input[value='"+saleState+"']").attr("checked", true);
 		$('input[id="menustate"]').removeAttr('checked');
@@ -171,7 +171,7 @@ $(function(){
 		
 		$("#btnInsert").on('click',function(){
 		
-			alert(JSON.stringify($("#insertmenudetail").serializeObject()));
+			//alert(JSON.stringify($("#insertmenudetail").serializeObject()));
 			menuInsert();
 		});
 
@@ -197,7 +197,7 @@ $(function(){
 		stanUnit = td.eq(8).text();
 		stanUnit = stanUnit*1;
 		
-		console.log(recipeNo +" :: "+turnNo);
+		//console.log(recipeNo +" :: "+turnNo);
 		$("#recipeNum").val(recipeNo);
 		$("#turnNo").val(turnNo); 
 		
@@ -229,8 +229,7 @@ $(function(){
 		opPrice = td.eq(3).text();
 		recipeNo = td.eq(4).text();
 		stName = td.eq(5).text();
-		console.log(stName);
-		
+		stNumber = td.eq(6).text();
 		
 		$("#opopname").val(opName);
 		$("#opopconsum").val(consum);
@@ -238,6 +237,8 @@ $(function(){
 		$("#opopprice").val(opPrice);
 		$("#optionDatailTable table tbody tr:eq(0) td").html(stName);
 		
+		$("#opopstnum").val(stNumber);
+		$("#opoprecipe").val(recipeNo);
 		
 	});
 	
@@ -249,7 +250,7 @@ $(function(){
 		var obj=JSON.parse(json);
 		aQty=obj.value3;
 		stanUnit = obj.value4;
-        console.log(obj.value1+" : "+obj.value2+" : "+obj.value3+" : "+obj.value4+" : "+mCate);
+        //console.log(obj.value1+" : "+obj.value2+" : "+obj.value3+" : "+obj.value4+" : "+mCate);
         $("#recistNum").val(obj.value1);
 		$("#recicaNum").val(mCate);
 		$("#recistAqty").val(obj.value3);
@@ -262,7 +263,7 @@ $(function(){
 		
 		var json = $(this).val();
 		var obj=JSON.parse(json);
-        console.log(obj.value1+" : "+obj.value2);
+        //console.log(obj.value1+" : "+obj.value2);
         if(obj.value2=='CAHT')
         	{
         		$("#opName").val("HOT");
@@ -315,7 +316,7 @@ function menulist(mNum){
 				{
 					console.log(data);
 					var totalWon = 0;
-					
+					var cnt = 0;
 					$("#recipeTable tbody").empty();
 					for(var i = 0;i<data.length;i++){
 					
@@ -335,10 +336,11 @@ function menulist(mNum){
 							.appendTo("#recipeTable tbody");
 							// style="visibility:hidden;"
 							totalWon = totalWon + (data[i].stPrice*data[i].consum);
+							cnt = cnt +1;
 						}
 					}
 					
-					var msg = data.length +"개의 재료. 원가 : "+totalWon+"원. 수익: "+(mPrice-totalWon)+"원.";
+					var msg = cnt +"개의 재료. 원가 : "+totalWon+"원. 수익: "+(mPrice-totalWon)+"원.";
 					
 					
 					$("#recipeMsg").val(msg);
@@ -377,14 +379,13 @@ function menulist(mNum){
 							.append($('<td>').html(data[i].opPrice))
 							.append($('<td style="display:none;">').html(data[i].recipeNo))
 							.append($('<td style="display:none;">').html(data[i].stName))
+							.append($('<td style="display:none;">').html(data[i].stNum))
 							.appendTo("#optionTable tbody");
 						}
-						
 					}
-					
 				}
-		}
-	}); 
+			}
+		}); 
 
 	
 	
@@ -400,9 +401,6 @@ function menulist(mNum){
 		success:function(data){
 			//console.log(data);
 			
-			
-			
-			
 			$("#reciSelect").empty();
 			$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#reciSelect');
 			
@@ -415,27 +413,22 @@ function menulist(mNum){
 					//옵션에 caNum이 CACM과 CACP를 추가
 					// var option = $("<option>"+data[i].caNum+"</option>");
 	               // $('#opSelct').append(option); 
-
-
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum+" : "+data[i].stAqty +" : "+data[i].stanUnit+ '</option>').appendTo('#reciSelect');
+	               
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#reciSelect');
 						
-
-
-							
 				}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM')){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CAJP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum +" : "+data[i].stanUnit+ '</option>').appendTo('#reciSelect');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#reciSelect');
 					
 				}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CADP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum +" : "+data[i].stanUnit+ '</option>').appendTo('#reciSelect');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#reciSelect');
 					}
 				}
-			
 			
 			$("#opSelct").empty();
 			$('<option value="">' + '카테고리 선택' + '</option>').appendTo('#opSelct');
@@ -453,36 +446,34 @@ function menulist(mNum){
 	                //$('#opSelct').append(option);
 
 					
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName + '</option>').appendTo('#opSelct');
 					
-
-							
 				}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CAJP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName + '</option>').appendTo('#opSelct');
 					
 				}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CADP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName +" : "+mCate+" : "+data[i].caNum + '</option>').appendTo('#opSelct');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName + '</option>').appendTo('#opSelct');
 					
 					}
 				}
 			}
-	});
-}
+		});
+	}
 
 
 
 function menuInsert(){
 
 	 $.ajax({
-		url: "menues",
+		url: "menues/"+storeid,
 		type: 'POST',
-		data:{sId:storeid},
+		
 		dataType: 'json',
 		data: JSON.stringify($("#insertmenudetail").serializeObject()),
 		contentType: 'application/json',
@@ -490,11 +481,8 @@ function menuInsert(){
 			if(data.result == true) {
 				window.location.reload();
 	    	}
-			
 		}
-		
 	}); 
-	 
 }
 
 
@@ -540,23 +528,10 @@ function recipeInsert(){
 	var menuId = $("#mNum").val();
 	var reQty1 = $("#consum").val();
 	
-/* 	var reQty2 = aQty*stanUnit;
-		//$("#recistAqty").val();
-	
-	if(reQty1 >= reQty2){
-		reQty2 = reQty1;
-		//$("#reciAqty").val(reQty1);
-		console.log(reQty1+" >= "+reQty2);
-	}else{
-		//$("#reciAqty").val(reQty2);
-		console.log(reQty1+" < "+reQty2);
-	}
-	 */
-	
 	alert(JSON.stringify($("#insertRecipeDetail").serializeObject()));
-	//=====================================================================================
- 	$.ajax({
-		//url: "recipes/"+storeid+'/'+(reQty1)+'/'+(stanUnit),  
+	
+	$.ajax({
+		
 		url: "recipes/"+storeid,  
 		type: 'POST',
 		dataType: 'json',
@@ -567,9 +542,7 @@ function recipeInsert(){
 				console.log(data);
 				menulist(menuId);
 	    	}
-			
 		}
-		
 	});  
 }
 
@@ -587,7 +560,6 @@ function recipeUpdate(){
 		success: function(data) { 
 			menulist(menuId);
 		}
-		
 	});
 }
 
@@ -627,9 +599,7 @@ function optionInsert(){
 				console.log(data);
 				menulist(menuId);
 	    	}
-			
 		}
-		
 	});  
 }
 
@@ -652,6 +622,25 @@ function optionDelete(){
 	 
 }
 
+
+function optionUpdate(){
+	console.log($("#optionTableForm").serializeObject());
+	var menuId = $("#mNum").val();
+	$.ajax({
+		url: "options/"+storeid,
+		type: 'PUT',
+		dataType: 'json',
+		data: JSON.stringify($("#optionTableForm").serializeObject()),
+		contentType: 'application/json',
+		success: function(data) { 
+			menulist(menuId);
+		}
+		
+	});
+	
+}
+
+
 	function fileUpload() {
 
 		$('#fileForm').ajaxForm({
@@ -664,8 +653,6 @@ function optionDelete(){
 		
 		$("#fileForm").submit();
 
-	
-	
 }
 	
 function insertMenu(){
@@ -743,9 +730,6 @@ function insertOption(){
 									<td style="display: none;">${menu.uploadFileName}</td>
 								
 								</tr>
-
-
-
 								
 							</c:forEach>
 
@@ -860,7 +844,7 @@ function insertOption(){
 						
 						
 							<input type="hidden" id="cPrice" readonly>
-							<input type="text" id="recipeMsg" style="text-align: right; width: 300px;" value="">
+							<input type="text" id="recipeMsg" style="text-align: right; width: 300px;" value="" readonly>
 							<input type="hidden" id="recistAqty">
 							
 							<input type="hidden" id="recipeNum" name="recipeno">
@@ -979,8 +963,9 @@ function insertOption(){
 
 					</table>
 					<!-- <input type="hidden" id="omNum" name="mNum">
-					<input type="hidden" id="opcaNum" name="caNum">
-					<input type="hidden" id="opstNum" name="stNum"> -->
+					<input type="hidden" id="opcaNum" name="caNum">-->
+					<input type="hidden" id="opopstnum" name="stNum">
+					<input type="hidden" id="opoprecipe" name="recipeno"> 
 				</div>
 				</form>
 
@@ -1085,7 +1070,7 @@ function insertOption(){
 							</tr>
 								</table>
 						
-									<input type="button" value="레시피 추가 " onclick="recipeInsert()">
+									<input type="button" value="등록" onclick="recipeInsert()">
 								</form>
 
 							</div>
@@ -1121,18 +1106,12 @@ function insertOption(){
 										<th>옵션 가격</th>
 										<td><input type="text" id="opPrice" name="opPrice">원</td>
 									</tr>
-									<tr>
-									<tr>
-										<td></td>
-										<td><input type="button" value="등록"
-											onclick="optionInsert()"></td>
-									</tr>
-
+									
 								</table>
-								
-								<input type="hidden" id="omNum" name="mNum"> <input
-									type="hidden" id="opcaNum" name="caNum"> <input
-									type="hidden" id="opstNum" name="stNum">
+								<input type="button" value="등록" onclick="optionInsert()">
+								<input type="hidden" id="omNum" name="mNum">
+								<input type="hidden" id="opcaNum" name="caNum">
+								<input type="hidden" id="opstNum" name="stNum">
 								</form>
 							</div>
 						</div>

@@ -82,7 +82,8 @@
 		.append($('<td>').html(stPayMethod))
 		.append($('<td>').append($('<input>').attr({
 			type:'button',
-			value:'삭제'
+			value:'삭제',
+			"class":'btn btn-outline-info'
 		}).addClass('delbtn')))
 		.appendTo('#operatingreservTable tbody');
 		
@@ -188,6 +189,12 @@
 	
 
 </script>
+<style>
+.thcolor {
+	background-color:white;
+	color:black;
+}
+</style>
 </head>
 <body>
 <h3 align = "center">매장 영업 지출금</h3><br>
@@ -216,27 +223,19 @@
 		
 			<table>
 				<tr>
-					<th>항목</th>
-				</tr>
-				<tr>
+					<th class="thcolor">항목</th>
 					<td><input type="text" id="stName"></td>
 				</tr>
 				<tr>
-					<th>수량</th>
-				</tr>
-				<tr>
+					<th class="thcolor">수량</th>
 					<td><input type="text" id="wareQty"  onkeypress="inNumber()"></td>
 				</tr>
 				<tr>
-					<th>가격</th>
-				</tr>
-				<tr>
+					<th class="thcolor">가격</th>
 					<td><input type="text" id="sum"  onkeypress="inNumber()" numberOnly></td>
 				</tr>
 				<tr>
-					<th>결제방식</th>
-				</tr>
-				<tr>
+					<th class="thcolor">결제방식</th>
 					<td>
 						<input type="radio" name="stPayMethod" id="card" value="카드" checked>카드
 						<input type="radio" name="stPayMethod" id="cash" value="현금">현금
@@ -244,10 +243,13 @@
 				</tr>
 				
 			</table>
-			<button type="button" id="addbtn">추가</button>
-			<button type="button" id="backbtn">취소</button>
-			<button type="button" id="savebtn">저장</button>
-			<button type="button" id="editbtn">수정</button>
+			<br><br>
+			<div class="container">
+				<button type="button" id="addbtn" class="btn btn-outline-info">추가</button>
+				<button type="button" id="backbtn" class="btn btn-outline-info">취소</button>
+				<button type="button" id="savebtn" class="btn btn-outline-info">저장</button>
+				<button type="button" id="editbtn" class="btn btn-outline-info">수정</button>
+			</div>
 		</form>
 		</div>
 	</div>

@@ -191,7 +191,20 @@ public class RecipeController {
 	  
 	  }
 	  
-	 
+		@ResponseBody
+		@RequestMapping(value="/options/{sId}"
+						, method=RequestMethod.PUT
+						,consumes="application/json" 
+						)
+		public RecipeVO updateOption(
+										@RequestBody RecipeVO vo,
+										@PathVariable("sId") String sId ,
+										Model model) {
+			vo.setsId(sId);
+			System.out.println("vo: "+vo);
+			service.optionUpdateProc1(vo);
+			return vo;
+		} 
 	
 	
 }

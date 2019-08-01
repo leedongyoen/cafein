@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -9,11 +9,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>매장POS</title>
 <style type="text/css">
-  body{
-background-color:#424242;
-}
-         
-.left {
+      
+.nav-tabs a{
+  color: black !important;
+  font-weight: bold;
+}      
+.left {  
   position:absolute;
   width:900px;
   height: 600px;
@@ -27,20 +28,29 @@ background-color:#424242;
 .grid-container {
   display: inline-grid;
   grid-template-columns: auto auto auto auto;
-  background-color: #424242;
   padding: 1px;
   grid-column-gap:25px;
   grid-row-gap: 25px;
 }
+.searchcla tr td{
+  width: 220px;
+}
+.cusdata{
+	text-align:center;
+	width:200px; 
+	border: 0px; 
+	color:white;
+	background: transparent;
+	font-size: large;
 
+}
 .grid-item {
-  background-color: #424242;
 
   text-align: center;
 }
 .mbutton{
 	font-size: 1.3em;
-	width:150px;
+	width:150px;  
   height:100px;
 }
 .opbutton{
@@ -117,10 +127,16 @@ background-image: linear-gradient(to bottom,
   box-shadow: inset 0 1px 10px hsla(0, 0%, 0%, 0.8);
 }
 
+.reallyrefund{
+background-color: #FBEFF2
 
+}
+.really{
+background-color: #E0F8F7
+}
 </style>
 </head>
-<body>
+<body style="background: url(image/metalbk.jpg) no-repeat center center; background-size: cover;">
 <script type="text/javascript">
 //포스기 버튼
 var sId='<%= session.getAttribute("sId") %>'; //헤더에있는 Id로 교체
@@ -198,9 +214,7 @@ var ordernum ="";
 	   
 	   //그리드 새로고침
 	   $("#clearRow").on("click",function(){
-		   var degree=0;
-		   $("#gridlist").jqGrid("clearGridData", true).trigger("reloadGrid");
-		   $("#addpay").val(degree);
+		   location.reload();
 	   });
 	   
 	   //그리드내 행 삭제
@@ -233,17 +247,50 @@ var ordernum ="";
 	   
 	   
    });
-
+ 
  
  //메뉴탭에서 매장메뉴 나오기
  $(document).ready(function(){
-	 $("#aftersearch").hide();
-	
+	 
+	 $("#aftersearch").hide()
 	 $("#paymentModal").modal('hide');
 	 $("#cusSearchModal").modal('hide');
 	 $("#orderListModal").modal('hide');
-		//메뉴로드
+	 $('#answerCallModal').modal("hide");
+	 
 	
+	  //웹주문 조회
+	    $("#answercall").on("click",function(){
+	 		 $("#ordercall").text("0");
+	 		$('#callorderlisttable tbody').empty();
+	 		$('#answerCallModal').modal("show");
+	 		 console.log("in");
+	 		
+	 		$.ajax({
+				url:'getcallorderlist',
+				type:'GET',
+				data: {sId: sId},
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:function(data){
+					$.each(data,function(idx,item){
+						$('<tr>').attr({
+							onclick:"aftercallorder('"+item.oNum+"','"+item.mName+"','"+item.cId+"')",
+							id: "table"+item.oNum
+							})
+							.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
+							.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
+							.append($('<td><input type=\'text\' value=\''+item.mName+'\'>'))
+							.append($('<td><input type=\'text\' value=\''+item.cId+'\'>'))
+							.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
+							.appendTo('#callorderlisttable tbody');
+						});
+	
+				}
+			});    
+	 	});
+	 //메뉴로드
 	 $.ajax({
 			url:'pos/'+sId,
 			type:'GET',
@@ -276,7 +323,7 @@ var ordernum ="";
 		}
 	//고객검색이벤트로드
 		$("#customerserch").on("keyup", function() {
-			
+			$("#customerserch").empty();
 	 		var value = $(this).val().toLowerCase();
 	 		if (value.length>=3){
 	 		$.ajax({
@@ -340,6 +387,15 @@ var ordernum ="";
 			console.log(cId, mileage);
 			$("input:text[name='cId']").val(cId);
 			$("input:text[name='mileage']").val(mileage);
+			var coin =$(".pay").val();
+			var getmoney=$("#getmoney").val();
+			var resultmoney=$("#resultmoney").val();
+			
+			if(coin == '0'){
+				alert("주문건이 없습니다.");
+			}else if(getmoney =='0' || resultmoney<0){
+				alert("금액을 다시 확인해 주세요.");
+			}else{
 			
 			//주문한 데이터 모두 가져오기
 			var mNum=[];
@@ -395,6 +451,7 @@ var ordernum ="";
 			//console.log($('[name="jsonData"]').val());
 			console.log(JSON.stringify(ordercart));
 			document.posorderinsert.submit();
+	 }
 	 });
 	});	
 	//탭키 누를 때 옵션 empty
@@ -488,7 +545,7 @@ var ordernum ="";
 	          .append($('<input type=\'hidden\' id=\'hidden_mPrice4\'>').val(item.opPrice))
 	          .append($('<input type=\'hidden\' id=\'hidden_recipeno4\'>').val(item.recipeno))
 	          .append($('<input type=\'hidden\' id=\'hotice_option\'>').val(""))
-	          .appendTo('#beveragetableoption tbody');
+	          .appendTo('#beveragetableoption');
 	    	 $('<div class="grid-item">')
 	          .append($('<input type=\'button\'class=\'opbutton btn btn-dark\' id=\''+item.opName+'\'>').val(item.opName))
 	          .append($('<input type=\'hidden\' id=\'hidden_menuId4\'>').val(item.mNum))
@@ -560,10 +617,10 @@ var ordernum ="";
  			console.log(Id,Name,Tel,mileage);
  			$("#aftersearch tbody").empty();
  		    	 $('<tr>')
- 		    	 .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'data0\' id=\'cusId\' value=\''+Id+'\'>'))
- 		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'data1\' id=\'cusName\' value=\''+Name+'\'>'))
- 		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'data2\' id=\'cusTel\' value=\''+Tel+'\'>'))
- 		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'data3\' id=\'cusMile\' value=\''+mileage+'\'>'))
+ 		    	 .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'cusdata\' id=\'cusId\' value=\''+Id+'\'>'))
+ 		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'cusdata\' id=\'cusName\' value=\''+Name+'\'>'))
+ 		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'cusdata\' id=\'cusTel\' value=\''+Tel+'\'>'))
+ 		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'cusdata\' id=\'cusMile\' value=\''+mileage+'\'>'))
  		          .appendTo('#aftersearch tbody');
  		      
  		}
@@ -628,7 +685,7 @@ var ordernum ="";
  	//환불 날짜별 검색
  	function getCusRefund() {
  		$(".really").empty();
- 		
+ 		$('.optiontable').empty();
 		//날짜 데이터 같이 보내기
 		var startDate = jQuery('#startDate').val();
 		var endDate = jQuery('#endDate').val();
@@ -652,25 +709,20 @@ var ordernum ="";
 				alert(status + "메세지" + msg);
 			},
 			success : function(data) {
-				
-				var refusenum;
 				$.each(data,function(idx,item){
-					
+					var refund="really";
 					if(item.cId == null) item.cId="";
 					if(item.refuseReason == null) {
 						item.refuseReason="";
-						refusenum = "";
-					}
-					if(item.refuseReason != null){
-						
-						refusenum=item.refuseReason;
+					}else{
+						refund +="refund";
 					}
 					
 					$('<tr>').attr({
-						onclick:"menudetail('"+item.oNum+"','"+refusenum+"')",
+						onclick:"menudetail('"+item.oNum+"','"+item.refuseReason+"')",
 						name:"really",
 						id: "table"+item.oNum
-					})
+					}).addClass(refund)
 					.append($('<td><input type=\'text\'id=\'oNum4\' value=\''+item.oNum+'\'>'))
 					.append($('<td><input type=\'text\'id=\'oDate4\' value=\''+item.oDate+'\'>'))
 					.append($('<td><input type=\'text\'id=\'cId4\' value=\''+item.cId+'\'>'))
@@ -685,28 +737,25 @@ var ordernum ="";
 					
 				
 			} 
- 	function menudetail(onum,orderNum){ 
- 		$(".optiontable").empty();
+ 	function menudetail(onum,refuse){ 
+ 		
+ 		
  		var menu_qty="0";
 		var menunum="";
 		var test="";
-		console.log(orderNum);
-		if(orderNum == ""){
-			orderNum = onum;
-		}
-
 			
  		$.ajax({
 			url: 'searchdetails',
 			type:'GET',
 			dataType:'json',
-			data: {oNum: orderNum},
+			data: {oNum: onum},
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success: function (data){
 		 		console.log(data);
-		 		$("#op_tr"+orderNum).empty();
+		 		$('.optiontable').empty();
+		 		
 		 		$.each(data,function(idx,item){
 		 			console.log(item);
 					if(menunum == ""){
@@ -731,34 +780,34 @@ var ordernum ="";
 						console.log(test);
 					}
 				}); 
-		 			$('#table'+onum).after($('<tr>').attr("class","optiontable")
-		 					.append($('<td>').html("메뉴명 : <br>"+test).attr("colspan","2"))
-							.append($('<td>').html("고객성함 : " +data[0].cName))
-							.append($('<td>').html("사용한 마일리지 : " +data[0].mileage))
-							.append($('<td>').html("총 금액 : "+data[0].total+"원"))
-							.append($('<button>').attr({
-								class: orderNum,
-								type:"button",
-								onclick:"refund('"+orderNum+"')"
-							}).append("환불하기"))
-							);
-		 			
-		 			if(orderNum != onum && orderNum != null){
-		 				$('.'+orderNum).hide();
-		 			}
+		 		var refusebtn="";
+		 		if(refuse == ""){
+					refusebtn=$('<button>').attr({
+						type:"button",
+						onclick:"refund('"+onum+"')"
+					}).addClass(onum).append("환불하기");
+				}
+	 			$('#table'+onum).after($('<tr>').attr("class","optiontable").attr("id","onum").css("background-color","#F6D8CE")
+	 					.append($('<td>').html("메뉴명 : <br>"+test).attr("colspan","2"))
+						.append($('<td>').html("고객성함 : " +data[0].cName))
+						.append($('<td>').html("사용한 마일리지 : " +data[0].mileage))
+						.append($('<td>').html("총 금액 : "+data[0].total+"원"))
+						.append($('<td>').html(refusebtn))
+						);
 		 			
 			}
 			
-			});	
+			});
+		
 			}
  	
- 	function refund(orderNum){
+ 	function refund(onum){
  		
  		 $.ajax({
 			url: 'refoundsuccess',
 			type:'POST',
 			dataType:'json',
-			data: {oNum: orderNum},
+			data: {oNum: onum},
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
@@ -772,10 +821,92 @@ var ordernum ="";
  		
  	}
  	
+ 	function aftercallorder(ocnum,mename,cusCID){
+ 		 $('.calloption').empty();
+ 		var mqty="0";
+		var mnumber="";
+		var resul="";
+	//	$('.calloption').empty();
+ 		$.ajax({
+			url : 'getcallorderdetails',
+			type : 'GET',
+			dataType : 'json',
+			data : {oNum:ocnum},
+			error : function(status, msg) {
+				alert(status + "메세지" + msg);
+			},
+			success : function(data) {
+						
+		 		$.each(data,function(idx,item){
+				if(mnumber == ""){
+					mnumber = item.oDnum;
+					resul = mename+" - ";
+					mqty="0";
+				}
+				if(mnumber == item.opDnum){
+					if(mqty == "0" && item.oQty != "0"){
+						resul = resul+" "+item.oQty+" 개 - ";
+						mqty=item.oQty;
+					}
+					resul = resul +" "+ item.opName;
+					console.log("--- "+resul);
+					
+				}
+				if(mnumber != item.opDnum){
+					mnumber = item.oDnum;
+					mqty="0";
+					resul = resul + "<br>" +item.mName+" - ";
+					resul = resul +" " +item.opName;
+					console.log(resul);
+				}		
+			});
+		 		$('#table'+ocnum).after($('<tr>').attr("class","calloption").attr("id","ocnum")
+		 				.append($('<td>').html("메뉴명 : <br>"+resul))
+	 					.append($('<td>').attr("id","cusck").attr("value",""+cusCID+"").html("고객 ID :"+cusCID))
+	 					.append($('<td>').append($('<input>').attr({
+						 						type:"hidden",
+						 						id:"ckoNum",
+						 						value:"ocnum"
+						 						})))
+						
+	 					.append($('<td>').append($('<button>').attr({
+						 						type:"button",
+						 						onclick:"callorderOK()",
+						 						'class':'callbtn btn btn-outline-dark'
+						 						}).append("주문확인")))
+						
+						.append($('<td>').append($('<button>').attr({
+						 						type:"button",
+						 						onclick:"callorderNO()",
+						 						'class':'callbtn btn btn-outline-dark'
+						 						}).append("주문취소")))
+						)   
+			}
+			}); 
+ 	}
  	
+ 	function callorderOK(){
+		// 소켓 연결
+		//JSON.stringify($("#orderform").serializeObject())
+		
+		var cid=$("#cusck").val();
+		var type ="cusorderOK";
+		var ckoNum = $("#ckoNum").val();
+		send(type,cid,ckoNum); //cId로 교체
+	}
+ 	function callorderNO(){
+		// 소켓 연결
+		//JSON.stringify($("#orderform").serializeObject())
+		
+		var cid=$("#cusckCID").val();
+		var type ="cusorderNO";
+		var ckoNum = $("#ckoNum").val();
+		send(type,cid,ckoNum);
+	}
+ 	
+ 	   
 
 </script>
-<div>
 <div class="left">
 <form class="form-borizontal" name="girdForm" action="customerorder" method="POST">
     <table id="gridlist"></table>
@@ -784,8 +915,8 @@ var ordernum ="";
 </div>
 
 <!-- 메뉴 선택 창 -->
-  <div id="btn_group" class="content">
-	<ul id="topclick" class="nav nav-tabs">
+  <div id="btn_group" class="content" >
+	<ul id="topclick" class="nav nav-tabs" >
     <li class="nav-item" id="click">
       <a class="nav-link active" data-toggle="tab" href="#coffee">커피</a>
     </li>
@@ -822,28 +953,28 @@ var ordernum ="";
 
 <div>
 <div id="aftersearch">
-<table>
+<table class="searchcla">
 <thead>
 <tr>
 	<th>ID</th>
 	<th>NAME</th>
 	<th>TEL</th>
 	<th>MILEAGE</th>
-	
+	   
 </tr>
 </thead>
 <tbody>
 </tbody>
 </table>
-<a id="insertmileage" style="color:white">사용할 마일리지 : <input type="text" id="useMile" value="0">
-<button type="button" id="reservebtn">사용</button>
-<button type="button" id="reservecancelbtn">취소</button>
+<a id="insertmileage" style="color:white; font-size: large;">사용할 마일리지 : <input type="text" id="useMile" value="0">
+<button type="button" class="btn btn-outline-light" id="reservebtn">사용</button>
+<button type="button" class="btn btn-outline-light" id="reservecancelbtn">취소</button>
 </a>
 </div>
 
 </div>
-<div style="text-align:right">
-<a id="insertmoney" style="color:white">총 금액 : <input type="text" style="text-align:right;width:150px;" id="addpay" value="0" readonly="readonly" > 원</a>
+<div style="text-align:right; padding:0px 300px 0px 0px; font-size: xx-large;">
+<a id="insertmoney" style="color:white">총 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="addpay" value="0" readonly="readonly" > 원</a>
 </div>
 
 
@@ -851,8 +982,11 @@ var ordernum ="";
 	<input type="button" id="clearRow" class="btn btn-outline-light" value="전체취소">
 	<input type="button" id="deleteRow" class="btn btn-outline-light" value="선택취소">
 	</div>
-			<div style="text-align:right">
+			<div style="text-align:right; padding:0px 300px 0px 0px;">
 			<input type="button" class="btn btn-outline-light" id="customersearch" value="회원검색">
+			<input type="button"class="btn btn-outline-light" id="orderList" value="결제정보">
+			<input type="button" id="payment" class="btn btn-outline-light" value="결제하기">
+			</div>
 		<!-- 고객 검색 모달창 -->	
 	<div class="modal fade" id="cusSearchModal" role="dialog">
 		<div class="modal-dialog">		
@@ -882,14 +1016,13 @@ var ordernum ="";
 				
 				</div>
 				<div class="modal-footer">	
-					
 					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<input type="button"class="btn btn-outline-light" id="orderList" value="결제정보">
+	
 	<!-- 결제내역조회 모달 -->
 	<div class="modal fade" id="orderListModal" role="dialog" >
 		<div class="modal-dialog" style="width: 100px; display: table;">		
@@ -901,7 +1034,7 @@ var ordernum ="";
 				<div class="modal-body">
 					<form class="form-borizontal" action="#" method="POST">
 						<div class="btn-group">
-						<input class="form-control" style="text-align:left; width:200px;" id="orderserch" type="text" placeholder="Search..">
+
 							<input type="date" class="btn btn-secondary" id="startDate"
 								name="startDate">&nbsp; <input type="date"
 								class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
@@ -980,8 +1113,6 @@ var ordernum ="";
 							</thead>
 						</table>
 						</div>
-					
-				
 				</div>
 				<div class="modal-footer">
 					<input type="button" id="orderbtn" class="btn btn-outline-dark"  value="결제하기">		
@@ -991,8 +1122,39 @@ var ordernum ="";
 			</div>
 		</div>
 	</div>
-			<input type="button" id="payment" class="btn btn-outline-light" value="결제하기">
+	
+	<!-- 알람내역 모달 -->
+	<div class="modal fade" id="answerCallModal" role="dialog" >
+		<div class="modal-dialog" style="width: 100px; display: table;">		
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">WEB CUSTOMER ORDERS</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form class="form-borizontal" action="#" method="POST">
+						<div class="table-responsive" style="text-align:left">
+						<table id="callorderlisttable" class="table" >
+							<thead>
+							<tr> 
+								<th>DATE</th>
+								<th>주문번호</th>
+								<th>주문메뉴</th>
+								<th>아이디</th>
+								<th>결제금액</th>
+							</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">	
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+				</div>
+			</div>
 		</div>
-</div>
+	</div>
 </body>
 </html>

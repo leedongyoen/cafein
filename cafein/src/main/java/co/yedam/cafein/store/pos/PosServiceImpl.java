@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
 import co.yedam.cafein.viewvo.ViewPosOrdetailsVO;
 import co.yedam.cafein.viewvo.ViewPosVO;
+import co.yedam.cafein.vo.OrderDetailsVO;
 import co.yedam.cafein.vo.OrdersVO;
 import co.yedam.cafein.vo.RecipeVO;
 
@@ -54,4 +55,16 @@ public class PosServiceImpl implements PosService{
 		return dao.orderalarmcount(vo);
 	
 	} 
+	public List<OrdersVO> getcallorderlist(OrdersVO vo){
+		System.out.println(vo.getoNum());
+		return dao.getcallorderlist(vo);
+	
+	}
+	
+	public List<OrderDetailsVO> getcallorderdetails(OrderDetailsVO vo){
+		System.out.println(vo.getoNum());
+		return dao.getcallorderdetails(vo);
+	
+	}
+	
 }

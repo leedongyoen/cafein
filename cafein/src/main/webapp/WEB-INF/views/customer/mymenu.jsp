@@ -142,7 +142,7 @@
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" id="cu_orderbtn">주문</button>&nbsp;&nbsp;
-					<button class="btn btn-secondary" id="cartbtn">담기</button>&nbsp;&nbsp;		
+					<button class="carryon btn btn-secondary" id="cartbtn">담기</button>&nbsp;&nbsp;		
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -380,12 +380,14 @@ $(function(){
 
 		localStorage.setItem("cartlist",JSON.stringify(local_cart));
 		console.log("localStorage : "+localStorage.getItem("cartlist"));
-		var result = confirm('장바구니로 이동하시겠습니까?'); 
-		if(result) { //yes 
-			location.replace("${pageContext.request.contextPath}/cartmng"); 
-		} 
+			
+			var result = confirm('장바구니로 이동하시겠습니까?'); 
+			if(result) { //yes 
+				location.replace("${pageContext.request.contextPath}/cartmng"); 
+			}
 
 	});
+	
 	//주문하기
 	$("#cu_orderbtn").on("click",function(){
 		var list =  $("#mymenudetailForm").serializeObject();

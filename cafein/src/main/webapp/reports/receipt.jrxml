@@ -14,13 +14,13 @@
 	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<style name="textStyle" pdfFontName="malgun.ttf" pdfEncoding="Identity-H"/>
 	<parameter name="p_store" class="java.lang.String"/>
+	<parameter name="p_opendate" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT   to_char(OPENTIME, 'yy/MM/dd HH:mi') "openTime"
-			 , to_char(CLOSETIME,'yy/MM/dd HH:mi') "closeTime"
+		<![CDATA[SELECT   to_char(OPENTIME, 'yy/MM/dd HH24:mi') "openTime"
+			 , to_char(CLOSETIME,'yy/MM/dd HH24:mi') "closeTime"
 FROM STOREOPEN
 WHERE S_ID = $P{p_store}
-AND OPENTIME IN (SELECT MAX(OPENTIME) 
-             				FROM STOREOPEN)]]>
+AND TO_CHAR(OPENTIME,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)]]>
 	</queryString>
 	<field name="openTime" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="openTime"/>
@@ -34,40 +34,40 @@ AND OPENTIME IN (SELECT MAX(OPENTIME)
 	<pageHeader>
 		<band height="60">
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="80" y="20" width="300" height="1" uuid="39f48c34-b6ee-47f7-8876-c3aaee1eb021"/>
+				<reportElement positionType="FixRelativeToBottom" style="textStyle" x="80" y="20" width="300" height="1" uuid="39f48c34-b6ee-47f7-8876-c3aaee1eb021"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="267" y="30" width="93" height="15" uuid="2a5eb9a2-f62f-4645-932d-71560c557e9b">
+				<reportElement style="textStyle" x="267" y="30" width="93" height="15" uuid="2a5eb9a2-f62f-4645-932d-71560c557e9b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{openTime}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="268" y="45" width="92" height="15" uuid="bef1cfba-84c7-4789-896c-32fd4d402770">
+				<reportElement style="textStyle" x="268" y="45" width="92" height="15" uuid="bef1cfba-84c7-4789-896c-32fd4d402770">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{closeTime}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="203" y="0" width="54" height="15" uuid="55aa498b-ca38-4150-917e-1baddfb90f60">
+				<reportElement style="textStyle" x="203" y="0" width="54" height="15" uuid="55aa498b-ca38-4150-917e-1baddfb90f60">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[마감 내역]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="30" width="60" height="15" uuid="5dc31bc9-e9ea-4a30-af59-4935b3920dba">
+				<reportElement style="textStyle" x="100" y="30" width="60" height="15" uuid="5dc31bc9-e9ea-4a30-af59-4935b3920dba">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[오픈일시]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="45" width="60" height="15" uuid="06a2bccc-3367-445b-960d-e745f9c84aff">
+				<reportElement style="textStyle" x="100" y="45" width="60" height="15" uuid="06a2bccc-3367-445b-960d-e745f9c84aff">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<text><![CDATA[마감일시]]></text>

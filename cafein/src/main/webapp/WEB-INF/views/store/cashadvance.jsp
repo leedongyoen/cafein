@@ -175,6 +175,12 @@
 	})
 
 </script>
+<style>
+.thcolor {
+	background-color:white;
+	color:black;
+}
+</style>
 </head>
 <body>
 <h3 align = "center">마감 시재 정산</h3><br>
@@ -195,7 +201,7 @@
 					<td><p id="cashSales"></p></td>
 				</tr>
 				<tr>
-					<th>현금 결제 시 사용된 포인트</th>
+					<th>현금 결제 시 사용된 적립금</th>
 					<td><p id="usedMileage"></p></td>
 				</tr>
 			</table>
@@ -204,32 +210,32 @@
 		<div class="col-6">
 			<table id="inputCash">
 				<tr>
-					<th>5만원 </th>
+					<th class="thcolor">5만원 </th>
 					<td><input type="text" class="cash" id="cash50000" style="width:50px" autofocus onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash50000" readonly ></td>
 				</tr>
 				<tr>
-					<th>1만원 </th>
+					<th class="thcolor">1만원 </th>
 					<td><input type="text" class="cash" id="cash10000" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash10000" readonly></td>
 				</tr>
 				<tr>
-					<th>5천원 </th>
+					<th class="thcolor">5천원 </th>
 					<td><input type="text" class="cash" id="cash5000" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash5000" readonly></td>
 				</tr>
 				<tr>
-					<th>1천원 </th>
+					<th class="thcolor">1천원 </th>
 					<td><input type="text" class="cash" id="cash1000" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash1000" readonly></td>
 				</tr>
 				<tr>
-					<th>5백원 </th>
+					<th class="thcolor">5백원 </th>
 					<td><input type="text" class="cash" id="cash500" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash500" readonly></td>
 				</tr>
 				<tr>
-					<th>1백원 </th>
+					<th class="thcolor">1백원 </th>
 					<td><input type="text" class="cash" id="cash100" style="width:50px" onkeyup="call()" onkeypress="inNumber()"></td>
 					<td><input type="text" class="totalcash" id="totalcash100" readonly></td>
 				</tr>
@@ -238,15 +244,15 @@
 		<div class="col-6">
 			<table id="resultTable" >	<!-- style="visibility:hidden;" 시재 등록 버튼 클릭 시 보이게 visible (수정 누르면 다시 안보이게) -->
 				<tr>
-					<th>총 현금 시재</th>
+					<th class="thcolor">총 현금 시재</th>
 					<td><p id="totalCash"></p></td>
 				</tr>
 				<tr>
-					<th>순 현금 매출액</th>
+					<th class="thcolor">순 현금 매출액</th>
 					<td><p id="totalCashSales"></p></td>
 				</tr>
 				<tr>
-					<th>차액</th>
+					<th class="thcolor">차액</th>
 					<td><p id="difference"></p></td>
 				</tr>
 			</table>
@@ -254,8 +260,8 @@
 	</div>
 </div>
 
-<button id="cashInsert">시재등록 및 저장</button>
-<button id="cashBack">취소</button>
-<button id="cashEdit">시재 재등록</button>
+<button id="cashInsert" class="btn btn-outline-info">시재등록 및 저장</button>
+<button id="cashBack" class="btn btn-outline-info">취소</button>
+<button id="cashEdit" class="btn btn-outline-info">시재 재등록</button>
 </body>
 </html>

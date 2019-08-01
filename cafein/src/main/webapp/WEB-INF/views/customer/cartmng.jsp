@@ -39,6 +39,17 @@ input {
   background-color: #3e8e41;
 }
 
+.ulstyle{
+	list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+.listyle{
+	list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
 </style>
 
 <script>
@@ -92,7 +103,7 @@ $(function(){
 			}
 			
 			
-			$("#CartList div a").html(local_cart[i].sId);
+			$("#CartList div a").html(local_cart[i].sName);
 			$("#CartList div a").val(local_cart[i].sId);
 			$('<tr>')
 			.append($('<td rowspan="2">').css("width","100px").append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i ,onClick:"cartlist(this.value)",})))
@@ -106,7 +117,7 @@ $(function(){
 			.appendTo("#CartList table tbody");
 		
 			
-			$('<tr>').append($('<td>').append($('<ul>').css("list-style","none"))).appendTo("#CartList table tbody");
+			$('<tr>').append($('<td>').append($('<ul>').addClass("ulstyle"))).appendTo("#CartList table tbody");
 			
 			var storeName = "";
 			var imgName="";
@@ -136,7 +147,7 @@ $(function(){
 				for(var j = 0;j<local_cart[i].cuoptionlist.length;j++){
 					var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuoptionlist[j]);
 				
-					$('<li>').html(detail).css("margin-right","50px").appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
+					$('<li>').addClass("listyle").html(detail).appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
 					
 				}
 			} 
@@ -237,7 +248,6 @@ function orderDeleteClick(){
 				console.log("k: "+k);
 			}
 		}
-		
 	}
 	local_cart=JSON.stringify(arr);
 	localStorage.setItem("cartlist",local_cart);
@@ -294,7 +304,7 @@ function getOptionNaming(mnumber, stnumber){
 	<div style="width: 100%; text-align: center; padding: 3px;" id="CartListWrapper"> <!-- border: 1px solid pink; -->
 		
 		<hr>
-		<div class="titlefont" align="center">장 바 구 니!</div> 
+		<div class="titlefont" align="center">장 바 구 니</div> 
 		
 		<hr>
 		<c:forEach var="cart" items="${optionname}" varStatus="i">
@@ -322,7 +332,7 @@ function getOptionNaming(mnumber, stnumber){
 			
 
 				<div style="background: #D8D8D8;">
-					<label><input type="checkbox" onClick="allCheck(this.value)"></label><a href="#"></a>
+					<label><input type="checkbox" onClick="allCheck(this.value)"></label><a href="#">선택</a>
 				</div>
 				<div style="text-align: center;">
 
@@ -344,8 +354,8 @@ function getOptionNaming(mnumber, stnumber){
 					</table>
 				</div>
 
-				<div style="padding: 3px; background: #F5D0A9; height:80px;">
-					<p  style="padding-top:25px;">
+				<div style="padding: 3px; background: #F5D0A9; height:60px;">
+					<p  style="padding-top:20px;">
 						<span> 주 문 합 계 <input type="hidden" name="totalPrice" value="0"><strong>0</strong>원</span>
 					</p>
 				</div>
@@ -354,12 +364,12 @@ function getOptionNaming(mnumber, stnumber){
 		<br> <br> <br>
 		<div align="right" class="btn-group">
 			<input type="button" class="button btn btn-info" onclick="orderBtnClick()" value="주문">
-			
+			<button class="button btn btn-danger" onclick="orderDeleteClick()">삭제</button>
 			<!-- <a href="javascript:history.go(-1)" class="button">돌아가기</a> -->
 		</div> 
 		</form>  
 		 
-		<button class="button btn btn-danger" onclick="orderDeleteClick()">삭제</button>
+		
 	</div>
 	<%-- <img style="width:90%; height:120%; opacity:0.8; position: absolute;" src="${pageContext.request.contextPath}/image/note.jpg">
 	 --%>

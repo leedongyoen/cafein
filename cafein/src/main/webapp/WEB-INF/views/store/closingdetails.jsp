@@ -38,10 +38,11 @@
 					//$('#storeList tbody').empty();
 					if(item.openTime != null && item.closeTime != null) {
 						$('<tr>')
-						.append($('<th>').html("<span>"+item.openTime + '</span> ~ <span>' + item.closeTime+"</span>"))
-						.append($('<th>').append($('<input>').attr({
+						.append($('<th class="thcolor">').html("<span>"+item.openTime + '</span> ~ <span>' + item.closeTime+"</span>"))
+						.append($('<th class="thcolor">').append($('<input>').attr({
 							type:'button',
-							value:'PDF 보기'
+							value:'PDF 보기',
+							class:'btn btn-outline-info'
 						}).addClass('pdfbtn')))
 						.appendTo('#storeList tbody');
 					}
@@ -88,10 +89,11 @@
 					//$('#storeList tbody').empty();
 					if(item.openTime != null && item.closeTime != null) {
 						$('<tr>')
-						.append($('<th>').html("<span>"+item.openTime + '</span> ~ <span>' + item.closeTime+"</span>"))
-						.append($('<th>').append($('<input>').attr({
+						.append($('<th class="thcolor">').html("<span>"+item.openTime + '</span> ~ <span>' + item.closeTime+"</span>"))
+						.append($('<th class="thcolor">').append($('<input>').attr({
 							type:'button',
-							value:'PDF 보기'
+							value:'PDF 보기',
+							class:'btn btn-outline-info'
 						}).addClass('pdfbtn')))
 						.appendTo('#storeList tbody');
 					}
@@ -123,6 +125,10 @@
 
 table tbody th{
 	text-align: center;
+}
+.thcolor {
+	background-color:white;
+	color:black;
 }
 </style>
 

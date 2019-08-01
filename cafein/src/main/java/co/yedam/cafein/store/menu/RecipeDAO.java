@@ -68,6 +68,11 @@ public class RecipeDAO {
 		return mybatis.insert("RecipeDAO.insertOption",vo);
 	}
 	
+	public int optionUpdateProc1(RecipeVO vo) {
+		System.out.println("mybatis optionUpdateProc1");
+		return mybatis.update("RecipeDAO.optionUpdateProc1",vo);
+	}
+	
 	public int optionInsertProc1(RecipeVO vo) {
 		System.out.println("mybatis optionInsertProc1");
 		return mybatis.insert("RecipeDAO.optionInsertProc1",vo);

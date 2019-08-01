@@ -269,7 +269,7 @@ function checkpwbtn(){
 			data : JSON.stringify($("#storeinfoForm").serializeObject()),
 			success : function(data) {
 				alert("수정완료되었습니다.")
-				
+				readstoreinfo();
 
 			}
 		});
@@ -294,7 +294,7 @@ function checkpwbtn(){
         $("#savings_service_y").attr("disabled",true);
         $("#savings_service_n").attr("disabled",true);
         
-        readstoreinfo();
+        
         
 	}
 	
@@ -418,7 +418,7 @@ function checkpwbtn(){
           <th class="tableth">매장주소</th>
         <td><input type = "text" id="sadd2" name = "sadd2" placeholder="우편번호" readonly>
           <button type = "button" id="addbt" class="btn btn-default btn-primary" onclick="execPostCode()" disabled>우편번호 찾기</button><br>
-          		<input type = "text" id="sadd" name = "sadd" placeholder="주소" readonly>
+          		<input type = "text" id="sadd" name = "sadd" size="30"placeholder="주소" readonly>
           		<input type = "text" id="sadd3" name = "sadd3" placeholder="상세주소" readonly></td>
         </tr>
         <tr>

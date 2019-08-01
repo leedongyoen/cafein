@@ -91,8 +91,9 @@
 		#{oNum, mode=IN, jdbcType=VARCHAR, javaType=string}
 		)
 	}
-	
 	</insert>
+	
+	<!--주문 알람 카운트 -->
 	<select id="orderalarmcount" resultType="int">
 	 SELECT 
 	 	count(O_NUM) "oNum"
@@ -101,12 +102,47 @@
 	 AND DELIVERY_STATUS ='C0'
 	</select>
 	
-	
-	<select id="orderalarm" resultType="order">
-	 SELECT 
-	 	O_NUM "oNum"
-	 FROM ORDERS
-	 WHERE S_ID=#{sId}
-	 AND DELIVERY_STATUS ='C0'
+	<!-- 주문 알람 내역 -->
+	<select id="getcallorderlist" parameterType="order"  resultType="order">
+		SELECT DISTINCT
+					  O.O_DATE "oDate"
+					, O.O_NUM "oNum"
+					, M.M_NUM  "mNum"
+					, M.M_NAME "mName"
+					, ORD.OP_DNUM "opDnum"
+					, O.TOTAL "total"
+					, O.RECEIPT "receipt"
+					, O.PAY_METHOD "payMethod"
+					, O.C_ADD "cAdd"
+					, O.C_ADD3 "cAdd3"
+					, O.DELIVERY_STATUS "deliveryStatus" 
+					, O.C_ID "cId"
+		FROM ORDERS O LEFT OUTER JOIN ORDER_DETAILS ORD
+		ON O.O_NUM = ORD.O_NUM
+		JOIN MENU M
+		ON ORD.M_NUM = M.M_NUM 
+		WHERE O.S_ID=#{sId}
+				AND ORD.CA_NUM NOT IN ('CAOP')
+					AND O.DELIVERY_STATUS = 'C0'				
+		ORDER BY O.O_NUM DESC 
+	</select>
+	<!-- 주문내역 상세 -->
+	<select id="getcallorderdetails" resultType="orderdt">
+		SELECT QTY.QTY	"oQty" 
+				, ORD.O_NUM		"oNum"
+				, ORD.M_NUM		"mNum"
+				, R.OP_NAME		"opName"
+		FROM ORDER_DETAILS ORD JOIN RECIPE R
+		ON ORD.RECIPENO = R.RECIPENO
+		JOIN (
+		    SELECT M_NUM,MAX(O_QTY) "QTY"
+		  FROM ORDER_DETAILS
+		  WHERE O_NUM = #{oNum}
+		  GROUP BY M_NUM
+		)QTY
+		on QTY.M_NUM = ORD.M_NUM
+		WHERE ORD.O_NUM = #{oNum}
+		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE','CAJP')
+
 	</select>
 </mapper>

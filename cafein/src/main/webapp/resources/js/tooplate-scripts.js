@@ -73,14 +73,14 @@ function drawLineChart() {
 			    	    }
 			    	  }
 			      }*/
+			      /*
 			      
 			      options:{ 
 			    	  legend: { labels: { fontColor: "#040404" } } 
-			      	  ,hAxis: { labels: { color: "#040404" } }
-			      	  ,vAxis: { labels: { color: "#040404" } } 
+			      	  ,hAxis: { labels: { fontColor: "#040404" } }
+			      	  ,vAxis: { labels: { fontColor: "#040404" } } 
 			      }
-			      
-			      /*chart.draw(data, { titleTextStyle: { color: 'red' }, 
+			      chart.draw(data, { titleTextStyle: { color: 'red' }, 
 			    	  hAxis: { textStyle: { color: 'red' }, 
 			    		  titleTextStyle: { color: 'red' } }, 
 			    		  vAxis: { textStyle: { color: 'red' }, 
@@ -89,7 +89,7 @@ function drawLineChart() {
 			      */
 			      
 			      
-			      //options: optionsLine
+			      options: optionsLine
 			    };
 
 			    lineChart = new Chart(ctxLine, configLine);

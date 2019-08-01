@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 7.2.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="refund" pageWidth="500" pageHeight="300" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="7f292e59-ac0a-4e81-aa2d-c83093ee5d91">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="138"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="854"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PRESSO"/>
+	<style name="textStyle" pdfFontName="malgun.ttf" pdfEncoding="Identity-H"/>
 	<parameter name="p_store" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT     nvl(to_char(SUM(case when o.pay_method = 'card' then o.total else 0 end),'999,999,999,999,999,999'),0) "cardRefundSum"
@@ -44,7 +45,7 @@ AND O.S_ID = $P{p_store}]]>
 	<columnHeader>
 		<band height="85" splitType="Stretch">
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="55" width="100" height="15" uuid="a6acdbe2-a908-4969-a08d-ee6c325f661f">
+				<reportElement style="textStyle" x="280" y="55" width="100" height="15" uuid="a6acdbe2-a908-4969-a08d-ee6c325f661f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -52,7 +53,7 @@ AND O.S_ID = $P{p_store}]]>
 				<textFieldExpression><![CDATA[$F{cardRefundSum}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="40" width="100" height="15" uuid="4966c21b-a0cb-4aef-8729-a9edbb090eb8">
+				<reportElement style="textStyle" x="280" y="40" width="100" height="15" uuid="4966c21b-a0cb-4aef-8729-a9edbb090eb8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -60,7 +61,7 @@ AND O.S_ID = $P{p_store}]]>
 				<textFieldExpression><![CDATA[$F{cardRefundSum}+"원"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="40" width="100" height="15" uuid="c9454612-67e9-4de8-908d-e722a2602ce6">
+				<reportElement style="textStyle" x="160" y="40" width="100" height="15" uuid="c9454612-67e9-4de8-908d-e722a2602ce6">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -68,7 +69,7 @@ AND O.S_ID = $P{p_store}]]>
 				<textFieldExpression><![CDATA[$F{cashRefundCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="55" width="100" height="15" uuid="ccc19537-7197-4e3d-ba90-b0d3d12b6d6f">
+				<reportElement style="textStyle" x="160" y="55" width="100" height="15" uuid="ccc19537-7197-4e3d-ba90-b0d3d12b6d6f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -76,23 +77,23 @@ AND O.S_ID = $P{p_store}]]>
 				<textFieldExpression><![CDATA[$F{cardRefundCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="229" y="7" width="43" height="15" uuid="cf4cdd45-399d-4dac-a438-e77816ec49ae"/>
+				<reportElement style="textStyle" x="229" y="7" width="43" height="15" uuid="cf4cdd45-399d-4dac-a438-e77816ec49ae"/>
 				<text><![CDATA[환불내역]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="40" width="50" height="15" uuid="893da6cf-6107-4cab-b44d-99a9d419d500"/>
+				<reportElement style="textStyle" x="120" y="40" width="50" height="15" uuid="893da6cf-6107-4cab-b44d-99a9d419d500"/>
 				<text><![CDATA[현금]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="55" width="50" height="15" uuid="f0634386-423c-4c71-9a46-05e600022cda"/>
+				<reportElement style="textStyle" x="120" y="55" width="50" height="15" uuid="f0634386-423c-4c71-9a46-05e600022cda"/>
 				<text><![CDATA[카드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="70" width="50" height="15" uuid="17ac408f-a015-4e4c-8c6e-c873800caced"/>
+				<reportElement style="textStyle" x="120" y="70" width="50" height="15" uuid="17ac408f-a015-4e4c-8c6e-c873800caced"/>
 				<text><![CDATA[합계]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="160" y="70" width="100" height="15" uuid="1dc7ef30-f3ce-42d1-90ea-fc5e18999c70">
+				<reportElement style="textStyle" x="160" y="70" width="100" height="15" uuid="1dc7ef30-f3ce-42d1-90ea-fc5e18999c70">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -100,7 +101,7 @@ AND O.S_ID = $P{p_store}]]>
 				<textFieldExpression><![CDATA[$F{RefundCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="280" y="70" width="100" height="15" uuid="431d6101-678a-4fb1-ae54-985e82e6a370">
+				<reportElement style="textStyle" x="280" y="70" width="100" height="15" uuid="431d6101-678a-4fb1-ae54-985e82e6a370">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>

@@ -52,7 +52,7 @@ $(function(){
 var webSocket;
 	var sId = "<%= (String)session.getAttribute("sId") %>";
 	if(sId != "null") {
-		webSocket = new WebSocket('ws://localhost/cafein/OrdercastingServer.do');
+		webSocket = new WebSocket('ws://192.168.0.55/cafein/OrdercastingServer.do');
 		
 		webSocket.onerror = function(event) {
 			onError(event)
@@ -62,6 +62,7 @@ var webSocket;
 		};
 		webSocket.onmessage = function(event) {
 			console.log(event);
+			$("#ordercall").text("1");
 			 alert(event.data);
 		};
 	}
@@ -70,6 +71,8 @@ var webSocket;
 	 console.log(event);
 	 alert(event.data);
 }
+
+ 
 	
 function startTime() {
 	var dayko = ['일','월','화','수','목','금','토'];
@@ -98,6 +101,20 @@ function loginCheck(){
 		alert("로그인을 해주세요.");
 		location.href="storelogin.do";
 	}
+}
+
+function send(v_type,v_sid,v_oNum) {
+	var msg = {
+			type : v_type,
+			cId : v_sid,
+			ckoNum : v_oNum
+
+	};
+		//  Send  the msg  object  as  a  JSON-formatted  string.
+	webSocket.send(JSON.stringify(msg));
+
+	// webSocket.send(inputMessage.value);
+	
 }
 </script>
 
@@ -171,14 +188,16 @@ body {
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/closedetails.do">마감 내역</a>
 		</div>
 	</li>
-	<li class="nav-item"><a class="nav-link" href="#" id="alarmbtn">웹주문</a></li>
-
-
-
-
-
-
+	<li class="nav-item">
+	<button type="button" class="btn btn-dark" id="answercall">
+	  웹주문 <span id="ordercall" class="badge badge-light" style="width:20px;height:20px;">0</span>
+	  <span class="sr-only">unread messages</span>
+	</button>
+	</li>
     </ul>
+    
+    
+    
 
 	<div class="top-right">
         <ul class="navbar-nav mr-auto">
