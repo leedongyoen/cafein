@@ -14,6 +14,7 @@
 		WHERE O.C_ID = #{cId}
 			  AND		
 			  O.DELIVERY_STATUS NOT IN('C4','C0') 
+			   AND ORD.CA_NUM NOT IN ('CAOP','CAHT','CAIC')
 		GROUP BY S.S_NAME, S.S_ADD
 	</select>
 

@@ -14,7 +14,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-		google.charts.load('current',{	packages : [ 'table','corechart']});
+		google.charts.load('visualization','1',{	packages : [ 'table','corechart']});
 		google.charts.setOnLoadCallback(drawBasic);
 
 		var sId = '<%= session.getAttribute("sId") %>';
@@ -34,7 +34,7 @@
 						var chartData = [];
 						chartData.push(['시간별','수량','금액'])
 							for(i=0; i<days.length; i++) {		
-								var dayss = [days[i].week, parseInt(days[i].cnt), parseInt(days[i].atotal)];
+								var dayss = [days[i].week +'시', parseInt(days[i].cnt), parseInt(days[i].atotal)];
 								chartData.push(dayss);
 								console.log(dayss);
 								
@@ -42,9 +42,24 @@
 						
 						daydata = google.visualization.arrayToDataTable(chartData);	
 						var options = {
-								chartArea : {
-									width : '40%'
-								}
+								  
+						          hAxis: {showTextEvery: 3},
+						          vAxes: {0: {
+						                 
+						                      gridlines: {color: 'transparent'},
+						                      },
+						                  1: {gridlines: {color: 'transparent'},
+						                     
+						                  	},
+						                  },
+						               
+						          series: {0: {targetAxisIndex:0},
+						                   1:{targetAxisIndex:1},
+						                  		            
+						                  
+						                  },
+						          colors: ["red", "green"],
+						          chartArea:{left:400,top:100, width:700, height:150}
 								
 						};
 	
@@ -55,7 +70,7 @@
 							 width: '50%', height: '30%'
 						});
 	
-						var chart = new google.visualization.ComboChart(document
+						var chart = new google.visualization.LineChart(document
 									.getElementById('chart_div'));
 	
 						chart.draw(daydata, options);
@@ -72,9 +87,8 @@
 </head>
 <body>
 	<!--  일일 매출 그래프-->
-	<h2 align="center">매출</h2>
-	<h3 align="center">시간별 통계</h3>
-	<div id="chart_div"></div><br>
+	<h2 align="center">시간별 통계</h2><br>
+	<div id="chart_div" align="center"></div><br>
 	<p align="center">
 		<input type ="date" name ="startDate" id="startDate">&nbsp;
 		<input type="button" value= "검색" class="btn btn-primary btn-sm" onclick="drawBasic()">
@@ -91,7 +105,5 @@
 			</tr>
 		</table>
 	</div>
-	
-	
 </body>
 </html>

@@ -31,9 +31,9 @@
 			datatype : "json",
 			success : function(days) {
 				var chartData = [];
-				chartData.push(['월','수량','금액'])
+				chartData.push([' ','수량','금액'])
 					for(i=0; i<days.length; i++) {		
-						var dayss = [days[i].week + "월", parseInt(days[i].cnt), parseInt(days[i].atotal)];
+						var dayss = [days[i].week+ '월', parseInt(days[i].cnt), parseInt(days[i].atotal)];
 						chartData.push(dayss);
 						console.log(dayss);
 						
@@ -41,9 +41,21 @@
 				
 				daydata = google.visualization.arrayToDataTable(chartData);	
 				var options = {
-					chartArea : {
-						width : '40%'
-					}
+	 					width:800,
+	 					height:300,
+				          
+				          bars: 'horizontal', // Required for Material Bar Charts.
+				          series: {
+				            0: { axis: '수량'}, // Bind series 0 to an axis named 'distance'.
+				            1: { axis: '금액' }
+				          }
+				       /*     axes: {
+				            x: {
+				              distance: {label: 'parsecs'},				      
+				              brightness: {side: 'top', label: 'apparent magnitude'} // Top x-axis.
+				            }
+				          }  */
+					
 				};
 
 				var table = new google.visualization.Table(document
@@ -53,7 +65,7 @@
 					 width: '50%', height: '30%'
 				});
 
-				var chart = new google.visualization.BarChart(document
+				var chart = new google.charts.Bar(document
 							.getElementById('chart_div'));
 
 				chart.draw(daydata, options);
@@ -67,9 +79,9 @@
 	</script>
 </head>
 <body>
-	<h2 align="center">매출</h2>
-	<h3 align="center">월별 통계</h3>
-	<div id="chart_div"></div>
+	<h2 align="center">월별 통계</h2><br>
+	<div id="chart_div"  align="center"></div>
+
 	<p align="center">
 		<input type ="date" name ="startDate" id="startDate">&nbsp;
 		<input type="button" value= "검색" class="btn btn-primary btn-sm" onclick="drawBasic()">

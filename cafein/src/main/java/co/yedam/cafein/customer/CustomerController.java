@@ -237,7 +237,7 @@ public class CustomerController {
 
 		CustomerVO vo = new CustomerVO();
 
-		vo.setAuthNum(authNum);
+		vo.setAuthNum(authNum); //난수를 발생시키는 메소드
 		System.out.println(vo.getAuthNum());
 
 		customerjoinService.authKey(authNum);
