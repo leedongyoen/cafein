@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import co.yedam.cafein.common.Paging;
 import co.yedam.cafein.customer.order.CustomerOrderServiceImpl;
 import co.yedam.cafein.viewvo.ViewPosCusSearchVO;
 import co.yedam.cafein.viewvo.ViewPosOrdetailsVO;
@@ -67,9 +68,20 @@ public class PosController {
 	//pos기 이전 주문조회
 	@ResponseBody
 	@RequestMapping (value = "/searchorder", method = RequestMethod.GET)
-	public List<OrdersVO> getCusRefund(OrdersVO vo){
+	public Map<String, Object> getCusRefund(OrdersVO vo){
 		System.out.println("이전주문 조회");
-		return posService.getCusRefund(vo);
+		
+		Paging paging = new Paging();
+		paging.setPage(vo.getCheckpagenum());
+		vo.setStart(paging.getFirst());
+		vo.setEnd(paging.getLast());
+		paging.setTotalRecord(posService.getOrDetailscount(vo));
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("list", posService.getCusRefund(vo));
+		result.put("paging", paging);
+		
+		return result;
 	}
 	//pos기 이전 주문 디테일
 	@ResponseBody

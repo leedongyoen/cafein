@@ -48,6 +48,7 @@
 	</select>
 <!-- 환불위한 주문내역 조회 -->
 	<select id="getCusRefund" resultType="order">
+ SELECT B.* FROM ( SELECT A.*, ROWNUM RN FROM (
 	SELECT
 			O_NUM "oNum"
 		   , C_ID "cId"
@@ -65,6 +66,10 @@
 			</if>	
 	AND DELIVERY_STATUS IN ('C5')
 	</where>
+	 <![CDATA[ 
+       ) A )B WHERE RN >= #{start} and RN <= #{end}   
+   ]]>
+	
 	</select> 
 <!-- 환불 주문건 상세내역 -->
 	<select id="getOrDetails" resultType="co.yedam.cafein.viewvo.ViewPosOrdetailsVO">
@@ -84,6 +89,21 @@
 	AND CA_NUM IN ('CAOP','CAHT','CAIC','CADR','CADE','CAJP')
 	</select>
 	
+<!-- 환불 내역 페이징처리 -->
+	 <select id="getOrDetailscount" resultType="int">
+      SELECT COUNT(*)
+      FROM ORDERS
+	<where>
+	S_ID=#{sId}
+	<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
+			AND	 TRUNC(O_DATE) BETWEEN #{startDate} AND #{endDate}
+			</if>	
+	AND DELIVERY_STATUS IN ('C5')
+	</where>
+   </select>
+   
+   
+   	
 	<!-- 환불하기 -->
 	<insert id="refoundcall" statementType="CALLABLE" parameterType="order">
 	{ 	
@@ -92,6 +112,8 @@
 		)
 	}
 	</insert>
+	
+	
 	
 	<!--주문 알람 카운트 -->
 	<select id="orderalarmcount" resultType="int">
@@ -145,4 +167,6 @@
 		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE','CAJP')
 
 	</select>
+	
+	
 </mapper>
