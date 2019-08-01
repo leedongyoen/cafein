@@ -238,9 +238,11 @@ function orderDeleteClick(){
 	
 	var ordercart = $("#orderCartForm").serializeObject();
 	var arr = JSON.parse(localStorage.getItem("cartlist"));
-	console.log("arr: "+arr);
 	
-	for(var k = arr.length-1;k>=0;k--){
+	//alert(arr);
+	
+ 	
+	 for(var k = arr.length-1;k>=0;k--){
 		//console.log("ordercart.cartnumlist[k]: "+ordercart.cartnumlist[k]+"  k: "+k);
 		for(var m = 0;m<ordercart.cartnumlist.length;m++){
 			if(ordercart.cartnumlist[m]==k){
@@ -251,15 +253,14 @@ function orderDeleteClick(){
 	}
 	local_cart=JSON.stringify(arr);
 	localStorage.setItem("cartlist",local_cart);
-	//alert(local_cart);
-	window.location.reload(true);
+	//alert(local_cart); 
+	window.location.reload(true); 
 }
 
 function orderBtnClick(){
 
-	 var ordercart = $("#orderCartForm").serializeObject();
+	var ordercart = $("#orderCartForm").serializeObject();
 	var arr = [];
-	
 	
 	
 	for(var k = 0;k<ordercart.cartnumlist.length;k++){
@@ -364,7 +365,7 @@ function getOptionNaming(mnumber, stnumber){
 		<br> <br> <br>
 		<div align="right" class="btn-group">
 			<input type="button" class="button btn btn-info" onclick="orderBtnClick()" value="주문">
-			<button class="button btn btn-danger" onclick="orderDeleteClick()">삭제</button>
+			<button type="button" class="button btn btn-danger" onclick="orderDeleteClick()">삭제</button>
 			<!-- <a href="javascript:history.go(-1)" class="button">돌아가기</a> -->
 		</div> 
 		</form>  
