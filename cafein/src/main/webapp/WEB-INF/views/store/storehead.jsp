@@ -52,7 +52,7 @@ $(function(){
 var webSocket;
 	var sId = "<%= (String)session.getAttribute("sId") %>";
 	if(sId != "null") {
-		webSocket = new WebSocket('ws://localhost/cafein/OrdercastingServer.do');
+		webSocket = new WebSocket('ws://cafein.co.kr/OrdercastingServer.do');
 		
 		webSocket.onerror = function(event) {
 			onError(event)

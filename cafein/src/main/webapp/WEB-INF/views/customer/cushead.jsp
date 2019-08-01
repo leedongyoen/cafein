@@ -20,7 +20,7 @@
 	var checksocketid = "<%= (String)session.getAttribute("cId") %>";
 	var webSocket;
 	if(checksocketid != "null") {
-		webSocket= new WebSocket('ws://localhost/cafein/OrdercastingServer.do');
+		webSocket= new WebSocket('ws://cafein.co.kr/OrdercastingServer.do');
 		
 		webSocket.onerror = function(event) {
 			 	onError(event)
