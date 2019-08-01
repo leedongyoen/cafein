@@ -30,7 +30,7 @@
 			datatype : "json",
 			success : function(days) {
 				var chartData = [];	//차트 데이터에 담을 배열 .
-				chartData.push(['요일','수량','금액']) 
+				chartData.push([' ','수량','금액']) 
 					for(i=0; i<days.length; i++) {		//매개변수 값을 이용하여 for문으로  리스트뿌림
 						// String 타입은 그냥 ,int 타입은 parseInt 로 변환후 사용 
 						var dayss = [daystring[days[i].week-1]  , parseInt(days[i].cnt), parseInt(days[i].atotal)];
@@ -40,9 +40,15 @@
 				}		
 				daydata = google.visualization.arrayToDataTable(chartData);	
 				var options = {
-					chartArea : {
-						width : '50%'
-					}
+						width:800,
+	 					height:300,
+				          
+				          bars: 'horizontal', // Required for Material Bar Charts.
+				          series: {
+				            0: { axis: '수량'}, // Bind series 0 to an axis named 'distance'.
+				            1: { axis: '금액' }
+				          }
+					
 				};
 				var table = new google.visualization.Table(document
 							.getElementById('test_dataview')) // table 만들 id 값
@@ -50,7 +56,7 @@
 				table.draw(daydata, { 
 					 width: '50%', height: '30%'
 				});
-				var chart = new google.visualization.BarChart(document
+				var chart = new google.charts.Bar(document
 							.getElementById('chart_div'));
 				chart.draw(daydata, options); // draw에 담길  메소드값와 옵션값을 넣어줌
 			}
@@ -65,7 +71,7 @@
 </head>
 <body>
 	<h2 align="center">일별 통계</h2><br>
-	<div id="chart_div"></div>
+	<div id="chart_div" align="center"></div>
 	<p align="center">
 		<input type ="date" name ="startDate" id="startDate">&nbsp;
 		<!-- <input type ="date" name ="endDate" id="endDate">&nbsp; -->

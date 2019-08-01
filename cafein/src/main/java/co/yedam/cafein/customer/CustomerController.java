@@ -226,12 +226,12 @@ public class CustomerController {
 	}
 
 	// 이메일 보내는 메소드
-	@RequestMapping(value = "sendmail.do")
-	public String sendEmail(String email, String authNum) {
+	@RequestMapping(value = "sendmail.do/{email}")
+	public String sendEmail(@PathVariable("email") String email, String authNum, HttpServletRequest request) {
 		String host = "smtp.gmail.com";
 		String subject = "<관리자>인증번호 입니다.";
 		String from = "bnghty22@gmail.com"; // 보내는 메일
-		String to = "bnghty5798@naver.com"; // 받는 메일
+		String to = email; // 받는 메일
 		
 		authNum = RandomNum();
 
