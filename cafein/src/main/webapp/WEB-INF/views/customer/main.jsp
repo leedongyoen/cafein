@@ -122,7 +122,6 @@ table {
     } 
  .cursor {cursor: pointer;}
 
-출처: https://intro0517.tistory.com/69 [전디버거의 코딩이야기]
 </style>
 </head>
 <body>
