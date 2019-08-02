@@ -17,6 +17,9 @@
  
 } 
  
+ input[type=password]{
+font-family: "";
+} 
  </style>
 <script type="text/javascript">
 
@@ -33,6 +36,7 @@ $(function(){
 				if(data.cnt == 0){
 					alert("사용 가능한 아이디입니다.");
 					$("#submitt").removeAttr("disabled");
+					$("#sid").attr("disabled","disabled");
 				}else{
 					alert("사용 중인 아이디입니다.");
 				}

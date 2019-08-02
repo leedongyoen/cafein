@@ -271,7 +271,7 @@ function chkPwContinuity(paramObj) {
 		$("#c_info").css('display', 'none');
 		$("#c_nick").removeAttr("readonly");
 		$("#c_pw").removeAttr("readonly");
-		$("#c_name").removeAttr("readonly");
+// 		$("#c_name").removeAttr("readonly");
 		$("#pwbt").removeAttr("disabled");;
 		$("#c_tel").removeAttr("readonly");
 

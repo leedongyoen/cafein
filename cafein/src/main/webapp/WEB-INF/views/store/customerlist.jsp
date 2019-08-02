@@ -359,7 +359,7 @@ background-color: #E0F8F7
 	<div style="position: absolute; width: 100%">
 		<div style="overflow: scroll; height: 800px; float: left; width: 30%;">
 			<div class="container">
-				<p align="center" class="titlefont">우리 매장 고객</p>
+				<p align="center" class="titlefont"><%= session.getAttribute("sName")%> 고객 조회 </p>
 				<hr>
 			</div>
 			<div class="container" align="center">
