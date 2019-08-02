@@ -142,7 +142,7 @@
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" id="cu_orderbtn">주문</button>&nbsp;&nbsp;
-					<button class="carryon btn btn-secondary" id="cartbtn">담기</button>&nbsp;&nbsp;		
+					<button class="carryon btn btn-secondary" id="menucartbtn">담기</button>&nbsp;&nbsp;		
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -175,10 +175,10 @@
 				$.each(data, function(idx, item) {
 					console.log(item.cuNum);
 					var imgurl = "${pageContext.request.contextPath}/image/"+item.uploadFileName;
-				$("#GoToDetail").append("<div class=\"col-md-4 mymenu\"><div><img src='"+imgurl+"' onclick=detailmyMenuList('"+item.cuNum+"')  style=\"width:200px; height:200px;\"></div><div class=\"menuname\">"
+				$("#GoToDetail").append("<div class=\"col-md-4 mymenu\"><div class=\"deleteCheck\"><input type='checkbox' style=\"width:25px;height:25px;\" name=\"checkDel\" id='hidden_cuNum"+idx+" 'value='"
+						+item.cuNum+"'></div><div><img src='"+imgurl+"' onclick=detailmyMenuList('"+item.cuNum+"')  style=\"width:200px; height:200px;\"></div><div class=\"menuname\">"
 									+item.mName+"</div><div class=\"menuname\">"+item.sName
-									+"</div><div class=\"deleteCheck\"><input type='checkbox' name=\"checkDel\" id='hidden_cuNum"+idx+"'value='"
-									+item.cuNum+"'></div></div>");
+									+"</div></div>");
 				})
 				$(".deleteCheck").hide();
 				$(".deleteCheckon").hide();
@@ -284,7 +284,6 @@
 		$("#deletemymenu").hide();
 		
 		$("#deletemymenuon").on("click",function(){
-			if(confirm("삭제하시겠습니까??")){
 				var checked = [];
 				$('input[name=checkDel]:checked').each(function(idx, item){
 					checked.push(item.value);
@@ -304,7 +303,6 @@
 							
 					}
 				});
-			}
 		});
 		$("#offtest").on("click",function(){
 			myMenuList();
@@ -346,7 +344,7 @@
 	
 $(function(){
 //장바구니
-	$("#cartbtn").on("click",function(){
+	$("#menucartbtn").on("click",function(){
 		var list =  $("#mymenudetailcart").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
@@ -380,12 +378,11 @@ $(function(){
 
 		localStorage.setItem("cartlist",JSON.stringify(local_cart));
 		console.log("localStorage : "+localStorage.getItem("cartlist"));
-			
+		
 			var result = confirm('장바구니로 이동하시겠습니까?'); 
 			if(result) { //yes 
 				location.replace("${pageContext.request.contextPath}/cartmng"); 
 			}
-
 	});
 	
 	//주문하기
