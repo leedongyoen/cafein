@@ -25,6 +25,15 @@ public class StoreOpenVO {
 	private String startDate;
 	private String endDate;
 	
+	// 페이징 처리
+	private int start;
+	private int end;
+	private int checkpagenum;
+	private int startPage;
+	private int endPage;
+	private int lastPage;
+	
+	
 	public String getsId() {
 		return sId;
 	}
@@ -103,11 +112,49 @@ public class StoreOpenVO {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
+	public int getStart() {
+		return start;
+	}
+	public void setStart(int start) {
+		this.start = start;
+	}
+	public int getEnd() {
+		return end;
+	}
+	public void setEnd(int end) {
+		this.end = end;
+	}
+	public int getCheckpagenum() {
+		return checkpagenum;
+	}
+	public void setCheckpagenum(int checkpagenum) {
+		this.checkpagenum = checkpagenum;
+	}
+	public int getStartPage() {
+		return startPage;
+	}
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
+	}
+	public int getEndPage() {
+		return endPage;
+	}
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+	public int getLastPage() {
+		return lastPage;
+	}
+	public void setLastPage(int lastPage) {
+		this.lastPage = lastPage;
+	}
 	@Override
 	public String toString() {
 		return "StoreOpenVO [sId=" + sId + ", openTime=" + openTime + ", closeTime=" + closeTime + ", cash=" + cash
 				+ ", defaultCash=" + defaultCash + ", orCash=" + orCash + ", difference=" + difference + ", netIncome="
 				+ netIncome + ", usedMile=" + usedMile + ", cashSum=" + cashSum + ", checkOpen=" + checkOpen
-				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", start=" + start + ", end=" + end
+				+ ", checkpagenum=" + checkpagenum + ", startPage=" + startPage + ", endPage=" + endPage + ", lastPage="
+				+ lastPage + "]";
 	}
 }

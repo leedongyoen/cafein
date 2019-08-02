@@ -405,17 +405,12 @@ var ordernum ="";
 			$("input:text[name='cId']").val(cId);
 			$("input:text[name='mileage']").val(mileage);
 			
-			
-			//////////////////////// removeCommas()//////////////////////////////////////////////////////////
 			var coin =$(".pay").val();
 			var getmoney=$("#getmoney").val();
 			var resultmoney=$("#resultmoney").val();
-			var regetmoney = removeCommas(getmoney);
-			var reremoney =removeCommas(resultmoney);
-			var reco =removeCommas(coin);
-			if(reco == '0' ){
+			if(coin == '0' ){
 				alert("주문건이 없습니다.");
-			}else if(regetmoney =='0' || reremoney<0){
+			}else if(getmoney =='0' || resultmoney<0){
 				alert("금액을 다시 확인해 주세요.");
 			}else{
 			
@@ -466,7 +461,9 @@ var ordernum ="";
 			v_total_menu.push(v_menu);
 			
 			console.log("v_total_menu : "+v_total_menu);		
-			var ordercart = $("#orderposform").serializeObject();			
+			var ordercart = $("#orderposform").serializeObject();	
+			//총금액 TOTAL의 COMMA 제거
+			ordercart.total = removeCommas(ordercart.total); 
 			ordercart.optionlist = v_total_menu;
 			console.log(" serializeObject "+ordercart);
 			$('[name="jsonData"]').val(JSON.stringify(ordercart));

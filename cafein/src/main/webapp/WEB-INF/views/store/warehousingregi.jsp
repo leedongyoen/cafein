@@ -132,11 +132,11 @@
 		<table class="table text-cente	r">
 			<thead>
 				<tr>
+					<th class="text-center">재고 번호</th>
 					<th class="text-center">재고 명</th>
 					<th class="text-center">재고 단가</th>
 					<th class="text-center">재고 수량</th>
 					<th class="text-center">입고 수량</th>
-					<th class="text-center">추가 수량</th>
 				</tr>
 			</thead>
 			<tbody id="stockTbody"></tbody>

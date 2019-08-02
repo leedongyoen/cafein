@@ -10,7 +10,6 @@
 
 	var sId = "<%= (String)session.getAttribute("sId") %>";	
 	//var storeOpenTime, storeCloseTime;
-	var len;		
 	
 	$(function(){
 		// PDF 볼 수 있는 이벤트
@@ -21,20 +20,40 @@
 			window.open('report.do?openTime='+opentime+'&closeTime='+closetime);
 		});
 		
+		pdfList();
+		
+		
+	});
+	
+	
+	function pdfList(pagenumber){
+		
+		// 추가 부분
+	    if(pagenumber == null) { 	// 페이지 번호를 안 넘어오는 경우
+	       console.log("null");
+	       pagenumber=1;
+	    } else {
+	       console.log(pagenumber);
+	    }
 		
 		// 데이터 요청
 		$.ajax({
 			url:"closedetailslist",
 			type:'GET',			
-			data:{sId:sId},
+			data:{sId:sId,checkpagenum : pagenumber},
 			dataType:'json',
 			error:function(xhr,status,msg){
 				alert('통신 실패');
 				console.log("상태값 :" + status + ", Http에러메시지 :"+msg)
 			},
 			success:function(data){
-				//len = data.length;
-				$.each(data,function(idx,item){	
+				
+				var list = data.list;
+		        var paging = data.paging; 
+		        $('#pageul').empty(); 
+		        $('#storeList tbody').empty();
+				$.each(list,function(idx,item){	
+					
 					//$('#storeList tbody').empty();
 					if(item.openTime != null && item.closeTime != null) {
 						$('<tr>')
@@ -47,45 +66,100 @@
 						.appendTo('#storeList tbody');
 					}
 					
-					
 				});
-				len = data.length;
+				
+				// 페이징 처리
+	            
+	            var li;
+	            // 처음 페이지 번호에서 마지막 페이지번호까지
+	            
+	            for(var n= paging.startPage; n<=paging.endPage; n++){
+	               
+	                // 선택한 page 번호가 n이랑 같으면
+	               // href 부분은 호출해야하는 함수를 적으면 되고
+	               // n은 누르는 페이징 번호를 넘기기 위해서.
+	               if(paging.page == n){
+	                  li =  $('<li>').attr("class","page-item active")
+	                        .append($('<a>').attr({
+	                           class: "page-link"
+	                              , href: "javascript:pdfList("+n+")"
+	                           }).append(n));
+	                    
+	               }else{
+	                  li =  $('<li>').attr("class","page-item")
+	                              .append($('<a>').attr({
+	                                 class: "page-link"
+	                                    , href: "javascript:pdfList("+n+")"
+	                                 }).append(n));
+	               }  
+	               $('#pageul').append(li);
+	               
+	            }
 			}
 		});
-		
-	});
+	}
 	
 	
 	// 날짜 검색
-	function searchDate(){
+	function searchDate(pagenumber){
+		
+		if(pagenumber == null) { 	// 페이지 번호를 안 넘어오는 경우
+		       console.log("null");
+		       pagenumber=1;
+		    } else {
+		       console.log(pagenumber);
+		}
+		
 		var startDate = jQuery('#startdate').val();
   		var endDate = jQuery('#enddate').val();
+
+  		var today = new Date();
+  		var dd = today.getDate();
+  		var mm = today.getMonth()+1; //January is 0!
+  		var yyyy = today.getFullYear();
+  		
+  		if(dd<10) {
+  		    dd='0'+dd
+  		} 
+
+  		if(mm<10) {
+  		    mm='0'+mm
+  		} 
+
+  		today = yyyy+'-'+mm+'-'+dd;
   		
   		
+  		console.log('today : '+today)
   		if(startDate > endDate){
   			alert('검색 날짜를 확인해주세요.');
   			return;
-  		}else if(startDate == '' || endDate == ''){
+  		} else if (endDate > today) {
+  			alert('오늘 이후 날짜는 검색할 수 없습니다.');
+  			return;
+  		} else if (startDate == '' || endDate == ''){
   			alert('날짜를 입력해주세요.');
   			return;
-  		}
+  		} 
+  		
   		console.log("startDate : "+ startDate);
   		console.log("endDate : "+ endDate);
-  		
+  		$('#pageul').empty();
 		
 		$.ajax({
 			url: 'closedetailslist',
 			type:'GET',
-			data: {sId: sId, startDate: startDate, endDate: endDate},
+			data: {sId: sId, startDate: startDate, endDate: endDate,checkpagenum : pagenumber},
 			dataType:'json',
 			//async: false,		// 비동기식 으로 설정
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				
+				var list = data.list;
+		        var paging = data.paging; 
+		        $('#pageul').empty(); 
 				$('#storeList tbody').empty();
-				$.each(data,function(idx,item){	
+				$.each(list,function(idx,item){	
 					//$('#storeList tbody').empty();
 					if(item.openTime != null && item.closeTime != null) {
 						$('<tr>')
@@ -98,8 +172,39 @@
 						.appendTo('#storeList tbody');
 					}
 					
-					len = len - 1;
+
+					
+					
+					
 				});
+				
+				// 페이징 처리
+	            
+	            var li;
+	            // 처음 페이지 번호에서 마지막 페이지번호까지
+	            
+	            for(var n= paging.startPage; n<=paging.endPage; n++){
+	               
+	                // 선택한 page 번호가 n이랑 같으면
+	               // href 부분은 호출해야하는 함수를 적으면 되고
+	               // n은 누르는 페이징 번호를 넘기기 위해서.
+	               if(paging.page == n){
+	                  li =  $('<li>').attr("class","page-item active")
+	                        .append($('<a>').attr({
+	                           class: "page-link"
+	                              , href: "javascript:searchDate("+n+")"
+	                           }).append(n));
+	                    
+	               }else{
+	                  li =  $('<li>').attr("class","page-item")
+	                              .append($('<a>').attr({
+	                                 class: "page-link"
+	                                    , href: "javascript:searchDate("+n+")"
+	                                 }).append(n));
+	               }  
+	               $('#pageul').append(li);
+	               
+	            }
 			}
 		});
   		
@@ -149,6 +254,7 @@ table tbody th{
 		<tbody>
 		</tbody>
 	</table>
+	<ul id="pageul" class="pagination justify-content-center" ></ul>
 </div>
 </body>
 </html>
