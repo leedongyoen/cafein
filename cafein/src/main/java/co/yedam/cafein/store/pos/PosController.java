@@ -165,6 +165,8 @@ public class PosController {
 		  List<String> opdnum_menulist = new ArrayList<String>(); 
 		  
 		  // optionlist 
+		  System.out.println("menulist total "+menulist);
+		  System.out.println("menulist total size"+menulist.size());
 		  for(int n=0; n<menulist.size(); n++) {
 			  System.out.println("==================menulist get "+ menulist.get(n));
 			 // optionlist에 있는 각각의 배열하나씩. 
@@ -179,29 +181,32 @@ public class PosController {
 			  String v_qty = null;
 			  JSONArray optionhotice = null;
 			  System.out.println("============== menu size : "+menu.size());
-			  System.out.println("============== menulist : "+menu.get(n));
+			  System.out.println("============== menulist size 순차적 : "+n);
+			  
+
 			  for(int j=0; j<menu.size();j++) {
 				  
 				  // 들어온 메뉴 갯수대로 가져온다. menudetail 배열
 				  JSONArray menudetail = (JSONArray) menu.get(j);
-				 
+				  
 				  
 				  // 하나의 menu 배열에서 처음은 메뉴명을 가져온다.
 				  if(j == 0) {
-					  	v_mNum = (String) menudetail.get(0);
-					  	opdnum_menulist.add(v_mNum);
-					  	RecipeVO recipevo = new RecipeVO();
-						recipevo.setmNum((String) menudetail.get(j));
-						
-						// 해당 메뉴의 기본 레시피들 다 가져옴.
-						recipelist = cusService.getorderrecipenolist(recipevo);				  
+					  v_mNum = (String) menudetail.get(0);
+					  opdnum_menulist.add(v_mNum);
+					  RecipeVO recipevo = new RecipeVO();
+					  recipevo.setmNum((String) menudetail.get(j));
+					  
+					  // 해당 메뉴의 기본 레시피들 다 가져옴.
+					  recipelist = cusService.getorderrecipenolist(recipevo);				  
 				  }else if(j == 1){// 두번째는 수량을 가져온다.
 					  System.out.println("============= j : "+menudetail.get(0).toString());
 					  v_qty = menudetail.get(0).toString();
 					  
 				  }else if( j > 1){
 					  // 나머지는 옵션과 hot ice이므로
-					
+					  System.out.println("===== 메뉴 "+ menu.get(2));
+					  
 					  optionhotice = (JSONArray) menu.get(2);
 					  System.out.println("================== optionhotice : "+optionhotice);
 					  if(optionhotice.size() != 0) {
@@ -242,19 +247,19 @@ public class PosController {
 									  break;
 								  }
 								  
-								/*
-								 * // 이미 위의 if문때매 if((recipelist.get(i).getCaNum().equals("CAHT")) ||
-								 * (recipelist.get(i).getCaNum().equals("CAIC"))) break;
-								 */
+								  /*
+								   * // 이미 위의 if문때매 if((recipelist.get(i).getCaNum().equals("CAHT")) ||
+								   * (recipelist.get(i).getCaNum().equals("CAIC"))) break;
+								   */
 								  
 								  
-								/*
-								 * System.out.println("============== option "+ recipeno);
-								 * insertvo.setoQty(v_qty); insertvo.setReceipno(recipeno);
-								 * insertvo.setCaNum("CAOP"); orderdetaillist.add(insertvo);
-								 * System.out.println("========= option "+ insertvo);
-								 */
-  
+								  /*
+								   * System.out.println("============== option "+ recipeno);
+								   * insertvo.setoQty(v_qty); insertvo.setReceipno(recipeno);
+								   * insertvo.setCaNum("CAOP"); orderdetaillist.add(insertvo);
+								   * System.out.println("========= option "+ insertvo);
+								   */
+								  
 							  }		
 							  
 							  
@@ -277,8 +282,8 @@ public class PosController {
 					  }else if(optionhotice.size() == 0 ) {
 						  // 옵션이 없을 경우
 						  for(int i=0;i<recipelist.size();i++) {
-							 System.out.println("========== 아무런 옵션 없이 공통으로 들어가는 것 "+recipelist.get(i).getCaNum());
-							
+							  System.out.println("========== 아무런 옵션 없이 공통으로 들어가는 것 "+recipelist.get(i).getCaNum());
+							  
 							  insertvo = new OrdersVO(); 
 							  insertvo.setoNum(ordervo.getoNum());
 							  insertvo.setmNum(v_mNum);
@@ -290,12 +295,12 @@ public class PosController {
 							  orderdetaillist.add(insertvo);
 							  
 							  System.out.println("========= 옵션이 없는 메뉴 "+ insertvo);
-							 
+							  
 						  }
 					  }
 					  
-				 
-					 
+					  
+					  
 					  
 				  }
 				  
@@ -330,8 +335,9 @@ public class PosController {
 		  	System.out.println("===== 마일리지 서비스 "+insertParam.get("stMileageService"));
 			System.out.println("===== 마일리지 고객   "+ordervo.getcId());
 			ordervo.setMileageservice((String) insertParam.get("stMileageService"));
-			
-			if(ordervo.getMileageservice().equals("Y") && (!(ordervo.getcId() ==null))) {
+			System.out.println("===== ordervo.getcId().equals() !!!  "+ordervo.getcId().equals(""));
+			//ordervo.getcId().equals("")
+			if(ordervo.getMileageservice().equals("Y") && (((ordervo.getcId().equals("") == false) ) )) {
 				System.out.println("============== 마일리지 insert");
 				cusService.insertmileage(ordervo);
 			/*

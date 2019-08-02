@@ -69,6 +69,11 @@
       //입출고 리스트 뿌리기
       function warehousingListResult(data){
     	  var wDate;
+    	  if($('#endDate').val() =='' || $('#startDate').val()==''){
+				$("#divDate").html('최근 7일');
+				}else{
+				$('#divDate').html($('#startDate').val()+' ~ '+$('#endDate').val());
+				}
     	  
     	  $("thead").empty();
     	  $("tbody").empty();
@@ -103,7 +108,8 @@
 	</div>
 	<div>
 		<input class="form-control" id="wareserch" type="text" placeholder="Search..">
-	</div>		
+	</div>
+	<div><h5 id="divDate"></h5></div>		
 </div>
 	<br>
 	

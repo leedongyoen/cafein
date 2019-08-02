@@ -28,7 +28,7 @@ var sId = "<%= (String)session.getAttribute("sId") %>";
 		init();
 		
 			
-			 // 재고 검색
+		// 재고 검색
 	    $("#stockserch").on("keyup", function() {
 	     var value = $(this).val().toLowerCase();
 	     $("#stockTbody tr").filter(function() {
@@ -356,12 +356,12 @@ var sId = "<%= (String)session.getAttribute("sId") %>";
        	<div class="col-12">
 	       	<form id="form1" class="form-horizontal">
 				<div class="form-group">
-					<label>재고 번호</label> <input type="text" class="form-control"
-						name="stNum" readonly>
+<!-- 					<label>재고 번호</label> -->
+					<input type="hidden" class="form-control" name="stNum" readonly>
 				</div>
 				<div class="form-group">
-					<label>매장 명</label> <input type="text" class="form-control"
-						name="sId" value="${sId}" readonly>
+<!-- 					<label>매장 명</label>  -->
+					<input type="hidden" class="form-control" name="sId" value="${sId}" readonly>
 				</div>
 				<div class="form-group">
 					<label>재고 명</label> <input type="text" class="form-control"
@@ -373,7 +373,7 @@ var sId = "<%= (String)session.getAttribute("sId") %>";
 				</div>
 				<div class="form-group">
 					<label>적정 소모량</label> <input type="text" class="form-control"
-						name="stAqty">
+						name="stAqty" value="0">
 				</div>
 				<div class="form-group">
 					<label>재고 단가</label> <input type="text" class="form-control"
@@ -393,7 +393,7 @@ var sId = "<%= (String)session.getAttribute("sId") %>";
 				</div>
 				<div class="form-group">
 					<label>기준 단위</label> <input type="text" class="form-control"
-						name="stanUnit">
+						name="stanUnit" value="1">
 				</div>
 				<div class="form-group">
 					<label>단위</label> 
@@ -409,8 +409,8 @@ var sId = "<%= (String)session.getAttribute("sId") %>";
 				</div>
 				
 				<div class="form-group">
-					<label>재고 상태</label> <input type="text" class="form-control"
-						name="stStatus" readonly>
+<!-- 					<label>재고 상태</label>  -->
+					<input type="hidden" class="form-control" name="stStatus" value="B1" readonly>
 				</div>
 				<!-- 			<div class="form-group"> -->
 				<!-- 				<label>재고 실수량</label> <input type="text" class="form-control" -->

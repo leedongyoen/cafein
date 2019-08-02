@@ -368,7 +368,7 @@ var ordernum ="";
 				console.log(sPSum);
 				 $("input:text[name='total']").val(sPSum);
 				 var now_mile = (totalmileage*1)-(mileage*1);
-				 $('#cusMile').val(now_mile);
+				 $('#cusMile').val(addCommas(now_mile));
 				 $('#reservebtn').attr('disabled',true);
 				 $("#addpay").val(addCommas(PSum));
 				 $("#usedmile").val("-"+mileage);
@@ -377,6 +377,8 @@ var ordernum ="";
 		});
 		$('#reservecancelbtn').on("click",function(){
 			// 사용자가 적은 적립금
+			var PSum = $("#gridlist").jqGrid('getCol','Price',false,'sum');
+			$("#finalpay").val(PSum);
 			var mileage = $('#useMile').val();
 			var totalmileage =$('#cusMile').val();
 			// 총 가격
@@ -384,6 +386,7 @@ var ordernum ="";
 			 $("input:text[name='total']").val(totalmileage);
 			 
 			$('#useMile').val("0");
+			$("#usedmile").val("0");
 			$('#cusMile').val(totalmileage);
 			$('#reservebtn').attr('disabled',false);
 		});
@@ -401,10 +404,10 @@ var ordernum ="";
 			console.log(cId, mileage);
 			$("input:text[name='cId']").val(cId);
 			$("input:text[name='mileage']").val(mileage);
+			
 			var coin =$(".pay").val();
 			var getmoney=$("#getmoney").val();
 			var resultmoney=$("#resultmoney").val();
-			
 			if(coin == '0' ){
 				alert("주문건이 없습니다.");
 			}else if(getmoney =='0' || resultmoney<0){
@@ -458,7 +461,9 @@ var ordernum ="";
 			v_total_menu.push(v_menu);
 			
 			console.log("v_total_menu : "+v_total_menu);		
-			var ordercart = $("#orderposform").serializeObject();			
+			var ordercart = $("#orderposform").serializeObject();	
+			//총금액 TOTAL의 COMMA 제거
+			ordercart.total = removeCommas(ordercart.total); 
 			ordercart.optionlist = v_total_menu;
 			console.log(" serializeObject "+ordercart);
 			$('[name="jsonData"]').val(JSON.stringify(ordercart));
@@ -926,10 +931,8 @@ var ordernum ="";
 		send(type,cid,ckoNum);
 		aftercallorder();
 	}
- 	
- 	   
-
 </script>
+<audio id='audio_play' src='resources/alarm.mp3'></audio> 
 <div class="left">
 <form class="form-borizontal" name="girdForm" action="customerorder" method="POST">
     <table id="gridlist"></table>
@@ -997,11 +1000,11 @@ var ordernum ="";
 
 </div>
 <div style="text-align:right; padding:0px 300px 0px 0px; font-size: xx-large;">
-<a style="color:white">주문하신 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="addpay" value="0" readonly="readonly" > 원</a>
+<a style="color:white">주문하신 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="addpay" value="0" readonly="readonly" >원</a>
 <br>
-<a style="color:white">사용된 마일리지 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="usedmile" value="0" readonly="readonly" > 원</a>
+<a style="color:white">사용된 마일리지 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="usedmile" value="0" readonly="readonly" >P</a>
 <br>
-<a style="color:white">결제 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="finalpay" value="0" readonly="readonly" > 원</a>
+<a style="color:white">결제 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="finalpay" value="0" readonly="readonly" >원</a>
 </div>
 	<div style="text-align:left">
 	<input type="button" id="clearRow" class="btn btn-outline-light" value="전체취소">

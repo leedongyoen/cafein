@@ -113,7 +113,7 @@ public class StoreStockController {
 			int n=0;
 			for(StockVO vo: list) {
 			try {
-				int resultEnter = storeStockService.updateEnterQty(vo);
+				int resultEnter = storeStockService.updateEnterQtyProc(vo);
 				n = n+resultEnter;
 				}catch(Exception e){
 					e.printStackTrace();

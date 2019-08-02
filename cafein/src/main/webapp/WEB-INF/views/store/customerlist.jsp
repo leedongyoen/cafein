@@ -15,6 +15,16 @@ input {
 	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
 }
 
+
+.reallyrefund{
+background-color: #FBEFF2
+
+}
+.sumTotal{
+background-color: #E0F8F7
+}
+
+
 </style>
 <script>
 	var sId = "<%= (String)session.getAttribute("sId") %>";	
@@ -95,7 +105,7 @@ input {
     							//아이디가 같지않으면-
     							if(cId != ""){
     								console.log("총합");
-    								$('<tr>')
+    								$('<tr>').css('color','red')
     								.append($('<td>').html(cId))
     								.append($('<td>').html(oNum))
 //    			 					.append($('<td>').html(user.gd))
@@ -275,6 +285,7 @@ input {
 				if(cId != ""){
 					console.log("총합");
 					$('<tr>')
+					.addClass("sumTotal")
 					.append($('<td>').html(cId))
 					.append($('<td>').html(oNum))
 // 					.append($('<td>').html(user.gd))
@@ -322,7 +333,7 @@ input {
 		
 		if(cId != ""){
 			console.log("총합1");
-			$('<tr>')
+			$('<tr>').addClass("sumTotal")
 			.append($('<td>').html(cId))
 			.append($('<td>').html(oNum))
 //			.append($('<td>').html(user.gd))
@@ -362,7 +373,7 @@ input {
 
 						</tr>
 					</thead>
-					<tbody id="customerTbody">
+					<tbody id="customerTbody" style="cursor:pointer;">
 					</tbody>
 				</table>
 			</div>

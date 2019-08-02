@@ -48,19 +48,22 @@ $(function(){
 	if(sId == "null") {
 		$("#loginbtn").css('display', 'block');
 		$("#logoutbtn").css('display', 'none');
+		$('.loginon').css('display', 'none');
 	}
+	
 	if(sId != "null") {
 		$("#loginbtn").css('display', 'none');
 		$("#logoutbtn").css('display', 'block');
 		$("#storeName").text(sName);
-	}
-	if(openTime == null) {
-		$("#openbtn").css('display', 'block');
-		$("#closebtn").css('display', 'none');
-	}
-	if(openTime != null) {
-		$("#openbtn").css('display', 'none');
-		$("#closebtn").css('display', 'block');
+		$('.loginon').css('display', 'block'); 
+		if(openTime == null) {
+			$("#openbtn").css('display', 'block');
+			$("#closebtn").css('display', 'none');
+		}
+		if(openTime != null) {
+			$("#openbtn").css('display', 'none');
+			$("#closebtn").css('display', 'block');
+		}
 	}
 
 	
@@ -77,11 +80,15 @@ var webSocket;
 		};
 		webSocket.onopen = function(event) {
 		 	console.log(" \n" + "연결 성공 ");
+		 	
 		};
 		webSocket.onmessage = function(event) {
 			console.log(event);
 			$("#ordercall").text("1");
-			 alert(event.data);
+//			 alert(event.data); 
+			 var audio = document.getElementById('audio_play'); 
+			 			audio.play(); 
+
 		};
 	}
 
