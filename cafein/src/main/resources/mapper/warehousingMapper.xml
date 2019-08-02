@@ -28,6 +28,9 @@
 			<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
 				 TRUNC(WARE_DATE) BETWEEN #{startDate} AND #{endDate}
 			</if>
+			<if test="startDate == null or startDate =='' or endDate ==null or startDate ==''">
+				AND TRUNC(WARE_DATE) BETWEEN SYSDATE -7 AND SYSDATE
+			</if>
 			AND W.WARE_QTY <![CDATA[ > ]]> 0
 			AND W.S_ID = #{sId}
 		</where>
@@ -45,6 +48,9 @@
 		<where>
 			<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
 				 TRUNC(WARE_DATE) BETWEEN #{startDate} AND #{endDate}
+			</if>
+			<if test="startDate == null or startDate =='' or endDate ==null or startDate ==''">
+				AND TRUNC(WARE_DATE) BETWEEN SYSDATE -7 AND SYSDATE
 			</if>
 			and w.ware_qty <![CDATA[ < ]]> 0
 			AND W.S_ID = #{sId}
@@ -65,6 +71,9 @@
 		<where>
 			<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
 			 AND TRUNC(WARE_DATE) BETWEEN #{startDate} AND #{endDate}
+			</if>
+			<if test="startDate == null or startDate =='' or endDate ==null or startDate ==''">
+				AND TRUNC(WARE_DATE) BETWEEN SYSDATE -7 AND SYSDATE
 			</if>
 			AND W.S_ID = #{sId}
 		</where>
@@ -104,7 +113,10 @@
 		ON W.ST_NUM = S.ST_NUM
 		<where>
 			<if test="startDate != null and startDate !='' and endDate !=null and startDate !=''">
-			 AND TRUNC(WARE_DATE) BETWEEN #{startDate} AND #{endDate}
+				 AND TRUNC(WARE_DATE) BETWEEN #{startDate} AND #{endDate}
+			</if>
+			<if test="startDate == null or startDate =='' or endDate ==null or startDate ==''">
+				AND TRUNC(WARE_DATE) BETWEEN SYSDATE -7 AND SYSDATE
 			</if>
 			AND W.WARE_QTY <![CDATA[ <> ]]> 0
 			AND W.S_ID = #{sId}
