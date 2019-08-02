@@ -86,8 +86,8 @@ var stanUnit = 0;
 
 var aQty=0.0; 
 
-var storeid = "SH001";
-<%-- var storeid = "<%= (String)session.getAttribute("sid") %>";  --%>
+<%--var storeid = "SH001";--%>
+ var storeid = "<%= (String)session.getAttribute("sId") %>";  
 
 //메뉴 전역변수
 var mNum = "";
@@ -496,7 +496,7 @@ function menuDelete(){
 		contentType:'application/json',
 		dataType:'json',
 		error:function(xhr,status,msg){
-			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
+			console.log("상태 값 :" + status + " Http에러메시지 :"+msg);
 		}, success:function(xhr) {
 			console.log(xhr.result);
 			menulist(menuId);
@@ -758,7 +758,7 @@ function insertOption(){
 				<form id="menudetail">
 					<input type="button" value="확정" id="btnUpdate">
 					<!-- <input type="button" value="삭제" id="btnMenuDelete" onclick="menuDelete()"> -->
-					<input type="hidden" id="sId" name="sId" value="SH001">
+					<!-- <input type="hidden" id="sId" name="sId" value="SH001"> -->
 					<table border="1" class="table table-hover">
 
 
