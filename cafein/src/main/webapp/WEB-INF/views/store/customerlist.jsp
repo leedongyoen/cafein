@@ -373,7 +373,7 @@ background-color: #E0F8F7
 
 						</tr>
 					</thead>
-					<tbody id="customerTbody">
+					<tbody id="customerTbody" style="cursor:pointer;">
 					</tbody>
 				</table>
 			</div>
