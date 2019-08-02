@@ -102,6 +102,7 @@ body{
 		</table>
 		</div>
 	<br>
+		 <h5 align="center"><b>적립금 리스트</b></h5>
 	<div class = "container" align="center">
 		<table id ="reservetable" class="table table-hover">
 			<thead>

@@ -67,6 +67,24 @@
 
 	});
 </script>
+
+<style>
+	table thead tr,
+.tableth{
+	color: black;
+	
+}
+
+/* 테이블 th, td css */
+
+table tr th,
+table thead tr th,
+.trth
+{
+	color: black;
+	
+}  
+</style>
 <title>일별 통계</title>
 </head>
 <body>

@@ -13,6 +13,23 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<style>
+	table thead tr,
+.tableth{
+	color: black;
+	
+}
+
+/* 테이블 th, td css */
+
+table tr th,
+table thead tr th,
+.trth
+{
+	color: black;
+	
+}  
+</style>
 <script>
 		google.charts.load('visualization','1',{	packages : [ 'table','corechart']});
 		google.charts.setOnLoadCallback(drawBasic);
@@ -32,7 +49,7 @@
 					datatype : "json",
 					success : function(days) {
 						var chartData = [];
-						chartData.push(['시간별','수량','금액'])
+						chartData.push([' ','수량','금액'])
 							for(i=0; i<days.length; i++) {		
 								var dayss = [days[i].week +'시', parseInt(days[i].cnt), parseInt(days[i].atotal)];
 								chartData.push(dayss);
@@ -59,7 +76,7 @@
 						                  
 						                  },
 						          colors: ["red", "green"],
-						          chartArea:{left:400,top:100, width:700, height:150}
+						        
 								
 						};
 	
@@ -88,7 +105,7 @@
 <body>
 	<!--  일일 매출 그래프-->
 	<h2 align="center">시간별 통계</h2><br>
-	<div id="chart_div" align="center"></div><br>
+	<div id="chart_div"></div><br>
 	<p align="center">
 		<input type ="date" name ="startDate" id="startDate">&nbsp;
 		<input type="button" value= "검색" class="btn btn-primary btn-sm" onclick="drawBasic()">

@@ -7,9 +7,25 @@
 <%@ include file="storehead.jsp"%>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
+<style>
+	table thead tr,
+.tableth{
+	color: black;
+	
+}
+
+/* 테이블 th, td css */
+
+table tr th,
+table thead tr th,
+.trth
+{
+	color: black;
+	
+}  
+</style>
 <title>월별 통계</title>
 	<script type="text/javascript">
 	google.charts.load('current', {
@@ -62,7 +78,7 @@
 							.getElementById('test_dataview2'))
 
 				table.draw(daydata, {
-					 width: '50%', height: '30%'
+					 width: '50%', height: '30%', colors: 'black'
 				});
 
 				var chart = new google.charts.Bar(document
@@ -93,7 +109,7 @@
 	<div id="chart_div"  align="center"></div>
 
 	<p align="center">
-		<input type ="date" name ="startDate" id="startDate">&nbsp;
+		<input type ="date" name ="startDate" id="startDate" value="gettoday()">&nbsp;
 		<input type="button" value= "검색" class="btn btn-primary btn-sm" onclick="drawBasic()">
 	</p>
 <!-- 	<div id = "divDate"><input type="datetime"></div> -->

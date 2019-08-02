@@ -26,7 +26,7 @@
     		  datatype: "json",
     		  success : function(days) {
   				var chartData = [];
-				chartData.push(['연별','수량','금액'])
+				chartData.push([' ','수량','금액'])
 					for(i=0; i<days.length; i++) {		
 						var dayss = [days[i].week + "년" , parseInt(days[i].cnt), parseInt(days[i].atotal)];
 						chartData.push(dayss);
@@ -62,6 +62,23 @@
 	});
 
     </script>
+<style>
+	table thead tr,
+.tableth{
+	color: black;
+	
+}
+
+/* 테이블 th, td css */
+
+table tr th,
+table thead tr th,
+.trth
+{
+	color: black;
+	
+}  
+</style>
 </head>
 <body>
 	<h2 align="center">연별 통계</h2><br>

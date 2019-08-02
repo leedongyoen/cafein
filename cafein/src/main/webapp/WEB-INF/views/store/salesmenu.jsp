@@ -62,6 +62,24 @@
 
     	});
     </script>
+    
+<style>
+	table thead tr,
+.tableth{
+	color: black;
+	
+}
+
+/* 테이블 th, td css */
+
+table tr th,
+table thead tr th,
+.trth
+{
+	color: black;
+	
+}  
+</style>
 </head>
 <body>
 	<h2 align="center">메뉴별 통계</h2><br>

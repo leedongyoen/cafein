@@ -43,6 +43,7 @@ font-family: "";
 		function checkForm() {
 // 			var c_pw = $("#c_pw").val();
 // 			var c_pw_check = $("#c_pw_check").val();
+			$('#joins').attr("disabled",false);
 			
 			form = document.customerjoinForm;
 			if (form.cId.value == "") {
@@ -78,6 +79,10 @@ font-family: "";
 			alert("생년월일을 입력하세요.");
 			return form.dob.focus();
  			}	
+			if(form.email.value =="") {
+				alert("이메일을 입력하세요.");
+				return form.email.focus();
+			}
 			alert("회원가입을 축하합니다");
 			form.submit();
 		};
@@ -156,6 +161,8 @@ font-family: "";
 
 
 
+
+
 	
 </script>
 </head>
@@ -218,8 +225,8 @@ font-family: "";
         	</td>
         </tr>
       </table>
-      <button type ="button" class="btn btn-primary"
-      onclick="checkForm()">가입하기</button>
+      <button type ="button" class="btn btn-primary" id="joins"
+      onclick="checkForm()" >가입하기</button>
       <input type="button"  class="btn btn-default"
        onclick="location.href='customerlogin.do'" value="돌아가기" class="btn btn-success">
   </form>

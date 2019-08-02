@@ -123,7 +123,7 @@ body {
 			<div class="wrap-login100">
 				<div class="login100-form-title" style="background-image: url(image/loginbgimg.jpg);">
 					<span class="login100-form-title-1">
-						Password 찾기
+						Password 초기화
 					</span>
 				</div>
 				<form class="login100-form validate-form" method ="post" action="pwfind.do" name="pwfindform">
@@ -140,7 +140,7 @@ body {
 								<span class="focus-input100"></span>
 					</div>
 					
-					<button class="btn btn-outline-success btn-lg" type ="button" onclick = "pwfine()">비밀번호 찾기</button>
+					<button class="btn btn-outline-success btn-lg" type ="button" onclick = "pwfine()">비밀번호 초기화</button>
 					
 				</form>
 
