@@ -83,7 +83,11 @@ font-family: "";
 				alert("이메일을 입력하세요.");
 				return form.email.focus();
 			}
-			alert("회원가입을 축하합니다");
+			if(form.emailauth.value == ""){
+				alert("이메일인증 버튼을 눌러주세요.")
+				return form.emailauth.focus();
+			}
+				alert("회원가입을 축하합니다");
 			form.submit();
 		};
 		function post_check(){
@@ -98,7 +102,7 @@ font-family: "";
 			      alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
 			    return false;
 			  }
-			 
+			  alert("비밀번호 사용 가능합니다.")
 			  return true;
 		};
 		//다음 API 주소를 넣는 부분.
@@ -220,7 +224,7 @@ font-family: "";
         <tr>
         	<th>이메일</th>
         	<td><input type="email" name="email" id="email" class="form-control"></td>
-        	 <td><button type="button"
+        	 <td><button type="button" name="emailauth"
         		onclick="myFunction()" class="btn btn-success">이메일 인증</button>
         	</td>
         </tr>
