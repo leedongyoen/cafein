@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,10 +39,12 @@ public class MenuController {
 	
 
 	@RequestMapping(value="/storerecipemenu", method=RequestMethod.GET)
-	public ModelAndView getMenuList(ModelAndView mv) {
+	public ModelAndView getMenuList(ModelAndView mv, HttpSession session) {
 		//StockVO vo2 = new StockVO();
 		MenuVO vo = new MenuVO();
 		//vo2.setsId("SH001");
+		vo.setsId((String)session.getAttribute("sId"));
+		System.out.println("vo: "+vo);
 		mv.addObject("storemenu",service.getMenuList(vo));
 		//mv.addObject("recistock",service2.getRecipeStockList(vo2));
 		mv.setViewName("store/menulist");
@@ -100,7 +103,7 @@ public class MenuController {
 	
 	
 	@RequestMapping(value = "/imgUpdate.do", method = RequestMethod.POST)
-	public ModelAndView boardInsert(MenuVO vo, HttpServletRequest request)
+	public ModelAndView boardInsert(MenuVO vo, HttpServletRequest request, HttpSession session)
 			throws IllegalStateException, IOException {
 
 		
@@ -115,7 +118,7 @@ public class MenuController {
 		vo.setUploadFileName(fileName);
 		service.updateFile(vo);
 		ModelAndView mv = new ModelAndView();
-		mv = getMenuList(mv);
+		mv = getMenuList(mv,session);
 		return mv;
 	}
 	

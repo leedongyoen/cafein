@@ -68,5 +68,10 @@ public class PosDAO {
 		System.out.println(vo.getoNum());
 		return mybatis.selectList("PosDAO.getcallorderdetails",vo);
 	}
+	public int getOrDetailscount(OrdersVO vo) {
+		System.out.println("===> Mybatis getOrDetailscount()");
+		System.out.println(vo.getoNum());
+		return mybatis.selectOne("PosDAO.getOrDetailscount",vo);
+	}
 	
 }

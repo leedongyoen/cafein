@@ -66,5 +66,8 @@ public class PosServiceImpl implements PosService{
 		return dao.getcallorderdetails(vo);
 	
 	}
+	public int getOrDetailscount(OrdersVO vo) {
+		return dao.getOrDetailscount(vo);
+	}
 	
 }

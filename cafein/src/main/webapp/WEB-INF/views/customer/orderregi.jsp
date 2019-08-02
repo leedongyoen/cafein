@@ -141,7 +141,8 @@ width: 50p;
 				console.log(data);
 				if(data == 1){
 					$('.deliverY').show();
-					$('#deliveryaddress').hide();					
+					$('#deliveryaddress').hide();	
+					$('#dtakeout').prop("checked", true);
 				}else{
 					$('.deliverN').show();
 				}
@@ -398,6 +399,7 @@ width: 50p;
 				var v_totalprice =  $("input:text[name='total']").val();
 				v_totalprice = Number(v_totalprice) - Number(mileage);
 				 $("input:text[name='total']").val(v_totalprice);
+				 $('#reservebtn').attr('disabled','disabled');
 			}
 		});
 
@@ -413,6 +415,7 @@ width: 50p;
 			 $("input:text[name='total']").val(v_totalprice);
 			 
 			$('#insertmileage').val("0");
+			 $('#reservebtn').attr('disabled',false);
 			
 		});
 		$('input[name="receipt"]').change(function() {

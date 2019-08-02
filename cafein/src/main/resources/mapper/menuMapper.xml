@@ -30,6 +30,7 @@
 		,MENUSALE
 		,UPLOADFILE
 		from menu
+		where S_ID=#{sId}
  		order by m_num
 	</select>
 	

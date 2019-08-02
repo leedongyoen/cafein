@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
  <%@ include file="storehead.jsp" %> 
+ 
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>매장POS</title>
 <style type="text/css">
@@ -138,6 +139,7 @@ background-color: #E0F8F7
 </head>
 <body style="background: url(image/metalbk.jpg) no-repeat center center; background-size: cover;">
 <script type="text/javascript">
+
 //포스기 버튼
 var sId='<%= session.getAttribute("sId") %>'; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
@@ -205,6 +207,7 @@ var ordernum ="";
 	 	   var PSum = grid.jqGrid('getCol','Price',false,'sum');
 	 	   		grid.jqGrid("footerData", "set", {mName:"합계",Price:PSum});
 	 	   	$("#addpay").val(PSum);
+	 	   $("#finalpay").val(PSum);
 	 	   console.log(PSum);
 	 	   //		grid.jqGrid("footerData", "set", {mName:"합계",qty:QSum});
 	 	   }
@@ -242,6 +245,7 @@ var ordernum ="";
 		 	   var QSum = grid.jqGrid('getCol','oQty',false,'sum');
 		 	   		grid.jqGrid("footerData", "set", {mName:"합계", Price:PSum, qty:QSum});
 		 	   	$("#addpay").val(PSum);
+		 	   $("#finalpay").val(PSum);
 			
 		});
 	   
@@ -358,7 +362,9 @@ var ordernum ="";
 				 var now_mile = (totalmileage*1)-(mileage*1);
 				 $('#cusMile').val(now_mile);
 				 $('#reservebtn').attr('disabled',true);
-				 $("#addpay").val(sPSum);
+				 $("#addpay").val(PSum);
+				 $("#usedmile").val("-"+mileage);
+				 $("#finalpay").val(sPSum);
 			}
 		});
 		$('#reservecancelbtn').on("click",function(){
@@ -391,7 +397,7 @@ var ordernum ="";
 			var getmoney=$("#getmoney").val();
 			var resultmoney=$("#resultmoney").val();
 			
-			if(coin == '0'){
+			if(coin == '0' ){
 				alert("주문건이 없습니다.");
 			}else if(getmoney =='0' || resultmoney<0){
 				alert("금액을 다시 확인해 주세요.");
@@ -562,16 +568,7 @@ var ordernum ="";
  		var opName = $(this).val();
 		var mNum = $(this).next().val();
 		var Price = $(this).next().next().val();
-		var recipeno = $(this).next().next().next().val();
-		if(opName == 'HOT'){
-			$("#hotice_option").val("CAHT");
-			$("#ICE").hide();
-			$("#HOT").hide();
-		}else if(opName == 'ICE'){
-			$("#hotice_option").val("CAIC");
-			$("#HOT").hide();
-			$("#ICE").hide();
-		} 
+		var recipeno = $(this).next().next().next().val(); 
 		var hotice_option = $(this).next().next().next().next().val();
 	//	currNo++;
  	 jQuery("#gridlist").jqGrid('addRow', {
@@ -590,12 +587,18 @@ var ordernum ="";
  	//주문내역 검색 모달창
  	$(document).on("click","#orderList", function(){
  		$("#orderListModal").modal('show');
+ 		jQuery('#startDate').val(gettoday());
+		jQuery('#endDate').val(gettoday());
+ 		    
  	});
  	
  	//회원검색창 띄우기
  	$(document).on("click","#customersearch", function(){
- 		
  		$("#cusSearchModal").modal('show');
+ 		
+		
+
+		
  	});
  	//회원검색후 나오는 값
  	function getCus(data){ 
@@ -647,6 +650,7 @@ var ordernum ="";
 			name:"total",
 			value:sPSum})
 			.attr("class","pay")
+			.attr("style","text-align:right")
 			.appendTo("#payresult");
 		
 		//현금or카드 결제 
@@ -678,14 +682,11 @@ var ordernum ="";
 
 		
 	});
- 	/* $("#orderserch").on("keyup", function() {
- 		getCusRefund()
- 	}); */
- 	
- 	//환불 날짜별 검색
- 	function getCusRefund() {
+ 	//환불 날짜별 검색 및 페이징처리
+ 	function getCusRefund(ckpage) {
  		$(".really").empty();
- 		$('.optiontable').empty();
+ 		$(".page-link").empty();
+ 		
 		//날짜 데이터 같이 보내기
 		var startDate = jQuery('#startDate').val();
 		var endDate = jQuery('#endDate').val();
@@ -699,17 +700,19 @@ var ordernum ="";
   		}
   		console.log("startDate : "+ startDate);
   		console.log("endDate : "+ endDate);
+  		$('#pageul').empty();
+  		$('#orderlisttable tbody').empty();
   		
-		$.ajax({
+		$.ajax({   
 			url : 'searchorder',
 			type : 'GET',
 			dataType : 'json',
-			data : {startDate : startDate,endDate : endDate,sId : sId},
+			data : {startDate : startDate,endDate : endDate, sId : sId, checkpagenum:ckpage},
 			error : function(status, msg) {
 				alert(status + "메세지" + msg);
 			},
 			success : function(data) {
-				$.each(data,function(idx,item){
+				$.each(data.list,function(idx,item){
 					var refund="really";
 					if(item.cId == null) item.cId="";
 					if(item.refuseReason == null) {
@@ -730,8 +733,13 @@ var ordernum ="";
 					.append($('<td><input type=\'text\'id=\'total4\' value=\''+item.total+'\'>'))
 					.append($('<td><input type=\'text\'id=\'refuseReason4\' value=\''+item.refuseReason+'\'>'))
 					.appendTo('#orderlisttable tbody');
+					
+					
 				});
 				
+				for(i=data.paging.startPage; i<=data.paging.endPage; i++){
+					$("#pageul").append('<li class=\'page-item\'><a class=\'page-link\' href=javascript:getCusRefund('+i+')>'+i+'</a></li>');
+				}
 				}
 		});	
 					
@@ -974,10 +982,12 @@ var ordernum ="";
 
 </div>
 <div style="text-align:right; padding:0px 300px 0px 0px; font-size: xx-large;">
-<a id="insertmoney" style="color:white">총 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="addpay" value="0" readonly="readonly" > 원</a>
+<a style="color:white">주문하신 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="addpay" value="0" readonly="readonly" > 원</a>
+<br>
+<a style="color:white">사용된 마일리지 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="usedmile" value="0" readonly="readonly" > 원</a>
+<br>
+<a style="color:white">결제 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="finalpay" value="0" readonly="readonly" > 원</a>
 </div>
-
-
 	<div style="text-align:left">
 	<input type="button" id="clearRow" class="btn btn-outline-light" value="전체취소">
 	<input type="button" id="deleteRow" class="btn btn-outline-light" value="선택취소">
@@ -1039,7 +1049,7 @@ var ordernum ="";
 								name="startDate">&nbsp; <input type="date"
 								class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
 							<input type="button" value="검색" class="btn btn-outline-dark"
-								id="btnSearch" onclick="getCusRefund()">
+								id="btnSearch" onclick="getCusRefund(1)">
 						</div>
 						<div class="table-responsive" style="text-align:left">
 						<table id="orderlisttable" class="table" >
@@ -1057,6 +1067,9 @@ var ordernum ="";
 							</tbody>
 						</table>
 						</div>
+						<ul id="pageul" class="pagination justify-content-center" >   </ul>
+            
+
 					</form>
 				
 				</div>
@@ -1100,15 +1113,15 @@ var ordernum ="";
 							<thead>
 							<tr> 
 								<th>받으신 돈</th>
-								<td><input type="text" id="getmoney" class="numOnly num_sum"></td>
+								<td><input type="text" style="text-align:right;" id="getmoney" class="numOnly num_sum"></td>
 							</tr>
 							<tr> 
 								<th>받으실 돈</th>
-								<td id="payresult" class="numOnly num_sum" ></td>
+								<td id="payresult"  class="numOnly num_sum" ></td>
 							</tr>
 							<tr> 
 								<th>거스름 돈</th>
-								<td><input type="text" id="resultmoney" class="numOnly num_sum" readonly="readonly"></td>
+								<td><input type="text" style="text-align:right;" id="resultmoney" class="numOnly num_sum" readonly="readonly"></td>
 							</tr>
 							</thead>
 						</table>
