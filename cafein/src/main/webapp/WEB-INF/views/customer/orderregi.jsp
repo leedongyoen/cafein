@@ -3,6 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix=”fmt” uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -526,7 +527,7 @@ width: 50p;
 				</tr>
 				<tr>
 					<th class="tableth">금 액</th>
-					<td><input id="price" value="${selectmenu.mPrice}" size="4" readonly> &nbsp;&nbsp;
+					<td><input id="price" style="font-size: 18px;" value="${selectmenu.mPrice}" size="4" readonly> &nbsp;&nbsp;
 						<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(1)">+</button> <input name="oQty" style="text-align: center;" size="1" value="${selectmenu.orderqty}" readonly>
 						<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(-1)">-</button></td>
 				</tr>
@@ -579,7 +580,12 @@ width: 50p;
 				</tr>
 				<tr>
 					<th class="tableth">총 금 액</th>
-					<td><input name="total" value="${selectmenu.totalPrice}" readonly></td>
+					<td>
+						
+						<input name="total" style="font-size: 18px;"  value="${selectmenu.totalPrice}" readonly>
+					
+					
+					</td>
 				</tr>
 			</table>
 			</div>
