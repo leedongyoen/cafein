@@ -76,11 +76,16 @@ var webSocket;
 		};
 		webSocket.onopen = function(event) {
 		 	console.log(" \n" + "연결 성공 ");
+		 	
 		};
 		webSocket.onmessage = function(event) {
 			console.log(event);
 			$("#ordercall").text("1");
 			 alert(event.data);
+			 
+			 var audio = document.getElementById('audio_play'); 
+			 			audio.play(); 
+
 		};
 	}
 
