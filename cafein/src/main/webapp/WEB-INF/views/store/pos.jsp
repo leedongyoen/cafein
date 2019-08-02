@@ -139,7 +139,15 @@ background-color: #E0F8F7
 </head>
 <body style="background: url(image/metalbk.jpg) no-repeat center center; background-size: cover;">
 <script type="text/javascript">
+function addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
+//모든 콤마 제거
+function removeCommas(x) {
+    if(!x || x.length == 0) return "";
+    else return x.split(",").join("");
+}
 //포스기 버튼
 var sId='<%= session.getAttribute("sId") %>'; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
@@ -206,8 +214,8 @@ var ordernum ="";
 	 	   var grid = $("#gridlist");
 	 	   var PSum = grid.jqGrid('getCol','Price',false,'sum');
 	 	   		grid.jqGrid("footerData", "set", {mName:"합계",Price:PSum});
-	 	   	$("#addpay").val(PSum);
-	 	   $("#finalpay").val(PSum);
+	 	   	$("#addpay").val(addCommas(PSum));
+	 	   $("#finalpay").val(addCommas(PSum));
 	 	   console.log(PSum);
 	 	   //		grid.jqGrid("footerData", "set", {mName:"합계",qty:QSum});
 	 	   }
@@ -244,8 +252,8 @@ var ordernum ="";
 			var PSum = grid.jqGrid('getCol','Price',false,'sum');
 		 	   var QSum = grid.jqGrid('getCol','oQty',false,'sum');
 		 	   		grid.jqGrid("footerData", "set", {mName:"합계", Price:PSum, qty:QSum});
-		 	   	$("#addpay").val(PSum);
-		 	   $("#finalpay").val(PSum);
+		 	   	$("#addpay").val(addCommas(PSum));
+		 	   $("#finalpay").val(addCommas(PSum));
 			
 		});
 	   
@@ -362,9 +370,9 @@ var ordernum ="";
 				 var now_mile = (totalmileage*1)-(mileage*1);
 				 $('#cusMile').val(now_mile);
 				 $('#reservebtn').attr('disabled',true);
-				 $("#addpay").val(PSum);
+				 $("#addpay").val(addCommas(PSum));
 				 $("#usedmile").val("-"+mileage);
-				 $("#finalpay").val(sPSum);
+				 $("#finalpay").val(addCommas(sPSum));
 			}
 		});
 		$('#reservecancelbtn').on("click",function(){
@@ -589,12 +597,15 @@ var ordernum ="";
  		$("#orderListModal").modal('show');
  		jQuery('#startDate').val(gettoday());
 		jQuery('#endDate').val(gettoday());
+		$('#orderlisttable tbody').empty();
  		    
  	});
  	
  	//회원검색창 띄우기
  	$(document).on("click","#customersearch", function(){
  		$("#cusSearchModal").modal('show');
+ 		$("#customerserch").val("");
+ 		$("#customertable tbody").empty();
  		
 		
 
@@ -626,7 +637,7 @@ var ordernum ="";
  		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'cusdata\' id=\'cusMile\' value=\''+mileage+'\'>'))
  		          .appendTo('#aftersearch tbody');
  		      
- 		}
+ 		}   
  	//결제하기
  	$(document).on("click","#payment", function(){
 
@@ -648,7 +659,7 @@ var ordernum ="";
 		$("<input>").attr({
 			type:"text",
 			name:"total",
-			value:sPSum})
+			value:addCommas(sPSum)})
 			.attr("class","pay")
 			.attr("style","text-align:right")
 			.appendTo("#payresult");
@@ -675,7 +686,7 @@ var ordernum ="";
 			var minus = parseInt($("#getmoney").val() || 0);
 			var sum = minus-PSum;
 
-			$("#resultmoney").val(sum);
+			$("#resultmoney").val(addCommas(sum));
 			
 		});
 		
@@ -726,18 +737,18 @@ var ordernum ="";
 						name:"really",
 						id: "table"+item.oNum
 					}).addClass(refund)
-					.append($('<td><input type=\'text\'id=\'oNum4\' value=\''+item.oNum+'\'>'))
-					.append($('<td><input type=\'text\'id=\'oDate4\' value=\''+item.oDate+'\'>'))
-					.append($('<td><input type=\'text\'id=\'cId4\' value=\''+item.cId+'\'>'))
-					.append($('<td><input type=\'text\'id=\'payMethod4\' value=\''+item.payMethod+'\'>'))
-					.append($('<td><input type=\'text\'id=\'total4\' value=\''+item.total+'\'>'))
-					.append($('<td><input type=\'text\'id=\'refuseReason4\' value=\''+item.refuseReason+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'oNum4\' value=\''+item.oNum+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'oDate4\' value=\''+item.oDate+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'cId4\' value=\''+item.cId+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'payMethod4\' value=\''+item.payMethod+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'total4\' value=\''+addCommas(item.total)+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'refuseReason4\' value=\''+item.refuseReason+'\'>'))
 					.appendTo('#orderlisttable tbody');
 					
-					
-				});
+					        
+				});        
 				
-				for(i=data.paging.startPage; i<=data.paging.endPage; i++){
+				for(i=data.paging.startPage; i<=data.paging.endPage; i++){    
 					$("#pageul").append('<li class=\'page-item\'><a class=\'page-link\' href=javascript:getCusRefund('+i+')>'+i+'</a></li>');
 				}
 				}
@@ -745,6 +756,7 @@ var ordernum ="";
 					
 				
 			} 
+ 	//주문내역 디테일
  	function menudetail(onum,refuse){ 
  		
  		
@@ -790,23 +802,25 @@ var ordernum ="";
 				}); 
 		 		var refusebtn="";
 		 		if(refuse == ""){
-					refusebtn=$('<button>').attr({
+					refusebtn=$('<input>').attr({
 						type:"button",
-						onclick:"refund('"+onum+"')"
-					}).addClass(onum).append("환불하기");
+						onclick:"refund('"+onum+"')",
+						value:"환불하기",
+						'class':"btn btn-outline-dark"
+					}).addClass(onum);
 				}
 	 			$('#table'+onum).after($('<tr>').attr("class","optiontable").attr("id","onum").css("background-color","#F6D8CE")
 	 					.append($('<td>').html("메뉴명 : <br>"+test).attr("colspan","2"))
 						.append($('<td>').html("고객성함 : " +data[0].cName))
 						.append($('<td>').html("사용한 마일리지 : " +data[0].mileage))
-						.append($('<td>').html("총 금액 : "+data[0].total+"원"))
+						.append($('<td>').html("총 금액 : "+addCommas(data[0].total)+"원"))
 						.append($('<td>').html(refusebtn))
 						);
 		 			
 			}
 			
 			});
-		
+		    
 			}
  	
  	function refund(onum){
@@ -825,7 +839,6 @@ var ordernum ="";
 			}
 				
 			}); 
- 		
  		
  	}
  	
@@ -901,6 +914,7 @@ var ordernum ="";
 		var type ="cusorderOK";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum); //cId로 교체
+		aftercallorder();
 	}
  	function callorderNO(){
 		// 소켓 연결
@@ -910,6 +924,7 @@ var ordernum ="";
 		var type ="cusorderNO";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum);
+		aftercallorder();
 	}
  	
  	   
