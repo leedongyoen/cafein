@@ -136,6 +136,13 @@ public class StoreCloseController {
 	//----------------------------------------------------------------------------
 	
 	// 마감 내역 조회
+	@RequestMapping("errorpage.do")
+	public String errorpageTest() {
+		return "error/errorpage";
+	}
+	
+	
+	// 마감 내역 조회
 	@RequestMapping("closedetails.do")
 	public String storeReceipt() {
 		return "store/closingdetails";

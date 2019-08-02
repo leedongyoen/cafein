@@ -56,7 +56,8 @@ public class MenuController {
 					, method=RequestMethod.PUT
 					,consumes="application/json" 
 					)
-	public MenuVO updateMenu(@RequestBody MenuVO vo, Model model) {
+	public MenuVO updateMenu(@RequestBody MenuVO vo, Model model, HttpSession session) {
+		vo.setsId((String)session.getAttribute("sId"));
 		System.out.println(vo.toString());
 		service.updateUser(vo);
 		return vo;
@@ -114,9 +115,15 @@ public class MenuController {
 		if (uploadFile != null && !uploadFile.isEmpty() && uploadFile.getSize() > 0) {
 			fileName = uploadFile.getOriginalFilename();
 			uploadFile.transferTo(new File(request.getSession().getServletContext().getRealPath("/")+"image/" + fileName));
+		
+			vo.setUploadFileName(fileName);
+			service.updateFile(vo);
+			session.setAttribute("imgState", "success");
+			
+		}else {
+			session.setAttribute("imgState", "fail");
 		}
-		vo.setUploadFileName(fileName);
-		service.updateFile(vo);
+		
 		ModelAndView mv = new ModelAndView();
 		mv = getMenuList(mv,session);
 		return mv;

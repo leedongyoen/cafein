@@ -24,8 +24,7 @@ public class RecipeController {
 	@Autowired
 	RecipeSerciveImpl service,service2;
 	
-	//議곌굔�엳�뒗 �쟾泥댁“�쉶
-	
+
 	  @RequestMapping(value="/recipes/{sId}/{mNum}",
 	  method=RequestMethod.GET) public List<ViewStockCheckVO> getRecipeList(
 	  
@@ -59,26 +58,7 @@ public class RecipeController {
 		return result;
 	}
 	
-	
-	
-	
-	/* 0712 recipe update�쐞�빐 �옞�떆 留됱쓬
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value="/recipes" ,method=RequestMethod.POST //
-	 * ,produces="application/json" // ,consumes="application/json" ,headers =
-	 * {"Content-type=application/json" } )public Map<String, Boolean>
-	 * insertRecipe(@RequestBody RecipeVO vo, Model model){
-	 * 
-	 * vo.setsId("SH001");
-	 * 
-	 * service.insertRecipe(vo); Map<String, Boolean> map = new HashMap<String,
-	 * Boolean>(); map.put("result", true); return map;
-	 * 
-	 * 
-	 * }
-	 */
-	
+
 	
 	
 	@ResponseBody
@@ -147,15 +127,20 @@ public class RecipeController {
 						,headers = {"Content-type=application/json" }
 				)public Map<String, Boolean> insertOption(@RequestBody RecipeVO vo, @PathVariable("sId") String sId , Model model){
 			
-			vo.setsId(sId);
 			
-			System.out.println("vo: "+vo);
-			
-			service.optionInsertProc1(vo);
 			Map<String, Boolean> map = new HashMap<String, Boolean>();
 			map.put("result", true);
-			return map;
 			
+			vo.setsId(sId);
+			System.out.println("vo: "+vo);
+			
+			if(vo.getCaNum().equals("CAIC") || vo.getCaNum().equals("CAHT")) {
+				service.insertOption(vo);
+			}else {
+				service.optionInsertProc1(vo);
+			}
+			
+			return map;
 		}	
 		
 		
