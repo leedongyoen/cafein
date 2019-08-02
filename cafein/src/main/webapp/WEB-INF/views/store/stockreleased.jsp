@@ -100,7 +100,7 @@
 		function warehousingListResult(data) {
 // 			$('#pieChart_div').empty();
 			if($('#endDate').val() =='' || $('#startDate').val()==''){
-				$("#divDate").html('전체 기간');
+				$("#divDate").html('최근 7일');
 				}else{
 				$('#divDate').html($('#startDate').val()+' ~ '+$('#endDate').val());
 				}

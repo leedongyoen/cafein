@@ -129,6 +129,17 @@
 		AND ST_NUM = #{stNum}
 	</update>
 	
+	<update id="updateEnterQtyProc" parameterType="stock" statementType="CALLABLE">
+			{
+				call STOCK_ENTERED(
+					#{stNum, mode=IN,jdbcType=VARCHAR, javaType=string},
+					#{enterQty, mode=IN, jdbcType=NUMERIC, javaType=java.lang.Integer},
+					#{sId, mode=IN, jdbcType=VARCHAR, javaType=string}
+					
+				)
+			}					
+	
+	</update>
 		<!--재고삭제되면 레시피도 같이 삭제 -->
 <!-- 	<delete id="deleteStockWith" parameterType="recipe"> -->
 <!-- 	DELETE FROM RECIPE WHERE ST_NUM = #{stNum} -->

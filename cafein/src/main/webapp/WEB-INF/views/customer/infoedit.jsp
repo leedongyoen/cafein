@@ -283,7 +283,7 @@ function chkPwContinuity(paramObj) {
  		$("#cAdd2").removeAttr("readonly");
 		$("#cAdd3").removeAttr("readonly");
 		$("#c_addbt").removeAttr("disabled");
-		$("#dob").removeAttr("readonly");
+//		$("#dob").removeAttr("readonly");
 		
 		alert("수정이 가능합니다.")
 	}
@@ -523,6 +523,7 @@ function chkPwContinuity(paramObj) {
 			<p id="c_info" align="center" class="titlefont">회원 정보</p>
 			<p id="c_infoedit" align="center" class="titlefont" style=" display:none ">회원 정보 수정</p>
 			<hr>
+			
 			<table class="table"> 
 				<tr class="notweb">
 					<th class="tableth">ID</th>
@@ -565,6 +566,9 @@ function chkPwContinuity(paramObj) {
 					
 				</tr>
 			</table>
+			<div>
+				<h3 style ="color:red;">※수정하기 버튼을 누르셔야지 수정이 가능합니다.</h3>			
+			</div>
 			<input type="button" class="btn btn-secondary" onclick="javascript:history.go(-1)" value="돌아가기"> 
 			<input type="button" class="btn btn-success" id="edit_before" value="수정하기" onclick="edit()"> 
 			<input style="display: none" type="button" class="btn btn-primary" id="edit_after" value="수정완료"
