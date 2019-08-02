@@ -52,6 +52,7 @@ $(function(){
 	if(sId != "null") {
 		$("#loginbtn").css('display', 'none');
 		$("#logoutbtn").css('display', 'block');
+		$("#storeName").text(sName);
 	}
 	if(openTime == null) {
 		$("#openbtn").css('display', 'block');
@@ -218,6 +219,7 @@ body {
 
 	<div class="top-right">
         <ul class="navbar-nav mr-auto">
+        		<li><a class="nav-link" id="storeName" style="font-weight: bold;color:white;" ></a></li>
         		<li class="nav-link"  id="clock" style="color:orange; font-size:16px;"><a></a></li>
                 <li class="nav-item">
                 	<a class="nav-link" href="${pageContext.request.contextPath}/storelogin.do" id="loginbtn">Login</a>
