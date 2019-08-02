@@ -18,7 +18,24 @@
 <script type="text/ecmascript" src="./js/i18n/grid.locale-en.js"></script>
 <script src="./js/json.min.js"></script>   
 <script>
+function gettoday(){
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+	
+	if(dd<10) {
+	    dd='0'+dd
+	} 
 
+	if(mm<10) {
+	    mm='0'+mm
+	} 
+
+	today = yyyy+'-'+mm+'-'+dd;
+	return(today);
+	
+}
 	
 $(function(){
 	var sId = "<%= (String)session.getAttribute("sId") %>";
@@ -28,21 +45,26 @@ $(function(){
 	console.log("open time localstorage : " + openTime) 
 	console.log("sId = " + sId + "  sName = " + sName );
 	
+	
+	
 	if(sId == "null") {
 		$("#loginbtn").css('display', 'block');
 		$("#logoutbtn").css('display', 'none');
+		$('.loginon').css('display', 'none');
 	}
+	
 	if(sId != "null") {
 		$("#loginbtn").css('display', 'none');
 		$("#logoutbtn").css('display', 'block');
-	}
-	if(openTime == null) {
-		$("#openbtn").css('display', 'block');
-		$("#closebtn").css('display', 'none');
-	}
-	if(openTime != null) {
-		$("#openbtn").css('display', 'none');
-		$("#closebtn").css('display', 'block');
+		$('.loginon').css('display', 'block'); 
+		if(openTime == null) {
+			$("#openbtn").css('display', 'block');
+			$("#closebtn").css('display', 'none');
+		}
+		if(openTime != null) {
+			$("#openbtn").css('display', 'none');
+			$("#closebtn").css('display', 'block');
+		}
 	}
 
 	
@@ -59,17 +81,22 @@ var webSocket;
 		};
 		webSocket.onopen = function(event) {
 		 	console.log(" \n" + "연결 성공 ");
+		 	
 		};
 		webSocket.onmessage = function(event) {
 			console.log(event);
 			$("#ordercall").text("1");
 			 alert(event.data);
+			 
+			 var audio = document.getElementById('audio_play'); 
+			 			audio.play(); 
+
 		};
 	}
 
  function onError(event) {
 	 console.log(event);
-	 alert(event.data);
+//	 alert(event.data);
 }
 
  
@@ -150,7 +177,7 @@ body {
 
       <li class="nav-item dropdown">
 
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">매장</a>
+        <a class="nav-link dropdown-toggle loginon" style="display: none;" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">매장</a>
 
         <div class="dropdown-menu" aria-labelledby="dropdown01">
         	<a class="dropdown-item" href="${pageContext.request.contextPath}/storeinfoedit.do">Store Id</a>
@@ -163,11 +190,11 @@ body {
 
       </li>
 
-	  <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/pos.do">주문</a>
+	  <li class="nav-item"><a class="nav-link loginon" style="display: none;" href="${pageContext.request.contextPath}/pos.do">주문</a>
 
       <li class="nav-item dropdown">
 
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">재고</a>
+        <a class="nav-link dropdown-toggle loginon" style="display: none;" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">재고</a>
 
         <div class="dropdown-menu" aria-labelledby="dropdown02">
           <a class="dropdown-item" href="${pageContext.request.contextPath}/warehousingregi.do">재고 입고</a>
@@ -179,16 +206,16 @@ body {
 
       </li>
       
-      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/storeopen.do" id="openbtn">오픈</a></li>
+      <li class="nav-item"><a class="nav-link loginon" style="display: none;" href="${pageContext.request.contextPath}/storeopen.do" id="openbtn">오픈</a></li>
       
 	<li class="nav-item dropdown">
-	    <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">마감</a>
+	    <a class="nav-link dropdown-toggle loginon" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">마감</a>
 		<div class="dropdown-menu" aria-labelledby="dropdown03">
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/daycal.do" id="closebtn">마감 정산</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/closedetails.do">마감 내역</a>
 		</div>
 	</li>
-	<li class="nav-item">
+	<li class="nav-item loginon" style="display: none;">
 	<button type="button" class="btn btn-dark" id="answercall">
 	  웹주문 <span id="ordercall" class="badge badge-light" style="width:20px;height:20px;">0</span>
 	  <span class="sr-only">unread messages</span>

@@ -9,6 +9,8 @@
 		<result column="s_pw" property="spw"/>
 		<result column="s_name" property="sname"/>
 		<result column="s_add" property="sadd"/>
+		<result column="s_add2" property="sadd2"/>
+		<result column="s_add3" property="sadd3"/>
 		<result column="s_tel" property="stel"/>
 		<result column="st_deli_service" property="stdeliservice"/>
 		<result column="st_open_time" property="stopentime"/>
@@ -72,7 +74,9 @@
 	<select id="getSearchStore" resultType="store" resultMap="storeMap">
 		SELECT S_ID
 				,S_NAME
+				,S_ADD2
 				,S_ADD
+        		,S_ADD3
 				,S_TEL
 				,ST_DELI_SERVICE
 				,ST_OPEN_TIME

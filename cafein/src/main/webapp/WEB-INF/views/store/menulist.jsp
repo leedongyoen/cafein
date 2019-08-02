@@ -10,22 +10,28 @@
 <title>메 뉴 관 리</title>
 <style type="text/css">
 input {
-	border: none;
-	border-right: 0px;
-	border-top: 0px;
-	boder-left: 0px;
-	boder-bottom: 0px;
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
+	};
+	
+.btn-group .button {
+  background-color: #4CAF50; /* Green */
+  border: 1px solid green;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  width: 150px;
+  display: block;
 }
 
-ul {
-	list-style: none;
-	width: 450px;
-	margin-left: auto;
-	margin-right: auto;
+.btn-group .button:not(:last-child) {
+  border-bottom: none; /* Prevent double borders */
 }
 
-li {
-	width: 450px;
+.btn-group .button:hover {
+  background-color: #3e8e41;
 }
 
 hr {
@@ -164,15 +170,31 @@ $(function(){
 
 		$("#btnUpdate").on('click',function(){
 			
-			alert(JSON.stringify($("#menudetail").serializeObject()));
-			menuUpdate();
+			var up;
+			
+			up = confirm('수정 하시겠습니까?');
+
+			if(up){
+				menuUpdate();
+			}
+			
+			//alert(JSON.stringify($("#menudetail").serializeObject()));
+			
 		
 		});
 		
 		$("#btnInsert").on('click',function(){
 		
 			//alert(JSON.stringify($("#insertmenudetail").serializeObject()));
-			menuInsert();
+			
+			var up;
+			
+			up = confirm('등록하시겠습니까?');
+
+			if(up){
+				menuInsert();
+			}
+			
 		});
 
 	
@@ -250,12 +272,13 @@ $(function(){
 		var obj=JSON.parse(json);
 		aQty=obj.value3;
 		stanUnit = obj.value4;
-        //console.log(obj.value1+" : "+obj.value2+" : "+obj.value3+" : "+obj.value4+" : "+mCate);
+        console.log(obj.value1+" : "+obj.value2+" : "+obj.value3+" : "+obj.value4+" : "+mCate+" : "+obj.value5);
         $("#recistNum").val(obj.value1);
 		$("#recicaNum").val(mCate);
 		$("#recistAqty").val(obj.value3);
 		$("#recistStanunit").val(obj.value4);
-		
+		$("#reciUnit").val(obj.value5);
+		//reciUnit
 		
 	});
 	
@@ -263,7 +286,7 @@ $(function(){
 		
 		var json = $(this).val();
 		var obj=JSON.parse(json);
-        //console.log(obj.value1+" : "+obj.value2);
+        console.log(obj.value1+" : "+obj.value2+" : "+obj.value3);
         if(obj.value2=='CAHT')
         	{
         		$("#opName").val("HOT");
@@ -277,10 +300,13 @@ $(function(){
         		$("#opcaNum").val("CAIC");
         	}else{
         		$("#opcaNum").val("CAOP");
+        		$("#opName").val('');
+        		$("#consume").val('');
+        		$("#opPrice").val('');
         	}
         
         $("#opstNum").val(obj.value1);
-		
+		$("#opstUnit").val(obj.value3);
 		
 	});
 
@@ -341,7 +367,6 @@ function menulist(mNum){
 					}
 					
 					var msg = cnt +"개의 재료. 원가 : "+totalWon+"원. 수익: "+(mPrice-totalWon)+"원.";
-					
 					
 					$("#recipeMsg").val(msg);
 				}
@@ -414,19 +439,19 @@ function menulist(mNum){
 					// var option = $("<option>"+data[i].caNum+"</option>");
 	               // $('#opSelct').append(option); 
 	               
-						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#reciSelect');
+						$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'","value5":"'+data[i].stUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#reciSelect');
 						
 				}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM')){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CAJP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#reciSelect');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'","value5":"'+data[i].stUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#reciSelect');
 					
 				}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM')){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CADP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#reciSelect');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stAqty+'","value4":"'+data[i].stanUnit+'","value5":"'+data[i].stUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#reciSelect');
 					}
 				}
 			
@@ -446,19 +471,19 @@ function menulist(mNum){
 	                //$('#opSelct').append(option);
 
 					
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName + '</option>').appendTo('#opSelct');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#opSelct');
 					
 				}else if(mCate=='CADR'&& (data[i].caNum=='CAJP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CAJP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName + '</option>').appendTo('#opSelct');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#opSelct');
 					
 				}else if(mCate=='CADE'&& (data[i].caNum=='CADP' || data[i].caNum=='CACM'|| data[i].caNum=='CAIC'|| data[i].caNum=='CAHT')){
 					console.log(data[i].caNum);
 					//data[i].caNum
 					//옵션에 caNum이 CACM과 CADP를 추가
-					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'"}\'>' + data[i].stName + '</option>').appendTo('#opSelct');
+					$('<option value=\'{"value1":"'+data[i].stNum+'","value2":"'+data[i].caNum+'","value3":"'+data[i].stUnit+'"}\'>' + data[i].stName + '</option>').appendTo('#opSelct');
 					
 					}
 				}
@@ -483,6 +508,8 @@ function menuInsert(){
 	    	}
 		}
 	}); 
+	 
+	 $("#menuModal").modal("hide");
 }
 
 
@@ -513,7 +540,8 @@ function menuUpdate() {
 		data: JSON.stringify($("#menudetail").serializeObject()),
 		contentType: 'application/json',
 		success: function(data) { 
-			menulist(menuId);
+			//menulist(menuId);
+			window.location.reload();
 		}
 		
 	});  
@@ -528,7 +556,7 @@ function recipeInsert(){
 	var menuId = $("#mNum").val();
 	var reQty1 = $("#consum").val();
 	
-	alert(JSON.stringify($("#insertRecipeDetail").serializeObject()));
+	//alert(JSON.stringify($("#insertRecipeDetail").serializeObject()));
 	
 	$.ajax({
 		
@@ -544,6 +572,8 @@ function recipeInsert(){
 	    	}
 		}
 	});  
+	
+	$("#recipeModal").modal("hide");
 }
 
 
@@ -551,42 +581,56 @@ function recipeInsert(){
 
 function recipeUpdate(){
 	var menuId = $("#mNum").val();
-	$.ajax({
-		url: "recipes/"+storeid,
-		type: 'PUT',
-		dataType: 'json',
-		data: JSON.stringify($("#recipeTableForm").serializeObject()),
-		contentType: 'application/json',
-		success: function(data) { 
-			menulist(menuId);
-		}
-	});
+	
+	var up;
+	up = confirm('삭제하시겠습니까?');
+
+	if(up){
+		$.ajax({
+			url: "recipes/"+storeid,
+			type: 'PUT',
+			dataType: 'json',
+			data: JSON.stringify($("#recipeTableForm").serializeObject()),
+			contentType: 'application/json',
+			success: function(data) { 
+				menulist(menuId);
+			}
+		});
+	}
+	
+
 }
 
 
 function recipeDelete(){
 	var menuId = $("#mNum").val();
-	console.log(recipeNo);
-	$.ajax({
-		url:'recipes/'+storeid+'/'+recipeNo+'/'+turnNo,  
-		type:'DELETE',
+	//console.log(recipeNo);
 	
-		contentType:'application/json',
-		dataType:'json',
-		error:function(xhr,status,msg){
-			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
-		}, success:function(xhr) {
-			console.log(xhr.result);
-			menulist(menuId);
-		}
-	}); 
+	var up;
+	up = confirm('삭제하시겠습니까?');
+
+	if(up){
+		$.ajax({
+			url:'recipes/'+storeid+'/'+recipeNo+'/'+turnNo,  
+			type:'DELETE',
+		
+			contentType:'application/json',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				console.log("상태값 :" + status + " Http에러메시지 :"+msg);
+			}, success:function(xhr) {
+				console.log(xhr.result);
+				menulist(menuId);
+			}
+		});
+	}
 }
 
 
 
 function optionInsert(){
 	var menuId = $("#mNum").val();
- 	alert(JSON.stringify($("#insertOptionDetail").serializeObject()));
+ 	//alert(JSON.stringify($("#insertOptionDetail").serializeObject()));
 	
  	$.ajax({
 		url: "options/"+storeid,
@@ -601,42 +645,57 @@ function optionInsert(){
 	    	}
 		}
 	});  
+ 	
+ 	$("#optionModal").modal("hide");
 }
 
 function optionDelete(){
 	var menuId = $("#mNum").val();
-	console.log(recipeNo);
-	 $.ajax({
-		url:'options/'+storeid+'/'+recipeNo,  
-		type:'DELETE',
-		
-		contentType:'application/json',
-		dataType:'json',
-		error:function(xhr,status,msg){
-			console.log("상태값 :" + status + " Http에러메시지 :"+msg);
-		}, success:function(xhr) {
-			console.log(xhr.result);
-			menulist(menuId);
-		}
-	});
+	//console.log(recipeNo);
+	
+	var up;
+	up = confirm('삭제하시겠습니까?');
+
+	if(up){
+		$.ajax({
+			url:'options/'+storeid+'/'+recipeNo,  
+			type:'DELETE',
+			
+			contentType:'application/json',
+			dataType:'json',
+			error:function(xhr,status,msg){
+				console.log("상태값 :" + status + " Http에러메시지 :"+msg);
+			}, success:function(xhr) {
+				console.log(xhr.result);
+				menulist(menuId);
+			}
+		});
+	}
 	 
 }
 
 
 function optionUpdate(){
-	console.log($("#optionTableForm").serializeObject());
+	//console.log($("#optionTableForm").serializeObject());
 	var menuId = $("#mNum").val();
-	$.ajax({
-		url: "options/"+storeid,
-		type: 'PUT',
-		dataType: 'json',
-		data: JSON.stringify($("#optionTableForm").serializeObject()),
-		contentType: 'application/json',
-		success: function(data) { 
-			menulist(menuId);
-		}
-		
-	});
+	
+	var up;
+	up = confirm('수정하시겠습니까?');
+
+	if(up){
+		$.ajax({
+			url: "options/"+storeid,
+			type: 'PUT',
+			dataType: 'json',
+			data: JSON.stringify($("#optionTableForm").serializeObject()),
+			contentType: 'application/json',
+			success: function(data) { 
+				menulist(menuId);
+			}
+			
+		});
+	}
+	
 	
 }
 
@@ -647,7 +706,7 @@ function optionUpdate(){
 			url : "/testFile.do",
 			enctype : "multipart/form-data",
 			success : function(result) {
-				alert(result);
+				alert("사진을 업로드 하였습니다.");
 			}
 		});
 		
@@ -736,7 +795,7 @@ function insertOption(){
 						</tbody>
 					</table>
 
-					<input type="button" value="추가" onclick="insertMenu()">
+					<input type="button" class="button btn btn-info" value="추가" onclick="insertMenu()">
 
 
 
@@ -756,7 +815,7 @@ function insertOption(){
 			<div style="width: 100%;" id="toggleTable">
 
 				<form id="menudetail">
-					<input type="button" value="확정" id="btnUpdate">
+					<input type="button" class="button btn btn-info" value="수정" id="btnUpdate">
 					<!-- <input type="button" value="삭제" id="btnMenuDelete" onclick="menuDelete()"> -->
 					<!-- <input type="hidden" id="sId" name="sId" value="SH001"> -->
 					<table border="1" class="table table-hover">
@@ -764,15 +823,15 @@ function insertOption(){
 
 						<tr>
 							<th>메뉴 번호</th>
-							<td><input type="text" id="mNum" name="mNum" readonly></td>
+							<td><input type="text" style="text-align:center; width:100px;" id="mNum" name="mNum" readonly></td>
 						</tr>
 						<tr>
 							<th>메뉴 이름</th>
-							<td><input type="text" id="mName" name="mName"></td>
+							<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="mName" name="mName"></td>
 						</tr>
 						<tr>
 							<th>메뉴 가격(원)</th>
-							<td><input type="text" id="mPrice" name="mPrice"></td>
+							<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="mPrice" name="mPrice"></td>
 						</tr>
 						<tr>
 							<th>카테고리</th>
@@ -800,27 +859,19 @@ function insertOption(){
 						</tr>
 						<tr>
 							<th rowspan="2">메뉴 사진</th>
-							<td>
-								<!-- <form id="fileForm" action="/imgUpload.do"
-									enctype="multipart/form-data">
-
-									form에 두껍게 처리 된 부분은 ajaxForm에서 설정해주어도 괜찮지만 여기에 이렇게 명시해주어도 괜찮다
-
-									<input type="file" name="testFile" id="testFile" />
-
-								</form>
- --> 
+							<td> 
  									<img id="menuImg" style="width: 200px; height: 200px;">
 							</td>
-							</form>
+							
 
 						</tr>
-
+							</form>	
 						<tr>
-							<form action="imgUpdate.do" encType="multipart/form-data" method="post">
+							<form action="imgUpdate.do" id = "imgUp" encType="multipart/form-data" method="post">
 								<td>
 									<input id="fileupdateName" type="hidden" name="mNum">
-									<input type="file" name="uploadFile" /> <input type="submit" value="사진제출">
+									<input type="file" name="uploadFile" />
+									<input type="submit" class="button btn btn-info" value="사진 제출">
 									</td>
 							</form>
 
@@ -837,7 +888,7 @@ function insertOption(){
 					<div id="recipeTablediv" style="padding: 5px;">
 						<hr>
 						<h3 align="center">
-							<input style = "text-align:center;" type="text" id="cmName" readonly>
+							<input style="text-align:center;" type="text" id="cmName" readonly>
 						</h3>
 						<h5 align="right">상세 레시피</h5>
 						<hr>
@@ -869,16 +920,16 @@ function insertOption(){
 
 						</table>
 						
-						<input type="button" value="레시피 등록" onclick="insertRecipe()">
+						<input type="button" class="button btn btn-info" value="레시피 등록" onclick="insertRecipe()">
 						
 						<!--  <input type="hidden" id="reciAqty" name="stAqty"> -->
 						
 						<div id="recipeDatailTable">
 						
 						<br>
-						<div align="right">
-							<input type="button" value="레시피 수정 " onclick="recipeUpdate()">
-							<input type="button" value="삭제 " onclick="recipeDelete()">
+						<div align="right" class="btn-group">
+							<input type="button" class="button btn btn-info" value="레시피 수정 " onclick="recipeUpdate()">
+							<input type="button" class="button btn btn-danger" value="삭제 " onclick="recipeDelete()">
 						</div>
 						
 						<table  border="1" class="table">
@@ -888,13 +939,13 @@ function insertOption(){
 								 -->
 								
 								<th>재료</th>
-								<td><input type="text" id="cmStname"></td>
+								<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="cmStname"></td>
 							</tr>
 							<tr>
 								<th>소 모 량</th>
 								<td>
-										<input type="text" id="consumee" name="consum"> 
-										<input type="text" id="stUnitt" name="stUnit"> 
+										<input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="consumee" name="consum"> 
+										<input type="text" style="text-align:center; width:100px;"id="stUnitt" name="stUnit" readonly> 
 								</td>
 							</tr>
 
@@ -933,13 +984,13 @@ function insertOption(){
 					</thead>
 					<tbody></tbody>
 				</table>
-				<input type="button" value=" 옵션 추가 " onclick="insertOption()">
-				
-				
+				<input type="button" class="button btn btn-info" value=" 옵션 추가 " onclick="insertOption()">
+				<br>
+				<br>
 				<div id = "optionDatailTable">
-					<div align="right">
-						<input type="button" value=" 옵션 수정 " onclick="optionUpdate()">
-							<input type="button" value=" 옵션 삭제 " onclick="optionDelete()">
+					<div align="right" class="btn-group">
+						<input type="button" class="button btn btn-info" value=" 옵션 수정 " onclick="optionUpdate()">
+							<input type="button" class="button btn btn-danger" value=" 옵션 삭제 " onclick="optionDelete()">
 					</div>
 					<table border="1" class="table table-hover">
 						<tr>
@@ -948,17 +999,17 @@ function insertOption(){
 						</tr>
 						<tr>
 							<th>옵 션 이 름</th>
-							<td><input type="text" id="opopname" name="opName"> 
+							<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="opopname" name="opName"> 
 										</td>
 						</tr>
 						<tr>
 							<th>소 모 량</th>
-							<td><input type="text" id="opopconsum" name="consum">
+							<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="opopconsum" name="consum">
 							<input type="text" id="opopunit" name="stUnit" readonly></td>
 						</tr>
 						<tr>
 							<th>옵 션 가 격</th>
-							<td><input type="text" id="opopprice" name="opPrice">원</td>
+							<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="opopprice" name="opPrice">원</td>
 						
 
 					</table>
@@ -993,11 +1044,11 @@ function insertOption(){
 
 										<tr>
 											<th>메뉴 이름</th>
-											<td><input type="text" id="mmName" name="mName"></td>
+											<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="mmName" name="mName"></td>
 										</tr>
 										<tr>
 											<th>메뉴 가격(원)</th>
-											<td><input type="text" id="mmPrice" name="mPrice"></td>
+											<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="mmPrice" name="mPrice"></td>
 										</tr>
 										<tr>
 											<th>카테고리</th>
@@ -1013,7 +1064,7 @@ function insertOption(){
 									<!-- hidden 으로 sId 넘기기 -->
 
 									
-									<input type="button" value="등록" id="btnInsert">
+									<input type="button" class="button btn btn-info" value="등록" id="btnInsert">
 								</form>
 
 							</div>
@@ -1053,12 +1104,8 @@ function insertOption(){
 							<tr>
 								<th>사 용 량</th>
 								<td colspan="3">
-										<input type="text" name="consum"> 
-										<select name="stUnit">
-										<option value="">선 택</option>
-										<option value="ML">ml</option>
-										<option value="G">g</option>
-										<option value="EA">EA</option>
+										<input type="text" style="text-align:center; width:100px; text-decoration: underline;" name="consum"> 
+										<input type="text" id="reciUnit" readonly>
 								</select></td>
 							</tr>
 
@@ -1070,7 +1117,7 @@ function insertOption(){
 							</tr>
 								</table>
 						
-									<input type="button" value="등록" onclick="recipeInsert()">
+									<input type="button" class="button btn btn-info" value="등록" onclick="recipeInsert()">
 								</form>
 
 							</div>
@@ -1096,19 +1143,22 @@ function insertOption(){
 									</tr>
 									<tr>
 										<th>옵션 이름</th>
-										<td><input type="text" id="opName" name="opName"></td>
+										<td><input type="text"  style="text-align:center; width:100px; text-decoration: underline;" id="opName" name="opName"></td>
 									</tr>
 									<tr>
 										<th>소모량</th>
-										<td><input type="text" id="consume" name="consum"></td>
+										<td>
+										<input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="consume" name="consum">
+										<input type="text" style="text-align:center; width:100px;" id="opstUnit">
+										</td>
 									</tr>
 									<tr>
 										<th>옵션 가격</th>
-										<td><input type="text" id="opPrice" name="opPrice">원</td>
+										<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="opPrice" name="opPrice">원</td>
 									</tr>
 									
 								</table>
-								<input type="button" value="등록" onclick="optionInsert()">
+								<input type="button" class="button btn btn-info" value="등록" onclick="optionInsert()">
 								<input type="hidden" id="omNum" name="mNum">
 								<input type="hidden" id="opcaNum" name="caNum">
 								<input type="hidden" id="opstNum" name="stNum">

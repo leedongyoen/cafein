@@ -36,7 +36,7 @@
 						var dayss = [days[i].week+ '월', parseInt(days[i].cnt), parseInt(days[i].atotal)];
 						chartData.push(dayss);
 						console.log(dayss);
-						
+					
 				}
 				
 				daydata = google.visualization.arrayToDataTable(chartData);	
@@ -76,6 +76,16 @@
 	$(window).resize(function() {
 		drawBasic();
 	});
+	
+	function dates(){
+	if($('#startDate').val()==''){
+		
+		$("#divDate").html('전체 기간');
+		} else {
+		$('#divDate').html($('#startDate').val());
+		}
+	};
+	
 	</script>
 </head>
 <body>
@@ -86,6 +96,7 @@
 		<input type ="date" name ="startDate" id="startDate">&nbsp;
 		<input type="button" value= "검색" class="btn btn-primary btn-sm" onclick="drawBasic()">
 	</p>
+<!-- 	<div id = "divDate"><input type="datetime"></div> -->
 	<div align="center" id="test_dataview2"></div><br>
 	<div>
 		<table align="center">

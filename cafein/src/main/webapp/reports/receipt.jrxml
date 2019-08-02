@@ -17,6 +17,7 @@
 	<style name="textStyle" pdfFontName="malgun.ttf" pdfEncoding="Identity-H"/>
 	<parameter name="p_store" class="java.lang.String"/>
 	<parameter name="p_opendate" class="java.lang.String"/>
+	<parameter name="p_name" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select a.*, b.*, c.*, d.*, e.*
 from (
@@ -225,13 +226,6 @@ from (
 				<textFieldExpression><![CDATA[$F{closeTime}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="textStyle" x="203" y="0" width="54" height="15" uuid="55aa498b-ca38-4150-917e-1baddfb90f60">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[마감 내역]]></text>
-			</staticText>
-			<staticText>
 				<reportElement style="textStyle" x="100" y="30" width="60" height="15" uuid="5dc31bc9-e9ea-4a30-af59-4935b3920dba">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -243,6 +237,11 @@ from (
 				</reportElement>
 				<text><![CDATA[마감일시]]></text>
 			</staticText>
+			<textField>
+				<reportElement style="textStyle" x="80" y="0" width="300" height="15" uuid="d270735c-1fc8-40cc-9870-8acfb6cfb563"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{p_name} + " 마감내역"]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<summary>

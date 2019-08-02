@@ -139,6 +139,15 @@ background-color: #E0F8F7
 </head>
 <body style="background: url(image/metalbk.jpg) no-repeat center center; background-size: cover;">
 <script type="text/javascript">
+function addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+//모든 콤마 제거
+function removeCommas(x) {
+    if(!x || x.length == 0) return "";
+    else return x.split(",").join("");
+}
 //포스기 버튼
 var sId='<%= session.getAttribute("sId") %>'; //헤더에있는 Id로 교체
 //jqgrid의 orderlist
@@ -205,7 +214,8 @@ var ordernum ="";
 	 	   var grid = $("#gridlist");
 	 	   var PSum = grid.jqGrid('getCol','Price',false,'sum');
 	 	   		grid.jqGrid("footerData", "set", {mName:"합계",Price:PSum});
-	 	   	$("#addpay").val(PSum);
+	 	   	$("#addpay").val(addCommas(PSum));
+	 	   $("#finalpay").val(addCommas(PSum));
 	 	   console.log(PSum);
 	 	   //		grid.jqGrid("footerData", "set", {mName:"합계",qty:QSum});
 	 	   }
@@ -242,7 +252,8 @@ var ordernum ="";
 			var PSum = grid.jqGrid('getCol','Price',false,'sum');
 		 	   var QSum = grid.jqGrid('getCol','oQty',false,'sum');
 		 	   		grid.jqGrid("footerData", "set", {mName:"합계", Price:PSum, qty:QSum});
-		 	   	$("#addpay").val(PSum);
+		 	   	$("#addpay").val(addCommas(PSum));
+		 	   $("#finalpay").val(addCommas(PSum));
 			
 		});
 	   
@@ -357,13 +368,17 @@ var ordernum ="";
 				console.log(sPSum);
 				 $("input:text[name='total']").val(sPSum);
 				 var now_mile = (totalmileage*1)-(mileage*1);
-				 $('#cusMile').val(now_mile);
+				 $('#cusMile').val(addCommas(now_mile));
 				 $('#reservebtn').attr('disabled',true);
-				 $("#addpay").val(sPSum);
+				 $("#addpay").val(addCommas(PSum));
+				 $("#usedmile").val("-"+mileage);
+				 $("#finalpay").val(addCommas(sPSum));
 			}
 		});
 		$('#reservecancelbtn').on("click",function(){
 			// 사용자가 적은 적립금
+			var PSum = $("#gridlist").jqGrid('getCol','Price',false,'sum');
+			$("#finalpay").val(PSum);
 			var mileage = $('#useMile').val();
 			var totalmileage =$('#cusMile').val();
 			// 총 가격
@@ -371,6 +386,7 @@ var ordernum ="";
 			 $("input:text[name='total']").val(totalmileage);
 			 
 			$('#useMile').val("0");
+			$("#usedmile").val("0");
 			$('#cusMile').val(totalmileage);
 			$('#reservebtn').attr('disabled',false);
 		});
@@ -388,13 +404,18 @@ var ordernum ="";
 			console.log(cId, mileage);
 			$("input:text[name='cId']").val(cId);
 			$("input:text[name='mileage']").val(mileage);
+			
+			
+			//////////////////////// removeCommas()//////////////////////////////////////////////////////////
 			var coin =$(".pay").val();
 			var getmoney=$("#getmoney").val();
 			var resultmoney=$("#resultmoney").val();
-			
-			if(coin == '0'){
+			var regetmoney = removeCommas(getmoney);
+			var reremoney =removeCommas(resultmoney);
+			var reco =removeCommas(coin);
+			if(reco == '0' ){
 				alert("주문건이 없습니다.");
-			}else if(getmoney =='0' || resultmoney<0){
+			}else if(regetmoney =='0' || reremoney<0){
 				alert("금액을 다시 확인해 주세요.");
 			}else{
 			
@@ -582,12 +603,21 @@ var ordernum ="";
  	//주문내역 검색 모달창
  	$(document).on("click","#orderList", function(){
  		$("#orderListModal").modal('show');
+ 		jQuery('#startDate').val(gettoday());
+		jQuery('#endDate').val(gettoday());
+		$('#orderlisttable tbody').empty();
+ 		    
  	});
  	
  	//회원검색창 띄우기
  	$(document).on("click","#customersearch", function(){
- 		
  		$("#cusSearchModal").modal('show');
+ 		$("#customerserch").val("");
+ 		$("#customertable tbody").empty();
+ 		
+		
+
+		
  	});
  	//회원검색후 나오는 값
  	function getCus(data){ 
@@ -615,7 +645,7 @@ var ordernum ="";
  		          .append($('<td><input type=\'text\' style=\'border:none\' readonly=\'readonly\' class=\'cusdata\' id=\'cusMile\' value=\''+mileage+'\'>'))
  		          .appendTo('#aftersearch tbody');
  		      
- 		}
+ 		}   
  	//결제하기
  	$(document).on("click","#payment", function(){
 
@@ -637,8 +667,9 @@ var ordernum ="";
 		$("<input>").attr({
 			type:"text",
 			name:"total",
-			value:sPSum})
+			value:addCommas(sPSum)})
 			.attr("class","pay")
+			.attr("style","text-align:right")
 			.appendTo("#payresult");
 		
 		//현금or카드 결제 
@@ -663,7 +694,7 @@ var ordernum ="";
 			var minus = parseInt($("#getmoney").val() || 0);
 			var sum = minus-PSum;
 
-			$("#resultmoney").val(sum);
+			$("#resultmoney").val(addCommas(sum));
 			
 		});
 		
@@ -714,18 +745,18 @@ var ordernum ="";
 						name:"really",
 						id: "table"+item.oNum
 					}).addClass(refund)
-					.append($('<td><input type=\'text\'id=\'oNum4\' value=\''+item.oNum+'\'>'))
-					.append($('<td><input type=\'text\'id=\'oDate4\' value=\''+item.oDate+'\'>'))
-					.append($('<td><input type=\'text\'id=\'cId4\' value=\''+item.cId+'\'>'))
-					.append($('<td><input type=\'text\'id=\'payMethod4\' value=\''+item.payMethod+'\'>'))
-					.append($('<td><input type=\'text\'id=\'total4\' value=\''+item.total+'\'>'))
-					.append($('<td><input type=\'text\'id=\'refuseReason4\' value=\''+item.refuseReason+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'oNum4\' value=\''+item.oNum+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'oDate4\' value=\''+item.oDate+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'cId4\' value=\''+item.cId+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'payMethod4\' value=\''+item.payMethod+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'total4\' value=\''+addCommas(item.total)+'\'>'))
+					.append($('<td><input type=\'text\' style=\'text-align:right; border:none;\' readonly=\'readonly\' id=\'refuseReason4\' value=\''+item.refuseReason+'\'>'))
 					.appendTo('#orderlisttable tbody');
 					
-					
-				});
+					        
+				});        
 				
-				for(i=data.paging.startPage; i<=data.paging.endPage; i++){
+				for(i=data.paging.startPage; i<=data.paging.endPage; i++){    
 					$("#pageul").append('<li class=\'page-item\'><a class=\'page-link\' href=javascript:getCusRefund('+i+')>'+i+'</a></li>');
 				}
 				}
@@ -733,6 +764,7 @@ var ordernum ="";
 					
 				
 			} 
+ 	//주문내역 디테일
  	function menudetail(onum,refuse){ 
  		
  		
@@ -778,23 +810,25 @@ var ordernum ="";
 				}); 
 		 		var refusebtn="";
 		 		if(refuse == ""){
-					refusebtn=$('<button>').attr({
+					refusebtn=$('<input>').attr({
 						type:"button",
-						onclick:"refund('"+onum+"')"
-					}).addClass(onum).append("환불하기");
+						onclick:"refund('"+onum+"')",
+						value:"환불하기",
+						'class':"btn btn-outline-dark"
+					}).addClass(onum);
 				}
 	 			$('#table'+onum).after($('<tr>').attr("class","optiontable").attr("id","onum").css("background-color","#F6D8CE")
 	 					.append($('<td>').html("메뉴명 : <br>"+test).attr("colspan","2"))
 						.append($('<td>').html("고객성함 : " +data[0].cName))
 						.append($('<td>').html("사용한 마일리지 : " +data[0].mileage))
-						.append($('<td>').html("총 금액 : "+data[0].total+"원"))
+						.append($('<td>').html("총 금액 : "+addCommas(data[0].total)+"원"))
 						.append($('<td>').html(refusebtn))
 						);
 		 			
 			}
 			
 			});
-		
+		    
 			}
  	
  	function refund(onum){
@@ -813,7 +847,6 @@ var ordernum ="";
 			}
 				
 			}); 
- 		
  		
  	}
  	
@@ -889,6 +922,7 @@ var ordernum ="";
 		var type ="cusorderOK";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum); //cId로 교체
+		aftercallorder();
 	}
  	function callorderNO(){
 		// 소켓 연결
@@ -898,11 +932,10 @@ var ordernum ="";
 		var type ="cusorderNO";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum);
+		aftercallorder();
 	}
- 	
- 	   
-
 </script>
+<audio id='audio_play' src='resources/alarm.mp3'></audio> 
 <div class="left">
 <form class="form-borizontal" name="girdForm" action="customerorder" method="POST">
     <table id="gridlist"></table>
@@ -970,10 +1003,12 @@ var ordernum ="";
 
 </div>
 <div style="text-align:right; padding:0px 300px 0px 0px; font-size: xx-large;">
-<a id="insertmoney" style="color:white">총 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="addpay" value="0" readonly="readonly" > 원</a>
+<a style="color:white">주문하신 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="addpay" value="0" readonly="readonly" >원</a>
+<br>
+<a style="color:white">사용된 마일리지 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="usedmile" value="0" readonly="readonly" >P</a>
+<br>
+<a style="color:white">결제 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="finalpay" value="0" readonly="readonly" >원</a>
 </div>
-
-
 	<div style="text-align:left">
 	<input type="button" id="clearRow" class="btn btn-outline-light" value="전체취소">
 	<input type="button" id="deleteRow" class="btn btn-outline-light" value="선택취소">
@@ -1099,15 +1134,15 @@ var ordernum ="";
 							<thead>
 							<tr> 
 								<th>받으신 돈</th>
-								<td><input type="text" id="getmoney" class="numOnly num_sum"></td>
+								<td><input type="text" style="text-align:right;" id="getmoney" class="numOnly num_sum"></td>
 							</tr>
 							<tr> 
 								<th>받으실 돈</th>
-								<td id="payresult" class="numOnly num_sum" ></td>
+								<td id="payresult"  class="numOnly num_sum" ></td>
 							</tr>
 							<tr> 
 								<th>거스름 돈</th>
-								<td><input type="text" id="resultmoney" class="numOnly num_sum" readonly="readonly"></td>
+								<td><input type="text" style="text-align:right;" id="resultmoney" class="numOnly num_sum" readonly="readonly"></td>
 							</tr>
 							</thead>
 						</table>
