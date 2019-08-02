@@ -39,6 +39,11 @@ public class MenuDAO {
 		return mybatis.selectList("MenuDAO.getMenuList", vo);
 	}
 	
+	public List<MenuVO> getMenuListAll(MenuVO vo){
+		System.out.println("-> mybatis getMenuListAll procedure 을 이용함");
+		return mybatis.selectList("MenuDAO.getMenuListAll", vo);
+	}
+	
 	public int insertMenuProc1(MenuVO vo) {
 		System.out.println("-> mybatis insertMenuProc1()");
 		return mybatis.insert("MenuDAO.insertMenuProc1",vo);

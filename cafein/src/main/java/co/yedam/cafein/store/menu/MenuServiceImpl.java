@@ -16,7 +16,9 @@ public class MenuServiceImpl{
 	public List<MenuVO> getMenuList(MenuVO vo) {
 		return menuDao.getMenuList(vo);
 	}
-	
+	public List<MenuVO> getMenuListAll(MenuVO vo){
+		return menuDao.getMenuListAll(vo);
+	}
 	public int insertUser(MenuVO vo) {		
 		return menuDao.insertMenu(vo);
 	}

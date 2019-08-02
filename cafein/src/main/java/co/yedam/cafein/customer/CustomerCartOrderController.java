@@ -62,7 +62,7 @@ public class CustomerCartOrderController {
 			MenuVO vo3 = new MenuVO();
 			mv.addObject("optionname", service.getOptionName(vo));		
 			mv.addObject("storename",service2.getStoreList(vo2) );
-			mv.addObject("menuimg", service3.getMenuList(vo3));
+			mv.addObject("menuimg", service3.getMenuListAll(vo3));
 			
 			mv.setViewName("customer/cartmng");
 			return mv;

@@ -102,22 +102,22 @@ $(function(){
 				state="HOT";
 			}
 			
+			//alert("#CartList_"+local_cart[i].sId+" div a");
 			
-			$("#CartList div a").html(local_cart[i].sName);
-			$("#CartList div a").val(local_cart[i].sId);
+			$("#CartList_"+local_cart[i].sId+" div a").html(local_cart[i].sName);
 			$('<tr>')
 			.append($('<td rowspan="2">').css("width","100px").append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i ,onClick:"cartlist(this.value)",})))
 			.append($('<td rowspan="2">').css("width","100px"))    //.html()
 			.append($('<td rowspan="2">').css("width","150px"))
 			.append($('<td>').css("width","300px").html(local_cart[i].mName))   //.html(local_cart[i].mName))
 			.append($('<td rowspan="2">').html(state).css("width","100px"))    //.html(state))
-			.append($('<td rowspan="2">').css("width","150px").append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"}).css("background-color","#A9F5E1").css("color","white").css("border","none")).append($('<input>').attr({type: "text", name:"orderqty",size:'3', id:"qty"+i,value:local_cart[i].qty}).css("text-align","")).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"}).css("background-color","#A9F5E1").css("color","white").css("border","none")))
+			.append($('<td rowspan="2">').css("width","150px").append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"}).css("background-color","#A9F5E1").css("color","white").css("border","none")).append($('<input>').attr({type: "text", name:"orderqty",size:'3', id:"qty"+i,value:local_cart[i].qty}).css("text-align","center")).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"}).css("background-color","#A9F5E1").css("color","white").css("border","none")))
 			.append($('<td rowspan="2">').css("width","150px").html(local_cart[i].totalPrice))
 			.append($('<input>').attr({type:"hidden", id:"price"+i, value:local_cart[i].totalPrice}).css("color","#04B4AE"))
-			.appendTo("#CartList table tbody");
+			.appendTo("#CartList_"+local_cart[i].sId+" table tbody");
 		
 			
-			$('<tr>').append($('<td>').append($('<ul>').addClass("ulstyle"))).appendTo("#CartList table tbody");
+			$('<tr>').append($('<td>').append($('<ul>').addClass("ulstyle"))).appendTo("#CartList_"+local_cart[i].sId+" table tbody");
 			
 			var storeName = "";
 			var imgName="";
@@ -137,8 +137,8 @@ $(function(){
 					}
 			}
 			
-			$('<img>').attr("src","${pageContext.request.contextPath}/image/"+imgName).css("width","100px").css("padding","5px").appendTo($('#CartList div table tbody tr:eq('+(2*i)+') td:eq(2)'));
-			$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
+			$('<img>').attr("src","${pageContext.request.contextPath}/image/"+imgName).css("width","100px").css("padding","5px").appendTo($('#CartList_'+local_cart[i].sId+' div table tbody tr:eq('+(2*i)+') td:eq(2)'));
+			$('#CartList_'+local_cart[i].sId+' div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
 			
 			//$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
 				
@@ -147,16 +147,22 @@ $(function(){
 				for(var j = 0;j<local_cart[i].cuoptionlist.length;j++){
 					var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuoptionlist[j]);
 				
-					$('<li>').addClass("listyle").html(detail).appendTo("#CartList table tbody tr:eq("+(2*i+1)+") ul");
+					$('<li>').addClass("listyle").html(detail).appendTo("#CartList_"+local_cart[i].sId+" table tbody tr:eq("+(2*i+1)+") ul");
 					
 				}
 			} 
+			
+			
+			
 					
+			$("#orderCartForm_"+local_cart[i].sId).css("display","block");
 						//$('<li>').html(local_cart[i].cuNumList[j]);
 						//console.log($test);
 						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
 					//$("#CartList div p span strong").html(sumtotalPrice);
 		}
+		
+		
 		
 	}
 	
@@ -181,7 +187,7 @@ function plus(id_num) {
 		$('#qty'+p_index).val(qty);
 		$('#orderCartForm div table tbody tr:eq('+(p_index*2)+') td:eq(6)').text(mPrice*qty);
 	
-	
+		cartlist();
 }
 
 function minus(id_num) {
@@ -206,6 +212,7 @@ function minus(id_num) {
 		$('#orderCartForm div table tbody tr:eq('+(m_index*2)+') td:eq(6)').text(mPrice*qty);
 	}
 	
+	cartlist();
 
 }
 
@@ -215,7 +222,7 @@ function allCheck(val){
 }
 
 function cartlist(val){
-	console.log(val);
+	//console.log(val);
 	var allPrice = 0;
 	
 	$("input[name=cartnumlist]:checked").each(function() {
@@ -239,40 +246,51 @@ function orderDeleteClick(){
 	var ordercart = $("#orderCartForm").serializeObject();
 	var arr = JSON.parse(localStorage.getItem("cartlist"));
 	
-	//alert(arr);
-	
- 	
-	 for(var k = arr.length-1;k>=0;k--){
-		//console.log("ordercart.cartnumlist[k]: "+ordercart.cartnumlist[k]+"  k: "+k);
-		for(var m = 0;m<ordercart.cartnumlist.length;m++){
-			if(ordercart.cartnumlist[m]==k){
-				arr.splice(k,1);
-				console.log("k: "+k);
+	//alert(ordercart.cartnumlist);
+	if(ordercart.cartnumlist !=null){
+		
+		for(var k = arr.length-1;k>=0;k--){
+			//console.log("ordercart.cartnumlist[k]: "+ordercart.cartnumlist[k]+"  k: "+k);
+			for(var m = 0;m<ordercart.cartnumlist.length;m++){
+				if(ordercart.cartnumlist[m]==k){
+					arr.splice(k,1);
+					console.log("k: "+k);
+				}
 			}
 		}
+		local_cart=JSON.stringify(arr);
+		localStorage.setItem("cartlist",local_cart);
+		
+	}else{
+		alert("선택이 비어있습니다.");
 	}
-	local_cart=JSON.stringify(arr);
-	localStorage.setItem("cartlist",local_cart);
+ 	
+	 
 	//alert(local_cart); 
 	window.location.reload(true); 
 }
 
 function orderBtnClick(){
+	
+	var up;
+	
+	up = confirm('주문하겠습니까?');
 
-	var ordercart = $("#orderCartForm").serializeObject();
-	var arr = [];
-	
-	
-	for(var k = 0;k<ordercart.cartnumlist.length;k++){
-		arr.push(local_cart[ordercart.cartnumlist[k]]);
+	if(up){
+		
+		var ordercart = $("#orderCartForm").serializeObject();
+		var arr = [];
+		
+		
+		for(var k = 0;k<ordercart.cartnumlist.length;k++){
+			arr.push(local_cart[ordercart.cartnumlist[k]]);
+		}
+		
+		//alert(JSON.stringify(arr)); 
+
+	 $('[name="jsonData"]').val(JSON.stringify(arr));
+		document.fCart.submit();
 	}
-	
-	alert(JSON.stringify(arr)); 
-
-	//alert 로 선택한 리스트와 수량이 넘어옴
-
- $('[name="jsonData"]').val(JSON.stringify(arr));
-	document.fCart.submit(); 
 	
 }
 
@@ -326,8 +344,15 @@ function getOptionNaming(mnumber, stnumber){
 			</script>
 		</c:forEach>
 		
-		<form id="orderCartForm" name="orderCartForm" action="cartorder" method="POST">
-		<div style="padding: 3px; display: inline-block; text-align: center; width:70%;" id="CartList"> <!-- border: 1px solid orange; -->
+		
+		
+		
+		<!--  매장별로 form을 반복문  -->
+		<c:forEach var="stidname" items="${storename}">
+			
+			
+	<form id="orderCartForm_${stidname.sid}" name="orderCartForm_${stidname.sid}" action="cartorder" method="POST" style="display:none;">
+		<div style="padding: 3px; display: inline-block; text-align: center; width:70%;" id="CartList_${stidname.sid}"> <!-- border: 1px solid orange; -->
 			<!-- display: inline-block; -->
 
 			
@@ -368,7 +393,13 @@ function getOptionNaming(mnumber, stnumber){
 			<button type="button" class="button btn btn-danger" onclick="orderDeleteClick()">삭제</button>
 			<!-- <a href="javascript:history.go(-1)" class="button">돌아가기</a> -->
 		</div> 
-		</form>  
+		</form>
+		
+		
+		
+	</c:forEach>
+		
+  
 		 
 		
 	</div>
