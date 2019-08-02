@@ -211,14 +211,14 @@ from (
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement style="textStyle" x="267" y="30" width="93" height="15" uuid="2a5eb9a2-f62f-4645-932d-71560c557e9b">
+				<reportElement style="textStyle" x="247" y="30" width="113" height="15" uuid="2a5eb9a2-f62f-4645-932d-71560c557e9b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{openTime}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="268" y="45" width="92" height="15" uuid="bef1cfba-84c7-4789-896c-32fd4d402770">
+				<reportElement style="textStyle" x="248" y="45" width="112" height="15" uuid="bef1cfba-84c7-4789-896c-32fd4d402770">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right"/>
@@ -303,7 +303,7 @@ from (
 				<text><![CDATA[현금관리]]></text>
 			</staticText>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="382" width="100" height="15" uuid="87911936-11f3-4d81-8726-12a51b302fd9">
+				<reportElement style="textStyle" x="240" y="382" width="120" height="15" uuid="87911936-11f3-4d81-8726-12a51b302fd9">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -311,7 +311,7 @@ from (
 				<textFieldExpression><![CDATA[$F{totalSum}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="437" width="100" height="15" uuid="9e851d0f-1633-49d3-95cd-24dd93ce6f78">
+				<reportElement style="textStyle" x="240" y="437" width="120" height="15" uuid="9e851d0f-1633-49d3-95cd-24dd93ce6f78">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -319,7 +319,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cash}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="452" width="100" height="15" uuid="0c6ef015-aeee-4199-b75a-56229cc61c19">
+				<reportElement style="textStyle" x="240" y="452" width="120" height="15" uuid="0c6ef015-aeee-4199-b75a-56229cc61c19">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -327,7 +327,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cashSales}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="467" width="100" height="15" uuid="b215065c-dcc7-428f-8245-6cab7857c363">
+				<reportElement style="textStyle" x="240" y="467" width="120" height="15" uuid="b215065c-dcc7-428f-8245-6cab7857c363">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -335,7 +335,7 @@ from (
 				<textFieldExpression><![CDATA[$F{defaultCash}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="482" width="100" height="15" uuid="5a8c3599-b124-4fca-b034-ecb6e9a06186">
+				<reportElement style="textStyle" x="240" y="482" width="120" height="15" uuid="5a8c3599-b124-4fca-b034-ecb6e9a06186">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -343,7 +343,7 @@ from (
 				<textFieldExpression><![CDATA[$F{orCash}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="260" y="497" width="100" height="15" uuid="6c9ce939-c706-4026-adde-75f1f08aeebd">
+				<reportElement x="240" y="497" width="120" height="15" uuid="6c9ce939-c706-4026-adde-75f1f08aeebd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -351,7 +351,7 @@ from (
 				<textFieldExpression><![CDATA[$F{mileageSum}+"P"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="527" width="100" height="15" uuid="3ea9dc22-2681-41b9-b966-347aa617a33c">
+				<reportElement style="textStyle" x="240" y="527" width="120" height="15" uuid="3ea9dc22-2681-41b9-b966-347aa617a33c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -359,7 +359,7 @@ from (
 				<textFieldExpression><![CDATA[$F{netIncome}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="557" width="100" height="15" uuid="f6af0b02-3e1b-4a85-852e-fdd7c28f4241">
+				<reportElement style="textStyle" x="240" y="557" width="120" height="15" uuid="f6af0b02-3e1b-4a85-852e-fdd7c28f4241">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -397,7 +397,7 @@ from (
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement style="textStyle" x="260" y="65" width="100" height="15" uuid="6ac8a303-007d-4e3a-82b1-80f39124c34b">
+				<reportElement style="textStyle" x="240" y="65" width="120" height="15" uuid="6ac8a303-007d-4e3a-82b1-80f39124c34b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -405,7 +405,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cardDelivery}+"원"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="260" y="50" width="100" height="15" uuid="5881c5e5-0db7-4f71-8339-3d3aa2b478a2">
+				<reportElement style="textStyle" x="240" y="50" width="120" height="15" uuid="5881c5e5-0db7-4f71-8339-3d3aa2b478a2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -413,7 +413,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cashDelivery}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="155" width="100" height="15" uuid="479f89c1-6756-4efe-b36f-a56cae2dd1e1">
+				<reportElement style="textStyle" x="240" y="155" width="120" height="15" uuid="479f89c1-6756-4efe-b36f-a56cae2dd1e1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -421,7 +421,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cardtakeout}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="140" width="100" height="15" uuid="ce20a06b-7507-4fa4-8a20-18b77f21b1a1">
+				<reportElement style="textStyle" x="240" y="140" width="120" height="15" uuid="ce20a06b-7507-4fa4-8a20-18b77f21b1a1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -429,7 +429,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cashtakeout}+"원"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="65" width="100" height="15" uuid="35e2114b-2a99-4c9e-b6e8-38c34f93a9cb">
+				<reportElement style="textStyle" x="120" y="65" width="120" height="15" uuid="35e2114b-2a99-4c9e-b6e8-38c34f93a9cb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -437,7 +437,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cardDeliveryCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="50" width="100" height="15" uuid="35362fa8-6e74-4ca4-937c-440b170d4290">
+				<reportElement style="textStyle" x="120" y="50" width="120" height="15" uuid="35362fa8-6e74-4ca4-937c-440b170d4290">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -445,7 +445,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cashDeliveryCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="155" width="100" height="15" uuid="81ad8207-a3ec-4957-ae20-7db8710c8ca2">
+				<reportElement style="textStyle" x="120" y="155" width="120" height="15" uuid="81ad8207-a3ec-4957-ae20-7db8710c8ca2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -453,7 +453,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cardtakeoutCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="140" width="100" height="15" uuid="3535c1a1-9587-47ff-91c6-3a5ba939b10e">
+				<reportElement style="textStyle" x="120" y="140" width="120" height="15" uuid="3535c1a1-9587-47ff-91c6-3a5ba939b10e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -528,7 +528,7 @@ from (
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement style="textStyle" x="140" y="80" width="100" height="15" uuid="94094244-51ed-4b4b-9d88-a6fe737bd069">
+				<reportElement style="textStyle" x="120" y="80" width="120" height="15" uuid="94094244-51ed-4b4b-9d88-a6fe737bd069">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -536,7 +536,7 @@ from (
 				<textFieldExpression><![CDATA[$F{deliveryTotalCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="170" width="100" height="15" uuid="514f6592-8f7a-402b-a17f-9f9287e173cd">
+				<reportElement style="textStyle" x="120" y="170" width="120" height="15" uuid="514f6592-8f7a-402b-a17f-9f9287e173cd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -544,7 +544,7 @@ from (
 				<textFieldExpression><![CDATA[$F{takeoutTotalCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="260" y="80" width="100" height="15" uuid="57351d5e-5ea3-4796-942f-33f285474a06">
+				<reportElement style="textStyle" x="240" y="80" width="120" height="15" uuid="57351d5e-5ea3-4796-942f-33f285474a06">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -552,7 +552,7 @@ from (
 				<textFieldExpression><![CDATA[$F{deliveryTotalSum}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="170" width="100" height="15" uuid="5c1f4c10-1205-43db-bf6f-293f4269f1f4">
+				<reportElement style="textStyle" x="240" y="170" width="120" height="15" uuid="5c1f4c10-1205-43db-bf6f-293f4269f1f4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -566,7 +566,7 @@ from (
 				</graphicElement>
 			</line>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="245" width="100" height="15" uuid="549c7a24-e298-4d2f-a225-e17b35b10332">
+				<reportElement style="textStyle" x="240" y="245" width="120" height="15" uuid="549c7a24-e298-4d2f-a225-e17b35b10332">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -574,7 +574,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cardRefundSum}+"원"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="230" width="100" height="15" uuid="b5f413e0-e074-4433-8d56-5353b7773a11">
+				<reportElement style="textStyle" x="240" y="230" width="120" height="15" uuid="b5f413e0-e074-4433-8d56-5353b7773a11">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -582,7 +582,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cashRefundSum}+"원"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="230" width="100" height="15" uuid="9ae37015-cf74-4a52-bbeb-10e4105095e2">
+				<reportElement style="textStyle" x="120" y="230" width="120" height="15" uuid="9ae37015-cf74-4a52-bbeb-10e4105095e2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -590,7 +590,7 @@ from (
 				<textFieldExpression><![CDATA[$F{cashRefundCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="245" width="100" height="15" uuid="783474c8-eb6c-4e1d-ab7c-9bbac979a07a">
+				<reportElement style="textStyle" x="120" y="245" width="120" height="15" uuid="783474c8-eb6c-4e1d-ab7c-9bbac979a07a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -614,7 +614,7 @@ from (
 				<text><![CDATA[합계]]></text>
 			</staticText>
 			<textField>
-				<reportElement style="textStyle" x="140" y="260" width="100" height="15" uuid="877b0892-7b48-4975-b1f7-eeae23d749bb">
+				<reportElement style="textStyle" x="120" y="260" width="120" height="15" uuid="877b0892-7b48-4975-b1f7-eeae23d749bb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -622,7 +622,7 @@ from (
 				<textFieldExpression><![CDATA[$F{RefundCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement style="textStyle" x="260" y="260" width="100" height="15" uuid="0655ad37-f32b-4279-ae8b-f98f587a8abb">
+				<reportElement style="textStyle" x="240" y="260" width="120" height="15" uuid="0655ad37-f32b-4279-ae8b-f98f587a8abb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -662,7 +662,7 @@ from (
 				<text><![CDATA[환불포인트]]></text>
 			</staticText>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="260" y="321" width="100" height="15" uuid="db71d32b-a287-47f3-9419-a34763aa3ef7">
+				<reportElement x="240" y="321" width="120" height="15" uuid="db71d32b-a287-47f3-9419-a34763aa3ef7">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -670,7 +670,7 @@ from (
 				<textFieldExpression><![CDATA[$F{mileage}+"P"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="321" width="100" height="15" uuid="94f4c041-ef16-43e1-a752-c2634eac37c3">
+				<reportElement style="textStyle" x="120" y="321" width="120" height="15" uuid="94f4c041-ef16-43e1-a752-c2634eac37c3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -678,7 +678,7 @@ from (
 				<textFieldExpression><![CDATA[$F{minusMileageCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="260" y="336" width="100" height="15" uuid="2342447d-ab7f-4d74-993d-ad2f5ea0214d">
+				<reportElement x="240" y="336" width="120" height="15" uuid="2342447d-ab7f-4d74-993d-ad2f5ea0214d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -686,7 +686,7 @@ from (
 				<textFieldExpression><![CDATA[$F{addmileage}+"P"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="336" width="100" height="15" uuid="d1d376c5-3b90-49f0-b8f5-76a782af7b39">
+				<reportElement style="textStyle" x="120" y="336" width="120" height="15" uuid="d1d376c5-3b90-49f0-b8f5-76a782af7b39">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -694,7 +694,7 @@ from (
 				<textFieldExpression><![CDATA[$F{addMileageCnt}+" 건"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement x="260" y="351" width="100" height="15" uuid="c7f483c0-91fb-447c-bd0a-f70a8031099c">
+				<reportElement x="240" y="351" width="120" height="15" uuid="c7f483c0-91fb-447c-bd0a-f70a8031099c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -702,7 +702,7 @@ from (
 				<textFieldExpression><![CDATA[$F{refundmileage}+"P"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="textStyle" x="140" y="351" width="100" height="15" uuid="d9290eed-5a20-4896-8607-871bbc92c06a">
+				<reportElement style="textStyle" x="120" y="351" width="120" height="15" uuid="d9290eed-5a20-4896-8607-871bbc92c06a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
