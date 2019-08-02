@@ -213,7 +213,7 @@ table tr th {
 </head>
 <body>
 <!-- <input type="button" onclick="location.href='maintest.do'" value="메인화면 테스트"> -->
-<input type = "button" onclick="location.href='errorpag'" value = "에러 처리 페이지 테스트">
+<!-- <input type = "button" onclick="location.href='errorpag'" value = "에러 처리 페이지 테스트"> -->
 <!-- 시간별 매출 그래프 -->
 <br>
 	<h3 align="center">시간별 통계</h3>
