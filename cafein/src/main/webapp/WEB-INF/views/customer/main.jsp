@@ -120,6 +120,9 @@ table {
       min-width: 100%;
       min-height: 200px;
     } 
+ .cursor {cursor: pointer;}
+
+출처: https://intro0517.tistory.com/69 [전디버거의 코딩이야기]
 </style>
 </head>
 <body>
@@ -155,9 +158,9 @@ table {
 <br><br>
 <div class = "container" align="center">
 	<div class="row">
-		<div class="col-sm">
-		  <table border = "1" id="mainlikestorelist"
-		  	onclick = "location.href='${pageContext.request.contextPath}/likestorelist.do'">
+		<div class="col-sm" >
+		  <table  border = "1" id="mainlikestorelist" 
+		  	onclick = "location.href='${pageContext.request.contextPath}/likestorelist.do'" style="cursor:pointer">
 			<thead>
 				<tr>
 					
@@ -170,7 +173,7 @@ table {
 		</div>
 		<div class="col-sm">
 		  <table border = "1" id="mainlikemenulist"
-		  onclick = "location.href='${pageContext.request.contextPath}/likemenulist.do'">
+		  onclick = "location.href='${pageContext.request.contextPath}/likemenulist.do'" style="cursor:pointer">
 			<thead>
 				<tr>
 					
@@ -183,7 +186,7 @@ table {
 		</div>
 		<div class="col-sm">
 		  <table border = "1" id ="totalreserve" 
-		  onclick = "location.href='${pageContext.request.contextPath}/reservelist.do'">
+		  onclick = "location.href='${pageContext.request.contextPath}/reservelist.do'" style="cursor:pointer">
 			<thead>
 			<tr>
 				<th><label>적립금</label></th>
@@ -195,7 +198,7 @@ table {
 		</div>
 		<div class="col-sm">
 		  <table border = "1" id="mainorderlist"
-		  onclick = "location.href='${pageContext.request.contextPath}/orderlist.do'">
+		  onclick = "location.href='${pageContext.request.contextPath}/orderlist.do'" style="cursor:pointer">
 			<thead>
 				<tr >
 					<th><label>총 사용 금액</label></th>
