@@ -24,8 +24,14 @@ span {
 	display:inline-block;
 	width:300px;
 }
-.sales {
-	width:175px;
+.storeTime {
+	width:130px;
+}
+.sales1 {
+	width:200px;
+}
+.sales2 {
+	width:100px;
 }
 p {
 	text-align:center;
@@ -39,7 +45,10 @@ p {
   margin: 0;
   padding: 20%;
 }
-
+.cashSort {
+	text-align:right;
+	width:90px;
+}
 </style>
 <script>
 
@@ -828,11 +837,11 @@ p {
 								<!-- 오픈, 마감 일시 -->
 								<li class="liClass">
 									<span>오픈일시</span>
-									<label id="opentime"></label>
+									<span id="opentime" class="storeTime"></span>
 								</li>
 								<li class="liClass">
 									<span>마감일시</span>
-									<label id="closetime"></label>
+									<span id="closetime" class="storeTime"></span>
 								</li>
 								<hr>
 								<!-- 매출 -->
@@ -841,19 +850,19 @@ p {
 								</li>
 								<hr>
 								<li class="liClass">
-									<span class="sales">현금</span>
-									<span class="sales" id="takeoutCashCnt"></span>
-									<label id="takeoutCashSum"></label>
+									<span class="sales1">현금</span>
+									<span class="sales2" id="takeoutCashCnt"></span>
+									<span id="takeoutCashSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
-									<span class="sales">카드</span>
-									<span class="sales" id="takeoutCardCnt"></span>
-									<label id="takeoutCardSum"></label>
+									<span class="sales1">카드</span>
+									<span class="sales2" id="takeoutCardCnt"></span>
+									<span id="takeoutCardSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
-									<span class="sales">합계</span>
-									<span class="sales" id="takeoutSumCnt"></span>
-									<label id="takeoutSum"></label>
+									<span class="sales1">합계</span>
+									<span class="sales2" id="takeoutSumCnt"></span>
+									<span id="takeoutSum" class="cashSort"></span>
 								</li>
 								<hr>
 								<li class="liClass">
@@ -861,19 +870,19 @@ p {
 								</li>
 								<hr>
 								<li class="liClass">
-									<span class="sales">현금</span>
-									<span class="sales" id="deliveryCashCnt"></span>
-									<label id="deliveryCashSum"></label>
+									<span class="sales1">현금</span>
+									<span class="sales2" id="deliveryCashCnt"></span>
+									<span id="deliveryCashSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
-									<span class="sales">카드</span>
-									<span class="sales" id="deliveryCardCnt"></span>
-									<label id="deliveryCardSum"></label>
+									<span class="sales1">카드</span>
+									<span class="sales2" id="deliveryCardCnt"></span>
+									<span id="deliveryCardSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
-									<span class="sales">합계</span>
-									<span class="sales" id="deliverySumCnt"></span>
-									<label id="deliverySum"></label>
+									<span class="sales1">합계</span>
+									<span class="sales2" id="deliverySumCnt"></span>
+									<span id="deliverySum" class="cashSort"></span>
 								</li>
 								<hr>
 								<li class="liClass">
@@ -881,19 +890,19 @@ p {
 								</li>
 								<hr>
 								<li class="liClass">
-									<span class="sales">포인트사용</span>
-									<span class="sales" id="pointMinusCnt"></span>
-									<label id="pointMinusSum"></label>
+									<span class="sales1">포인트사용</span>
+									<span class="sales2" id="pointMinusCnt"></span>
+									<span id="pointMinusSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
-									<span class="sales">포인트적립</span>
-									<span class="sales" id="pointPlusCnt"></span>
-									<label id="pointPlusSum"></label>
+									<span class="sales1">포인트적립</span>
+									<span class="sales2" id="pointPlusCnt"></span>
+									<span id="pointPlusSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
-									<span class="sales">환불포인트</span>
-									<span class="sales" id="refundPointCnt"></span>
-									<label id="refundPointSum"></label>
+									<span class="sales1">환불포인트</span>
+									<span class="sales2" id="refundPointCnt"></span>
+									<span id="refundPointSum" class="cashSort"></span>
 								</li>
 								<hr>
 								<li class="liClass">
@@ -901,24 +910,24 @@ p {
 								</li>
 								<hr>
 								<li class="liClass">
-									<span class="sales">현금</span>
-									<span class="sales" id="refundCashCnt"></span>
-									<label id="refundCashSum"></label>
+									<span class="sales1">현금</span>
+									<span class="sales2" id="refundCashCnt"></span>
+									<span id="refundCashSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
-									<span class="sales">카드</span>
-									<span class="sales" id="refundCardCnt"></span>
-									<label id="refundCardSum"></label>
+									<span class="sales1">카드</span>
+									<span class="sales2" id="refundCardCnt"></span>
+									<span id="refundCardSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
-									<span class="sales">합계</span>
-									<span class="sales" id="refundSumCnt"></span>
-									<label id="refundSum"></label>
+									<span class="sales1">합계</span>
+									<span class="sales2" id="refundSumCnt"></span>
+									<span id="refundSum" class="cashSort"></span>
 								</li>
 								<hr>
 								<li class="liClass">
 									<span>총매출</span>
-									<label id="storeTotalSum"></label>
+									<span id="storeTotalSum" class="cashSort"></span>
 								</li>
 								<hr>
 								<!-- 시재 -->
@@ -927,33 +936,33 @@ p {
 								</li>
 								<li>
 									<span>현금시재</span>
-									<label id="storeCash"></label>
+									<span id="storeCash" class="cashSort"></span>
 								</li>
 								<li class="liClass">
 									<span>현금매출</span>
-									<label id="storeCashSum"></label>
+									<span id="storeCashSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
 									<span>준비금</span>
-									<label id="storeDefaultCash"></label>
+									<span id="storeDefaultCash" class="cashSort"></span>
 								</li>
 								<li class="liClass">
 									<span>영업지출금</span>
-									<label id="storeOrSum"></label>
+									<span id="storeOrSum" class="cashSort"></span>
 								</li>
 								<li class="liClass">
 									<span>포인트사용</span>
-									<label id="storeCashPoint"></label>
+									<span id="storeCashPoint" class="cashSort"></span>
 								</li>
 								<hr>
 								<li class="liClass">
 									<span>순수익</span>
-									<label id="storeNetIncome"></label>
+									<span id="storeNetIncome" class="cashSort"></span>
 								</li>
 								<hr>
 								<li class="liClass">
 									<span>차액</span>
-									<label id="storeDefference"></label>
+									<span id="storeDefference" class="cashSort"></span>
 								</li>
 								<hr>
 							</ul>
@@ -962,7 +971,7 @@ p {
 				
 				</div>
 				<div class="modal-footer">		
-					<button type="button" class="btn btn-outline-dark" data-dismiss="modal" onclick="location.href='storemain.do'">Close</button>
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal" onclick="location.href='closedetails.do'">Close</button>
 				</div>
 			</div>
 		</div>

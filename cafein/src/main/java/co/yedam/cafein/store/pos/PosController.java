@@ -327,10 +327,13 @@ public class PosController {
 		  
 		  int mileageresult;
 			// 해당 매장의 마일리지 서비스를 할 경우에만.
+		  	System.out.println("===== 마일리지 서비스 "+insertParam.get("stMileageService"));
+			System.out.println("===== 마일리지 고객   "+ordervo.getcId());
 			ordervo.setMileageservice((String) insertParam.get("stMileageService"));
 			
 			if(ordervo.getMileageservice().equals("Y") && (!(ordervo.getcId() ==null))) {
 				System.out.println("============== 마일리지 insert");
+				cusService.insertmileage(ordervo);
 			/*
 			 * // 마일리지 업데이트 mileageresult = cusService.updatemileage(ordervo);
 			 * 

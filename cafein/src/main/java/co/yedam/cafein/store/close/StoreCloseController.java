@@ -157,26 +157,22 @@ public class StoreCloseController {
 		try {
 			
 			String sId = (String) session.getAttribute("sId");
+			String sName = (String) session.getAttribute("sName");
 			String openTime = request.getParameter("openTime");
-			String closeTime = request.getParameter("closeTime");
+			//String closeTime = request.getParameter("closeTime");
 			
 			conn = dataSource.getConnection();
 
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("p_store", sId);
 			map.put("p_opendate", openTime);
-			map.put("p_closedate", closeTime);	
+			map.put("p_name", sName);
+			//map.put("p_closedate", closeTime);	
 			
 			JasperReport report = JasperCompileManager
 					.compileReport(request.getSession().getServletContext().getRealPath("reports/receipt.jrxml"));
-			/*
-			JasperReport jasperSubReport1 = JasperCompileManager
-					.compileReport(request.getSession().getServletContext().getRealPath("reports/cash.jrxml"));
-			JasperReport jasperSubReport2 = JasperCompileManager
-					.compileReport(request.getSession().getServletContext().getRealPath("reports/mileage.jrxml"));
-			JasperReport jasperSubReport3 = JasperCompileManager
-					.compileReport(request.getSession().getServletContext().getRealPath("reports/orders.jrxml"));
-			 */
+			
+			// 파일 저장 시 이름 정해주기 p_opendate + 마감내역
 			
 			 OutputStream out = response.getOutputStream();
 			 JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, conn);
