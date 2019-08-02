@@ -934,11 +934,8 @@ var ordernum ="";
 		send(type,cid,ckoNum);
 		aftercallorder();
 	}
- 	
- 	   
-
 </script>
-<audio id='audio_play' src='audio/alarm.mp3'></audio> 
+<audio id='audio_play' src='resources/alarm.mp3'></audio> 
 <div class="left">
 <form class="form-borizontal" name="girdForm" action="customerorder" method="POST">
     <table id="gridlist"></table>
