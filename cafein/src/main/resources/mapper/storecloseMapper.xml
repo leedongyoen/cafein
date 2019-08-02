@@ -213,14 +213,32 @@
 	
 	<!-- pdf 파일 목록 -->
 	<select id="storeReceiptList" resultType="storeOpen">
-		SELECT OPENTIME	"openTime"
-			 , CLOSETIME "closeTime"
+		SELECT B.* FROM ( SELECT A.*, ROWNUM RN FROM (
+			SELECT OPENTIME	"openTime"
+				 , CLOSETIME "closeTime"
+			FROM STOREOPEN 
+			WHERE S_ID = #{sId}
+					AND CLOSETIME IS NOT NULL
+				<if test="startDate != null and endDate != null ">
+					AND TO_CHAR(OPENTIME,'YYYY-MM-DD') BETWEEN '${startDate}' AND '${endDate}'
+				</if>
+			ORDER BY OPENTIME DESC
+		<![CDATA[ 
+		      ) A )B WHERE RN >= #{start} and RN <= #{end}   
+		]]>
+	</select>
+	
+	<!-- pdf 파일 목록 페이징 처리를 위한 쿼리문-->
+	<select id="storeReceiptListPaging" resultType="int"> 
+		SELECT COUNT(*)
 		FROM STOREOPEN 
 		WHERE S_ID = #{sId}
+				AND CLOSETIME IS NOT NULL
 			<if test="startDate != null and endDate != null ">
 				AND TO_CHAR(OPENTIME,'YYYY-MM-DD') BETWEEN '${startDate}' AND '${endDate}'
 			</if>
 		ORDER BY OPENTIME DESC
 	</select>
+	
 	
 </mapper>

@@ -40,4 +40,6 @@ public interface StoreCloseService {
 	public List<Map<String, Object>> storeReceipt(StoreOpenVO vo);
 	
 	public List<StoreOpenVO> storeReceiptList(StoreOpenVO vo);
+	
+	public int storeReceiptListPaging(StoreOpenVO vo); 
 }

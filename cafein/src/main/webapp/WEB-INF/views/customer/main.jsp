@@ -191,7 +191,7 @@ table {
 				<th><label>적립금</label></th>
 			</tr>
 			</thead>
-			<tbody>
+			<tbody class="thead-dark">
 			</tbody>
 		  </table>
 		</div>
@@ -208,11 +208,7 @@ table {
 		  </table>
 		</div>
 	</div>	
-</div>
-
-
-
-<!-- <br><br><br><br><br><br><br><br>
+</div><!-- <br><br><br><br><br><br><br><br>
 <div id="map" style="width:100%;height:400px;margin:auto;"></div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ae2e6275133a2bf25fe30fba002ced8d&libraries=services"></script>
 	<script>
