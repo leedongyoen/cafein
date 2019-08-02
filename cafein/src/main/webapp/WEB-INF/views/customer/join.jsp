@@ -171,7 +171,7 @@ font-family: "";
           <th>ID</th>
           <td>
           <input type = "text" name = "cId" id="cId" class="form-control"></td>
-          <td><button type = "button" class="btn btn-default" id="idCheck">중복확인</button>
+          <td><button type = "button" class="btn btn-success" id="idCheck">중복확인</button>
           </td>
         </tr>
         <tr>
@@ -181,7 +181,7 @@ font-family: "";
         <tr>
           <th>비밀번호</th>
           <td><input type ="password" name ="cPw" class="form-control"></td>   
-          <td><button type="button" class="btn btn-default" onclick="post_check()">비밀번호 체크</button>
+          <td><button type="button" class="btn btn-success" onclick="post_check()">비밀번호 체크</button>
           </td>
         </tr>
     	<tr>
@@ -203,7 +203,7 @@ font-family: "";
           <input type = "text" name = "cAdd" id="cAdd" placeholder="주소" class="form-control">
           <input type = "text" name = "cAdd3" id="cAdd3" placeholder="상세주소" class="form-control">
           </td>
-       	<td> <button type = "button" onclick="execPostCode()" class="btn btn-default">주소 검색</button></td>
+       	<td> <button type = "button" onclick="execPostCode()" class="btn btn-success">주소 검색</button></td>
         </tr>
         <tr>
           <th>생년월일</th>
@@ -214,7 +214,7 @@ font-family: "";
         	<th>이메일</th>
         	<td><input type="email" name="email" id="email" class="form-control"></td>
         	 <td><button type="button"
-        		onclick="myFunction()" class="btn btn-default">이메일 인증</button>
+        		onclick="myFunction()" class="btn btn-success">이메일 인증</button>
         	</td>
         </tr>
       </table>

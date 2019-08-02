@@ -116,24 +116,28 @@ body{
 				<form class="form-borizontal" id="menudetailForm" >
 				<div class="modal-body">
 						<h3 id="sName" align="center"></h3>
+						<div id="map" style="width:100%;height:350px;"></div>
+						<input type="hidden" id="selectaddr">
 						<table class="table">
+					
+							
 							<tr>
 								<th>주소</th>
-								<td id="sadd">
+								<td id="sadd"/>
 								
 							</tr>
 							<tr>
 								<th>전화번호</th>
-								<td id="stel">
+								<td id="stel"/>
 							</tr>
 							<tr>
 								<th>배달 서비스</th>
-								<td id="deliservice">
-								</td>
+								<td id="deliservice"/>
+								
 							</tr>
 							<tr>
 								<th>OPEN</th>
-								<td id="open" >
+								<td id="open" />
 							</tr>
 							<tr>
 								<th>CLOSE</th>
@@ -166,12 +170,56 @@ body{
 
 	var map = new kakao.maps.Map(container, options);
 	 */
+	 
+
+ 
+	 
+	 
+	//주소-좌표 변환 객체를 생성
+	var geocoder = new daum.maps.services.Geocoder();
+	var locationPostion;
+	 
 	$(function(){
 		allstroelist();
 	});
 	 
 
+	 function maplocation(address){
+	 
+		
+		 $('#map').html("");
+		 
+		 
+		 geocoder.addressSearch(address, function(results, status) {
+	            // 정상적으로 검색이 완료됐으면
+	            if (status === daum.maps.services.Status.OK) {
 	
+	                var result = results[0]; //첫번째 결과의 값을 활용
+	
+	                // 해당 주소에 대한 좌표를 받아서
+	            //    locationPostion = new daum.maps.LatLng(result.y, result.x);
+	                
+	                var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	        	    mapOption = { 
+	        	        center: new kakao.maps.LatLng(result.y, result.x), // 지도의 중심좌표
+	        	        level: 3 // 지도의 확대 레벨
+	        	    };
+
+	        		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+	        		// 지도를 클릭한 위치에 표출할 마커입니다
+	        		var marker = new kakao.maps.Marker({ 
+	        		    // 지도 중심좌표에 마커를 생성합니다 
+	        		    position: map.getCenter() 
+	        		}); 
+	        		// 지도에 마커를 표시합니다
+	        		marker.setMap(map);
+	            }
+	        });
+	 }
+	 
+
+	// 매장 클릭시 매장 상세 조회 모달창 open
 	function storeDetail(sid){
 		$.ajax({
 			url:'getstoredetail/'+sid,
@@ -183,9 +231,16 @@ body{
 			},
 			success:function(data){
 				console.log(data);
-				$("#sadd").html(data.sadd);
+				if(data.sadd2 == null){
+					data.sadd2 ='';
+				}
+				if(data.sadd3 == null){
+					data.sadd3 ='';
+				}
+				$("#sadd").html(data.sadd2+"<br>"+data.sadd+" "+data.sadd3);
 				//$("#stel").val(data.stel);
 				$("#stel").html(data.stel);
+				$("#selectaddr").val(data.sadd);
 				if(data.stdeliservice == 'Y'){
 					$("#deliservice").html("배달 가능");
 				}else if(data.stdeliservice == 'N'){
@@ -198,13 +253,21 @@ body{
 				}else if(data.stmileservice == 'N'){
 					$("#mileservice").html("사용 안함");
 				}
-
+				
 				$("#sName").html(data.sname);
+				
+				
+				
 				$('#storedetailModal').modal('show');
 				
 			}
 		});
 	}
+	
+	$('#storedetailModal').on('shown.bs.modal', function () {
+		maplocation($('#selectaddr').val());
+	});
+	
 	
 	// 모든 매장 리스트 보여주기
 	function allstroelist(){
