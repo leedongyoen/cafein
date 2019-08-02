@@ -42,9 +42,8 @@
 			, S_ID "sId"
 	FROM POSCUSSEARCH_VIEW
 	WHERE 
-	S_ID= #{sId}
-	AND (C_TEL like '%' || #{cTel} || '%'
-	OR C_NAME like '%' || #{cTel} || '%')
+	C_TEL like '%' || #{cTel} || '%'
+	OR C_NAME like '%' || #{cTel} || '%'
 	</select>
 <!-- 환불위한 주문내역 조회 -->
 	<select id="getCusRefund" resultType="order">
