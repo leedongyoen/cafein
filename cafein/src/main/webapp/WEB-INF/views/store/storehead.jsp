@@ -81,8 +81,7 @@ var webSocket;
 		webSocket.onmessage = function(event) {
 			console.log(event);
 			$("#ordercall").text("1");
-			 alert(event.data);
-			 
+//			 alert(event.data); 
 			 var audio = document.getElementById('audio_play'); 
 			 			audio.play(); 
 
