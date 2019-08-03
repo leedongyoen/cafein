@@ -35,7 +35,8 @@ body{
 <div class="container">
 
 	<button id="selectStore" class="btn btn-outline-info" >매장 선택</button>
-	<h3 align="center" id="selectstorename"></h3>
+	<div class="titlefont" id="selectstorename"  align="center"></div>
+	
 	<br><hr>
 	<div id="topstorebtn"></div>
 	<hr>
@@ -289,28 +290,28 @@ body{
 		$("#coffeetable tbody").empty();
 		$("#beveragetable tbody").empty();
 		$("#bakerytable tbody").empty();
-		$.each(data,function(idx,item){   
+		$.each(data,function(idx,item){
 			// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
 			if(item.caNum == "CACO" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")
 				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
-				.append($('<td>').html(item.mName))
-				.append($('<td>').html(addCommas(item.mPrice)))
+				.append($('<td>').html(item.mName).css("font-size","17px").css("font-weight","bold"))
+				.append($('<td>').html(addCommas(item.mPrice)+'원').css("font-size","17px").css("font-weight","bold"))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#coffeetable tbody');
 			}
 			else if(item.caNum == "CADR" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")
 				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
-				.append($('<td>').html(item.mName))
-				.append($('<td>').html(addCommas(item.mPrice)))
+				.append($('<td>').html(item.mName).css("font-size","17px").css("font-weight","bold"))
+				.append($('<td>').html(addCommas(item.mPrice)+'원').css("font-size","17px").css("font-weight","bold"))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#beveragetable tbody');
 			}else if(item.caNum == "CADE" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")
 				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
-				.append($('<td>').html(item.mName))
-				.append($('<td>').html(addCommas(item.mPrice)))
+				.append($('<td>').html(item.mName).css("font-size","17px").css("font-weight","bold"))
+				.append($('<td>').html(addCommas(item.mPrice)+'원').css("font-size","17px").css("font-weight","bold"))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#bakerytable tbody');
 			}
