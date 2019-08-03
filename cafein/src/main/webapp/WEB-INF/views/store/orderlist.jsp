@@ -78,11 +78,16 @@
 	// 처음 주문목록 기간이 언제부터 언제까징지 알려주기 위해서
 	function settingDate(){
 		
+		// 하루를 뺀 날짜 가져옴
 		var date = new Date(new Date().setDate(new Date().getDate()-1));
+		// 해당 날짜의 년도
 		var year = date.getFullYear();
+		// 해당 날짜의 달 , 0부터 시작하기때문에 +1을 함
 		var mm =Number(date.getMonth())+1;
+		// 해당 날짜의 일( 이때 위에서 하루를 뺀 일을 가져온다. )
 		var dd = date.getDate();
 		
+		// format을 맞추기 위해서
 		if(mm < 10)
 			mm = '0'+mm;
 		if(dd <10)
