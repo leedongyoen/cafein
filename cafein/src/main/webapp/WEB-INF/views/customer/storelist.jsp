@@ -115,12 +115,12 @@ body{
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
-								<td><input type="text" id="sName" name="sName" readonly="readonly"></td>
+								<td><input style="text-align: center;" type="text" id="sName" name="sName" readonly="readonly"></td>
 							</tr>
 							
 							<tr>
 								<th>MENU NAME</th>
-								<td><input type="text"  id="mName" name="mName" readonly="readonly"></td>
+								<td ><input type="text" style="text-align: center;" id="mName" name="mName" readonly="readonly"></td>
 							</tr>
 							<tr>
 								<th>PRICE</th>
@@ -141,7 +141,7 @@ body{
 							</tr>
 							<tr>
 								<th>TOTAL PRICE</th>
-								<td><input type="text" id="totalPrice" name="totalPrice" readonly="readonly"></td>
+								<td ><input type="text" style="text-align: center; font-size: 18px; font-weight: bold;" id="totalPrice" name="totalPrice" readonly="readonly"></td>
 							</tr>
 						</table>
 					
