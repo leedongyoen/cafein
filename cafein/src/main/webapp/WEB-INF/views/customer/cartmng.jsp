@@ -43,6 +43,7 @@ input {
 	list-style: none;
     margin: 0px;
     padding: 0px;
+    color: #6E6E6E;
 }
 .listyle{
 	list-style: none;
@@ -104,21 +105,6 @@ $(function(){
 			
 			//alert("#CartList_"+local_cart[i].sId+" div a");
 			
-			$("#CartList_"+local_cart[i].sId+" div a").html(local_cart[i].sName);
-			$('<tr>')
-			.append($('<td rowspan="2">').css("width","100px").append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i ,onClick:"cartlist(this.value)",})))
-			.append($('<td rowspan="2">').css("width","100px"))    //.html()
-			.append($('<td rowspan="2">').css("width","150px"))
-			.append($('<td>').css("width","300px").html(local_cart[i].mName))   //.html(local_cart[i].mName))
-			.append($('<td rowspan="2">').html(state).css("width","100px"))    //.html(state))
-			.append($('<td rowspan="2">').css("width","150px").append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id)", value:"+"}).css("background-color","#A9F5E1").css("color","white").css("border","none")).append($('<input>').attr({type: "text", name:"orderqty",size:'3', id:"qty"+i,value:local_cart[i].qty}).css("text-align","center")).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id)", value:"-"}).css("background-color","#A9F5E1").css("color","white").css("border","none")))
-			.append($('<td rowspan="2">').css("width","150px").html(local_cart[i].totalPrice))
-			.append($('<input>').attr({type:"hidden", id:"price"+i, value:local_cart[i].totalPrice}).css("color","#04B4AE"))
-			.appendTo("#CartList_"+local_cart[i].sId+" table tbody");
-		
-			
-			$('<tr>').append($('<td>').append($('<ul>').addClass("ulstyle"))).appendTo("#CartList_"+local_cart[i].sId+" table tbody");
-			
 			var storeName = "";
 			var imgName="";
 			//매장 이름
@@ -137,20 +123,49 @@ $(function(){
 					}
 			}
 			
-			$('<img>').attr("src","${pageContext.request.contextPath}/image/"+imgName).css("width","100px").css("padding","5px").appendTo($('#CartList_'+local_cart[i].sId+' div table tbody tr:eq('+(2*i)+') td:eq(2)'));
-			$('#CartList_'+local_cart[i].sId+' div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
+			var detail = "";
+			var option_plus = "";
+			
+			if(local_cart[i].cuoptionlist != null){
+				for(var j = 0;j<local_cart[i].cuoptionlist.length;j++){
+					
+					detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuoptionlist[j]);
+					//$('<li>').addClass('listyle').html(detail)  .appendTo("#CartList_"+local_cart[i].sId+" table tbody  tr:eq("+(2*j+1)+") ul");
+					option_plus = option_plus + "<li>"+detail+"</li>";
+				}
+				
+				//console.log("option_plus: "+option_plus);
+				
+			}else{
+				
+			}
+			
+			
+			
+			$("#CartList_"+local_cart[i].sId+" div a").html(local_cart[i].sName);
+			$('<tr>')
+			.append($('<td rowspan="2">').css("width","100px").append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i ,onClick:"cartlist(this.value)",})))
+			.append($('<td rowspan="2">').html(storeName).css("width","100px"))    //.html()
+			.append($('<td rowspan="2">').css("width","200px").append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+imgName).css("width","150px").css("padding","5px")))
+			.append($('<td>').css("width","300px").html(local_cart[i].mName))   //.html(local_cart[i].mName))
+			.append($('<td rowspan="2">').html(state).css("width","100px"))    //.html(state))
+			.append($('<td rowspan="2">').css("width","150px").append($('<input>').attr({type:"button", id:"plus"+i ,onClick:"plus(this.id,'"+local_cart[i].sId+"')", value:"+"}).css("background-color","#A9F5E1").css("color","white").css("border","none")).append($('<input>').attr({type: "text", name:"orderqty",size:'3', id:"qty"+i,value:local_cart[i].qty}).css("text-align","center")).append($('<input>').attr({type:"button", id:"minus"+i ,onClick:"minus(this.id,'"+local_cart[i].sId+"')", value:"-"}).css("background-color","#A9F5E1").css("color","white").css("border","none")))
+			.append($('<td rowspan="2">').css("width","150px").append($('<input>').attr("readonly",true).attr({type: "text", id:"orderprice"+i,value:local_cart[i].totalPrice}).css("text-align","center")))
+			.append($('<input>').attr({type:"hidden", id:"price"+i, value:local_cart[i].totalPrice}).css("color","#04B4AE"))
+			.appendTo("#CartList_"+local_cart[i].sId+" table tbody");
+		
+			
+			$('<tr>').append($('<td>').append($('<ul>').append(option_plus).addClass("ulstyle"))).appendTo("#CartList_"+local_cart[i].sId+" table tbody");
+			
+			
+			
+			//.appendTo($('#CartList_'+local_cart[i].sId+' div table tbody tr:eq('+(2*i)+') td:eq(2)'));
+			//$('#CartList_'+local_cart[i].sId+' div table tbody tr:eq('+(2*i)+') td:eq(1)').css("background","red"); //;
 			
 			//$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
 				
 			
-			if(local_cart[i].cuoptionlist != null){
-				for(var j = 0;j<local_cart[i].cuoptionlist.length;j++){
-					var detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuoptionlist[j]);
-				
-					$('<li>').addClass("listyle").html(detail).appendTo("#CartList_"+local_cart[i].sId+" table tbody tr:eq("+(2*i+1)+") ul");
-					
-				}
-			} 
+			 
 			
 			
 			
@@ -170,14 +185,15 @@ $(function(){
 });
 
 
-function plus(id_num) {
+function plus(id_num,stname) {
 	var p_index = id_num.substring(4);	//index 번호 추가
 	var qty_t = $('#qty'+p_index).val();
 	var qty=qty_t*1;
 	
+	console.log(stname);
+	
 
-
-		var price = $('#orderCartForm div table tbody tr:eq('+(p_index*2)+') td:eq(6)').text();
+		var price = $('#orderprice'+p_index).val();
 		var mPrice = (price*1)/(qty*1);
 	
 		console.log(mPrice);
@@ -185,12 +201,13 @@ function plus(id_num) {
 	
 	
 		$('#qty'+p_index).val(qty);
-		$('#orderCartForm div table tbody tr:eq('+(p_index*2)+') td:eq(6)').text(mPrice*qty);
-	
+		
+		$('#orderprice'+p_index).val(mPrice*qty);
+		
 		cartlist();
 }
 
-function minus(id_num) {
+function minus(id_num,stname) {
 	var m_index = id_num.substring(5);
 	var qty_m = $('#qty'+m_index).val();
 	console.log(qty_m);
@@ -201,7 +218,9 @@ function minus(id_num) {
 		$('#qty'+m_index).val(1);
 	}else{
 		var qty=qty_m*1;
-		var price = $('#orderCartForm div table tbody tr:eq('+(m_index*2)+') td:eq(6)').text();
+		var price = $('#orderprice'+m_index).val();
+		
+		
 		var mPrice = (price*1)/(qty*1);
 	
 		console.log(mPrice);
@@ -209,7 +228,9 @@ function minus(id_num) {
 	
 	
 		$('#qty'+m_index).val(qty);
-		$('#orderCartForm div table tbody tr:eq('+(m_index*2)+') td:eq(6)').text(mPrice*qty);
+		$('#orderprice'+m_index).val(mPrice*qty);
+		
+		
 	}
 	
 	cartlist();
