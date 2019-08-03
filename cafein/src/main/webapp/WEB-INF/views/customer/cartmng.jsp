@@ -130,17 +130,12 @@ $(function(){
 				for(var j = 0;j<local_cart[i].cuoptionlist.length;j++){
 					
 					detail = getOptionNaming(local_cart[i].mNum, local_cart[i].cuoptionlist[j]);
-					//$('<li>').addClass('listyle').html(detail)  .appendTo("#CartList_"+local_cart[i].sId+" table tbody  tr:eq("+(2*j+1)+") ul");
 					option_plus = option_plus + "<li>"+detail+"</li>";
 				}
 				
 				//console.log("option_plus: "+option_plus);
 				
-			}else{
-				
 			}
-			
-			
 			
 			$("#CartList_"+local_cart[i].sId+" div a").html(local_cart[i].sName);
 			$('<tr>')
@@ -260,9 +255,9 @@ function cartlist(val,stname){
 	//$("#orderCartForm_"+stname+" div p span input").val(allPrice);
 }
 
-function orderDeleteClick(){
+function orderDeleteClick(stname){
 	
-	var ordercart = $("#orderCartForm").serializeObject();
+	var ordercart = $("#orderCartForm_"+stname).serializeObject();
 	var arr = JSON.parse(localStorage.getItem("cartlist"));
 	
 	//alert(ordercart.cartnumlist);
@@ -289,7 +284,7 @@ function orderDeleteClick(){
 	window.location.reload(true); 
 }
 
-function orderBtnClick(){
+function orderBtnClick(stname){
 	
 	var up;
 	
@@ -297,18 +292,35 @@ function orderBtnClick(){
 
 	if(up){
 		
-		var ordercart = $("#orderCartForm").serializeObject();
+		var ordercart = $("#orderCartForm_"+stname).serializeObject();
 		var arr = [];
 		
 		
 		for(var k = 0;k<ordercart.cartnumlist.length;k++){
+			var newOrder = $("#qty"+ordercart.cartnumlist[k]).val();
+			var newPrice = $("#orderprice"+ordercart.cartnumlist[k]).val();
+			var newMprice = (newPrice*1)/(newOrder*1);
+			
+			console.log(newOrder);
+			local_cart[ordercart.cartnumlist[k]].orderqty = newOrder;
+			local_cart[ordercart.cartnumlist[k]].totalPrice = newPrice;
+			local_cart[ordercart.cartnumlist[k]].mPrice = newMprice;
+			local_cart[ordercart.cartnumlist[k]].qty = ordercart.cartnumlist[k];
 			arr.push(local_cart[ordercart.cartnumlist[k]]);
 		}
 		
-		//alert(JSON.stringify(arr)); 
+		//local storage  하나씩 꺼내서  orderqty 만 값 바꿔서 넘기기
+/* 		for(var m = 0;m<arr.length;m++){
+			console.log(arr[m]);
+		} */
+		
+		
+	 alert(JSON.stringify(arr)); 
 
-	 $('[name="jsonData"]').val(JSON.stringify(arr));
+ 	 $('[name="jsonData"]').val(JSON.stringify(arr));
 		document.fCart.submit();
+ 		
+		
 	}
 	
 }
@@ -363,9 +375,6 @@ function getOptionNaming(mnumber, stnumber){
 			</script>
 		</c:forEach>
 		
-		
-		
-		
 		<!--  매장별로 form을 반복문  -->
 		<c:forEach var="stidname" items="${storename}">
 			
@@ -373,8 +382,6 @@ function getOptionNaming(mnumber, stnumber){
 	<form id="orderCartForm_${stidname.sid}" name="orderCartForm_${stidname.sid}" action="cartorder" method="POST" style="display:none;">
 		<div style="padding: 3px; display: inline-block; text-align: center; width:70%;" id="CartList_${stidname.sid}"> <!-- border: 1px solid orange; -->
 			<!-- display: inline-block; -->
-
-			
 
 				<div style="background: #D8D8D8;">
 					<label><input type="checkbox" onClick="allCheck(this.value)"></label><a href="#">선택</a>
@@ -408,18 +415,13 @@ function getOptionNaming(mnumber, stnumber){
 
 		<br> <br> <br>
 		<div align="right" class="btn-group">
-			<input type="button" class="button btn btn-info" onclick="orderBtnClick()" value="주문">
-			<button type="button" class="button btn btn-danger" onclick="orderDeleteClick()">삭제</button>
+			<input type="button" class="button btn btn-info" onclick="orderBtnClick('${stidname.sid}')" value="주문">
+			<button type="button" class="button btn btn-danger" onclick="orderDeleteClick('${stidname.sid}')">삭제</button>
 			<!-- <a href="javascript:history.go(-1)" class="button">돌아가기</a> -->
 		</div> 
 		</form>
 		
-		
-		
 	</c:forEach>
-		
-  
-		 
 		
 	</div>
 	<%-- <img style="width:90%; height:120%; opacity:0.8; position: absolute;" src="${pageContext.request.contextPath}/image/note.jpg">

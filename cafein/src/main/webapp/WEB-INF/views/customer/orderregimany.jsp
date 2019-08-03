@@ -86,8 +86,11 @@ $(function(){
 	
 	var cart = '${cartListsmero}';
 	var json = JSON.parse(cart);
+	var totalPrice = 0;
 	
 	console.log(json);
+	
+	
 	for(var c = 0;c<json.length;c++){
 		console.log(json[c].cuoptionlist);
 		
@@ -103,8 +106,12 @@ $(function(){
 			oplist[t] = oplist[t].trim();
 			$('input:checkbox[id="'+oplist[t]+'"]').attr("checked", true);
 		}
+		
+		totalPrice = totalPrice + (json[c].totalPrice*1);
+		
 	}
 	
+	$('#total').val(totalPrice);
 	$('#orderbtn').attr('disabled',false);
 	$('#takeout').attr("checked","checked");
 	
@@ -376,12 +383,42 @@ function getDBStoreDistance(sid,sname,saddress){
 }
 
 
+
+function oplistcheck(menuno){
+	
+	//var num = $("#span_"+menuno).html();
+	//console.log(num);
+	var allOpPrice = 0;
+	
+	$("input[name="+menuno+"]:checked").each(function() {
+		
+		var test = $(this).val(); 
+		console.log("test: "+test);
+		for(var t = 0;t<test.length;t++){
+			
+		var addNum = $("#span_"+test).html();
+		//console.log("allOpPrice: "+addNum);
+		allOpPrice = allOpPrice + (addNum*1);
+			//var addNum = $("#orderprice"+test).val();
+			//allPrice = allPrice + (addNum*1);
+		}
+		
+		console.log("allOpPrice: "+ (allOpPrice/5));	
+		
+	});
+	
+	
+}
+
+
+
+
 //고객 마일리지 가져오기.
 $(function(){
 		
 		
 	 // 옵션 선택시
-  	$(".checkoption").change(function(){//oQty
+/*   	$(".checkoption").change(function(){//oQty
   		var optionprice = $("#price"+$(this).val()).val();
   		console.log($(this).val());
   		console.log(optionprice);
@@ -396,7 +433,7 @@ $(function(){
 		}
   		 $("input:text[name='total']").val(v_totalprice);
 
-  	});
+  	}); */
 	 
 	// 새 주소로 주문
 	$("#changeAdd").on("click",function(){
@@ -580,8 +617,9 @@ alert(msg);
 					<th>메 뉴 명</th>
 					<td>
 					 <input type="hidden" name="mNum" value="${cartlist.mNum}">
+					 <input type="hidden" name="deletenum" value="${cartlist.qty}">
 					
-					 ${cartlist.mName}
+					 <font color=orange><b>${cartlist.mName}</b></font>
 					 <c:choose>
 				    <c:when test="${cartlist.hotice_option eq 'CAHT'}">
 				       ( HOT )
@@ -608,8 +646,8 @@ alert(msg);
 					<c:forEach items="${optionname}" var="recipeList">
 						<c:if test="${recipeList.mNum eq cartlist.mNum}">
 							${recipeList.opName}
-							<input type="checkbox" value="${recipeList.recipeno}" id="${recipeList.recipeno}" name="${recipeList.mNum}" class="checkoption">
-							<span id = "${recipeList.recipeno}_span">${recipeList.opPrice}</span> 원
+							<input type="checkbox" value="${recipeList.recipeno}" id="${recipeList.recipeno}" name="check_${recipeList.mNum}"  onClick="oplistcheck(this.name)" class="checkoption">
+							<span id = "span_${recipeList.recipeno}">${recipeList.opPrice}</span> 원
 						
 							<br>
 						</c:if>
@@ -619,7 +657,7 @@ alert(msg);
 				</tr>
 				<tr>
 					<th>금 액</th>
-					<td><input id="price${status.count}" value="${cartlist.totalPrice}" size="6" readonly> &nbsp;&nbsp;
+					<td><input id="price${status.count}" value="${cartlist.mPrice}" size="6" readonly> &nbsp;&nbsp;
 						<button type="button" id = "plus${status.count}" onclick="plus(this.id)">+</button>
 							<input name="oQty" id = "qty${status.count}" size="1" value="${cartlist.orderqty}" readonly>
 						<button type="button" id = "minus${status.count}" onclick="minus(this.id)">-</button></td>
@@ -677,7 +715,7 @@ alert(msg);
 				</tr>
 				<tr>
 					<th>총 금 액</th>
-					<td><input name="total" value="${cartLists[0].totalPrice}" readonly></td>
+					<td><input name="total" id = "total" readonly></td>
 					
 				</tr>
 			</table>
