@@ -211,7 +211,6 @@ public class CustomerCartOrderController {
 		
 		
 		
-		
 		//�떎嫄� 二쇰Ц �럹�씠吏�
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "ordercartmany", method = RequestMethod.POST)
@@ -233,6 +232,7 @@ public class CustomerCartOrderController {
 			ArrayList<String> hoticeop = (ArrayList<String>) insertParam.get("hotice_option");
 			ArrayList<String> oqtyy = (ArrayList<String>) insertParam.get("oQty");
 
+			
 			
 		  for(int i = 0; i<cartcnt.size() ;i++) {
 			  OrdersVO vo = new OrdersVO();
