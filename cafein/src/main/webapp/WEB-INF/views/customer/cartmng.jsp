@@ -144,7 +144,7 @@ $(function(){
 			
 			$("#CartList_"+local_cart[i].sId+" div a").html(local_cart[i].sName);
 			$('<tr>')
-			.append($('<td rowspan="2">').css("width","100px").append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i ,onClick:"cartlist(this.value)",})))
+			.append($('<td rowspan="2">').css("width","100px").append($('<input>').attr({type: "checkbox", id:"cartnumlist"+i, name:"cartnumlist", value:i ,onClick:"cartlist(this.value,'"+local_cart[i].sId+"')",})))
 			.append($('<td rowspan="2">').html(storeName).css("width","100px"))    //.html()
 			.append($('<td rowspan="2">').css("width","200px").append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+imgName).css("width","150px").css("padding","5px")))
 			.append($('<td>').css("width","300px").html(local_cart[i].mName))   //.html(local_cart[i].mName))
@@ -165,10 +165,6 @@ $(function(){
 			//$('#CartList div table tbody tr:eq('+(2*i)+') td:eq(1)').html(storeName);
 				
 			
-			 
-			
-			
-			
 					
 			$("#orderCartForm_"+local_cart[i].sId).css("display","block");
 						//$('<li>').html(local_cart[i].cuNumList[j]);
@@ -176,12 +172,7 @@ $(function(){
 						//$('<li>').html(local_cart[i].cuNumList[j]).appendTo("#CartList table tbody tr:even td ul");
 					//$("#CartList div p span strong").html(sumtotalPrice);
 		}
-		
-		
-		
 	}
-	
-	
 });
 
 
@@ -204,7 +195,7 @@ function plus(id_num,stname) {
 		
 		$('#orderprice'+p_index).val(mPrice*qty);
 		
-		cartlist();
+		cartlist(p_index,stname);
 }
 
 function minus(id_num,stname) {
@@ -233,7 +224,7 @@ function minus(id_num,stname) {
 		
 	}
 	
-	cartlist();
+	cartlist(m_index,stname);
 
 }
 
@@ -242,24 +233,31 @@ function allCheck(val){
 	console.log(val);
 }
 
-function cartlist(val){
+function cartlist(val,stname){
 	//console.log(val);
 	var allPrice = 0;
 	
 	$("input[name=cartnumlist]:checked").each(function() {
 		
 		var test = $(this).val(); 
+		//console.log(test);
 		for(var t = 0;t<test.length;t++){
-			var addNum = $("#orderCartForm div table tbody tr:eq("+(test[t]*2)+") td:eq(6)").html();
+			
+			var addNum = $("#orderprice"+test).val();
+			
 			allPrice = allPrice + (addNum*1);
 		}
 		
-
+		console.log("allPrice: "+allPrice);
 	});
 	
-	console.log(allPrice);
-	$("#orderCartForm div p span strong").html(allPrice);
-	$("#orderCartForm div p span input").val(allPrice);
+	//totalPrice_'stname'
+	console.log("stname: "+stname);
+	$("#orderCartForm_"+stname+" div p span strong").html(allPrice);
+	$("#totalPrice_"+stname).val(allPrice);
+	
+	//$("#orderCartForm_"+stname+" div p span strong").html(allPrice);
+	//$("#orderCartForm_"+stname+" div p span input").val(allPrice);
 }
 
 function orderDeleteClick(){
@@ -403,7 +401,7 @@ function getOptionNaming(mnumber, stnumber){
 
 				<div style="padding: 3px; background: #F5D0A9; height:60px;">
 					<p  style="padding-top:20px;">
-						<span> 주 문 합 계 <input type="hidden" name="totalPrice" value="0"><strong>0</strong>원</span>
+						<span> 주 문 합 계 <input type="hidden" id="totalPrice_${stidname.sid}" name="totalPrice" value="0"><strong>0</strong>원</span>
 					</p>
 				</div>
 			</div>
