@@ -15,10 +15,18 @@ public class StoreOrderDAO {
 	@Autowired
 	private SqlSessionTemplate template;
 	
+	
 	// 해당 매장의 주문목록 가져오기
+	public List<OrdersVO> getfirstorderlist(OrdersVO vo){
+		return template.selectList("getStoreOrderListDAO.getfirstorderlist",vo);
+	}
+	
+	// 해당 주문목록의 내역가져오기
 	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
 		return template.selectList("getStoreOrderListDAO.getstoreorderlist",vo);
 	}
+	
+	
 	
 	// 전체건수
 	public int getstoreorderlisttotal(OrdersVO vo) {

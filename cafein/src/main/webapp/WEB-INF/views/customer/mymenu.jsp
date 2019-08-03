@@ -10,6 +10,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
    
 <style type="text/css">
+
+input {
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;
+	text-align: center;  
+}
+
 /* The Close Button */
 .close {
 	position: absolute;
@@ -94,60 +100,62 @@
 						<input type="text" name="cId" style="display: none;" >
 						<input type="text" name="orderqty" style="display: none;">
 						<table id="detailtable" class="table table-hover">
-		<tr>
-			<th>매 장 명</th>
-			<td><input type="text" id="sName" name="sName"
-						readonly="readonly"></td>
-		</tr>
-		<tr>
-			<th>메 뉴 명</th>
-			<td><input type="text" id="mName" name="mName"
-						readonly="readonly"></td>
-		</tr>
-		
-		<tr>
-			<th>가 격</th>
-			<td><input type="text" id="mPrice" name="mPrice"
-						readonly="readonly"></td>
-		</tr>
-		<tr>
-			<th>수 량</th>
-			<td>
-			
-				<input type="button" onclick="add(-1)" value="-">
-				<span id="ordernum">1 </span>
-				<input type="button" onclick="add(1)" value="+">
-			</td>
-		</tr>
-		<tr id="icehot">
-			<th>HOT/ICE</th>
-			<td>
-				<input  type="radio" id="ice" name="hotice_option" value="CAIC">ice
-				<input  type="radio"  id="hot" name="hotice_option" value="CAHT">hot
-			</td>
-		</tr>
-		<tr>  
-			<th>OPTION</th>
-			<td id="menudetailoption"></td>
-		</tr>
-		<tr>
-			<th>총 금 액</th>
-			<td><input type="text" id="totalPrice" name="totalPrice"
-						readonly="readonly"></td>
-		</tr>
-	</table>
-						</div>
-					</form>
-				
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" id="cu_orderbtn">주문</button>&nbsp;&nbsp;
-					<button class="carryon btn btn-secondary" id="menucartbtn">담기</button>&nbsp;&nbsp;		
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				</div>
+							<tr>
+								<th>매 장 명</th>
+								<td><input type="text" id="sName" name="sName"
+											readonly="readonly"></td>
+							</tr>
+							<tr>
+								<th>메 뉴 명</th>
+								<td><input type="text" id="mName" name="mName"
+											readonly="readonly"></td>
+							</tr>
+							
+							<tr>
+								<th>가 격</th> 
+								<td><input type="text" id="mPrice" name="mPrice" style="font-size: 18px;"
+											readonly="readonly"></td>
+							</tr>
+							<tr>
+								<th>수 량</th>
+								<td>
+								
+									<input type="button" onclick="add(-1)" value="-">
+									<span id="ordernum">1 </span>
+									<input type="button" onclick="add(1)" value="+">
+								</td>
+							</tr>
+							<tr id="icehot">
+								<th>HOT/ICE</th>
+								<td>
+									<input  type="radio"  id="hot" name="hotice_option" value="CAHT">
+									<label for="hot">HOT</label> &nbsp;&nbsp;
+									<input  type="radio" id="ice" name="hotice_option" value="CAIC">
+									<label for="ice">ICE</label> 
+								</td>
+							</tr>
+							<tr>  
+								<th>OPTION</th>
+								<td id="menudetailoption"></td>
+							</tr>
+							<tr>
+								<th>총 금 액</th>
+								<td><input type="text" id="totalPrice" name="totalPrice" style="font-size: 18px; font-weight: bold;"
+											readonly="readonly"></td>
+							</tr>
+						</table>
+					</div>
+				</form>
+	
 			</div>
+		<div class="modal-footer">
+			<button class="btn btn-outline-primary" id="cu_orderbtn">주문</button>&nbsp;&nbsp;
+			<button class="btn btn-outline-primary" id="menucartbtn">담기</button>&nbsp;&nbsp;		
+			<button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+		</div>
 		</div>
 	</div>
+</div>
 <script type="text/javascript">
 
 	var datas;
@@ -156,6 +164,20 @@
 	$(function(){
 		myMenuList();
 	});
+	
+	
+	// 콤마 더하기
+	function addCommas(x) {
+	       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	//모든 콤마 제거
+   function removeCommas(x) {
+       if(!x || x.length == 0) return "";
+       else return x.split(",").join("");
+   }
+	
+	
 	//화면에 뿌리기.
 	function myMenuList() {
 		
@@ -235,10 +257,11 @@
 					     name: "cuoptionlist", 
 					     id: item.stNum,
 					     value: item.stNum,
-					     checked:"checked"
+					     checked:"checked",
 			//		     disabled:"disabled"
 					   	})
 					   	.attr("class","checkoption")
+					   	.attr("class","checkbox")
 					   	.appendTo("#menudetailoption");			
 					$("<label>").attr("for",item.stNum)
 								.append(item.opName+"("+item.opPrice+"원 추가)")
@@ -271,10 +294,10 @@
 
 			
 		});
-		$("#mPrice").val(mP);
+		$("#mPrice").val(addCommas(mP));
 		var totalprice = Number(mP)+Number(pl);	
-		console.log(totalprice);
-		$("#totalPrice").val(totalprice);
+		
+		$("#totalPrice").val(addCommas(totalprice));
 	};   
 	//삭제창
 	function deleteMymenu(cuNum) {
@@ -314,8 +337,8 @@
 	//수량
 	function add(num) {
 		
-		var price = $('#mPrice').val();
-		var v_totalprice = $('#totalPrice').val();
+		var price = removeCommas($('#mPrice').val());
+		var v_totalprice = removeCommas($('#totalPrice').val());
 		var no = $("#ordernum").html();
 		var opt = $("#opPrice").val();
 		var sum_optionprice=0;
@@ -336,7 +359,7 @@
 			no = Number(no) + 1;
 			v_totalprice = Number(v_totalprice) + Number(sum_optionprice)+ Number(price);
 		}
-		$('#totalPrice').val(v_totalprice);
+		$('#totalPrice').val(addCommas(v_totalprice));
 		$("#ordernum").html(no);
 		$('input:text[name="qty"]').val(no);
 	}
@@ -361,7 +384,8 @@ $(function(){
 			list.cuoptionlist = null;
 		}
 		list.qty = $('#ordernum').html();
-		
+		list.totalPrice = removeCommas(list.totalPrice);
+		list.mPrice = removeCommas(list.mPrice);
 
 		var local_cart = localStorage.getItem("cartlist");
 		if(local_cart == null){
@@ -371,13 +395,10 @@ $(function(){
 			local_cart = JSON.parse(local_cart);
 			
 		}
-		
-		console.log(local_cart);
-		
+				
 		local_cart.push(list);
 
 		localStorage.setItem("cartlist",JSON.stringify(local_cart));
-		console.log("localStorage : "+localStorage.getItem("cartlist"));
 		
 			var result = confirm('장바구니로 이동하시겠습니까?'); 
 			if(result) { //yes 
@@ -402,7 +423,8 @@ $(function(){
 		}
 		
 		$('[name=orderqty]').val($('#ordernum').html());
-		console.log(JSON.stringify(list));
+		$('[name=totalPrice]').val(removeCommas($('[name=totalPrice]').val()));
+		$('[name=mPrice]').val(removeCommas($('[name=mPrice]').val()));
 		
 		document.mymenudetailForm.submit();
 	});

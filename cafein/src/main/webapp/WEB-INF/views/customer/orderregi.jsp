@@ -3,6 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,11 +94,21 @@ width: 50p;
 		
 	});
 
+	// 콤마 더하기
+	function addCommas(x) {
+	       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	//모든 콤마 제거
+   function removeCommas(x) {
+       if(!x || x.length == 0) return "";
+       else return x.split(",").join("");
+   }
+	
 	function add(num) {
-		//var price = $("input:text[name='price']").val();
-		//optionlist
-		var price = $("#price").val();
-		var v_totalprice = $("input:text[name='total']").val();
+		
+		var price = removeCommas($("#price").val());
+		var v_totalprice = removeCommas($("input:text[name='total']").val());
 		
 		var no = $("input:text[name='oQty']").val();
 		var sum_optionprice=0;
@@ -110,7 +121,6 @@ width: 50p;
 			sum_optionprice =Number(sum_optionprice)+ Number(recipeno)*(Number(no)+Number(num));
 
 		}); 
-		console.log("옵션*구매갯수 합계"+sum_optionprice);
 		if (num == -1) {
 			if (Number(no) == 1) {
 				alert("1개 이상으로 주문해주세요.");
@@ -122,7 +132,7 @@ width: 50p;
 			no = Number(no) + 1;
 			v_totalprice = Number(price)*Number(no) + Number(sum_optionprice);
 		}
-		$("input:text[name='total']").val(v_totalprice);
+		$("input:text[name='total']").val(addCommas(v_totalprice));
 		$("input:text[name='oQty']").val(no);
 	}
 	
@@ -136,7 +146,7 @@ width: 50p;
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+			success:function(data){ 
 				
 				console.log(data);
 				if(data == 1){
@@ -163,7 +173,7 @@ width: 50p;
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+			success:function(data){ 
 			
 				if(data == 'N'){
 					$("input:text[name='mileageservice']").val('N');
@@ -190,10 +200,10 @@ width: 50p;
 			dataType:'json',
 			data: {cId: checklogin, sId: v_storeId},
 			error:function(xhr,status,msg){
-				/* alert("상태값 :" + status + " Http에러메시지 :"+msg); */
+			
 				$('#usermileage').html("0");
 			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+			success:function(data){ 
 				$('#usermileage').html(data.mileAge);
 			}
 		});
@@ -212,20 +222,20 @@ width: 50p;
     function getDBStoreDistance(sid,sname,saddress){
     	// 주소로 좌표를 검색합니다
     	geocoder.addressSearch(saddress, function(result, status) {
-	    	console.log("for문 안 ge "+saddress);
+	    	
 	    	
 	        // 정상적으로 검색이 완료됐으면 
 	         if (status === kakao.maps.services.Status.OK) {
 	
 	            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-	            console.log(saddress+'  : '+coords);
+	           
 	            // 거리 계산
 	            var path= searchLine.getPath();
 	            path.push(coords);
 	            searchLine.setPath(path);
 	            
 	            var distance = Math.round(searchLine.getLength());
-	            console.log(sname+' 거리  : '+distance+"m");
+	           
 	           
 	            if(distance < 300){
 	            	alert('배달 가능 지역입니다');
@@ -264,7 +274,6 @@ width: 50p;
 		$.ajax({
 			url:'getorderstoreaddress',
 			type:'GET',
-			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
 			data:{sid: v_storeId},
 			error:function(xhr,status,msg){
@@ -289,7 +298,7 @@ width: 50p;
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+			success:function(data){ 
 				customerAdd= data.cAdd;
 			
 				geocoder.addressSearch(data.cAdd, function(results, status) {
@@ -331,10 +340,9 @@ width: 50p;
 		
 		 // 옵션 선택시
 	  	$(".checkoption").change(function(){//oQty
-	  		var optionprice = $("#price"+$(this).val()).val();
-	  		console.log($(this).val());
-	  		console.log(optionprice);
-	  		var v_totalprice =  $("input:text[name='total']").val();
+	  		var optionprice = removeCommas($("#price"+$(this).val()).val());
+	  		
+	  		var v_totalprice =  removeCommas($("input:text[name='total']").val());
 	  		var v_qty = $("input:text[name='oQty']").val();
 	  		
 	  		
@@ -343,7 +351,7 @@ width: 50p;
 			}else{
 				v_totalprice = Number(v_totalprice) - Number(optionprice)*Number(v_qty);
 			}
-	  		 $("input:text[name='total']").val(v_totalprice);
+	  		 $("input:text[name='total']").val(addCommas(v_totalprice));
 
 	  	});
 		 
@@ -396,9 +404,9 @@ width: 50p;
 				alert('사용가능한 적립금을 초과하였습니다.');
 				
 			}else{
-				var v_totalprice =  $("input:text[name='total']").val();
+				var v_totalprice =  removeCommas($("input:text[name='total']").val());
 				v_totalprice = Number(v_totalprice) - Number(mileage);
-				 $("input:text[name='total']").val(v_totalprice);
+				 $("input:text[name='total']").val(addCommas(v_totalprice));
 				 $('#reservebtn').attr('disabled','disabled');
 			}
 		});
@@ -410,47 +418,40 @@ width: 50p;
 			var mileage = $('#insertmileage').val();
 			
 			// 총 가격
-			var v_totalprice =  $("input:text[name='total']").val();
+			var v_totalprice =  removeCommas($("input:text[name='total']").val());
 			v_totalprice = Number(v_totalprice) + Number(mileage);
-			 $("input:text[name='total']").val(v_totalprice);
+			 $("input:text[name='total']").val(addCommas(v_totalprice));
 			 
 			$('#insertmileage').val("0");
 			 $('#reservebtn').attr('disabled',false);
 			
 		});
+		
 		$('input[name="receipt"]').change(function() {
 		    // 모든 radio를 순회한다.
 		    if( $('input[name="receipt"]:checked').val() == 'takeout'){
-		    	//$('#delivery').removeAttr("checked");
+		    	
 		    	$('#orderbtn').attr('disabled',false);
             	$('#dtakeout').prop("checked", true);
 		    	$('#deliveryaddress').hide();
 		    }else{
-		    	//$('#dtakeout').removeAttr("checked");
 		    	$('#orderbtn').attr('disabled','disabled');
             	$('#delivery').prop("checked", true);
 		    	$('#deliveryaddress').show();
 		    }
 		});
 
-/* 		$('#dtakeout').click(function() {
-			$('#deliveryaddress').hide();
-		});
-		
-		$('#delivery').click(function() {
-			$('#deliveryaddress').show();
-		}); */
-		//$('#deliveryaddress').show();
 	});
 	
 
 	function menuorder(){
 		// 소켓 연결
-		//JSON.stringify($("#orderform").serializeObject())
 		
 		var sid=$('#storeid').val();
 		var type ="cusorder";
 		send(type,sid);
+		
+		$('[name=total]').val(removeCommas($('[name=total]').val()));
 		document.orderform.submit();
 	}
 </script>
@@ -470,15 +471,6 @@ width: 50p;
 			<div class=”table-responsive“>
 			
 			<table class="table"> 
-			
-<!-- 				<tr>
-					<th>주 문 번 호</th>
-					<td>(주문코드)OR20190617001)</td>
-				</tr> -->
-<%-- 				<tr>
-					<th>주 문 날 짜</th>
-					<td><%= today %></td>
-				</tr>  --%>
 	
 				<tr>
 					<th class="tableth">매 장 명</th>
@@ -526,7 +518,7 @@ width: 50p;
 				</tr>
 				<tr>
 					<th class="tableth">금 액</th>
-					<td><input id="price" style="font-size: 18px;" value="${selectmenu.mPrice}" size="4" readonly> &nbsp;&nbsp;
+					<td><input id="price" style="font-size: 18px;" value=" <fmt:formatNumber value="${selectmenu.mPrice}"  pattern="#,###"/>" size="7" readonly> &nbsp;&nbsp;
 						<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(1)">+</button> <input name="oQty" style="text-align: center;" size="1" value="${selectmenu.orderqty}" readonly>
 						<button type="button" class="btn btn-outline-dark btn-sm" onclick="add(-1)">-</button></td>
 				</tr>
@@ -581,7 +573,7 @@ width: 50p;
 					<th class="tableth">총 금 액</th>
 					<td>
 						
-						<input name="total" style="font-size: 18px;"  value="${selectmenu.totalPrice}" readonly>
+						<input name="total" style="font-size: 18px; font-weight: bold;"  value="<fmt:formatNumber value="${selectmenu.totalPrice}"  pattern="#,###"/>" readonly>
 					
 					
 					</td>

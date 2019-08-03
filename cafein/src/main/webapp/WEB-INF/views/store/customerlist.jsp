@@ -31,7 +31,7 @@ background-color: #E0F8F7
 	var customerId = '';	
 	$(function(){
 		customerList();
-		
+		mileageServiceCheck();
 		$("#customerTable tbody tr").click(function(){
 			$('#toggleTable').show();
 		})
@@ -47,6 +47,46 @@ background-color: #E0F8F7
 		
 		
 	});
+	
+	function settingDate(){
+		// startDate는 한달전
+		var date = new Date(new Date().setMonth(new Date().getMonth()-1));
+		var year = date.getFullYear();
+		var mm =Number(date.getMonth())+1;
+		var dd = date.getDate();
+		
+		if(mm < 10)
+			mm = '0'+mm;
+		if(dd <10)
+			dd = '0'+dd;
+
+		document.getElementById('startDate').value = year+'-'+mm+'-'+dd;
+		
+		// end date는 현재 날짜로 세팅하기
+		document.getElementById('endDate').value = new Date().toISOString().substring(0, 10);
+	}
+	
+	// 매장 마일리지 서비스 체크
+	function mileageServiceCheck(){
+		$.ajax({
+			url:'getstoremileageservice',
+			type:'GET',
+			data: {sId: sId},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+			
+				if(data == 'N'){
+					$('.mileagecheck').hide();
+				}else{   
+					$('.mileagecheck').show();
+				}
+				
+					
+			}
+		}); 
+	}
 	
 	 //날짜검색
   	function dateSearch(){    	  													
@@ -70,7 +110,6 @@ background-color: #E0F8F7
     			  alert(status+"메세지"+msg);
     		  },
     		  success:function(data){
-    			  alert('통신성공');
     					$('#historyTbody').empty();
     					
     					let oNumArr 	= [];
@@ -105,7 +144,7 @@ background-color: #E0F8F7
     							//아이디가 같지않으면-
     							if(cId != ""){
     								console.log("총합");
-    								$('<tr>').css('color','red')
+    								$('<tr>').addClass("sumTotal")
     								.append($('<td>').html(cId))
     								.append($('<td>').html(oNum))
 //    			 					.append($('<td>').html(user.gd))
@@ -152,7 +191,6 @@ background-color: #E0F8F7
     					});
     					
     					if(cId != ""){
-    						console.log("총합1");
     						$('<tr>')
     						.append($('<td>').html(cId))
     						.append($('<td>').html(oNum))
@@ -251,7 +289,7 @@ background-color: #E0F8F7
 		
 		$('#historyTbody').empty();
 		console.log(data);
-		
+		settingDate();
 		let oNumArr 	= [];
 		let ototalArr 	= [];
 		
@@ -349,6 +387,8 @@ background-color: #E0F8F7
 		console.log(oNumArr);
 		console.log(ototalArr);
 	}
+	
+	
 </script>
 
 
@@ -364,6 +404,7 @@ background-color: #E0F8F7
 			</div>
 			<div class="container" align="center">
 				<input class="form-control" id="customerserch" type="text" placeholder="Search..">
+				<hr> 
 				<table class="table table-hover" id="customerTable">
 
 					<thead>
@@ -415,7 +456,7 @@ background-color: #E0F8F7
 							<th class="tableth">loginRoot</th>
 							<td><input type="text" size="50" style="text-align:center"id="cJoin" name="cJoin" readonly></td>
 						</tr>
-						<tr>
+						<tr class="mileagecheck" style="display: none;">
 							<th class="tableth">MILEAGE</th>
 							<td><input type="text" size="50" style="text-align:center"id="mileage" name="mileage" readonly></td>
 						</tr>
@@ -425,8 +466,8 @@ background-color: #E0F8F7
 			<div class="container">
 				<p align="center" class="titlefont">구매이력</p>
 				<hr>
-			</div>
-			<div class="btn-group">
+			</div>  
+			<div class="btn-group" align="right"> 
 				<input type="date" class="btn btn-secondary" id="startDate" name="startDate">&nbsp; 
 					<input type="date" class="btn btn-secondary" id="endDate" name="endDate">&nbsp;
 				<input type="button" value="검색" class="btn btn-success" id="btnSearch" onclick="dateSearch()">

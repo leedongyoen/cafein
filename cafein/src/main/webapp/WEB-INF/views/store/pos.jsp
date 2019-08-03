@@ -861,8 +861,8 @@ var ordernum ="";
 			error : function(status, msg) {
 				alert(status + "메세지" + msg);
 			},
-			success : function(data) {
-						
+			success : function(data) { 
+				console.log(data);
 		 		$.each(data,function(idx,item){
 				if(mnumber == ""){
 					mnumber = item.oDnum;

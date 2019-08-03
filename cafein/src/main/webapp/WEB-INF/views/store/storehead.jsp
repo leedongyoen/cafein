@@ -73,7 +73,7 @@ $(function(){
 var webSocket;
 	var sId = "<%= (String)session.getAttribute("sId") %>";
 	if(sId != "null") {
-		webSocket = new WebSocket('ws://cafein.co.kr/OrdercastingServer.do');
+		webSocket = new WebSocket('ws://cafein.co.kr/cafein/OrdercastingServer.do');
 		
 		webSocket.onerror = function(event) {
 			onError(event)
@@ -175,10 +175,10 @@ body {
 
       <li class="nav-item dropdown">
 
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">매장</a>
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= (String)session.getAttribute("sName") %></a>
 
         <div class="dropdown-menu" aria-labelledby="dropdown01">
-        	<a class="dropdown-item" href="${pageContext.request.contextPath}/storeinfoedit.do">Store Id</a>
+        	<a class="dropdown-item" href="${pageContext.request.contextPath}/storeinfoedit.do"><%= (String)session.getAttribute("sName") %> 정보</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/customerlist.do">고객 조회</a>
           	<a class="dropdown-item" href="${pageContext.request.contextPath}/salestime.do">매출</a>
           	<a class="dropdown-item" href="${pageContext.request.contextPath}/storerecipemenu">메뉴 관리</a>

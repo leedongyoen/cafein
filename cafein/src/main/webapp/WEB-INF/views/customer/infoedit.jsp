@@ -487,17 +487,17 @@ function chkPwContinuity(paramObj) {
 						<table class="table">
 
 							<tr>
-								<th>현재 비밀번호</th>
+								<th style="font-size:15px;">현재 비밀번호</th>
 								<td><input type="password" name ="curpw" id="c_pw"></td>
 							</tr>
 							<tr>
-								<th>새 비밀번호</th>
+								<th style="font-size:15px;">새 비밀번호</th>
 								<td><input type="password" id="new_pw" name="cPw"
 									onKeyUp="javascript:chkPw(this, 'chkPwView');"> <br>
 								<span id="chkPwView"></span></td>
 							</tr>
 							<tr>
-								<th>새 비밀번호 확인</th>
+								<th style="font-size:15px;">새 비밀번호 확인</th>
 								<td><input type="password" id="newck_pw"></td>
 							</tr>
 
@@ -516,13 +516,17 @@ function chkPwContinuity(paramObj) {
 
 
 	<div class="container" align="center">
+		<hr>
+			<p id="c_info" align="center" class="titlefont">회원 정보</p>
+			<p id="c_infoedit" align="center" class="titlefont" style=" display:none ">회원 정보 수정</p>
+			
+			<div align="right"> 
+				<p style ="color:red;">※수정하기 버튼을 누르면 수정이 가능합니다.</p>			
+			</div>
+			<hr>
 		<!-- 수정완료 버튼에 .do 보내기 -->
 		<form name="customerinfoForm" id="customerinfoForm"
 			action="${pageContext.request.contextPath}/infoedit.do" method="post">
-			<hr>
-			<p id="c_info" align="center" class="titlefont">회원 정보</p>
-			<p id="c_infoedit" align="center" class="titlefont" style=" display:none ">회원 정보 수정</p>
-			<hr>
 			
 			<table class="table"> 
 				<tr class="notweb">
@@ -566,9 +570,7 @@ function chkPwContinuity(paramObj) {
 					
 				</tr>
 			</table>
-			<div>
-				<h3 style ="color:red;">※수정하기 버튼을 누르셔야지 수정이 가능합니다.</h3>			
-			</div>
+			
 			<input type="button" class="btn btn-secondary" onclick="javascript:history.go(-1)" value="돌아가기"> 
 			<input type="button" class="btn btn-success" id="edit_before" value="수정하기" onclick="edit()"> 
 			<input style="display: none" type="button" class="btn btn-primary" id="edit_after" value="수정완료"

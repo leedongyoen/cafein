@@ -30,11 +30,11 @@
 			type : "GET",
 			datatype : "json",
 			success : function(data) {
-				console.log(data);
+				
 				$("#totalreserve tbody").empty();
 				$.each(data,function(idx,item){
 					$('<tr>')
-					.append($('<td>').html(addCommas(item.toto)))
+					.append($('<td>').html(addCommas(item.toto)+'원'))
 					.appendTo('#totalreserve tbody');
 				});
 			}
@@ -48,7 +48,7 @@
 			type : "GET",
 			datatype : "json",
 			success : function(data) {
-				console.log(data);
+				
 				$("#mainlikestorelist tbody").empty();
 				$.each(data,function(idx,item){
 					$('<tr>')
@@ -67,7 +67,7 @@
 			type : "GET",
 			datatype : "json",
 			success : function(data) {
-				console.log(data);
+				
 				$("#mainlikemenulist tbody").empty();
 				$.each(data,function(idx,item){
 					$('<tr>')
@@ -90,7 +90,7 @@
 				$("#mainorderlist tbody").empty();			
 				$.each(data,function(idx,item){
 					$('<tr>')
-					.append($('<td>').html(item.totals))
+					.append($('<td>').html(addCommas(item.totals)+'원'))
 					.appendTo('#mainorderlist tbody');
 				});
 			} 
