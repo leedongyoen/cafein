@@ -294,6 +294,14 @@ function orderBtnClick(stname){
 		
 		var ordercart = $("#orderCartForm_"+stname).serializeObject();
 		var arr = [];
+		var restore = JSON.parse(localStorage.getItem("cartlist"));
+		
+		console.log(" !!");
+		for(var h = 0;h<restore.length;h++){
+			console.log("before: "+restore[h].orderqty);
+			restore[h].orderqty = "";
+			console.log("after: "+restore[h].orderqty);
+		}
 		
 		
 		for(var k = 0;k<ordercart.cartnumlist.length;k++){
@@ -301,25 +309,27 @@ function orderBtnClick(stname){
 			var newPrice = $("#orderprice"+ordercart.cartnumlist[k]).val();
 			var newMprice = (newPrice*1)/(newOrder*1);
 			
-			console.log(newOrder);
+			//console.log(newOrder);
 			local_cart[ordercart.cartnumlist[k]].orderqty = newOrder;
 			local_cart[ordercart.cartnumlist[k]].totalPrice = newPrice;
 			local_cart[ordercart.cartnumlist[k]].mPrice = newMprice;
-			local_cart[ordercart.cartnumlist[k]].qty = ordercart.cartnumlist[k];
+			restore[ordercart.cartnumlist[k]].orderqty = "1000";
+			//local_cart[ordercart.cartnumlist[k]].qty = ordercart.cartnumlist[k];
 			arr.push(local_cart[ordercart.cartnumlist[k]]);
 		}
 		
+		localStorage.setItem("cartlist",JSON.stringify(restore));
 		//local storage  하나씩 꺼내서  orderqty 만 값 바꿔서 넘기기
 /* 		for(var m = 0;m<arr.length;m++){
 			console.log(arr[m]);
 		} */
 		
 		
-	 alert(JSON.stringify(arr)); 
+	 //alert(JSON.stringify(arr)); 
 
  	 $('[name="jsonData"]').val(JSON.stringify(arr));
 		document.fCart.submit();
- 		
+ 		 
 		
 	}
 	

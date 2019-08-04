@@ -24,9 +24,15 @@ body{
 </head>
 <script>
 
+//for cart_delete
+var local_cart = JSON.parse(localStorage.getItem("cartlist"));
+
+
 	$(function(){
 		getOrderList();
 		
+		//function for cart_delete
+		cart_delete();
 		
 	});
 	
@@ -274,7 +280,24 @@ body{
 		$("#orderdetailmodal").modal('show');
 	}
 	
+	
+	
+	// for cart_delete
+	function cart_delete(){
+		
+		var arr = JSON.parse(localStorage.getItem("cartlist"));
+		
+		for(var i = arr.length-1 ; i>=0 ;i--){
+			if(arr[i].orderqty=='1000'){
+				arr.splice(i,1);
+			}
+		}
+		local_cart=JSON.stringify(arr);
+		localStorage.setItem("cartlist",local_cart);		
+	}
+	
 
+	
 </script>
 <body>
 		<hr>
