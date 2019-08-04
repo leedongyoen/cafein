@@ -24,48 +24,56 @@ public class StoreOrderController {
 	@Autowired
 	CustomerOrderController cus_order_service;
 	
+	
 	// 해당 매장의 주문 목록
+		@ResponseBody
+		@RequestMapping(value="getfirstorderlist", method=RequestMethod.GET)
+		public Map<String, Object> getfirstorderlist(OrdersVO vo){
+			
+			Paging paging = new Paging();
+			
+			paging.setPage(vo.getCheckpagenum());
+			paging.setPageUnit(5);
+			vo.setStart(paging.getFirst());
+			vo.setEnd(paging.getLast());
+			
+			
+			// 전체 건수 받아오기
+			paging.setTotalRecord(service.getstoreorderlisttotal(vo));
+			
+			
+			System.out.println("================getTotalRecord"+
+						paging.getTotalRecord()+
+						"=== getCheckpagenum"+
+						vo.getCheckpagenum()
+						+"=== getStart"+
+						vo.getStart()
+						+"=== getEnd"+
+						vo.getEnd()
+						+"=== getStartPage"+
+						paging.getStartPage()
+						+"=== getEndPage"+
+						paging.getEndPage()
+						+"=== getLastPage"+
+						paging.getLastPage()
+
+					);
+			
+			
+			List<OrdersVO> orderlist = service.getfirstorderlist(vo);
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("list", orderlist);
+			result.put("paging", paging);
+			
+			return result;
+		}
+	
+	// 페이징처리에 따른 주문 목록 내역들
 	@ResponseBody
 	@RequestMapping(value="getstoreorderlist", method=RequestMethod.GET)
-	public Map<String, Object> getstoreorderlist(OrdersVO vo){
+	public List<OrdersVO> getstoreorderlist(OrdersVO vo){
 		
-		Paging paging = new Paging();
-		
-		paging.setPage(vo.getCheckpagenum());
-		paging.setPageUnit(7);
-		vo.setStart(paging.getFirst());
-		vo.setEnd(paging.getLast());
-		
-		
-		// 전체 건수 받아오기
-		paging.setTotalRecord(service.getstoreorderlisttotal(vo));
-		
-		
-		System.out.println("================getTotalRecord"+
-					paging.getTotalRecord()+
-					"=== getCheckpagenum"+
-					vo.getCheckpagenum()
-					+"=== getStart"+
-					vo.getStart()
-					+"=== getEnd"+
-					vo.getEnd()
-					+"=== getStartPage"+
-					paging.getStartPage()
-					+"=== getEndPage"+
-					paging.getEndPage()
-					+"=== getLastPage"+
-					paging.getLastPage()
-
-				);
-		
-		
-		
-		List<OrdersVO> orderlist = service.getstoreorderlist(vo);
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("list", orderlist);
-		result.put("paging", paging);
-		
-		return result;
+		return service.getstoreorderlist(vo);
 	}
 	
 	// 해당 매장의 주문 상세

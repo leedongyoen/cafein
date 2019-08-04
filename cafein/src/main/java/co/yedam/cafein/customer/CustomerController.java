@@ -118,7 +118,7 @@ public class CustomerController {
 			
 			out.println("<script>alert('" + customer.getcName() + "님 반갑습니다. 로그인 되었습니다.');</script>");
 			out.flush();
-			
+			session.setAttribute("cName", customer.getcName());
 			session.setAttribute("cId", customer.getcId());
 			// 가입경로를 알기위해 세션에 담음(로그아웃시 필요!)
 			session.setAttribute("cJoin", customer.getcJoin());

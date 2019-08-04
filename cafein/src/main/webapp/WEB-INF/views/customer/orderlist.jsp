@@ -13,21 +13,33 @@ body{
 			-o-background-size: cover; 
 			background-size: cover;
 }
+
+.trC1,
+.trC0{
+	background-color: white;        
+}
+
 </style>
 <title>주문 목록</title>
 </head>
 <script>
 
+//for cart_delete
+var local_cart = JSON.parse(localStorage.getItem("cartlist"));
+
+
 	$(function(){
 		getOrderList();
 		
+		//function for cart_delete
+		cart_delete();
 		
 	});
 	
 	function refuse(ordernum,sId){
 		event.stopPropagation();
 		if (confirm("정말 주문을 취소하시겠습니까??") == true){    //확인
-		    console.log(ordernum,sId);
+		
 		    $.ajax({
 				url:'updatecusordercancel',
 				type:'GET',
@@ -52,17 +64,21 @@ body{
 		}
 	}
 	
+	// 콤마 더하기
+	function addCommas(x) {
+	       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+
 	function getOrderList(pagenumber){
 		var checklogin = "<%=(String) session.getAttribute("cId")%>";
 		var orderdate;
 		var controller = $('[name="controlllist"]').val(); 
-		console.log(controller);
+		
 		
 		if(pagenumber == null){
-			console.log("null");
+			
 			pagenumber=1;
-		}else{
-			console.log(pagenumber);
 		}
 		
 		$.ajax({
@@ -98,7 +114,7 @@ body{
 					.append($('<td>').html(item.oNum))
 					.append($('<td>').html(orderdate.toLocaleDateString()))
 					.append($('<td>').html(item.sName))
-					.append($('<td>').html(item.total+'원'))
+					.append($('<td>').html(addCommas(item.total)+'원'))
 					.append($('<td>').html(item.payMethod))
 					.append($('<td>').html(item.detailNm))
 					.append($('<td>').append($('<button>').attr({
@@ -116,7 +132,7 @@ body{
 					display:"inline"
 				}).addClass("btn btn-outline-danger");
 				
-				console.log("paging first : "+paging.first);
+				
 				
 				var li;
 				// 처음 페이지 번호에서 마지막 페이지번호까지
@@ -149,7 +165,7 @@ body{
 	
 	//주문 상세
 	function orderDetail(ordernum){
-		console.log(ordernum);
+	
 		$('#ordernum').html(ordernum);
 		// 주문에 따른 옵션을 구별하기 위해서
 		var v_oDnum = "";
@@ -168,15 +184,14 @@ body{
 		$.ajax({
 			url:'getcustomerordermenudetail',
 			type:'GET',
-			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
 			async:false,
 			data: {oNum :ordernum },
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				console.log(data);
+			success:function(data){
+				
 				var total ="";
 				$.each(data,function(idx,item){
 					if(item.opName == null) item.opName=" ";
@@ -199,7 +214,7 @@ body{
 							v_qty = item.oQty;
 						}
 					}else if(v_oDnum != item.oDnum){ // 다른 메뉴일 경우
-						console.log("v_oDnum : "+v_oDnum+" v_mName : "+v_mName+" v_hotice : "+v_hotice+" v_option : "+v_option);
+						
 						total = total +(v_mName+"("+v_hotice+"/"+v_qty+"개)"+" - "+v_option+"<br>");
 						v_oDnum = item.oDnum;
 						v_mName = item.mName;
@@ -214,7 +229,7 @@ body{
 				
 					
 				});
-				console.log("v_oDnum : "+v_oDnum+" v_mName : "+v_mName+" v_hotice : "+v_hotice+" v_option : "+v_option);
+				
 				total = total +(v_mName+"("+v_hotice+"/"+v_qty+"개)"+" - "+v_option+"<br>");
 				$('#orderdetail').html(total);
 			} 
@@ -222,7 +237,6 @@ body{
 		$.ajax({
 			url:'getcustomeroderdetail',
 			type:'GET',
-			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
 			data: {oNum :ordernum },
 			async:false,
@@ -230,7 +244,7 @@ body{
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ 
-				console.log(data);
+				
 				var delivery="";
 				if(data.receipt == 'delivery') {
 					if(data.cAdd3 == null) data.cAdd3= " ";
@@ -259,14 +273,31 @@ body{
 				
 				$('#deliverydetail').html(delivery);
 				$('#storename').html(data.sName);
-				$('#price').html(data.total+"원");
+				$('#price').html(addCommas(data.total)+"원");
 			} 
 		});
 		
 		$("#orderdetailmodal").modal('show');
 	}
 	
+	
+	
+	// for cart_delete
+	function cart_delete(){
+		
+		var arr = JSON.parse(localStorage.getItem("cartlist"));
+		
+		for(var i = arr.length-1 ; i>=0 ;i--){
+			if(arr[i].orderqty=='1000'){
+				arr.splice(i,1);
+			}
+		}
+		local_cart=JSON.stringify(arr);
+		localStorage.setItem("cartlist",local_cart);		
+	}
+	
 
+	
 </script>
 <body>
 		<hr>

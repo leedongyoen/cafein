@@ -173,4 +173,10 @@ public class StoreCloseServiceImpl implements StoreCloseService {
 	public List<StoreOpenVO> storeReceiptList(StoreOpenVO vo) {
 		return dao.storeReceiptList(vo);
 	}
+
+	@Override
+	public int storeReceiptListPaging(StoreOpenVO vo) {
+		return dao.storeReceiptListPaging(vo);
+	}
+ 
 }

@@ -16,9 +16,52 @@
  table tbody tr td,
 .table td{
 	text-align: left;
+	background-color: #F2F2F2;
  
 } 
- 
+
+input[type=password]{
+font-family: "";
+} 
+
+
+tableth{
+width: 50p;
+}
+
+.table {
+  width: 70%;
+  margin-bottom: $spacer;
+  color: $table-color;
+  background-color: $table-bg; // Reset for nesting within parents with `background-color`.
+
+  th,
+  td {
+    padding: $table-cell-padding;
+    vertical-align: top;
+    border-top: $table-border-width solid $table-border-color;
+  }
+
+  thead th {
+    vertical-align: bottom;
+    border-bottom: (2 * $table-border-width) solid $table-border-color;
+  }
+
+  tbody + tbody {
+    border-top: (2 * $table-border-width) solid $table-border-color;
+  }
+}  
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 940px;
+  }
+}
  </style>
 <script>
 //최소길이 & 최대길이 제한
@@ -26,6 +69,8 @@ var minimum = 8;
 var maximun = 12;
 var sid = "<%=(String)session.getAttribute("sId")%>";
 var submitcheck = false;
+
+
 
 function chkPw(obj, viewObj) {
 	var paramVal = obj.value;	
@@ -354,24 +399,24 @@ function checkpwbtn(){
 					<h5 class="modal-title">비밀번호 변경하기</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body"  align="center">
 					<form class="form-borizontal" id="ckckpw" action="#" method="post">
 
 						<table class="table">
 
 							<tr>
-								<th>현재 비밀번호</th>
-								<th><input type="password" id="s_pw">
+								<th style="font-size:15px;">현재 비밀번호</th>
+								<td><input type="password" id="s_pw"></td>
 							</tr>
 							<tr>
-								<th>새 비밀번호</th>
-								<th><input type="password" id="new_pw" name="spw" onKeyUp="javascript:chkPw(this, 'chkPwView');">
+								<th style="font-size:15px;">새 비밀번호</th>
+								<td><input type="password" id="new_pw" name="spw" onKeyUp="javascript:chkPw(this, 'chkPwView');">
 								<br><span id="chkPwView"></span>
-								</th>
-							</tr>
-							<tr>
-								<th>새 비밀번호 확인</th>
-								<th><input type="password" id="newck_pw" ></th>
+								</td>
+							</tr>   
+							<tr> 
+								<th style="font-size:15px;">새 비밀번호 확인</th>
+								<td><input type="password" id="newck_pw" ></td>
 							</tr>
 
 						</table>
@@ -389,10 +434,13 @@ function checkpwbtn(){
 
 
 <div class = "container" align="center">
-	<hr>
+	<hr> 
 	<p id = "s_info" align="center" class="titlefont">매장 정보</p>
 	<p id = "s_infoedit" style=" display:none " align="center" class="titlefont">매장 정보 수정</p>
 	<hr>
+	<div align="right"> 
+		<p style ="color:red;">※수정하기 버튼을 누르면 수정이 가능합니다.</p>			
+	</div>
   <form id = "storeinfoForm" method = "post">
       <table class = "table">
         <tr>
@@ -444,9 +492,7 @@ function checkpwbtn(){
           </td>
         </tr>
       </table>
-      <div>
-				<h3 style ="color:red;">※수정하기 버튼을 누르셔야지 수정이 가능합니다.</h3>			
-			</div>
+      
       <a class="btn btn-secondary  pull-right"  href="javascript:history.go(-1)">돌아가기</a>
       <input type = "button" id = "edit_before"  class="btn btn-default btn-success" value = "수정하기" onclick = "edit()">
       <input style=" display:none " type = "button" class="btn btn-primary" id = "edit_after" value = "수정완료" onclick = "editok()">

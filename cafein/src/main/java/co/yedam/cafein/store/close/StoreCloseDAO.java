@@ -85,4 +85,9 @@ public class StoreCloseDAO {
 		return mybatis.selectList("storeCloseDAO.storeReceiptList", vo);
 	}
 	
+	// 페이징 처리를 위함
+	public int storeReceiptListPaging(StoreOpenVO vo) {
+		return mybatis.selectOne("storeCloseDAO.storeReceiptListPaging", vo);
+	}
+	
 }

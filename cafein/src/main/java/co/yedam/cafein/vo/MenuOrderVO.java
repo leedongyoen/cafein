@@ -11,11 +11,11 @@ public class MenuOrderVO {
 	private String cId;
 	private String mNum;
 	private String cuNum;
-	private String[] cuoptionlist; // 옵션 저장.
+	private String[] cuoptionlist; // �샃�뀡 ���옣.
 	private String caNum;
 	private String recipeno;
 	
-	// java에서 필요한 부분
+	// java�뿉�꽌 �븘�슂�븳 遺�遺�
 	private String sId;
 	private String hotice_option;
 	private String stNum;
@@ -25,9 +25,15 @@ public class MenuOrderVO {
 	private String orderqty;
 	private String totalPrice;
 	
+	//장바구니 삭제때문에 하나 추가합니다( 테이블 컬럼x)
+	private String qty;
 	
-	
-	
+	public String getQty() {
+		return qty;
+	}
+	public void setQty(String qty) {
+		this.qty = qty;
+	}
 	public String getmName() {
 		return mName;
 	}
@@ -125,8 +131,9 @@ public class MenuOrderVO {
 		return "MenuOrderVO [cId=" + cId + ", mNum=" + mNum + ", cuNum=" + cuNum + ", cuoptionlist="
 				+ Arrays.toString(cuoptionlist) + ", caNum=" + caNum + ", recipeno=" + recipeno + ", sId=" + sId
 				+ ", hotice_option=" + hotice_option + ", stNum=" + stNum + ", sName=" + sName + ", mPrice=" + mPrice
-				+ ", mName=" + mName + ", orderqty=" + orderqty + ", totalPrice=" + totalPrice + "]";
+				+ ", mName=" + mName + ", orderqty=" + orderqty + ", totalPrice=" + totalPrice + ", qty=" + qty + "]";
 	}
+	
 
 
 	

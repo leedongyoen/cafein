@@ -49,7 +49,7 @@ public class CustomerCartOrderController {
 
 	
 	
-	// 고객장바구니 관리
+	// 怨좉컼�옣諛붽뎄�땲 愿�由�
 		@RequestMapping(value = "cartmng", method = RequestMethod.GET)
 		public ModelAndView cartmng(ModelAndView mv, HttpSession session) {
 
@@ -62,15 +62,15 @@ public class CustomerCartOrderController {
 			MenuVO vo3 = new MenuVO();
 			mv.addObject("optionname", service.getOptionName(vo));		
 			mv.addObject("storename",service2.getStoreList(vo2) );
-			mv.addObject("menuimg", service3.getMenuList(vo3));
+			mv.addObject("menuimg", service3.getMenuListAll(vo3));
 			
 			mv.setViewName("customer/cartmng");
 			return mv;
 		}
 		
 
-	//장바구니->주문
-	//1건 -> 단건 주문페이지, 2건 이상-> 다건 주문페이지
+	//�옣諛붽뎄�땲->二쇰Ц
+	//1嫄� -> �떒嫄� 二쇰Ц�럹�씠吏�, 2嫄� �씠�긽-> �떎嫄� 二쇰Ц�럹�씠吏�
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "cartorder", method = RequestMethod.POST)
 		public ModelAndView cartorder(@RequestParam String jsonData) throws ParseException, JsonParseException, JsonMappingException, IOException {
@@ -96,11 +96,11 @@ public class CustomerCartOrderController {
 	        
 	        if(meorvo.size()==1) {
 	        	
-	        	mv.addObject("option", service.getorderrecipeno(meorvo.get(0)));	//메뉴번호로 CAOP들 받아옴
+	        	mv.addObject("option", service.getorderrecipeno(meorvo.get(0)));	//硫붾돱踰덊샇濡� CAOP�뱾 諛쏆븘�샂
 	        	mv.setViewName("customer/orderregi");
 	        }else if(meorvo.size()>1) {
 	        	
-	        	 //meorvo- cuoptionlist 안에 ST번호->RE 교체 
+	        	 //meorvo- cuoptionlist �븞�뿉 ST踰덊샇->RE 援먯껜 
 	        	List<RecipeVO> opNames = service.getOptionName(vo);
 	        	//System.out.println("opNames: "+opNames);
 	        	
@@ -154,11 +154,11 @@ public class CustomerCartOrderController {
 	        		meorvoIn = new JSONObject();
 	        		meorvoIn.put("cuoptionlist", addCuop.toString());
 	        		
-	        		totalPrice = totalPrice + Integer.parseInt(meorvo.get(j).getTotalPrice());
-	        		meorvo.get(0).setTotalPrice( (String.valueOf(totalPrice)));
+	        		//totalPrice = totalPrice + Integer.parseInt(meorvo.get(j).getTotalPrice());
+	        		//meorvo.get(0).setTotalPrice( (String.valueOf(totalPrice)));
 	        		
 	        		
-	        		///왜 여기가 바뀌었다고
+	        		///�솢 �뿬湲곌� 諛붾�뚯뿀�떎怨�
 	        		meorvoIn.put("cId", meorvo.get(j).getcId());
 	        		meorvoIn.put("mNum", meorvo.get(j).getmNum());
 	        		meorvoIn.put("sId", meorvo.get(j).getsId());
@@ -167,19 +167,20 @@ public class CustomerCartOrderController {
 	        		meorvoIn.put("mName", meorvo.get(j).getmName());
 	        		meorvoIn.put("orderqty", meorvo.get(j).getOrderqty());
 	        		meorvoIn.put("totalPrice", meorvo.get(j).getTotalPrice());
+	        		meorvoIn.put("deletenum", meorvo.get(j).getQty());
 	        		
 	        		meorvoOut.add(meorvoIn);
 	        		
 	        	}
 	        	
 	        	System.out.println("menrooo: "+meorvoOut.toJSONString());
-
+	        	
 
 	        	mv.addObject("cartLists",meorvo);
 	        	mv.addObject("cartListsmero",meorvoOut);
 	        	
-	        	//해당 메뉴별 모든 옵션을 map에다가 넣고map(string,Object)
-	        	//mv addObject에 map 넣고 같이 보내기 
+	        	//�빐�떦 硫붾돱蹂� 紐⑤뱺 �샃�뀡�쓣 map�뿉�떎媛� �꽔怨쟭ap(string,Object)
+	        	//mv addObject�뿉 map �꽔怨� 媛숈씠 蹂대궡湲� 
 	        	
 	        	Map<String, Object> map  = new HashMap<String, Object>();
 	        	List<RecipeVO> cuoptions = new ArrayList<RecipeVO>();
@@ -210,8 +211,7 @@ public class CustomerCartOrderController {
 		
 		
 		
-		
-		//다건 주문 페이지
+		//�떎嫄� 二쇰Ц �럹�씠吏�
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "ordercartmany", method = RequestMethod.POST)
 		public ModelAndView ordercartmany(@RequestParam String jsonData) throws ParseException, JsonParseException, JsonMappingException, IOException {
@@ -233,10 +233,11 @@ public class CustomerCartOrderController {
 			ArrayList<String> oqtyy = (ArrayList<String>) insertParam.get("oQty");
 
 			
+			
 		  for(int i = 0; i<cartcnt.size() ;i++) {
 			  OrdersVO vo = new OrdersVO();
 			  System.out.println(cartcnt.get(i));
-			  //해당 메뉴의 선택한 옵션들을 list넣음
+			  //�빐�떦 硫붾돱�쓽 �꽑�깮�븳 �샃�뀡�뱾�쓣 list�꽔�쓬
 			  vo.setmNum(cartcnt.get(i));
 			  
 			  
@@ -249,10 +250,10 @@ public class CustomerCartOrderController {
 			  System.out.println("===================="+insertParam2);
 			  if(insertParam2 == null)
 			  {	
-				  //옵션이 없는 메뉴
-				  System.out.println("옵션이 없는 메뉴 입니다.");
+				  //�샃�뀡�씠 �뾾�뒗 硫붾돱
+				  System.out.println("�샃�뀡�씠 �뾾�뒗 硫붾돱 �엯�땲�떎.");
 			  }else if(insertParam2.toString().length() > 6) {
-				  //옵션이 여러개인 메뉴
+				  //�샃�뀡�씠 �뿬�윭媛쒖씤 硫붾돱
 				  oplistarr =(ArrayList<String>) insertParam2;
 				  System.out.println("::::"+oplistarr.toString());
 				  
@@ -260,7 +261,7 @@ public class CustomerCartOrderController {
 				  oplist= oplistarr.toArray(oplist);
 				  vo.setOptionlist(oplist);
 			  }else {
-				  //옵션이 하나인 메뉴
+				  //�샃�뀡�씠 �븯�굹�씤 硫붾돱
 				  System.out.println("===================="+insertParam2);
 				  oplistarr = new ArrayList<String>();
 				  String[] oplist = new String[1];
@@ -279,7 +280,7 @@ public class CustomerCartOrderController {
 			  vo.setReceipt((String) insertParam.get("receipt"));
 			  vo.setcId((String) insertParam.get("cId"));
 			  vo.setMileage( Integer.parseInt((String)insertParam.get("mileage"))); 
-			  
+			 
 			  
 			  
 			/*
@@ -303,7 +304,7 @@ public class CustomerCartOrderController {
 		  
 		  
 		  
-		  //order 넣기 start
+		  //order �꽔湲� start
 		  	OrdersVO info = new OrdersVO();
 				info = cartorder.get(0);
 			  
@@ -315,7 +316,7 @@ public class CustomerCartOrderController {
 				}
 				cartorder.get(0).setDeliveryStatus("C0");
 				
-				// orders테이블에 넣기
+				// orders�뀒�씠釉붿뿉 �꽔湲�
 				service.insertorder(cartorder.get(0));
 				
 				
@@ -330,11 +331,11 @@ public class CustomerCartOrderController {
 					  
 					  List<OrdersVO> orderlist = new ArrayList<OrdersVO>();
 					  info = cartorder.get(c);
-					/*공통데이터를 뒤에 오는 메뉴들에도 넣어줘야함
+					/*怨듯넻�뜲�씠�꽣瑜� �뮘�뿉 �삤�뒗 硫붾돱�뱾�뿉�룄 �꽔�뼱以섏빞�븿
 
-*다건
-*공통으로 들어갈거
-x cAdd=대구시 수성구, 
+*�떎嫄�
+*怨듯넻�쑝濡� �뱾�뼱媛덇굅
+x cAdd=��援ъ떆 �닔�꽦援�, 
 x cAdd3=, 
 x cId=moss123,
 x mileage=0,
@@ -358,14 +359,14 @@ x total=1010,
 					//...
 					  
 					  
-				// order details 테이블에 넣을 vo
+				// order details �뀒�씠釉붿뿉 �꽔�쓣 vo
 				RecipeVO recipevo = new RecipeVO();
 				recipevo.setmNum(cartorder.get(c).getmNum());
-				// 해당 메뉴의 기본 레시피 번호
+				// �빐�떦 硫붾돱�쓽 湲곕낯 �젅�떆�뵾 踰덊샇
 				List<RecipeVO> recipelist = service.getorderrecipenolist(recipevo);
 				OrdersVO insertvo;
 				
-				// 해당 메뉴의 기본 레시피 넣기
+				// �빐�떦 硫붾돱�쓽 湲곕낯 �젅�떆�뵾 �꽔湲�
 				for (int n = 0; n < recipelist.size(); n++) {
 					insertvo = new OrdersVO();
 					insertvo.setoNum(cartorder.get(c).getoNum());
@@ -393,7 +394,7 @@ x total=1010,
 						continue;
 						
 					}else{
-						// 나마지 공통
+						// �굹留덉� 怨듯넻
 						insertvo.setoQty(info.getoQty());
 						insertvo.setReceipno(recipelist.get(n).getRecipeno());
 						insertvo.setCaNum(recipelist.get(n).getCaNum());
@@ -403,7 +404,7 @@ x total=1010,
 
 				}
 				
-				// 해당 메뉴의 옵션처리
+				// �빐�떦 硫붾돱�쓽 �샃�뀡泥섎━
 				if( info.getOptionlist() != null) {
 									
 					String[] optionlist = info.getOptionlist();
@@ -423,7 +424,7 @@ x total=1010,
 	
 				
 				
-				System.out.println("======== 완성" + orderlist);
+				System.out.println("======== �셿�꽦" + orderlist);
 				
 				map.put("list", orderlist);
 				
@@ -431,21 +432,21 @@ x total=1010,
 				  System.out.println("map: "+map.get("list").toString());
 				
 				
-				//***** 여러개 넣기
-				// order details 테이블에 넣기
+				//***** �뿬�윭媛� �꽔湲�
+				// order details �뀒�씠釉붿뿉 �꽔湲�
 				int n = service.insertorderdetails(map);
 		
-				System.out.println("===========결과 : "+n);
+				System.out.println("===========寃곌낵 : "+n);
 				n = service.getodnum2(info);
 		}		
 				
-				// 해당 주문번호의 op_dnum수정
+				// �빐�떦 二쇰Ц踰덊샇�쓽 op_dnum�닔�젙
 				  //if(info.getMileageservice().equals("Y")) {
 					int n = service.setcanclemileage(info);
-					//추가된 마일리지 업데이트 
+					//異붽��맂 留덉씪由ъ� �뾽�뜲�씠�듃 
 					n = service.updatemileage(info);
 					
-					// 해당 매장에 대한 마일리지가 없을 경우
+					// �빐�떦 留ㅼ옣�뿉 ���븳 留덉씪由ъ�媛� �뾾�쓣 寃쎌슦
 					if(n == 0) {
 						n = service.insertmileage(info);
 					}

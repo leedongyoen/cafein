@@ -149,21 +149,36 @@
 	</select>
 	<!-- 주문내역 상세 -->
 	<select id="getcallorderdetails" resultType="orderdt">
-		SELECT QTY.QTY	"oQty" 
-				, ORD.O_NUM		"oNum"
-				, ORD.M_NUM		"mNum"
-				, R.OP_NAME		"opName"
-		FROM ORDER_DETAILS ORD JOIN RECIPE R
-		ON ORD.RECIPENO = R.RECIPENO
+	 
+		SELECT DNUM.OP_DNUM "O_DNUM"
+			      , O.O_NUM
+			      , ORD.M_NUM
+			      , M.M_NAME 
+			      , ORD.OP_DNUM 
+			      , ORD.O_QTY 
+			      , ORD.RECIPENO
+			      , RE.OP_NAME
+		FROM ORDERS O JOIN ORDER_DETAILS ORD
+		ON O.O_NUM = ORD.O_NUM
+		JOIN RECIPE RE
+		ON ORD.RECIPENO = RE.RECIPENO
 		JOIN (
-		    SELECT M_NUM,MAX(O_QTY) "QTY"
-		  FROM ORDER_DETAILS
-		  WHERE O_NUM = #{oNum}
-		  GROUP BY M_NUM
-		)QTY
-		on QTY.M_NUM = ORD.M_NUM
-		WHERE ORD.O_NUM = #{oNum}
-		    AND ORD.CA_NUM IN ('CAIC','CAHT','CADR','CADE','CAJP')
+		  SELECT DISTINCT
+                 O_NUM
+                , M_NUM
+                , CASE WHEN O_DNUM = OP_DNUM THEN OP_DNUM 
+                    ELSE OP_DNUM
+                END "OP_DNUM"
+				  FROM ORDER_DETAILS
+		) DNUM
+		ON DNUM.M_NUM =  ORD.M_NUM AND DNUM.O_NUM = ORD.O_NUM AND DNUM.OP_DNUM = ORD.OP_DNUM
+		JOIN MENU M
+    	ON ORD.M_NUM = M.M_NUM
+		WHERE  ORD.O_NUM = #{oNum}
+		    AND ORD.CA_NUM IN ('CAOP','CAIC','CAHT')
+		ORDER BY DNUM.OP_DNUM,RE.OP_NAME
+ 
+	
 
 	</select>
 	

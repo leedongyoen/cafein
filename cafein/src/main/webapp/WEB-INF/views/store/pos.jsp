@@ -861,8 +861,8 @@ var ordernum ="";
 			error : function(status, msg) {
 				alert(status + "메세지" + msg);
 			},
-			success : function(data) {
-						
+			success : function(data) { 
+				console.log(data);
 		 		$.each(data,function(idx,item){
 				if(mnumber == ""){
 					mnumber = item.oDnum;
@@ -999,13 +999,26 @@ var ordernum ="";
 </div>
 
 </div>
-<div style="text-align:right; padding:0px 300px 0px 0px; font-size: xx-large;">
-<a style="color:white">주문하신 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="addpay" value="0" readonly="readonly" >원</a>
-<br>
-<a style="color:white">사용된 마일리지 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="usedmile" value="0" readonly="readonly" >P</a>
-<br>
-<a style="color:white">결제 금액 : <input type="text" style="text-align:right;width:300px; border: 0px; background: transparent; color:white;" id="finalpay" value="0" readonly="readonly" >원</a>
-</div>
+<div style="text-align:right; padding:0px 300px 0px 600px; font-size: xx-large; line-height:1;">
+		<div class= 'row' style="color: white;">
+			<div class='col'>주문하신 금액 :</div><div class='col'><input type="text"
+				style="text-align: right; width: 300px; border: 0px; background: transparent; color: white;"
+				id="addpay" value="0" readonly="readonly">원</div>
+		</div>
+		<br>
+		<div class= 'row' style="color: white;">     
+			<div class='col'>사용된 마일리지 :</div>
+			<div class='col'><input type="text"
+				style="text-align: right; width: 300px; border: 0px; background: transparent; color: white;"
+				id="usedmile" value="0" readonly="readonly">P&nbsp;</div>
+		</div>
+		<br>
+		<div class= 'row' style="color: white">
+			<div class='col'>결제 금액 :</div><div class='col'><input type="text"
+				style="text-align: right; width: 300px; border: 0px; background: transparent; color: white;"
+				id="finalpay" value="0" readonly="readonly">원</div>
+		</div>
+	</div>
 	<div style="text-align:left">
 	<input type="button" id="clearRow" class="btn btn-outline-light" value="전체취소">
 	<input type="button" id="deleteRow" class="btn btn-outline-light" value="선택취소">

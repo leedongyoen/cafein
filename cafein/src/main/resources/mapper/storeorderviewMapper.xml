@@ -27,9 +27,33 @@
 		WHERE DELIVERY_STATUS = 'C0'
 	
 	</select>
+	
+	<select id="getfirstorderlist" resultType="order">
+		SELECT B.* FROM ( SELECT A.*, ROWNUM RN FROM (
+			SELECT DISTINCT	
+						 O_NUM
+			FROM ORDERS 
+			WHERE S_ID= #{sId}
+					<if test="startDate != null and endDate != null ">
+						AND TO_CHAR(O_DATE,'YYYY-MM-DD') BETWEEN '${startDate}' AND '${endDate}'
+					</if>
+					<if test="startDate == null and endDate ==null">
+						AND TO_CHAR(O_DATE,'YYYY/MM/DD') BETWEEN TO_CHAR(SYSTIMESTAMP-1,'YYYY/MM/DD') AND TO_CHAR(SYSTIMESTAMP,'YYYY/MM/DD')
+					</if>
+					<if test="nocancelview != null">
+						AND DELIVERY_STATUS != 'C4'
+					</if>
+					
+			ORDER BY O_NUM DESC 
+<![CDATA[ 
+	 ) A )B WHERE RN >= #{start} and RN <= #{end}
+]]>
+	
+	</select>
+	
 
 	<select id="getstoreorderlist" parameterType="order"  resultType="order">
-	SELECT B.* FROM ( SELECT A.*, ROWNUM RN FROM (
+
 		SELECT DISTINCT
 					  O.O_DATE
 					, O.C_ID
@@ -47,22 +71,10 @@
 		ON O.O_NUM = ORD.O_NUM
 		JOIN MENU M
 		ON ORD.M_NUM = M.M_NUM 
-		WHERE O.S_ID=#{sId}
+		WHERE O.O_NUM=#{oNum}
 				AND ORD.CA_NUM NOT IN ('CAOP')
-				<if test="startDate != null and endDate != null ">
-					AND TO_CHAR(O.O_DATE,'YYYY-MM-DD') BETWEEN '${startDate}' AND '${endDate}'
-				</if>
-				<if test="startDate == null and endDate ==null">
-					AND TO_CHAR(O.O_DATE,'YYYY/MM/DD') BETWEEN TO_CHAR(SYSTIMESTAMP-1,'YYYY/MM/DD') AND TO_CHAR(SYSTIMESTAMP,'YYYY/MM/DD')
-				</if>
-				<if test="nocancelview != null">
-					AND O.DELIVERY_STATUS != 'C4'
-				</if>
 				
 		ORDER BY O.O_NUM DESC 
-<![CDATA[ 
-	 ) A )B WHERE RN >= #{start} and RN <= #{end}
-]]>
 	</select>
 	
 	<select id="getstoreorderdetails" resultType="orderdt">

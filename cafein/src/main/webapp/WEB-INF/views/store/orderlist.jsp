@@ -31,11 +31,9 @@
 	
 	
 	$(function(){
-		getstoreorderlist();
-		
-		
-		
-	
+		getfirstorderlist();
+		settingDate();
+
 		// 주문 취소 제외시 
 		$('#ordercancel').change(function() {
 		    var value = $(this).val();              // value
@@ -64,7 +62,7 @@
 		    	cancelorderno();
 		    }else if((startDate == '' || endDate == '') && !checked){
 		    	// 날짜 검색이 없고, 주문 취소도 같이 볼라면.
-		    	getstoreorderlist();
+		    	getfirstorderlist();
 		    }
 		    	
 		});
@@ -77,7 +75,29 @@
 	// 주문번호의 메뉴번호
 	var ordermnum="";
 	
-
+	// 처음 주문목록 기간이 언제부터 언제까징지 알려주기 위해서
+	function settingDate(){
+		
+		// 하루를 뺀 날짜 가져옴
+		var date = new Date(new Date().setDate(new Date().getDate()-1));
+		// 해당 날짜의 년도
+		var year = date.getFullYear();
+		// 해당 날짜의 달 , 0부터 시작하기때문에 +1을 함
+		var mm =Number(date.getMonth())+1;
+		// 해당 날짜의 일( 이때 위에서 하루를 뺀 일을 가져온다. )
+		var dd = date.getDate();
+		
+		// format을 맞추기 위해서
+		if(mm < 10)
+			mm = '0'+mm;
+		if(dd <10)
+			dd = '0'+dd;
+		// startDate는 하루 전
+		document.getElementById('storeorderstartdate').value = year+'-'+mm+'-'+dd;
+		
+		// end date는 현재 날짜로 세팅하기
+		document.getElementById('storeorderenddate').value = new Date().toISOString().substring(0, 10);
+	}
 	
 	// 날짜 검색 중에 주문 취소 제외시키는 경우
 	function searchdate_nocancelview(startDate,endDate,checkpagenum){
@@ -88,7 +108,7 @@
 			checkpagenum =1;
 		$('#orderlisttable tbody').empty();
 		$.ajax({
-			url: 'getstoreorderlist',
+			url: 'getfirstorderlist',
 			type:'GET',
 			data: {sId: sId, startDate: startDate, endDate: endDate, nocancelview: 'Y',checkpagenum:checkpagenum},
 			dataType:'json',
@@ -111,17 +131,7 @@
 				}
 				$.each(list,function(idx,item){
 					
-					if(item.cAdd == null) item.cAdd="";
-					if(item.cAdd3 == null) item.cAdd3 = "";
-					if(item.payMethod == 'card') item.payMethod="카드결제";
-					if(item.payMethod == 'cash') item.payMethod="현금결제";
-					if(item.receipt == 'delivery') item.receipt="배달";
-					if(item.receipt == 'takeout') item.receipt="직접 수령";
-					
-					
-					getorderdetails(item);
-					
-					
+					getstoreorderlist(item.oNum);			
 					
 				});
 				
@@ -167,7 +177,7 @@
 			checkpagenum =1;
 		
 		$.ajax({ 
-			url: 'getstoreorderlist',
+			url: 'getfirstorderlist',
 			type:'GET',
 			data: {sId: sId, nocancelview: 'Y',checkpagenum: checkpagenum},
 			dataType:'json',
@@ -175,32 +185,21 @@
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+			success:function(data){ 
+				
 				
 				var list = data.list;
 				var paging = data.paging;
-				
 				$.each(list,function(idx,item){
 					
-					if(item.cAdd == null) item.cAdd="";
-					if(item.cAdd3 == null) item.cAdd3 = "";
-					if(item.payMethod == 'card') item.payMethod="카드결제";
-					if(item.payMethod == 'cash') item.payMethod="현금결제";
-					if(item.receipt == 'delivery') item.receipt="배달";
-					if(item.receipt == 'takeout') item.receipt="직접 수령";
-			
-					
-					getorderdetails(item);
-					
+					getstoreorderlist(item.oNum);
 					
 					
 				});
-				
-				
 				console.log(paging);
 				
 				console.log("paging first : "+paging.first);
-				//function searchdate_nocancelview(startDate,endDate,checkpagenum){
+				
 				var li;
 				// 처음 페이지 번호에서 마지막 페이지번호까지
 				
@@ -222,7 +221,9 @@
 											}).append(n));
 					}  
 					$('#pageul').append(li);
-				} 
+					
+				}
+				
 			}
 		});
 	}
@@ -258,7 +259,7 @@
 					alert("고객님이 주문번호 : "+ordern+"를 취소했습니다. ");
 				}
 				
-				getstoreorderlist();
+				getfirstorderlist();
 			}
 			
 		});
@@ -293,7 +294,7 @@
 					alert("주문번호 : "+ordern+" 를 거절되었습니다.");
 				}
 				
-				getstoreorderlist();
+				getfirstorderlist();
 			}
 			
 		});
@@ -376,18 +377,15 @@
 		});
 	}
 	
-	
-	function getstoreorderlist(checkpagenum){
-		
-		
+	function getfirstorderlist(checkpagenum){
 		var sId = '<%= session.getAttribute("sId") %>';
-		
 		if(checkpagenum == null)
 			checkpagenum = 1;
 		
 		$('#orderlisttable tbody').empty();
+		$('#pageul').empty(); 
 		$.ajax({
-			url: 'getstoreorderlist',
+			url: 'getfirstorderlist',
 			type:'GET',
 			data: {sId: sId, checkpagenum:checkpagenum},
 			dataType:'json',
@@ -395,24 +393,14 @@
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
-			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+			success:function(data){ 
 				
-				$('#orderlisttable tbody').empty();
-				$('#pageul').empty(); 
+				
 				var list = data.list;
 				var paging = data.paging;
 				$.each(list,function(idx,item){
 					
-					if(item.cAdd == null) item.cAdd="";
-					if(item.cAdd3 == null) item.cAdd3 = "";
-					if(item.payMethod == 'card') item.payMethod="카드결제";
-					if(item.payMethod == 'cash') item.payMethod="현금결제";
-					if(item.receipt == 'delivery') item.receipt="배달";
-					if(item.receipt == 'takeout') item.receipt="직접 수령";
-			
-					
-					getorderdetails(item);
-					
+					getstoreorderlist(item.oNum);
 					
 					
 				});
@@ -430,19 +418,59 @@
 						li =  $('<li>').attr("class","page-item active")
 								.append($('<a>').attr({
 									class: "page-link"
-										, href: "javascript:getstoreorderlist("+n+")"
+										, href: "javascript:getfirstorderlist("+n+")"
 									}).append(n));
 						  
 					}else{
 						li =  $('<li>').attr("class","page-item")
 										.append($('<a>').attr({
 											class: "page-link"
-												, href: "javascript:getstoreorderlist("+n+")"
+												, href: "javascript:getfirstorderlist("+n+")"
 											}).append(n));
 					}  
 					$('#pageul').append(li);
 					
 				}
+				
+			}
+		});
+		
+	}
+	
+	
+	function getstoreorderlist(oNum){
+		
+		
+		var sId = '<%= session.getAttribute("sId") %>';
+		
+		$.ajax({
+			url: 'getstoreorderlist',
+			type:'GET',
+			data: {sId: sId, oNum: oNum},
+			dataType:'json',
+			async: false,
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
+				
+			
+				$.each(data,function(idx,item){
+					
+					if(item.cAdd == null) item.cAdd="";
+					if(item.cAdd3 == null) item.cAdd3 = "";
+					if(item.payMethod == 'card') item.payMethod="카드결제";
+					if(item.payMethod == 'cash') item.payMethod="현금결제";
+					if(item.receipt == 'delivery') item.receipt="배달";
+					if(item.receipt == 'takeout') item.receipt="직접 수령";
+			
+					
+					getorderdetails(item);
+					
+					
+					
+				});
+				
 				
 			}
 		});
@@ -529,7 +557,7 @@
 															.append("승인") ))
 					.append($('<td>').append($('<button>').attr({ 
 															type:"button",
-															onclick:"apply('"+item.oNum+"','"+item.cId+"')",							
+															onclick:"refuse('"+item.oNum+"','"+item.cId+"')",							
 															class: item.deliveryStatus
 															})
 															.addClass("btn btn-outline-danger")
@@ -570,7 +598,7 @@
 																.append("승인") ))
 						.append($('<td>').append($('<button>').attr({
 																type:"button",
-																onclick:"apply('"+item.oNum+"','"+item.cId+"')",											
+																onclick:"refuse('"+item.oNum+"','"+item.cId+"')",											
 																class: item.deliveryStatus
 																}).css("display","none")
 																.addClass("btn btn-outline-danger")
@@ -630,7 +658,7 @@
   		var sId = '<%= session.getAttribute("sId") %>';
 		$('#orderlisttable tbody').empty();
 		$.ajax({
-			url: 'getstoreorderlist',
+			url: 'getfirstorderlist',
 			type:'GET',
 			data: {sId: sId, startDate: startDate, endDate: endDate,checkpagenum:checkpagenum},
 			dataType:'json',
@@ -652,19 +680,10 @@
 				
 				}
 				$.each(list,function(idx,item){
+	
 					
-					if(item.cAdd == null) item.cAdd="";
-					if(item.cAdd3 == null) item.cAdd3 = "";
-					if(item.payMethod == 'card') item.payMethod="카드결제";
-					if(item.payMethod == 'cash') item.payMethod="현금결제";
-					if(item.receipt == 'delivery') item.receipt="배달";
-					if(item.receipt == 'takeout') item.receipt="직접 수령";
-					
-					
-					getorderdetails(item);
-					
-					
-					
+					getstoreorderlist(item.oNum);
+
 				});
 				
 				console.log(paging);
@@ -704,8 +723,8 @@
 		// date 입력폼, check box 초기화해야됨.
 		$('.resetdate').val('');
 		$('.resetcheck').prop('checked', false);
-
-		getstoreorderlist();
+		settingDate();
+		getfirstorderlist();
 	}
 
 </script>

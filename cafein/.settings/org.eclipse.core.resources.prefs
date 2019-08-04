@@ -1,6 +1,8 @@
 eclipse.preferences.version=1
+encoding//src/main/java/co/yedam/cafein/customer/CustomerCartOrderController.java=UTF-8
 encoding//src/main/java/co/yedam/cafein/customer/mymenu/CusMyMenuController.java=UTF-8
 encoding//src/main/java/co/yedam/cafein/store/menu/RecipeController.java=UTF-8
 encoding//src/main/java/co/yedam/cafein/store/menu/RecipeDAO.java=UTF-8
 encoding//src/main/java/co/yedam/cafein/store/pos/PosController.java=UTF-8
+encoding//src/main/java/co/yedam/cafein/vo/MenuOrderVO.java=UTF-8
 encoding//src/main/webapp/WEB-INF/views/home.jsp=UTF-8

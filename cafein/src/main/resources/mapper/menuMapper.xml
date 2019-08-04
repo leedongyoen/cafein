@@ -34,6 +34,24 @@
  		order by m_num
 	</select>
 	
+	
+	<select id="getMenuListAll" resultMap="menuMap" parameterType="menu">
+		select
+		M_NUM
+		,M_NAME
+		,M_PRICE
+		,S_ID
+		,CA_NUM
+		,(select CA_TYPE from CATEGORY where ca_num = menu.ca_num) CA_NUM_NM
+		,M_STAT
+		,FIND_CODENM(M_STAT) M_STAT_NM
+		,MENUSALE
+		,UPLOADFILE
+		from menu
+ 		order by m_num
+	</select>
+	
+	
 	<update id = "updateMenu" parameterType="menu">
 	UPDATE MENU SET 
 		M_NAME = #{mName}

@@ -35,7 +35,8 @@ body{
 <div class="container">
 
 	<button id="selectStore" class="btn btn-outline-info" >매장 선택</button>
-	<h3 align="center" id="selectstorename"></h3>
+	<div class="titlefont" id="selectstorename"  align="center"></div>
+	
 	<br><hr>
 	<div id="topstorebtn"></div>
 	<hr>
@@ -115,12 +116,12 @@ body{
 						<table class="table">
 							<tr>
 								<th>STORE NAME</th>
-								<td><input type="text" id="sName" name="sName" readonly="readonly"></td>
+								<td><input style="text-align: center;" type="text" id="sName" name="sName" readonly="readonly"></td>
 							</tr>
 							
 							<tr>
 								<th>MENU NAME</th>
-								<td><input type="text"  id="mName" name="mName" readonly="readonly"></td>
+								<td ><input type="text" style="text-align: center;" id="mName" name="mName" readonly="readonly"></td>
 							</tr>
 							<tr>
 								<th>PRICE</th>
@@ -137,14 +138,11 @@ body{
 							<tr id="optiontr">
 								<th>OPTION</th>
 								<td id="menudetailoption">
-									<!-- <input type="checkbox" class="checkoption" name="whipping" value="Y">휘핑크림 추가(+500)<br>
-									<input type="checkbox" class="checkoption" name="syrup" value="Y">시럽 추가(+500)<br>
-									<input type="checkbox" class="checkoption" name="shot" value="Y">샷 추가(+500) -->
 								</td>
 							</tr>
 							<tr>
 								<th>TOTAL PRICE</th>
-								<td><input type="text" id="totalPrice" name="totalPrice" readonly="readonly"></td>
+								<td ><input type="text" style="text-align: center; font-size: 18px; font-weight: bold;" id="totalPrice" name="totalPrice" readonly="readonly"></td>
 							</tr>
 						</table>
 					
@@ -194,14 +192,7 @@ body{
 							</tr>
 							</thead>
 							<tbody >
-<%-- 							<c:forEach	items="${storelist}" var="store">									
-							<tr onclick="menuList('${store.sid}','${store.sname}')">
-								<td><input type="hidden" name="sid" value="${store.sid}"></td>
-								<td>${store.sname}</td>
-								<td>${store.sadd}</td>
-								<td>구해야됨</td>
-							</tr>
-							</c:forEach> --%>
+
 							</tbody>
 						</table>
 						</div>
@@ -248,7 +239,6 @@ body{
 		$.ajax({
 			url:'gettopstorelist',
 			type:'GET',
-			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
 			data: {cId: checklogin},
 			error:function(xhr,status,msg){
@@ -272,7 +262,6 @@ body{
 							, class :"btn btn-outline-info"
 							, "disabled":"disabled"
 						}).append(item.sname+"(오픈준비중)"));
-						//$('.orderno').attr('onclick','').unbind('click'); 
 					}
 				});
 			}
@@ -288,7 +277,6 @@ body{
 		$.ajax({
 			url:'storelistmenu/'+sid,
 			type:'GET',
-			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
@@ -298,34 +286,32 @@ body{
 	}	
 	
 	function menuListResult(data) {
-		//var imgurl ="${pageContext.request.contextPath}/image/";
 		$('#storelistmodal').modal('hide');
 		$("#coffeetable tbody").empty();
 		$("#beveragetable tbody").empty();
 		$("#bakerytable tbody").empty();
 		$.each(data,function(idx,item){
-			
 			// 메뉴 상태에 따라, 카데고리에 따라 나누어서 출력하게 수정
 			if(item.caNum == "CACO" && item.menuSale == "Y"){
-				$('<tr>').attr("data-toggle","modal")//.addClass("openmodal")
+				$('<tr>').attr("data-toggle","modal")
 				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
-				.append($('<td>').html(item.mName))
-				.append($('<td>').html(item.mPrice))
+				.append($('<td>').html(item.mName).css("font-size","17px").css("font-weight","bold"))
+				.append($('<td>').html(addCommas(item.mPrice)+'원').css("font-size","17px").css("font-weight","bold"))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#coffeetable tbody');
 			}
 			else if(item.caNum == "CADR" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")
 				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
-				.append($('<td>').html(item.mName))
-				.append($('<td>').html(item.mPrice))
+				.append($('<td>').html(item.mName).css("font-size","17px").css("font-weight","bold"))
+				.append($('<td>').html(addCommas(item.mPrice)+'원').css("font-size","17px").css("font-weight","bold"))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#beveragetable tbody');
 			}else if(item.caNum == "CADE" && item.menuSale == "Y"){
 				$('<tr>').attr("data-toggle","modal")
 				.append($('<td>').append($('<img>').attr("src","${pageContext.request.contextPath}/image/"+item.uploadFileName).css("width","100px")))
-				.append($('<td>').html(item.mName))
-				.append($('<td>').html(item.mPrice))
+				.append($('<td>').html(item.mName).css("font-size","17px").css("font-weight","bold"))
+				.append($('<td>').html(addCommas(item.mPrice)+'원').css("font-size","17px").css("font-weight","bold"))
 				.append($('<input type=\'hidden\' id=\'hidden_menuId\'>').val(item.mNum))
 				.appendTo('#bakerytable tbody');
 			}
@@ -352,14 +338,12 @@ body{
 	         if (status === kakao.maps.services.Status.OK) {
 	
 	            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-	            console.log(saddress+'  : '+coords);
 	            // 거리 계산
 	            var path= searchLine.getPath();
 	            path.push(coords);
 	            searchLine.setPath(path);
 	            
 	            var distance = Math.round(searchLine.getLength());
-	            console.log(sname+' 거리  : '+distance+"m");
 	           
 	            if(distance < 300){
 	            	if(opencheck == '1'){
@@ -396,7 +380,6 @@ body{
 		$.ajax({
 			url:'searchstorelist/'+standardsearchStore,
 			type:'GET',
-			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
@@ -420,7 +403,6 @@ body{
                 standardsearchAddress = addr;
                 $("#customerAddress").html(addr);
                 standardsearchStore = addr.substr(0,2);
-                console.log(standardsearchStore);
                 // 주소로 상세 정보를 검색
                 geocoder.addressSearch(data.address, function(results, status) {
                     // 정상적으로 검색이 완료됐으면
@@ -456,7 +438,6 @@ body{
 			$.ajax({
 				url:'customerinfo',
 				type:'GET',
-				//contentType:'application/json;charset=utf-8',
 				dataType:'json',
 				data: {cId:checklogin },
 				error:function(xhr,status,msg){
@@ -495,7 +476,6 @@ body{
 		$.ajax({
 			url:'storelistmenu',
 			type:'GET',
-			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
 			error:function(xhr,status,msg){
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
@@ -531,8 +511,8 @@ body{
 	
 	// 메뉴 수량 증가시
 	function add(num) {
-		var price = $('#price').val();
-		var v_totalprice = $('#totalPrice').val();
+		var price = removeCommas($('#price').val());
+		var v_totalprice = removeCommas($('#totalPrice').val());
 
 		var no = $("#ordernum").html();
 		var sum_optionprice=0;
@@ -555,7 +535,7 @@ body{
 			v_totalprice = Number(v_totalprice) + Number(price) + Number(sum_optionprice);
 		}
 		
-		$('#totalPrice').val(v_totalprice);
+		$('#totalPrice').val(addCommas(v_totalprice));
 		$("#ordernum").html(no);
 		$('input:text[name="qty"]').val(no);
 	}
@@ -574,7 +554,6 @@ body{
 				alert("상태값 :" + status + " Http에러메시지 :"+msg);
 			},
 			success:function(data){ 
-				console.log(data);
 				$("#menudetailoption").empty();
 				$("#menudetailhotice").empty();
 				if(data.length > 0){
@@ -612,11 +591,7 @@ body{
 							$("<label>").attr("for",item.caNum)
 										.append(item.opName)
 										.appendTo("#menudetailhotice");
-							/* $("<input>").attr({
-								type:'hidden',
-								id : 'option'+item.caNum,
-								value: item.opPrice
-							}).appendTo("#menudetailhotice"); */
+							
 						}
 					});
 					
@@ -629,6 +604,17 @@ body{
 			}
 		});
 	}
+	
+	// 콤마 더하기
+	function addCommas(x) {
+	       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	//모든 콤마 제거
+   function removeCommas(x) {
+       if(!x || x.length == 0) return "";
+       else return x.split(",").join("");
+   }
 	
 	// 선택한 메뉴 상세 조회
 	function getmenudetail(sid,mnum){
@@ -644,9 +630,9 @@ body{
 				$('input:text[name="sId"]').val(data.sId);
 				$('input:text[name="cId"]').val(mymenu_login_check);
 				$('#mName').val(data.mName);
-				$('#price').val(data.mPrice);
-				$('#totalPrice').val(data.mPrice);
-				$('#sName').val(storename);
+				$('#price').val(addCommas(data.mPrice));
+				$('#totalPrice').val(addCommas(data.mPrice));
+				$('#sName').val(storename);   
 				$('#ordernum').text('1');
 				$('input:text[name="mNum"]').val(data.mNum);
 				getmenuoptionlist(data.sId,data.mNum);
@@ -656,7 +642,6 @@ body{
 
 $(function(){
 	gettopstorelist();
-	//$('.orderno').attr('onclick','').unbind('click'); 
 	// 로그인시에만 나만의 메뉴 등록 가능하게 
 	mymenu_login_check = "<%= (String)session.getAttribute("cId") %>";
 	if(mymenu_login_check == "null" || mymenu_login_check == ""){
@@ -681,7 +666,7 @@ $(function(){
 		// 선택한 메뉴 상세조회 + 옵션
 		getmenudetail(selectstoreid,$(this).children().eq(3).val());
 		
-		console.log(selectstoreid);
+		
 		 $('#menudetailModal').modal('show');
      });
 	
@@ -733,11 +718,12 @@ $(function(){
 		});
 	});
 
-	 
+
+  	 
  	// 옵션 선택시
   	$(document).on("change",".checkoption",function(){
   		
-  		var v_totalprice = $('#totalPrice').val();
+  		var v_totalprice = removeCommas($('#totalPrice').val());
   		var option_price = $('#option'+$(this).val()).val();
   		
   		var v_ordernum =  $('#ordernum').html();
@@ -747,11 +733,13 @@ $(function(){
 		}else{
 			v_totalprice = Number(v_totalprice)-(Number(option_price)*Number(v_ordernum));
 		}
-  		$('#totalPrice').val(v_totalprice);
+  		$('#totalPrice').val(addCommas(v_totalprice));
   	});
  	
 	// 나만의 메뉴 등록 시
 	$("#mymenuInsertbtn").on("click",function(){
+		
+
 		var list =  $("#menudetailForm").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
@@ -765,6 +753,10 @@ $(function(){
 		}else{
 			list.cuNumList = null;
 		}
+		
+		list.totalPrice = removeCommas(list.totalPrice);
+		list.mPrice = removeCommas(list.mPrice);
+		
 		console.log(JSON.stringify(list));
 		
 		$.ajax({
@@ -788,6 +780,7 @@ $(function(){
 	});
 	
 	$("#menucartbtn").on("click",function(){
+
 		var list =  $("#menudetailForm").serializeObject();
 		var selectop = [];
 		var selectoptionck=false;
@@ -802,7 +795,8 @@ $(function(){
 			list.cuoptionlist = null;
 		}
 		list.qty = $('#ordernum').html();
-		
+		list.totalPrice = removeCommas(list.totalPrice);
+		list.mPrice = removeCommas(list.mPrice);
 
 		var local_cart = localStorage.getItem("cartlist");
 		if(local_cart == null){
@@ -814,16 +808,10 @@ $(function(){
 		}
 		
 		console.log(local_cart);
-		
-//		var insert_session = new Array();
-//		insert_session.push(local_cart);
-//		insert_session.push(JSON.stringify(list));
+
 		local_cart.push(list);
-//	console.log("insert_session : "+insert_session);
-		
-//localStorage.setItem("cartlist",insert_session);
+
 		localStorage.setItem("cartlist",JSON.stringify(local_cart));
-		console.log("localStorage : "+localStorage.getItem("cartlist"));
 		var result = confirm('장바구니로 이동하시겠습니까?'); 
 		if(result) { //yes 
 			location.replace("${pageContext.request.contextPath}/cartmng"); 
@@ -845,26 +833,14 @@ $(function(){
 		}else{
 			list.cuNumList = null;
 		}
+
 		
 		$('[name=orderqty]').val($('#ordernum').html());
-		console.log(JSON.stringify(list));
+		$('[name=mPrice]').val(removeCommas($('[name=mPrice]').val()));
+		$('[name=totalPrice]').val(removeCommas($('[name=totalPrice]').val()));
 		
 		document.menudetailForm.submit();
 		
-		/* 
-		$.ajax({
-			url : 'customerorder',
-			type : 'POST',
-			contentType : 'application/json;charrset=utf-8',
-			data : JSON.stringify(list),
-			success : function(data) {
-				console.log(data);
-
-			},
-			error : function(request,status,error) {
-				alert(JSON.stringify(request,status,error));
-			}
-		}); */
 		
 	});
 	
