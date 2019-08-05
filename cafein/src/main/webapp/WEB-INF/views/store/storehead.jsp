@@ -85,13 +85,11 @@ var webSocket;
 		webSocket.onmessage = function(event) {
 			var result = event.data;
 			var gun = result.split(":");
+			var audio = document.getElementById('audio_play'); 
 			if(gun[1] == "건"){
 			$("#ordercall").text("1");
 //			 alert(event.data); 
-			 var audio = document.getElementById('audio_play'); 
-			 audio.oncanplaythrough = function() {
 				 audio.play();
-				};
 			}
 
 		};
