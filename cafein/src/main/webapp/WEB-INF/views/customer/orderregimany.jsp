@@ -418,7 +418,7 @@ $(function(){
 		
 		
 	 // 옵션 선택시
-/*   	$(".checkoption").change(function(){//oQty
+ /*   	$(".checkoption").change(function(){//oQty
   		var optionprice = $("#price"+$(this).val()).val();
   		console.log($(this).val());
   		console.log(optionprice);
@@ -433,7 +433,7 @@ $(function(){
 		}
   		 $("input:text[name='total']").val(v_totalprice);
 
-  	}); */
+  	}); */ 
 	 
 	// 새 주소로 주문
 	$("#changeAdd").on("click",function(){
@@ -646,7 +646,7 @@ alert(msg);
 					<c:forEach items="${optionname}" var="recipeList">
 						<c:if test="${recipeList.mNum eq cartlist.mNum}">
 							${recipeList.opName}
-							<input type="checkbox" value="${recipeList.recipeno}" id="${recipeList.recipeno}" name="check_${recipeList.mNum}"  onClick="oplistcheck(this.name)" class="checkoption">
+							<input type="checkbox" value="${recipeList.recipeno}" id="${recipeList.recipeno}" name="${recipeList.mNum}"  onClick="oplistcheck(this.name)" class="checkoption">
 							<span id = "span_${recipeList.recipeno}">${recipeList.opPrice}</span> 원
 						
 							<br>
