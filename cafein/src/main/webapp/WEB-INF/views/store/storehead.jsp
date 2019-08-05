@@ -84,7 +84,7 @@ var webSocket;
 		};
 		webSocket.onmessage = function(event) {
 			var result = event.data;
-			var gun = result.split("건");
+			var gun = result.split(":");
 			if(gun[1] == "건"){
 			$("#ordercall").text("1");
 //			 alert(event.data); 
