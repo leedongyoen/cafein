@@ -89,7 +89,9 @@ var webSocket;
 			$("#ordercall").text("1");
 //			 alert(event.data); 
 			 var audio = document.getElementById('audio_play'); 
-			 			audio.play();
+			 audio.oncanplaythrough = function() {
+				 audio.play();
+				};
 			}
 
 		};
