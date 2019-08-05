@@ -919,6 +919,7 @@ var ordernum ="";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum); //cId로 교체
 		$("#table"+ckoNum).hide();
+		$("#ocnum").hide();
 	}
  	function callorderNO(){
 		// 소켓 연결
@@ -929,6 +930,7 @@ var ordernum ="";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum);
 		$("#table"+ckoNum).hide();
+		$("#ocnum").hide();
 		
 	}
 </script>
@@ -1066,7 +1068,7 @@ var ordernum ="";
 	
 	<!-- 결제내역조회 모달 -->
 	<div class="modal fade" id="orderListModal" role="dialog" >
-		<div class="modal-dialog" style="width: 100px; display: table;">		
+		<div class="modal-dialog modal-lg" style="width: 100px; display: table;">		
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">ORDER LIST</h5>
@@ -1169,7 +1171,7 @@ var ordernum ="";
 	
 	<!-- 알람내역 모달 -->
 	<div class="modal fade" id="answerCallModal" role="dialog" >
-		<div class="modal-dialog" style="width: 100px; display: table;">		
+		<div class="modal-dialog modal-lg" style="width: 100px; display: table;">		
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">WEB CUSTOMER ORDERS</h5>
