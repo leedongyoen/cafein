@@ -271,7 +271,7 @@ public class CustomerController {
 			throw new RuntimeException(e);
 		}
 		return "customer/emailauth";
-
+		
 	}
 
 	// 회원가입 인증번호 인증키를 체크할 컨트롤러
