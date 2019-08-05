@@ -272,7 +272,7 @@ var ordernum ="";
 	 
 	
 	  //웹주문 조회
-	    $("#answercall").on("click",function(){
+	  $('#answercall').on("click",function(){
 	 		 $("#ordercall").text("0");
 	 		$('#callorderlisttable tbody').empty();
 	 		$('#answerCallModal').modal("show");
@@ -930,6 +930,7 @@ var ordernum ="";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum);
 		aftercallorder();
+		
 	}
 </script>
 <audio id='audio_play' src='resources/alarm.mp3'></audio> 
@@ -996,29 +997,29 @@ var ordernum ="";
 <button type="button" class="btn btn-outline-light" id="reservebtn">사용</button>
 <button type="button" class="btn btn-outline-light" id="reservecancelbtn">취소</button>
 </a>
-</div>
+</div>  
 
-</div>
-<div style="text-align:right; padding:0px 300px 0px 600px; font-size: xx-large; line-height:1;">
-		<div class= 'row' style="color: white;">
+</div>  
+<div style="text-align:right; padding:0px 300px 0px 800px;line-height:1px;">
+		<div class= 'row' style="color: white; font-size: xx-large;">
 			<div class='col'>주문하신 금액 :</div><div class='col'><input type="text"
 				style="text-align: right; width: 300px; border: 0px; background: transparent; color: white;"
 				id="addpay" value="0" readonly="readonly">원</div>
 		</div>
 		<br>
-		<div class= 'row' style="color: white;">     
+		<div class= 'row' style="color: white; font-size: xx-large;">     
 			<div class='col'>사용된 마일리지 :</div>
 			<div class='col'><input type="text"
 				style="text-align: right; width: 300px; border: 0px; background: transparent; color: white;"
 				id="usedmile" value="0" readonly="readonly">P&nbsp;</div>
 		</div>
 		<br>
-		<div class= 'row' style="color: white">
+		<div class= 'row' style="color: white; font-size: xx-large;">
 			<div class='col'>결제 금액 :</div><div class='col'><input type="text"
 				style="text-align: right; width: 300px; border: 0px; background: transparent; color: white;"
 				id="finalpay" value="0" readonly="readonly">원</div>
 		</div>
-	</div>
+		</div>
 	<div style="text-align:left">
 	<input type="button" id="clearRow" class="btn btn-outline-light" value="전체취소">
 	<input type="button" id="deleteRow" class="btn btn-outline-light" value="선택취소">
@@ -1187,7 +1188,7 @@ var ordernum ="";
 								<th>아이디</th>
 								<th>결제금액</th>
 							</tr>
-							</thead>
+							</thead>  
 							<tbody>
 							</tbody>
 						</table>
