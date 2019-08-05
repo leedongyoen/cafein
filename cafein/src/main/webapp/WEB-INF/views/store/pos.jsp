@@ -892,22 +892,22 @@ var ordernum ="";
 		 		$('#table'+ocnum).after($('<tr>').attr("class","calloption").attr("id","ocnum")
 		 				.append($('<td>').html("메뉴명 : <br>"+resul))
 	 					.append($('<td>').attr("id","cusck").attr("value",cusCID).html("고객 ID :"+cusCID))
-	 					.append($('<td>').append($('<input>').attr({
-						 						type:"hidden",
-						 						id:"ckoNum",
-						 						value:ocnum
-						 						})))
 	 					.append($('<td>').append($('<button>').attr({
 						 						type:"button",
 						 						onclick:"callorderOK()",
 						 						'class':'callbtn btn btn-outline-dark'
-						 						}).append("주문확인")))
+		   				 						}).append("주문확인")))
 						
 						.append($('<td>').append($('<button>').attr({
 						 						type:"button",
 						 						onclick:"callorderNO()",
 						 						'class':'callbtn btn btn-outline-dark'
 						 						}).append("주문취소")))
+						 .append($('<td>').append($('<input>').attr({
+						 						type:"hidden",
+						 						id:"ckoNum",
+						 						value:ocnum
+						 						})))
 						)   
 			}
 			}); 

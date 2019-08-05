@@ -83,11 +83,14 @@ var webSocket;
 		 	
 		};
 		webSocket.onmessage = function(event) {
-			console.log(event);
+			var result = event.data;
+			var list = result.split("건");
+			if(gun[1] == "건"){
 			$("#ordercall").text("1");
 //			 alert(event.data); 
 			 var audio = document.getElementById('audio_play'); 
-			 			audio.play(); 
+			 			audio.play();
+			}
 
 		};
 	}
