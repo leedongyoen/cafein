@@ -179,8 +179,7 @@ $(function(){
 			}
 			
 			//alert(JSON.stringify($("#menudetail").serializeObject()));
-			
-		
+					
 		});
 		
 		$("#btnInsert").on('click',function(){
