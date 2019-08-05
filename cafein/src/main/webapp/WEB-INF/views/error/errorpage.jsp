@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"  isErrorPage="true"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -160,7 +160,7 @@
 <body class="loading">
   <h1>Sorry</h1>
   <h2>죄송합니다. 현재 서비스 점검중입니다. <input type="button" value="돌아가기" onclick="history.back();" class="btn btn-outline-info"></h2>
-  
+  <p>에러 타입 : <%= exception.getClass().getName() %><br> 에러 메세지 : <%= exception.getMessage() %></p>
   <div class="gears">
     <div class="gear one">
       <div class="bar"></div>
