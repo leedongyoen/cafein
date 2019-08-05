@@ -177,10 +177,8 @@ $(function(){
 			if(up){
 				menuUpdate();
 			}
-			
 			//alert(JSON.stringify($("#menudetail").serializeObject()));
-			
-		
+					
 		});
 		
 		$("#btnInsert").on('click',function(){
@@ -583,7 +581,7 @@ function recipeUpdate(){
 	var menuId = $("#mNum").val();
 	
 	var up;
-	up = confirm('삭제하시겠습니까?');
+	up = confirm('수정하시겠습니까?');
 
 	if(up){
 		$.ajax({
@@ -1044,11 +1042,11 @@ function insertOption(){
 
 										<tr>
 											<th>메뉴 이름</th>
-											<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="mmName" name="mName" placeholder="예) 아메리카노"></td>
+											<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="mmName" name="mName" placeholder="ex) 아메리카노"></td>
 										</tr>
 										<tr>
 											<th>메뉴 가격(원)</th>
-											<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="mmPrice" name="mPrice" placeholder="예) 2000"></td>
+											<td><input type="text" style="text-align:center; width:100px; text-decoration: underline;" id="mmPrice" name="mPrice" placeholder="ex) 2000"></td>
 										</tr>
 										<tr>
 											<th>카테고리</th>
@@ -1104,7 +1102,7 @@ function insertOption(){
 							<tr>
 								<th>사 용 량</th>
 								<td colspan="3">
-										<input type="text" style="text-align:center; width:100px; text-decoration: underline;" placeholder="예) 30" name="consum"> 
+										<input type="text" style="text-align:center; width:100px; text-decoration: underline;" placeholder="ex) 30" name="consum"> 
 										<input type="text" id="reciUnit" readonly>
 								</select></td>
 							</tr>
@@ -1143,18 +1141,18 @@ function insertOption(){
 									</tr>
 									<tr>
 										<th>옵션 이름</th>
-										<td><input type="text" placeholder="예) 초코 추가" style="text-align:center; width:100px; text-decoration: underline;" id="opName" name="opName"></td>
+										<td><input type="text" placeholder="ex) 초코 추가" style="text-align:center; width:100px; text-decoration: underline;" id="opName" name="opName"></td>
 									</tr>
 									<tr>
 										<th>소모량</th>
 										<td>
-										<input type="text" placeholder="예) 50" style="text-align:center; width:100px; text-decoration: underline;" id="consume" name="consum">
+										<input type="text" placeholder="ex) 50" style="text-align:center; width:100px; text-decoration: underline;" id="consume" name="consum">
 										<input type="text" style="text-align:center; width:100px;" id="opstUnit">
 										</td>
 									</tr>
 									<tr>
 										<th>옵션 가격</th>
-										<td><input type="text" placeholder="예) 300" style="text-align:center; width:100px; text-decoration: underline;" id="opPrice" name="opPrice">원</td>
+										<td><input type="text" placeholder="ex) 300" style="text-align:center; width:100px; text-decoration: underline;" id="opPrice" name="opPrice">원</td>
 									</tr>
 									
 								</table>
