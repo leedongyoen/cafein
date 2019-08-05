@@ -170,6 +170,7 @@ function answerorder(){
 		});    
 	}
 	
+	
 function addCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -920,7 +921,6 @@ var ordernum ="";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum); //cId로 교체
 		answerorder();
-		aftercallorder();
 	}
  	function callorderNO(){
 		// 소켓 연결
@@ -931,7 +931,6 @@ var ordernum ="";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum);
 		answerorder();
-		aftercallorder();
 		
 	}
 </script>
