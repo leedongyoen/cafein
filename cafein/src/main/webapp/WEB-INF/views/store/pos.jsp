@@ -160,7 +160,6 @@ function answerorder(){
 						})
 						.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
 						.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
-						.append($('<td><input type=\'text\' value=\''+item.mName+'\'>'))
 						.append($('<td><input type=\'text\' value=\''+item.cId+'\'>'))
 						.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
 						.appendTo('#callorderlisttable tbody');
@@ -865,47 +864,50 @@ var ordernum ="";
 			success : function(data) { 
 				console.log(data);
 		 		$.each(data,function(idx,item){
-				if(mnumber == ""){
-					mnumber = item.oDnum;
-					resul = mename+" - ";
-					mqty="0";
-				}
-				if(mnumber == item.opDnum){
-					if(mqty == "0" && item.oQty != "0"){
-						resul = resul+" "+item.oQty+" 개 - ";
-						mqty=item.oQty;
+			 		if(item.opName == null){
+			 			item.opName=" ";
+			 		}
+					if(mnumber == ""){
+						mnumber = item.oDnum;
+						resul = item.mName+" - ";
+						mqty="0";
 					}
-					resul = resul +" "+ item.opName;
-					console.log("--- "+resul);
-					
-				}
-				if(mnumber != item.opDnum){
-					mnumber = item.oDnum;
-					mqty="0";
-					resul = resul + "<br>" +item.mName+" - ";
-					resul = resul +" " +item.opName;
-					console.log(resul);
-				}		
-			});
+					if(mnumber == item.opDnum){
+						if(mqty == "0" && item.oQty != "0"){
+							resul = resul+" "+item.oQty+" 개 - ";
+							mqty=item.oQty;
+						}
+						resul = resul +" "+ item.opName;
+						console.log("--- "+resul);
+						
+					}
+					if(mnumber != item.opDnum){
+						mnumber = item.oDnum;
+						mqty="0";
+						resul = resul + "<br>" +item.mName+" - ";
+						resul = resul +" " +item.opName;
+						console.log(resul);
+					}		
+				});
 		 		$('#table'+ocnum).after($('<tr>').attr("class","calloption").attr("id","ocnum")
 		 				.append($('<td>').html("메뉴명 : <br>"+resul))
 	 					.append($('<td>').attr("id","cusck").attr("value",cusCID).html("고객 ID :"+cusCID))
-	 					.append($('<td>').append($('<input>').attr({
-						 						type:"hidden",
-						 						id:"ckoNum",
-						 						value:ocnum
-						 						})))
 	 					.append($('<td>').append($('<button>').attr({
 						 						type:"button",
 						 						onclick:"callorderOK()",
 						 						'class':'callbtn btn btn-outline-dark'
-						 						}).append("주문확인")))
+		   				 						}).append("주문확인")))
 						
 						.append($('<td>').append($('<button>').attr({
 						 						type:"button",
 						 						onclick:"callorderNO()",
 						 						'class':'callbtn btn btn-outline-dark'
 						 						}).append("주문취소")))
+						 .append($('<td>').append($('<input>').attr({
+						 						type:"hidden",
+						 						id:"ckoNum",
+						 						value:ocnum
+						 						})))
 						)   
 			}
 			}); 
@@ -1068,7 +1070,7 @@ var ordernum ="";
 	
 	<!-- 결제내역조회 모달 -->
 	<div class="modal fade" id="orderListModal" role="dialog" >
-		<div class="modal-dialog modal-lg" style="width: 100px; display: table;">		
+		<div class="modal-dialog" style="width: 100px; display: table;">		
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">ORDER LIST</h5>
@@ -1085,9 +1087,9 @@ var ordernum ="";
 								id="btnSearch" onclick="getCusRefund(1)">
 						</div>
 						<div class="table-responsive" style="text-align:left">
-						<table id="orderlisttable" class="table" >
+						<table id="orderlisttable" class="table" style="width:1100px;" >
 							<thead>
-							<tr> 
+							<tr>      
 								<th>주문번호</th>
 								<th>DATE</th>
 								<th>고객 아이디</th>
@@ -1139,8 +1141,8 @@ var ordernum ="";
 						
 						<div class="table-responsive" style="text-align:left">
 						<div style="text-align:right">
-							<input type="button" name="pay" id="cash" value="현금">
-							<input type="button" name="pay"  id="card" value="카드">
+							<input type="button" class="btn btn-outline-dark" name="pay" id="cash" value="현금">
+							<input type="button" class="btn btn-outline-dark" name="pay"  id="card" value="카드">
 						</div>
 						<table id="payNow" class="exam">
 							<thead>
@@ -1171,7 +1173,7 @@ var ordernum ="";
 	
 	<!-- 알람내역 모달 -->
 	<div class="modal fade" id="answerCallModal" role="dialog" >
-		<div class="modal-dialog modal-lg" style="width: 100px; display: table;">		
+		<div class="modal-dialog" style="width: 100px; display: table;">		
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">WEB CUSTOMER ORDERS</h5>
@@ -1180,12 +1182,11 @@ var ordernum ="";
 				<div class="modal-body">
 					<form class="form-borizontal" action="#" method="POST">
 						<div class="table-responsive" style="text-align:left">
-						<table id="callorderlisttable" class="table" >
+						<table id="callorderlisttable" class="table" style="width:1000px;" >
 							<thead>
 							<tr> 
 								<th>DATE</th>
-								<th>주문번호</th>
-								<th>주문메뉴</th>
+								<th>주문번호</th>			
 								<th>아이디</th>
 								<th>결제금액</th>
 							</tr>

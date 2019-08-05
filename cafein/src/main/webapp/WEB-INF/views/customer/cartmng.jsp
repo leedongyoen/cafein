@@ -66,6 +66,7 @@ var arrMnum = new Array();
 var arrImg = new Array();
 
 var local_cart = JSON.parse(localStorage.getItem("cartlist"));
+var ccid = "<%=(String) session.getAttribute("cId")%>";
 
 $(function(){
 		
@@ -296,11 +297,11 @@ function orderBtnClick(stname){
 		var arr = [];
 		var restore = JSON.parse(localStorage.getItem("cartlist"));
 		
-		console.log(" !!");
+		//console.log(" !!");
 		for(var h = 0;h<restore.length;h++){
-			console.log("before: "+restore[h].orderqty);
+			//console.log("before: "+restore[h].orderqty);
 			restore[h].orderqty = "";
-			console.log("after: "+restore[h].orderqty);
+			//console.log("after: "+restore[h].orderqty);
 		}
 		
 		
@@ -314,6 +315,9 @@ function orderBtnClick(stname){
 			local_cart[ordercart.cartnumlist[k]].totalPrice = newPrice;
 			local_cart[ordercart.cartnumlist[k]].mPrice = newMprice;
 			restore[ordercart.cartnumlist[k]].orderqty = "1000";
+			console.log(ccid);
+			restore[ordercart.cartnumlist[k]].cId = ccid;
+			local_cart[ordercart.cartnumlist[k]].cId = ccid;
 			//local_cart[ordercart.cartnumlist[k]].qty = ordercart.cartnumlist[k];
 			arr.push(local_cart[ordercart.cartnumlist[k]]);
 		}

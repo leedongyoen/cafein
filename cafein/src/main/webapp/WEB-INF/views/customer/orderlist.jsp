@@ -199,11 +199,13 @@ var local_cart = JSON.parse(localStorage.getItem("cartlist"));
 					if(v_oDnum == ""){
 						v_oDnum = item.oDnum;
 						v_mName = item.mName;
+						v_hotice ="";
 						if(item.caNum == 'CAIC' || item.caNum == 'CAHT' ){
 							v_hotice = item.opName;							
 						}else{ // 그 밖 옵션들
 							v_option = v_option+" "+item.opName;
 							v_qty = item.oQty;
+							  
 						}
 					}else if(v_oDnum == item.oDnum){ // 해당 메뉴의 옵션일 경우
 						
@@ -212,6 +214,7 @@ var local_cart = JSON.parse(localStorage.getItem("cartlist"));
 						}else{ // 그 밖 옵션들
 							v_option = v_option+" "+item.opName;
 							v_qty = item.oQty;
+							
 						}
 					}else if(v_oDnum != item.oDnum){ // 다른 메뉴일 경우
 						
@@ -219,6 +222,7 @@ var local_cart = JSON.parse(localStorage.getItem("cartlist"));
 						v_oDnum = item.oDnum;
 						v_mName = item.mName;
 						v_option ="";
+						v_hotice="";
 						if(item.caNum == 'CAIC' || item.caNum == 'CAHT' ){
 							v_hotice = item.opName;							
 						}else{ // 그 밖 옵션들
