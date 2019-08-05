@@ -295,7 +295,7 @@ var ordernum ="";
  //메뉴탭에서 매장메뉴 나오기
  $(document).ready(function(){
 	 
-	 $("#aftersearch").hide()
+	 $("#aftersearch").hide();
 	 $("#paymentModal").modal('hide');
 	 $("#cusSearchModal").modal('hide');
 	 $("#orderListModal").modal('hide');
@@ -1173,7 +1173,7 @@ var ordernum ="";
 	
 	<!-- 알람내역 모달 -->
 	<div class="modal fade" id="answerCallModal" role="dialog" >
-		<div class="modal-dialog" style="width: 100px; display: table;">		
+		<div class="modal-dialog modal-lg" style="width: 100px; display: table;">		
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">WEB CUSTOMER ORDERS</h5>
