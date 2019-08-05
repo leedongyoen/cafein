@@ -19,7 +19,7 @@
 	<parameter name="p_opendate" class="java.lang.String"/>
 	<parameter name="p_name" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[select a.*, b.*, c.*, d.*, e.*
+		<![CDATA[select a.*, b.*, c.*, d.*, e.*, f.*
 from (
 		SELECT   to_char(OPENTIME, 'yy/MM/dd HH24:mi') "openTime"
 					 , to_char(CLOSETIME,'yy/MM/dd HH24:mi') "closeTime"
@@ -52,8 +52,6 @@ from (
 			        , nvl(to_char(COUNT(CASE WHEN MILEAGE > 0 THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "minusMileageCnt"
 				    , nvl(to_char(SUM(case when o.total > 0 then o.total else 0 end)*0.01,'999,999,999,999,999,999'),0) "addmileage"
 				    , nvl(to_char(COUNT(CASE WHEN o.total > 0 THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "addMileageCnt"
-			        , nvl(to_char(sum(case when o.total < 0 then o.mileage else 0 end),'999,999,999,999,999,999'),0) "refundmileage"
-			        , nvl(to_char(COUNT(CASE WHEN MILEAGE < 0 THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "refundMileageCnt"
 		FROM ORDERS O ,( SELECT CLOSETIME, OPENTIME
 							        FROM STOREOPEN
 							        WHERE S_ID = $P{p_store}
@@ -96,7 +94,18 @@ from (
 		WHERE TO_CHAR(O.O_DATE,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8)
 		AND O.TOTAL < 0
 		AND O.S_ID = $P{p_store}
-		) e]]>
+		) e,
+		(
+			SELECT    nvl(to_char(sum(case when o.total < 0 then o.total*0.01 else 0 end),'999,999,999,999,999,999'),0) "refundmileage"
+        				 , nvl(to_char(COUNT(CASE WHEN o.total < 0 THEN 1 ELSE NULL END),'999,999,999,999,999,999'),0) "refundMileageCnt"
+			FROM ORDERS O ,( SELECT CLOSETIME, OPENTIME
+								        FROM STOREOPEN
+								        WHERE S_ID = $P{p_store}
+								        AND TO_char(opentime,'yy/MM/dd') = SUBSTR($P{p_opendate},1,8)) SOP
+			WHERE( TO_CHAR(O.O_DATE,'YY/MM/DD') = SUBSTR($P{p_opendate},1,8) )
+			AND O.DELIVERY_STATUS IN ('C4', 'C6')
+			AND O.S_ID = $P{p_store}
+		) f]]>
 	</queryString>
 	<field name="openTime" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="openTime"/>
@@ -139,12 +148,6 @@ from (
 	</field>
 	<field name="addMileageCnt" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="addMileageCnt"/>
-	</field>
-	<field name="refundmileage" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="refundmileage"/>
-	</field>
-	<field name="refundMileageCnt" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="refundMileageCnt"/>
 	</field>
 	<field name="cardDelivery" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="cardDelivery"/>
@@ -199,6 +202,12 @@ from (
 	</field>
 	<field name="RefundCnt" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="RefundCnt"/>
+	</field>
+	<field name="refundmileage" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="refundmileage"/>
+	</field>
+	<field name="refundMileageCnt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="refundMileageCnt"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>

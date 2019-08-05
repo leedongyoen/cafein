@@ -110,7 +110,7 @@
 	<!-- 마감 영수증을 위한 환불내역(결제방식 별 금액, 마일리지, 건수) 조회 -->
 	<select id="getRefundInfo" resultType="order">
 		SELECT NVL(SUM(TOTAL),0) "refundSum"
-			 , NVL(SUM(MILEAGE),0) "refundMileage"
+			 , NVL(SUM(TOTAL)*0.01,0) "refundMileage"
 			 , PAY_METHOD "refundMethod"
 			 , NVL(COUNT(CASE WHEN MILEAGE <![CDATA[ < ]]> 0 THEN 1 ELSE NULL END),0) "mileage"
 			 , NVL(COUNT(CASE WHEN PAY_METHOD = 'cash' THEN 1 ELSE NULL END),0) "cashRefundCnt"
