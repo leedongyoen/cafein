@@ -139,6 +139,37 @@ background-color: #E0F8F7
 </head>
 <body style="background: url(image/metalbk.jpg) no-repeat center center; background-size: cover;">
 <script type="text/javascript">
+function answerorder(){
+		 $("#ordercall").text("0");
+		$('#callorderlisttable tbody').empty();
+		$('#answerCallModal').modal("show");
+		 console.log("in");
+		
+		$.ajax({
+			url:'getcallorderlist',
+			type:'GET',
+			data: {sId: sId},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){
+				$.each(data,function(idx,item){
+					$('<tr>').attr({
+						onclick:"aftercallorder('"+item.oNum+"','"+item.mName+"','"+item.cId+"')",
+						id: "table"+item.oNum
+						})
+						.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
+						.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
+						.append($('<td><input type=\'text\' value=\''+item.cId+'\'>'))
+						.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
+						.appendTo('#callorderlisttable tbody');
+					});
+
+			}
+		});    
+	}
+	
+	
 function addCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -264,44 +295,13 @@ var ordernum ="";
  //메뉴탭에서 매장메뉴 나오기
  $(document).ready(function(){
 	 
-	 $("#aftersearch").hide()
+	 $("#aftersearch").hide();
 	 $("#paymentModal").modal('hide');
 	 $("#cusSearchModal").modal('hide');
 	 $("#orderListModal").modal('hide');
 	 $('#answerCallModal').modal("hide");
 	 
 	
-	  //웹주문 조회
-	    $("#answercall").on("click",function(){
-	 		 $("#ordercall").text("0");
-	 		$('#callorderlisttable tbody').empty();
-	 		$('#answerCallModal').modal("show");
-	 		 console.log("in");
-	 		
-	 		$.ajax({
-				url:'getcallorderlist',
-				type:'GET',
-				data: {sId: sId},
-				error:function(xhr,status,msg){
-					alert("상태값 :" + status + " Http에러메시지 :"+msg);
-				},
-				success:function(data){
-					$.each(data,function(idx,item){
-						$('<tr>').attr({
-							onclick:"aftercallorder('"+item.oNum+"','"+item.mName+"','"+item.cId+"')",
-							id: "table"+item.oNum
-							})
-							.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
-							.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
-							.append($('<td><input type=\'text\' value=\''+item.mName+'\'>'))
-							.append($('<td><input type=\'text\' value=\''+item.cId+'\'>'))
-							.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
-							.appendTo('#callorderlisttable tbody');
-						});
-	
-				}
-			});    
-	 	});
 	 //메뉴로드
 	 $.ajax({
 			url:'pos/'+sId,
@@ -864,48 +864,50 @@ var ordernum ="";
 			success : function(data) { 
 				console.log(data);
 		 		$.each(data,function(idx,item){
-				if(mnumber == ""){
-					mnumber = item.oDnum;
-					resul = mename+" - ";
-					mqty="0";
-				}
-				if(mnumber == item.opDnum){
-					if(mqty == "0" && item.oQty != "0"){
-						resul = resul+" "+item.oQty+" 개 - ";
-						mqty=item.oQty;
+			 		if(item.opName == null){
+			 			item.opName=" ";
+			 		}
+					if(mnumber == ""){
+						mnumber = item.oDnum;
+						resul = item.mName+" - ";
+						mqty="0";
 					}
-					resul = resul +" "+ item.opName;
-					console.log("--- "+resul);
-					
-				}
-				if(mnumber != item.opDnum){
-					mnumber = item.oDnum;
-					mqty="0";
-					resul = resul + "<br>" +item.mName+" - ";
-					resul = resul +" " +item.opName;
-					console.log(resul);
-				}		
-			});
+					if(mnumber == item.opDnum){
+						if(mqty == "0" && item.oQty != "0"){
+							resul = resul+" "+item.oQty+" 개 - ";
+							mqty=item.oQty;
+						}
+						resul = resul +" "+ item.opName;
+						console.log("--- "+resul);
+						
+					}
+					if(mnumber != item.opDnum){
+						mnumber = item.oDnum;
+						mqty="0";
+						resul = resul + "<br>" +item.mName+" - ";
+						resul = resul +" " +item.opName;
+						console.log(resul);
+					}		
+				});
 		 		$('#table'+ocnum).after($('<tr>').attr("class","calloption").attr("id","ocnum")
 		 				.append($('<td>').html("메뉴명 : <br>"+resul))
 	 					.append($('<td>').attr("id","cusck").attr("value",cusCID).html("고객 ID :"+cusCID))
-	 					.append($('<td>').append($('<input>').attr({
-						 						type:"hidden",
-						 						id:"ckoNum",
-						 						value:ocnum
-						 						})))
-						
 	 					.append($('<td>').append($('<button>').attr({
 						 						type:"button",
 						 						onclick:"callorderOK()",
 						 						'class':'callbtn btn btn-outline-dark'
-						 						}).append("주문확인")))
+		   				 						}).append("주문확인")))
 						
 						.append($('<td>').append($('<button>').attr({
 						 						type:"button",
 						 						onclick:"callorderNO()",
 						 						'class':'callbtn btn btn-outline-dark'
 						 						}).append("주문취소")))
+						 .append($('<td>').append($('<input>').attr({
+						 						type:"hidden",
+						 						id:"ckoNum",
+						 						value:ocnum
+						 						})))
 						)   
 			}
 			}); 
@@ -914,12 +916,12 @@ var ordernum ="";
  	function callorderOK(){
 		// 소켓 연결
 		//JSON.stringify($("#orderform").serializeObject())
-		
 		var cid=$("#cusck").val();
 		var type ="cusorderOK";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum); //cId로 교체
-		aftercallorder();
+		$("#table"+ckoNum).hide();
+		$("#ocnum").hide();
 	}
  	function callorderNO(){
 		// 소켓 연결
@@ -929,7 +931,9 @@ var ordernum ="";
 		var type ="cusorderNO";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum);
-		aftercallorder();
+		$("#table"+ckoNum).hide();
+		$("#ocnum").hide();
+		
 	}
 </script>
 <audio id='audio_play' src='resources/alarm.mp3'></audio> 
@@ -996,29 +1000,29 @@ var ordernum ="";
 <button type="button" class="btn btn-outline-light" id="reservebtn">사용</button>
 <button type="button" class="btn btn-outline-light" id="reservecancelbtn">취소</button>
 </a>
-</div>
+</div>  
 
-</div>
-<div style="text-align:right; padding:0px 300px 0px 600px; font-size: xx-large; line-height:1;">
-		<div class= 'row' style="color: white;">
+</div>  
+<div style="text-align:right; padding:0px 300px 0px 800px;line-height:1px;">
+		<div class= 'row' style="color: white; font-size: xx-large;">
 			<div class='col'>주문하신 금액 :</div><div class='col'><input type="text"
 				style="text-align: right; width: 300px; border: 0px; background: transparent; color: white;"
 				id="addpay" value="0" readonly="readonly">원</div>
 		</div>
 		<br>
-		<div class= 'row' style="color: white;">     
+		<div class= 'row' style="color: white; font-size: xx-large;">     
 			<div class='col'>사용된 마일리지 :</div>
 			<div class='col'><input type="text"
 				style="text-align: right; width: 300px; border: 0px; background: transparent; color: white;"
 				id="usedmile" value="0" readonly="readonly">P&nbsp;</div>
 		</div>
 		<br>
-		<div class= 'row' style="color: white">
+		<div class= 'row' style="color: white; font-size: xx-large;">
 			<div class='col'>결제 금액 :</div><div class='col'><input type="text"
 				style="text-align: right; width: 300px; border: 0px; background: transparent; color: white;"
 				id="finalpay" value="0" readonly="readonly">원</div>
 		</div>
-	</div>
+		</div>
 	<div style="text-align:left">
 	<input type="button" id="clearRow" class="btn btn-outline-light" value="전체취소">
 	<input type="button" id="deleteRow" class="btn btn-outline-light" value="선택취소">
@@ -1066,7 +1070,7 @@ var ordernum ="";
 	
 	<!-- 결제내역조회 모달 -->
 	<div class="modal fade" id="orderListModal" role="dialog" >
-		<div class="modal-dialog" style="width: 100px; display: table;">		
+		<div class="modal-dialog modal-lg" style="width: 100px; display: table;">		
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">ORDER LIST</h5>
@@ -1169,7 +1173,7 @@ var ordernum ="";
 	
 	<!-- 알람내역 모달 -->
 	<div class="modal fade" id="answerCallModal" role="dialog" >
-		<div class="modal-dialog" style="width: 100px; display: table;">		
+		<div class="modal-dialog modal-lg" style="width: 100px; display: table;">		
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">WEB CUSTOMER ORDERS</h5>
@@ -1183,11 +1187,11 @@ var ordernum ="";
 							<tr> 
 								<th>DATE</th>
 								<th>주문번호</th>
-								<th>주문메뉴</th>
+								
 								<th>아이디</th>
 								<th>결제금액</th>
 							</tr>
-							</thead>
+							</thead>  
 							<tbody>
 							</tbody>
 						</table>

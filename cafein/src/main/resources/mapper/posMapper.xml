@@ -128,18 +128,18 @@
 		SELECT DISTINCT
 					  O.O_DATE "oDate"
 					, O.O_NUM "oNum"
-					, M.M_NUM  "mNum"
-					, M.M_NAME "mName"
-					, ORD.OP_DNUM "opDnum"
+<!-- 					, M.M_NUM  "mNum"
+					, M.M_NAME "mName" 
+					, ORD.OP_DNUM "opDnum"-->
 					, O.TOTAL "total"
-					, O.RECEIPT "receipt"
+<!-- 					, O.RECEIPT "receipt"
 					, O.PAY_METHOD "payMethod"
 					, O.C_ADD "cAdd"
 					, O.C_ADD3 "cAdd3"
-					, O.DELIVERY_STATUS "deliveryStatus" 
+					, O.DELIVERY_STATUS "deliveryStatus"  -->
 					, O.C_ID "cId"
 		FROM ORDERS O LEFT OUTER JOIN ORDER_DETAILS ORD
-		ON O.O_NUM = ORD.O_NUM
+		ON O.O_NUM = ORD.O_NUM 
 		JOIN MENU M
 		ON ORD.M_NUM = M.M_NUM 
 		WHERE O.S_ID=#{sId}
@@ -175,7 +175,7 @@
 		JOIN MENU M
     	ON ORD.M_NUM = M.M_NUM
 		WHERE  ORD.O_NUM = #{oNum}
-		    AND ORD.CA_NUM IN ('CAOP','CAIC','CAHT')
+		    AND ORD.CA_NUM IN ('CAOP','CAIC','CAHT','CADE','CADR')
 		ORDER BY DNUM.OP_DNUM,RE.OP_NAME
  
 	
