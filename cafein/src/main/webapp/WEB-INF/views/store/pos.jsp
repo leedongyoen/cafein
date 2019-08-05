@@ -139,6 +139,37 @@ background-color: #E0F8F7
 </head>
 <body style="background: url(image/metalbk.jpg) no-repeat center center; background-size: cover;">
 <script type="text/javascript">
+function answerorder(){
+		 $("#ordercall").text("0");
+		$('#callorderlisttable tbody').empty();
+		$('#answerCallModal').modal("show");
+		 console.log("in");
+		
+		$.ajax({
+			url:'getcallorderlist',
+			type:'GET',
+			data: {sId: sId},
+			error:function(xhr,status,msg){
+				alert("상태값 :" + status + " Http에러메시지 :"+msg);
+			},
+			success:function(data){
+				$.each(data,function(idx,item){
+					$('<tr>').attr({
+						onclick:"aftercallorder('"+item.oNum+"','"+item.mName+"','"+item.cId+"')",
+						id: "table"+item.oNum
+						})
+						.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
+						.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
+						.append($('<td><input type=\'text\' value=\''+item.mName+'\'>'))
+						.append($('<td><input type=\'text\' value=\''+item.cId+'\'>'))
+						.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
+						.appendTo('#callorderlisttable tbody');
+					});
+
+			}
+		});    
+	}
+	
 function addCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -271,37 +302,6 @@ var ordernum ="";
 	 $('#answerCallModal').modal("hide");
 	 
 	
-	  //웹주문 조회
-	  $('#answercall').on("click",function(){
-	 		 $("#ordercall").text("0");
-	 		$('#callorderlisttable tbody').empty();
-	 		$('#answerCallModal').modal("show");
-	 		 console.log("in");
-	 		
-	 		$.ajax({
-				url:'getcallorderlist',
-				type:'GET',
-				data: {sId: sId},
-				error:function(xhr,status,msg){
-					alert("상태값 :" + status + " Http에러메시지 :"+msg);
-				},
-				success:function(data){
-					$.each(data,function(idx,item){
-						$('<tr>').attr({
-							onclick:"aftercallorder('"+item.oNum+"','"+item.mName+"','"+item.cId+"')",
-							id: "table"+item.oNum
-							})
-							.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
-							.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
-							.append($('<td><input type=\'text\' value=\''+item.mName+'\'>'))
-							.append($('<td><input type=\'text\' value=\''+item.cId+'\'>'))
-							.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
-							.appendTo('#callorderlisttable tbody');
-						});
-	
-				}
-			});    
-	 	});
 	 //메뉴로드
 	 $.ajax({
 			url:'pos/'+sId,
@@ -919,6 +919,7 @@ var ordernum ="";
 		var type ="cusorderOK";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum); //cId로 교체
+		answerorder();
 		aftercallorder();
 	}
  	function callorderNO(){
@@ -929,6 +930,7 @@ var ordernum ="";
 		var type ="cusorderNO";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum);
+		answerorder();
 		aftercallorder();
 		
 	}
