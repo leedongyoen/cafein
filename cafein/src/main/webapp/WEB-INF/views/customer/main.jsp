@@ -33,10 +33,20 @@
 				
 				$("#totalreserve tbody").empty();
 				$.each(data,function(idx,item){
-					$('<tr>')
-					.append($('<td>').html(addCommas(item.toto)+'원'))
-					.appendTo('#totalreserve tbody');
+					
+					if(item == null) {
+						$('<tr>')
+						.append($('<td class="thcolor">').html('적립금이 없습니다.'))
+						.appendTo('#totalreserve tbody');
+					} else {
+						
+						$('<tr>')
+						.append($('<td>').html(addCommas(item.toto)+'원'))
+						.appendTo('#totalreserve tbody');
+					}
+					
 				});
+				
 			}
 		})
 	};
@@ -50,15 +60,24 @@
 			success : function(data) {
 				
 				$("#mainlikestorelist tbody").empty();
-				$.each(data,function(idx,item){
+				
+				if(data.length == 0) {
 					$('<tr>')
-					.append($('<td>').html(item.rank))
-					.append($('<td>').html(item.sName))
+					.append($('<td colspan="2" height="58px" class="thcolor">').html('이용한 매장이 없습니다.'))
 					.appendTo('#mainlikestorelist tbody');
-				});
+				} else {
+				
+					$.each(data,function(idx,item){
+						$('<tr>')
+						.append($('<td>').html(item.rank))
+						.append($('<td>').html(item.sName))
+						.appendTo('#mainlikestorelist tbody');
+					});
+				}
 			}
 		})
 	};
+	
 	//메인에서 보여줄 메뉴 리스트
 	function mainLikeMenuList() {
 		$.ajax({
@@ -69,12 +88,20 @@
 			success : function(data) {
 				
 				$("#mainlikemenulist tbody").empty();
-				$.each(data,function(idx,item){
+				
+				if(data.length == 0) {
 					$('<tr>')
-					.append($('<td>').html(item.rank))
-					.append($('<td>').html(item.mName))
+					.append($('<td colspan="2" height="58px" class="thcolor">').html('주문한 메뉴가 없습니다.'))
 					.appendTo('#mainlikemenulist tbody');
-				});
+				} else {
+				
+					$.each(data,function(idx,item){
+						$('<tr>')
+						.append($('<td>').html(item.rank))
+						.append($('<td>').html(item.mName))
+						.appendTo('#mainlikemenulist tbody');
+					});
+				}
 			}
 		})
 	};
@@ -87,12 +114,25 @@
 			//contentType:'application/json;charset=utf-8',
 			dataType:'json',
 			success:function(data){ //onclick="menuList('${store.sid}','${store.sname}')"
-				$("#mainorderlist tbody").empty();			
-				$.each(data,function(idx,item){
-					$('<tr>')
-					.append($('<td>').html(addCommas(item.totals)+'원'))
-					.appendTo('#mainorderlist tbody');
-				});
+				$("#mainorderlist tbody").empty();	
+				console.log('-----------------')
+				console.log(data)
+					
+					$.each(data,function(idx,item){
+						
+						if(item == null) {
+							$('<tr>')
+							.append($('<td class="thcolor">').html('사용한 금액이 없습니다.'))
+							.appendTo('#mainorderlist tbody');
+						} else {
+						
+						
+							$('<tr>')
+							.append($('<td>').html(addCommas(item.totals)+'원'))
+							.appendTo('#mainorderlist tbody');
+						}
+					});
+				
 			} 
 		});
 	}
@@ -121,7 +161,11 @@ table {
       min-height: 200px;
     } 
  .cursor {cursor: pointer;}
-
+.thcolor {
+	background-color:white;
+	color:black;
+	text-align:center;
+}
 </style>
 </head>
 <body>
