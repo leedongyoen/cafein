@@ -177,7 +177,6 @@ $(function(){
 			if(up){
 				menuUpdate();
 			}
-			
 			//alert(JSON.stringify($("#menudetail").serializeObject()));
 					
 		});
