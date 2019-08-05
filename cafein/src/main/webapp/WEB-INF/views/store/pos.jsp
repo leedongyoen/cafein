@@ -160,7 +160,6 @@ function answerorder(){
 						})
 						.append($('<td><input type=\'text\' value=\''+item.oDate+'\'>'))
 						.append($('<td><input type=\'text\' value=\''+item.oNum+'\'>'))
-						.append($('<td><input type=\'text\' value=\''+item.mName+'\'>'))
 						.append($('<td><input type=\'text\' value=\''+item.cId+'\'>'))
 						.append($('<td><input type=\'text\' value=\''+item.total+'\'>'))
 						.appendTo('#callorderlisttable tbody');
@@ -865,28 +864,31 @@ var ordernum ="";
 			success : function(data) { 
 				console.log(data);
 		 		$.each(data,function(idx,item){
-				if(mnumber == ""){
-					mnumber = item.oDnum;
-					resul = mename+" - ";
-					mqty="0";
-				}
-				if(mnumber == item.opDnum){
-					if(mqty == "0" && item.oQty != "0"){
-						resul = resul+" "+item.oQty+" 개 - ";
-						mqty=item.oQty;
+			 		if(item.opName == null){
+			 			item.opName=" ";
+			 		}
+					if(mnumber == ""){
+						mnumber = item.oDnum;
+						resul = item.mName+" - ";
+						mqty="0";
 					}
-					resul = resul +" "+ item.opName;
-					console.log("--- "+resul);
-					
-				}
-				if(mnumber != item.opDnum){
-					mnumber = item.oDnum;
-					mqty="0";
-					resul = resul + "<br>" +item.mName+" - ";
-					resul = resul +" " +item.opName;
-					console.log(resul);
-				}		
-			});
+					if(mnumber == item.opDnum){
+						if(mqty == "0" && item.oQty != "0"){
+							resul = resul+" "+item.oQty+" 개 - ";
+							mqty=item.oQty;
+						}
+						resul = resul +" "+ item.opName;
+						console.log("--- "+resul);
+						
+					}
+					if(mnumber != item.opDnum){
+						mnumber = item.oDnum;
+						mqty="0";
+						resul = resul + "<br>" +item.mName+" - ";
+						resul = resul +" " +item.opName;
+						console.log(resul);
+					}		
+				});
 		 		$('#table'+ocnum).after($('<tr>').attr("class","calloption").attr("id","ocnum")
 		 				.append($('<td>').html("메뉴명 : <br>"+resul))
 	 					.append($('<td>').attr("id","cusck").attr("value",cusCID).html("고객 ID :"+cusCID))
@@ -895,7 +897,6 @@ var ordernum ="";
 						 						id:"ckoNum",
 						 						value:ocnum
 						 						})))
-						
 	 					.append($('<td>').append($('<button>').attr({
 						 						type:"button",
 						 						onclick:"callorderOK()",
@@ -915,12 +916,12 @@ var ordernum ="";
  	function callorderOK(){
 		// 소켓 연결
 		//JSON.stringify($("#orderform").serializeObject())
-		
 		var cid=$("#cusck").val();
 		var type ="cusorderOK";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum); //cId로 교체
-		answerorder();
+		$("#table"+ckoNum).hide();
+		$("#ocnum").hide();
 	}
  	function callorderNO(){
 		// 소켓 연결
@@ -930,7 +931,8 @@ var ordernum ="";
 		var type ="cusorderNO";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum);
-		answerorder();
+		$("#table"+ckoNum).hide();
+		$("#ocnum").hide();
 		
 	}
 </script>
@@ -1068,7 +1070,7 @@ var ordernum ="";
 	
 	<!-- 결제내역조회 모달 -->
 	<div class="modal fade" id="orderListModal" role="dialog" >
-		<div class="modal-dialog" style="width: 100px; display: table;">		
+		<div class="modal-dialog modal-lg" style="width: 100px; display: table;">		
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">ORDER LIST</h5>
@@ -1185,7 +1187,7 @@ var ordernum ="";
 							<tr> 
 								<th>DATE</th>
 								<th>주문번호</th>
-								<th>주문메뉴</th>
+								
 								<th>아이디</th>
 								<th>결제금액</th>
 							</tr>
