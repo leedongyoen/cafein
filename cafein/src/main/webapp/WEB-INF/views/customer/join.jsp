@@ -76,19 +76,20 @@ font-family: "";
 				return form.cAdd.focus();
 			}
 			if (form.dob.value == "") {
-			alert("생년월일을 입력하세요.");
-			return form.dob.focus();
+				alert("생년월일을 입력하세요.");
+				return form.dob.focus();
  			}	
-			if(form.email.value =="") {
+			if (form.email.value == "") {
 				alert("이메일을 입력하세요.");
 				return form.email.focus();
-			}
-			if(form.emailauth.value == ""){
-				alert("이메일인증 버튼을 눌러주세요.")
-				return form.emailauth.focus();
-			}
+ 			}	
+			if (form.pInput.value != "yes") {
+				alert("이메일 인증을 하세요.");
+				return;
+ 			} 			
 				alert("회원가입을 축하합니다");
-			form.submit();
+				form.submit();
+ 			
 		};
 		function post_check(){
 			//비밀번호 유효성체크를 하는 부분, maxlength="16"
@@ -224,8 +225,9 @@ font-family: "";
         <tr>
         	<th>이메일</th>
         	<td><input type="email" name="email" id="email" class="form-control"></td>
-        	 <td><button type="button" name="emailauth"
+        	 <td><button type="button" name="emailauth" id="emailauth"
         		onclick="myFunction()" class="btn btn-success">이메일 인증</button>
+        		<input type="hidden" id="pInput" name="pInput">
         	</td>
         </tr>
       </table>

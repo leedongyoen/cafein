@@ -19,6 +19,8 @@
 						success: function(data){
 							if(data.cnt == 1){
 								alert("인증완료");
+								opener.document.getElementById("pInput").value = "yes";
+								
 								self.close();
 							} else {
 								alert("틀린 인증 번호입니다. 다시입력해주세요.");
@@ -54,7 +56,7 @@
 	<div align="center">
 	<h5>인증번호를 입력해주세요.</h5>
 		<form method="post">
-			<input type = "text" name="authNum" id="authNum">
+			<input type = "text" name="authNum" id="authNum" >
 			<input type = "button" value="전송" id="authkeyCheck">
 		</form>
 	</div>
