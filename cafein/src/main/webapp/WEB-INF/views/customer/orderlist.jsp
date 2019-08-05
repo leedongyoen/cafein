@@ -286,14 +286,15 @@ var local_cart = JSON.parse(localStorage.getItem("cartlist"));
 	function cart_delete(){
 		
 		var arr = JSON.parse(localStorage.getItem("cartlist"));
-		
-		for(var i = arr.length-1 ; i>=0 ;i--){
-			if(arr[i].orderqty=='1000'){
-				arr.splice(i,1);
+		if(arr != null){	
+			for(var i = arr.length-1 ; i>=0 ;i--){
+				if(arr[i].orderqty=='1000'){
+					arr.splice(i,1);
+				}
 			}
+			local_cart=JSON.stringify(arr);
+			localStorage.setItem("cartlist",local_cart);		
 		}
-		local_cart=JSON.stringify(arr);
-		localStorage.setItem("cartlist",local_cart);		
 	}
 	
 
