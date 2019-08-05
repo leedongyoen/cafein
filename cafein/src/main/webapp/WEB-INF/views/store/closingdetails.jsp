@@ -60,7 +60,7 @@
 						.append($('<th class="thcolor">').html("<span>"+item.openTime + '</span> ~ <span>' + item.closeTime+"</span>"))
 						.append($('<th class="thcolor">').append($('<input>').attr({
 							type:'button',
-							value:'PDF 보기',
+							value:'PDF 저장',
 							class:'btn btn-outline-info'
 						}).addClass('pdfbtn')))
 						.appendTo('#storeList tbody');
@@ -166,7 +166,7 @@
 						.append($('<th class="thcolor">').html("<span>"+item.openTime + '</span> ~ <span>' + item.closeTime+"</span>"))
 						.append($('<th class="thcolor">').append($('<input>').attr({
 							type:'button',
-							value:'PDF 보기',
+							value:'PDF 저장',
 							class:'btn btn-outline-info'
 						}).addClass('pdfbtn')))
 						.appendTo('#storeList tbody');
@@ -248,7 +248,7 @@ table tbody th{
 		<thead>
 		<tr>
 			<th style="text-align: center;" class="col-md-8">날짜</th>
-			<th class="col-md-4">PDF 보기</th>
+			<th class="col-md-4">PDF 저장</th>
 		</tr>
 		</thead>
 		<tbody>
