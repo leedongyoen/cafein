@@ -33,6 +33,10 @@ table thead tr th,
 
 		var daydata;
 		
+		$(function(){
+			settingDate();
+		});
+		
 		function drawBasic() {
 			
 			var startDate = $('#startDate').val();
@@ -94,7 +98,28 @@ table thead tr th,
 				drawBasic();
 			});
 		
-		
+			function settingDate(){
+			      
+			      // 하루를 뺀 날짜 가져옴
+			      var date = new Date(new Date().setDate(new Date().getDate()-1));
+			      // 해당 날짜의 년도
+			      var year = date.getFullYear();
+			      // 해당 날짜의 달 , 0부터 시작하기때문에 +1을 함
+			      var mm =Number(date.getMonth())+1;
+			      // 해당 날짜의 일( 이때 위에서 하루를 뺀 일을 가져온다. )
+			      var dd = date.getDate();
+			      
+			      // format을 맞추기 위해서
+			      if(mm < 10)
+			         mm = '0'+mm;
+			      if(dd <10)
+			         dd = '0'+dd;
+			      
+			      // end date는 현재 날짜로 세팅하기
+			      document.getElementById('startDate').value = new Date().toISOString().substring(0, 10);
+			   }
+			
+
 	</script> 
 </head>
 <body>
@@ -102,7 +127,7 @@ table thead tr th,
 	<h2 align="center">시간별 통계</h2><br>
 	<div id="chart_div"></div><br>
 	<p align="center">
-		<input type ="date" name ="startDate" id="startDate">&nbsp;
+		<input type ="date" class="btn btn-secondary resetdate" name ="startDate" id="startDate">&nbsp;
 		<input type="button" value= "검색" class="btn btn-primary btn-sm" onclick="drawBasic()">
 	</p>
 	<div align="center" id="test_dataview3"></div>
