@@ -296,7 +296,7 @@ var ordernum ="";
  //메뉴탭에서 매장메뉴 나오기
  $(document).ready(function(){
 	 
-	 $("#aftersearch").hide()
+	 $("#aftersearch").hide();
 	 $("#paymentModal").modal('hide');
 	 $("#cusSearchModal").modal('hide');
 	 $("#orderListModal").modal('hide');
@@ -895,7 +895,6 @@ var ordernum ="";
 						 						id:"ckoNum",
 						 						value:ocnum
 						 						})))
-						
 	 					.append($('<td>').append($('<button>').attr({
 						 						type:"button",
 						 						onclick:"callorderOK()",
@@ -915,12 +914,11 @@ var ordernum ="";
  	function callorderOK(){
 		// 소켓 연결
 		//JSON.stringify($("#orderform").serializeObject())
-		
 		var cid=$("#cusck").val();
 		var type ="cusorderOK";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum); //cId로 교체
-		answerorder();
+		$("#table"+ckoNum).hide();
 	}
  	function callorderNO(){
 		// 소켓 연결
@@ -930,7 +928,7 @@ var ordernum ="";
 		var type ="cusorderNO";
 		var ckoNum = $("#ckoNum").val();
 		send(type,cid,ckoNum);
-		answerorder();
+		$("#table"+ckoNum).hide();
 		
 	}
 </script>
