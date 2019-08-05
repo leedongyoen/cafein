@@ -21,7 +21,7 @@
 	
 	var webSocket;
 	if(checksocketid != "null") {
-		webSocket= new WebSocket('ws://cafein.co.kr/cafein/OrdercastingServer.do');
+		webSocket= new WebSocket('ws://114.200.227.226/cafein/OrdercastingServer.do');
 		
 		webSocket.onerror = function(event) {
 			 	onError(event)
@@ -108,8 +108,9 @@
 		 
 	$(function(){
 		var id = "<%= (String)session.getAttribute("cId") %>";
+		var name = "<%= (String)session.getAttribute("cName") %>";
 		console.log("customer id = " + id);
-		
+		console.log("customer name(kakao, naver) = " +name );
 		if(id == "null") {
 			$("#loginbtn").css('display', 'block');
 			$("#logoutbtn").css('display', 'none');
