@@ -285,6 +285,11 @@ function orderCartInsert(){
 
 	console.log(JSON.stringify(ordercart));
   	$('[name="jsonData"]').val(JSON.stringify(ordercart));
+  	
+  	var sid=$('[name="sId"]').val();
+	var type ="cusorder";
+	send(type,sid);
+  	
   	document.fCart.submit();
 	
 }
