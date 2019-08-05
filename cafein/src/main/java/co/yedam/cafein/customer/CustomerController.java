@@ -152,9 +152,12 @@ public class CustomerController {
 		}
 
 		if (cJoin.equals("web")) {
+			
 			System.out.println("일반 로그아웃");
 			session.removeAttribute("cId");
 			session.removeAttribute("cJoin");
+			session.removeAttribute("cName");
+			
 		} else if (cJoin.equals("kakao")) {
 
 			System.out.println("kakao logout token : " + session.getAttribute("token"));
@@ -164,12 +167,15 @@ public class CustomerController {
 			kakao.kakaoLogout((String) session.getAttribute("token"));
 			session.removeAttribute("cId");
 			session.removeAttribute("cJoin");
+			session.removeAttribute("cName");
 			session.removeAttribute("token");
 
 		} else if (cJoin.equals("naver")) {
+			
 			System.out.println("네이버 로그아웃");
 			session.removeAttribute("cId");
 			session.removeAttribute("cJoin");
+			session.removeAttribute("cName");
 
 			for (int i = 0; i < cookies.length; i++) {
 				cookies[i].setMaxAge(0);
@@ -428,8 +434,11 @@ public class CustomerController {
 		// 세션에 아이디와 가입경로, 토큰 등록
 		session.setAttribute("cId", customer.getcId());
 		session.setAttribute("cJoin", customer.getcJoin());
+		session.setAttribute("cName", customer.getcName());
 		session.setAttribute("token", access_token);
 
+		System.out.println("kakao 로그인 시 name : " + customer.getcName());
+		
 		// return kakaoName;
 		return "customer/main";
 	}
@@ -495,6 +504,7 @@ public class CustomerController {
 		// 세션에 아이디와 가입경로 등록
 		session.setAttribute("cId", customer.getcId());
 		session.setAttribute("cJoin", customer.getcJoin());
+		session.setAttribute("cName", customer.getcName());
 
 		/* 네이버 로그인 성공 페이지 View 호출 */
 		return "customer/main";

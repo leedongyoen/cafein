@@ -50,7 +50,7 @@ table thead tr th,
 						var chartData = [];
 						chartData.push([' ','수량','금액'])
 							for(i=0; i<days.length; i++) {		
-								var dayss = [days[i].week +'시', parseInt(days[i].cnt), parseInt(days[i].atotal)];
+								var dayss = [days[i].week, parseInt(days[i].cnt), parseInt(days[i].atotal)];
 								chartData.push(dayss);
 								console.log(dayss);
 								
