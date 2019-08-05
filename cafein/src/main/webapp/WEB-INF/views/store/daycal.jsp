@@ -273,7 +273,9 @@ p {
 				
 				$('#cashSales').text(addCommas(cashSum)+'원');
 				$('#usedMileage').text('P'+addCommas(usedMile));
-				$('#totalCashSales').text(addCommas(totalcashsales)+'원');
+				
+				console.log('totalcashsales : '+totalcashsales)
+				$('#totalCashSales').text(addCommas(parseInt(totalcashsales))+'원');
 				
 				// 영수증에 출력
 				$('#storeCashSum ').text(addCommas(cashSum)+'원');
